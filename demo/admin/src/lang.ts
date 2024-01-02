@@ -1,0 +1,23 @@
+import { ResolvedIntlConfig } from "react-intl";
+
+import comet_messages_de from "../lang-compiled/comet-lang/de.json";
+import comet_messages_en from "../lang-compiled/comet-lang/en.json";
+import project_messages_de from "../lang-compiled/comet-brevo-module-demo-admin/de.json";
+import project_messages_en from "../lang-compiled/comet-brevo-module-demo-admin/en.json";
+
+const cometMessages = {
+    en: comet_messages_en,
+    de: comet_messages_de,
+};
+
+const projectMessages = {
+    en: project_messages_en,
+    de: project_messages_de,
+};
+
+export const getMessages = (): ResolvedIntlConfig["messages"] => {
+    return {
+        ...cometMessages["en"],
+        ...projectMessages["en"],
+    };
+};
