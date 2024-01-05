@@ -273,6 +273,9 @@ importers:
       '@azure/storage-blob':
         specifier: ^12.0.0
         version: 12.17.0
+      '@comet-brevo-module/api':
+        specifier: workspace:*
+        version: link:../../packages/api
       '@comet/blocks-api':
         specifier: ^5.3.0
         version: 5.3.0(@nestjs/common@9.4.3)(class-transformer@0.5.1)(class-validator@0.13.2)
@@ -8444,6 +8447,13 @@ packages:
       '@types/node': 18.19.4
     dev: true
 
+  /@types/rimraf@3.0.2:
+    resolution: {integrity: sha512-F3OznnSLAUxFrCEu/L5PY8+ny8DtcFRjx7fZZ9bycvXRi3KPTRS9HOitGZwvPg0juRhXFWIeKX58cnX5YqLohQ==}
+    dependencies:
+      '@types/glob': 7.2.0
+      '@types/node': 18.19.4
+    dev: true
+
   /@types/sax@1.2.7:
     resolution: {integrity: sha512-rO73L89PJxeYM3s3pPPjiPgVVcymqU490g0YO5n5By0k2Erzj6tay/4lr1CHAAU4JyOWd1rpQ8bCf6cZfHU96A==}
     dependencies:
@@ -14802,6 +14812,16 @@ packages:
       '@types/node': 18.19.4
       merge-stream: 2.0.0
       supports-color: 8.1.1
+
+  /jest-worker@29.7.0:
+    resolution: {integrity: sha512-eIz2msL/EzL9UFTFFx7jBTkeZfku0yUAyZZZmJ93H2TYEiroIx2PQjEXcwYtYl8zXCxb+PAmA2hLIt/6ZEkPHw==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+    dependencies:
+      '@types/node': 18.19.4
+      jest-util: 29.7.0
+      merge-stream: 2.0.0
+      supports-color: 8.1.1
+    dev: true
 
   /jest-worker@29.7.0:
     resolution: {integrity: sha512-eIz2msL/EzL9UFTFFx7jBTkeZfku0yUAyZZZmJ93H2TYEiroIx2PQjEXcwYtYl8zXCxb+PAmA2hLIt/6ZEkPHw==}
