@@ -16,6 +16,7 @@ import {
     PageTreeService,
     RedirectsModule,
 } from "@comet/cms-api";
+import { CometBrevoModule } from "@comet-brevo-module/api";
 import { ApolloDriver } from "@nestjs/apollo";
 import { DynamicModule, Module } from "@nestjs/common";
 import { Enhancer, GraphQLModule } from "@nestjs/graphql";
@@ -124,6 +125,7 @@ export class AppModule {
                 ProductsModule,
                 MenusModule,
                 DependenciesModule,
+                CometBrevoModule,
             ],
         };
     }
