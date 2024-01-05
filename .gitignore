@@ -8,6 +8,4 @@ node_modules
 schema.graphql
 comet-lang
 /api/uploads
-.env.local
-.env.secrets
 lang

@@ -1,6 +1,5 @@
 import { ContentScope, ContentScopeProvider } from "@src/common/contentScope/ContentScope";
 import { defaultLanguage, domain } from "@src/config";
-import { getMessages } from "@src/lang";
 import App, { AppProps, NextWebVitalsMetric } from "next/app";
 import Head from "next/head";
 import Script from "next/script";
@@ -93,9 +92,9 @@ const getInitialProps: typeof App.getInitialProps = async (appContext) => {
         scope = { domain, language };
     }
 
-    const [appProps, messages] = await Promise.all([App.getInitialProps(appContext), getMessages(scope)]);
+    const [appProps] = await Promise.all([App.getInitialProps(appContext)]);
 
-    return { ...appProps, scope, messages };
+    return { ...appProps, scope };
 };
 
 CustomApp.getInitialProps = getInitialProps;

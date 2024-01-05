@@ -2,7 +2,7 @@
     "name": "comet-brevo-module-demo-site",
     "private": true,
     "scripts": {
-        "dev": "npm run intl:compile && run-s gql:types generate-block-types && npm run build:preBuild && NODE_OPTIONS='--inspect=localhost:9230' dotenv -c secrets -- node server.js",
+        "dev": "run-s gql:types generate-block-types && npm run build:preBuild && NODE_OPTIONS='--inspect=localhost:9230' dotenv -c secrets -- node server.js",
         "preview-next-build": "next build",
         "next-build": "npm run build:publicGenerated && next build",
         "build": "npm run intl:compile && run-p gql:types generate-block-types && npm run build:preBuild",
@@ -21,8 +21,7 @@
         "lint:tscPreBuild": "tsc --project tsconfig.preBuild.json",
         "generate-block-types": "comet generate-block-types",
         "generate-block-types:watch": "chokidar -s \"**/block-meta.json\" -c \"npm run generate-block-types\"",
-        "intl:extract": "formatjs extract \"src/**/*.ts*\" --ignore **/*.d.ts --out-file lang-extracted/de.json --format simple",
-        "intl:compile": "formatjs compile-folder --format simple --ast lang/comet-brevo-module-demo-lang/site lang-compiled/"
+        "copy-schema-files": "node copy-schema-files.js"
     },
     "dependencies": {
         "@comet/cms-site": "^5.3.0",
