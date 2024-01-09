@@ -10,8 +10,7 @@ cd $(dirname $0)
 nvm install
 nvm use
 npm i -g pnpm@8
-# -r to also install dependencies in demo/api demo/admin demo/site
-pnpm -r install
+pnpm install
 
 # create demo api symlinks
 ln -sf ../../.env ./demo/api/.env
