@@ -64,6 +64,7 @@ export class BrevoContactsApiService {
 
         return {
             ...body,
+            // TODO: mapping
             firstName: body.attributes.FIRSTNAME,
             lastName: body.attributes.LASTNAME,
         };
@@ -76,6 +77,7 @@ export class BrevoContactsApiService {
             if (!contact) return undefined;
             return {
                 ...contact,
+                // TODO: mapping
                 firstName: contact.attributes.FIRSTNAME,
                 lastName: contact.attributes.LASTNAME,
             };
@@ -95,6 +97,7 @@ export class BrevoContactsApiService {
         return [
             data.body.contacts.map((data) => ({
                 ...data,
+                // TODO: mapping
                 firstName: data.attributes.FIRSTNAME,
                 lastName: data.attributes.LASTNAME,
             })),
