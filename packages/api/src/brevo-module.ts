@@ -2,10 +2,10 @@ import { DynamicModule, Global, Module } from "@nestjs/common";
 
 @Global()
 @Module({})
-export class CometBrevoModule {
+export class BrevoModule {
     static register(): DynamicModule {
         return {
-            module: CometBrevoModule,
+            module: BrevoModule,
             exports: [],
         };
     }

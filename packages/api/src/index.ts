@@ -1,1 +1,1 @@
-export { CometBrevoModule } from "./comet-brevo-module";
+export { BrevoModule } from "./brevo-module";
