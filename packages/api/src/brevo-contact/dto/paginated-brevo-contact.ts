@@ -4,4 +4,4 @@ import { ObjectType } from "@nestjs/graphql";
 import { BrevoContact } from "./brevo-contact";
 
 @ObjectType()
-export class PaginatedBrevoContact extends PaginatedResponseFactory.create(BrevoContact) {}
+export class PaginatedBrevoContacts extends PaginatedResponseFactory.create(BrevoContact) {}

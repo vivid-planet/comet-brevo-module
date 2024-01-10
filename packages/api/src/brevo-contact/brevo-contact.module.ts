@@ -3,10 +3,10 @@ import { Module } from "@nestjs/common";
 
 import { BrevoModule } from "../brevo/brevo.module";
 import { BrevoContactResolver } from "./brevo-contact.resolver";
-import { BrevoContactService } from "./brevo-contact.service";
+import { BrevoContactsService } from "./brevo-contacts.service";
 
 @Module({
     imports: [MikroOrmModule.forFeature([]), BrevoModule],
-    providers: [BrevoContactService, BrevoContactResolver],
+    providers: [BrevoContactsService, BrevoContactResolver],
 })
 export class BrevoContactModule {}

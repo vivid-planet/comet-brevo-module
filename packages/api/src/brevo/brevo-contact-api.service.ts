@@ -1,8 +1,10 @@
-import { Injectable } from "@nestjs/common";
+import { Inject, Injectable } from "@nestjs/common";
 import * as SibApiV3Sdk from "@sendinblue/client";
 
 import { BrevoContact } from "../brevo-contact/dto/brevo-contact";
-import { BrevoUpdateContactArgs } from "../brevo-contact/dto/brevo-contact-update.args";
+import { BrevoContactUpdateInput } from "../brevo-contact/dto/brevo-contact.input";
+import { CometBrevoModuleConfig } from "../config/comet-brevo-module.config";
+import { COMET_BREVO_MODULE_CONFIG } from "../config/comet-brevo-module.constants";
 import { isErrorFromBrevo } from "./brevo.utils";
 
 export interface CreateDoubleOptInContactData {
@@ -10,17 +12,15 @@ export interface CreateDoubleOptInContactData {
     firstName?: string;
     lastName?: string;
     redirectURL: string;
-    // scope: NewsletterContentScope;
 }
 
 @Injectable()
-export class BrevoContactService {
+export class BrevoContactsApiService {
     private readonly contactsApi: SibApiV3Sdk.ContactsApi;
 
-    constructor() {
-        // @Inject(COMET_BREVO_MODULE_CONFIG) private readonly config: CometBrevoModuleConfig
+    constructor(@Inject(COMET_BREVO_MODULE_CONFIG) private readonly config: CometBrevoModuleConfig) {
         this.contactsApi = new SibApiV3Sdk.ContactsApi();
-        // this.contactsApi.setApiKey(SibApiV3Sdk.ContactsApiApiKeys.apiKey, config.api.brevo.apiKey);
+        this.contactsApi.setApiKey(SibApiV3Sdk.ContactsApiApiKeys.apiKey, config.api.brevo.apiKey);
     }
 
     public async createDoubleOptInContact(input: CreateDoubleOptInContactData, brevoIds: number[], templateId: number): Promise<boolean> {
@@ -40,7 +40,7 @@ export class BrevoContactService {
         return response.statusCode === 204 || response.statusCode === 201;
     }
 
-    public async updateContact({ id, blocked }: BrevoUpdateContactArgs): Promise<BrevoContact> {
+    public async updateContact(id: number, { blocked }: BrevoContactUpdateInput): Promise<BrevoContact> {
         const idAsString = id.toString(); // brevo expects a string, because it can be an email or the id, so we have to transform the id to string
         await this.contactsApi.updateContact(idAsString, { emailBlacklisted: blocked });
         return this.findContact(id);
@@ -69,7 +69,7 @@ export class BrevoContactService {
         };
     }
 
-    public async getContactInfoForMail(email: string): Promise<BrevoContact | undefined> {
+    public async getContactInfoByEmail(email: string): Promise<BrevoContact | undefined> {
         try {
             const data = await this.contactsApi.getContactInfo(email);
             const contact = data.body;

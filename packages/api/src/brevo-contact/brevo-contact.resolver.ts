@@ -1,43 +1,47 @@
-import { Args, Int, Mutation, Query, Resolver } from "@nestjs/graphql";
+import { SubjectEntity } from "@comet/cms-api";
+import { Args, ID, Int, Mutation, Query, Resolver } from "@nestjs/graphql";
 
-import { BrevoContactService } from "../brevo/brevo-contact.service";
+import { BrevoContactsApiService } from "../brevo/brevo-contact-api.service";
+import { BrevoContactsService } from "./brevo-contacts.service";
 import { BrevoContact } from "./dto/brevo-contact";
-import { BrevoUpdateContactArgs } from "./dto/brevo-contact-update.args";
+import { BrevoContactUpdateInput } from "./dto/brevo-contact.input";
 import { BrevoContactsArgs } from "./dto/brevo-contacts.args";
-import { PaginatedBrevoContact } from "./dto/paginated-brevo-contact";
+import { PaginatedBrevoContacts } from "./dto/paginated-brevo-contact";
 
-@Resolver()
+@Resolver(() => BrevoContact)
 export class BrevoContactResolver {
     constructor(
-        private readonly newsletterContactService: BrevoContactService,
-        private readonly brevoContactService: BrevoContactService, // @Inject(CONFIG) private readonly config: Config,
+        private readonly brevoContactsService: BrevoContactsService,
+        private readonly brevoContactApiService: BrevoContactsApiService, // @Inject(CONFIG) private readonly config: Config,
     ) {}
 
-    @Query(() => PaginatedBrevoContact)
-    async brevoContacts(@Args() args: BrevoContactsArgs): Promise<boolean> {
-        // return this.brevoContactService.findContacts(args);
+    @Query(() => BrevoContact)
+    @SubjectEntity(BrevoContact)
+    async brevoContact(@Args("id", { type: () => ID }) id: string): Promise<true> {
+        // TODO: add logic
         return true;
     }
 
-    @Mutation(() => Boolean)
-    async deleteBrevoContact(@Args("id", { type: () => Int }) id: number): Promise<boolean> {
-        return this.brevoContactService.deleteContact(id);
+    @Query(() => PaginatedBrevoContacts)
+    // TODO: add search
+    async brevoContacts(@Args() { offset, limit }: BrevoContactsArgs): Promise<PaginatedBrevoContacts> {
+        return this.brevoContactsService.findContacts({ offset, limit });
     }
 
     @Mutation(() => BrevoContact)
-    async updateBrevoContact(@Args() args: BrevoUpdateContactArgs): Promise<BrevoContact> {
-        return this.brevoContactService.updateContact(args);
+    @SubjectEntity(BrevoContact)
+    async updateBrevoContact(
+        @Args("id", { type: () => Int }) id: number,
+        @Args("input", { type: () => BrevoContactUpdateInput }) input: BrevoContactUpdateInput,
+    ): Promise<BrevoContact> {
+        return this.brevoContactApiService.updateContact(id, input);
     }
 
-    // @Mutation(() => SubscribeNewsletterResponse)
-    // @PublicApi()
-    // async subscribeNewsletter(
-    //     @Args("input", { type: () => NewsletterSubscribeContactListInput }) data: NewsletterSubscribeContactListInput,
-    // ): Promise<SubscribeNewsletterResponse> {
-    //     if ((await this.ecgRtrListService.getContainedEcgRtrListEmails([data.email])).length > 0) {
-    //         return SubscribeNewsletterResponse.ERROR_CONTAINED_IN_ECG_RTR_LIST;
-    //     }
+    @Mutation(() => Boolean)
+    @SubjectEntity(BrevoContact)
+    async deleteBrevoContact(@Args("id", { type: () => Int }) id: number): Promise<boolean> {
+        return this.brevoContactApiService.deleteContact(id);
+    }
 
-    //     return this.newsletterContactService.createDoubleOptInContact(data, this.config.newsletter.brevo.templateDoubleOptIn);
-    // }
+    // TODO: subscribe to newsletter
 }
