@@ -1,4 +1,4 @@
-export interface CometBrevoModuleConfig {
+export interface BrevoModuleConfig {
     api: {
         brevo: {
             apiKey: string;

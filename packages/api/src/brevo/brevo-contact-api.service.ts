@@ -3,8 +3,8 @@ import * as SibApiV3Sdk from "@sendinblue/client";
 
 import { BrevoContact } from "../brevo-contact/dto/brevo-contact";
 import { BrevoContactUpdateInput } from "../brevo-contact/dto/brevo-contact.input";
-import { CometBrevoModuleConfig } from "../config/comet-brevo-module.config";
-import { COMET_BREVO_MODULE_CONFIG } from "../config/comet-brevo-module.constants";
+import { BrevoModuleConfig } from "../config/brevo-module.config";
+import { BREVO_MODULE_CONFIG } from "../config/brevo-module.constants";
 import { isErrorFromBrevo } from "./brevo.utils";
 
 export interface CreateDoubleOptInContactData {
@@ -18,7 +18,7 @@ export interface CreateDoubleOptInContactData {
 export class BrevoContactsApiService {
     private readonly contactsApi: SibApiV3Sdk.ContactsApi;
 
-    constructor(@Inject(COMET_BREVO_MODULE_CONFIG) private readonly config: CometBrevoModuleConfig) {
+    constructor(@Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig) {
         this.contactsApi = new SibApiV3Sdk.ContactsApi();
         this.contactsApi.setApiKey(SibApiV3Sdk.ContactsApiApiKeys.apiKey, config.api.brevo.apiKey);
     }
