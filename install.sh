@@ -21,6 +21,7 @@ pnpm install
 
 # create demo api symlinks
 ln -sf ../../.env ./demo/api/.env
+ln -sf ../../.env.local ./demo/api
 
 # create demo admin symlinks
 ln -sf ../../.env ./demo/admin/.env
