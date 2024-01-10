@@ -1,23 +1,17 @@
-import { DynamicModule, Global, Module, ValueProvider } from "@nestjs/common";
+import { DynamicModule, Global, Module } from "@nestjs/common";
 
 import { BrevoModule } from "./brevo/brevo.module";
 import { BrevoContactModule } from "./brevo-contact/brevo-contact.module";
 import { CometBrevoModuleConfig } from "./config/comet-brevo-module.config";
-import { COMET_BREVO_MODULE_CONFIG } from "./config/comet-brevo-module.constants";
+import { ConfigModule } from "./config/config.module";
 
 @Global()
 @Module({})
 export class CometBrevoModule {
     static register(config: CometBrevoModuleConfig): DynamicModule {
-        const CometBrevoModuleConfigProvider: ValueProvider<CometBrevoModuleConfig> = {
-            provide: COMET_BREVO_MODULE_CONFIG,
-            useValue: config,
-        };
-
         return {
             module: CometBrevoModule,
-            imports: [BrevoModule, BrevoContactModule],
-            providers: [CometBrevoModuleConfigProvider],
+            imports: [BrevoModule, BrevoContactModule, ConfigModule.forRoot(config)],
             exports: [],
         };
     }
