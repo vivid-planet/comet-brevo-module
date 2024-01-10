@@ -17,7 +17,6 @@ import {
     PageTreeService,
     RedirectsModule,
 } from "@comet/cms-api";
-import { logHelloWorld } from "@comet-brevo-module/api";
 import { ApolloDriver } from "@nestjs/apollo";
 import { DynamicModule, Module } from "@nestjs/common";
 import { Enhancer, GraphQLModule } from "@nestjs/graphql";
@@ -43,8 +42,6 @@ import { StatusModule } from "./status/status.module";
 @Module({})
 export class AppModule {
     static forRoot(config: Config): DynamicModule {
-        logHelloWorld();
-
         return {
             module: AppModule,
             imports: [
@@ -128,7 +125,13 @@ export class AppModule {
                 ProductsModule,
                 MenusModule,
                 DependenciesModule,
-                BrevoModule,
+                BrevoModule.register({
+                    api: {
+                        brevo: {
+                            apiKey: config.brevo.apiKey,
+                        },
+                    },
+                }),
             ],
         };
     }

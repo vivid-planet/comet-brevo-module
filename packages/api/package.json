@@ -13,6 +13,7 @@
         "lib/*"
     ],
     "scripts": {
+        "api-generator": "rimraf 'src/*/generated' && comet-api-generator generate",
         "clean": "rimraf lib",
         "build": "$npm_execpath run clean && tsc -p tsconfig.build.json",
         "dev": "tsc --watch --preserveWatchOutput -p tsconfig.build.json",
@@ -23,23 +24,40 @@
         "test:watch": "jest --watch"
     },
     "peerDependencies": {
+        "@comet/cms-api": "^5.3.0",
         "@nestjs/common": "^9.0.0",
         "reflect-metadata": "^0.1.13",
         "rxjs": "^7.0.0"
     },
     "devDependencies": {
+        "@comet/cms-api": "^5.3.0",
         "@comet/eslint-config": "^5.3.0",
+        "@mikro-orm/core": "^5.0.5",
+        "@nestjs/graphql": "^10.0.0",
+        "@mikro-orm/nestjs": "^5.0.0",
         "@nestjs/common": "^9.0.0",
+        "@sendinblue/client": "^3.3.1",
         "@types/jest": "^29.5.0",
         "@types/rimraf": "^3.0.0",
+        "@types/uuid": "^8.3.0",
+        "class-validator": "^0.13.1",
         "eslint": "^8.0.0",
         "jest": "^29.5.0",
         "jest-junit": "^15.0.0",
         "reflect-metadata": "^0.1.13",
         "rimraf": "^3.0.0",
         "rxjs": "^7.0.0",
+        "prettier": "^2.0.0",
         "ts-jest": "^29.0.5",
         "ts-node": "^10.0.0",
-        "typescript": "^4.0.0"
+        "typescript": "^4.0.0",
+        "uuid": "^8.3.2"
+    },
+    "mikro-orm": {
+        "useTsNode": true,
+        "configPaths": [
+            "./src/db/ormconfig.cli.ts",
+            "./dist/db/ormconfig.cli.js"
+        ]
     }
 }
