@@ -1,5 +1,5 @@
 const packageFolderMapping = {
-    "@comet-brevo-module/api": "packages/api",
+    "@comet/brevo-api": "packages/api",
 };
 
 const waitOnPackages = (...packages) => {
@@ -11,7 +11,7 @@ module.exports = {
         //group api
         {
             name: "api",
-            script: "pnpm --filter @comet-brevo-module/api run dev",
+            script: "pnpm --filter @comet/brevo-api run dev",
             group: ["api"],
         },
         //group demo admin
@@ -45,7 +45,7 @@ module.exports = {
                 " && ",
             ),
             group: ["demo-api", "demo"],
-            waitOn: [...waitOnPackages("@comet-brevo-module/api"), "tcp:$POSTGRESQL_PORT", "tcp:$IMGPROXY_PORT"],
+            waitOn: [...waitOnPackages("@comet/brevo-api"), "tcp:$POSTGRESQL_PORT", "tcp:$IMGPROXY_PORT"],
         },
 
         //group demo site

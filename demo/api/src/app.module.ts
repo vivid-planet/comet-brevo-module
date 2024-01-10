@@ -1,3 +1,4 @@
+import { BrevoModule } from "@comet/brevo-api";
 import {
     BlobStorageModule,
     BLOCKS_MODULE_TRANSFORMER_DEPENDENCIES,
@@ -16,7 +17,6 @@ import {
     PageTreeService,
     RedirectsModule,
 } from "@comet/cms-api";
-import { BrevoModule } from "@comet-brevo-module/api";
 import { ApolloDriver } from "@nestjs/apollo";
 import { DynamicModule, Module } from "@nestjs/common";
 import { Enhancer, GraphQLModule } from "@nestjs/graphql";

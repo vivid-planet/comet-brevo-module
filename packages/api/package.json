@@ -1,5 +1,5 @@
 {
-    "name": "@comet-brevo-module/api",
+    "name": "@comet/brevo-api",
     "version": "1.0.0",
     "repository": {
         "type": "git",
