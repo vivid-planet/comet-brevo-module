@@ -6,6 +6,13 @@ set -e
 # jump into project dir
 cd $(dirname $0)
 
+
+if [[ ! -f .env.local ]]
+then
+    echo -e '# override for local env' > .env.local
+fi
+
+
 # use correct npm and install dependencies
 nvm install
 nvm use
