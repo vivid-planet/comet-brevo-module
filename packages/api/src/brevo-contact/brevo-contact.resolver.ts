@@ -1,5 +1,4 @@
-import { SubjectEntity } from "@comet/cms-api";
-import { Args, ID, Int, Mutation, Query, Resolver } from "@nestjs/graphql";
+import { Args, Int, Mutation, Query, Resolver } from "@nestjs/graphql";
 
 import { BrevoContactsApiService } from "../brevo/brevo-contact-api.service";
 import { BrevoContactsService } from "./brevo-contacts.service";
@@ -16,20 +15,16 @@ export class BrevoContactResolver {
     ) {}
 
     @Query(() => BrevoContact)
-    @SubjectEntity(BrevoContact)
-    async brevoContact(@Args("id", { type: () => ID }) id: string): Promise<true> {
-        // TODO: add logic
-        return true;
+    async brevoContact(@Args("id", { type: () => Int }) id: number): Promise<BrevoContact> {
+        return this.brevoContactApiService.findContact(id);
     }
 
     @Query(() => PaginatedBrevoContacts)
-    // TODO: add search
-    async brevoContacts(@Args() { offset, limit }: BrevoContactsArgs): Promise<PaginatedBrevoContacts> {
-        return this.brevoContactsService.findContacts({ offset, limit });
+    async brevoContacts(@Args() { offset, limit, email }: BrevoContactsArgs): Promise<PaginatedBrevoContacts> {
+        return this.brevoContactsService.findContacts({ offset, limit, email });
     }
 
     @Mutation(() => BrevoContact)
-    @SubjectEntity(BrevoContact)
     async updateBrevoContact(
         @Args("id", { type: () => Int }) id: number,
         @Args("input", { type: () => BrevoContactUpdateInput }) input: BrevoContactUpdateInput,
@@ -38,7 +33,6 @@ export class BrevoContactResolver {
     }
 
     @Mutation(() => Boolean)
-    @SubjectEntity(BrevoContact)
     async deleteBrevoContact(@Args("id", { type: () => Int }) id: number): Promise<boolean> {
         return this.brevoContactApiService.deleteContact(id);
     }

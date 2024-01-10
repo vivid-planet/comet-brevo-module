@@ -11,6 +11,7 @@ export class BrevoContactsService {
 
     public async findContacts({ email, ...args }: BrevoContactsArgs): Promise<PaginatedBrevoContacts> {
         // TODO: add correct lists when brevo contact list is implemented
+        // 2 is the id of the first list in brevo that is created by default
         const contactListId = 2;
         if (email) {
             const contact = await this.brevoContactsApiService.getContactInfoByEmail(email);
