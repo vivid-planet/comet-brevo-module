@@ -9,11 +9,7 @@
     "license": "BSD-2-Clause",
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
-    "bin": {
-        "comet-api-generator": "bin/comet-api-generator.js"
-    },
     "files": [
-        "bin/**/*.js",
         "lib/*"
     ],
     "scripts": {
@@ -23,7 +19,6 @@
         "lint": "run-p lint:eslint lint:tsc",
         "lint:eslint": "eslint --max-warnings 0 src/ package.json",
         "lint:tsc": "tsc --noEmit",
-        "list-exports": "ts-node list-exports.ts",
         "test": "jest",
         "test:watch": "jest --watch"
     },
