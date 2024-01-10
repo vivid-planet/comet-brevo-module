@@ -644,6 +644,9 @@ importers:
       class-validator:
         specifier: ^0.13.1
         version: 0.13.2
+      node-fetch:
+        specifier: ^2.6.1
+        version: 2.7.0
       uuid:
         specifier: ^8.3.2
         version: 8.3.2
@@ -684,6 +687,9 @@ importers:
       '@types/jest':
         specifier: ^29.5.0
         version: 29.5.11
+      '@types/node-fetch':
+        specifier: ^2.5.12
+        version: 2.6.10
       '@types/rimraf':
         specifier: ^3.0.0
         version: 3.0.2

@@ -3,7 +3,7 @@ import { Injectable } from "@nestjs/common";
 import { BrevoContactsApiService, CreateDoubleOptInContactData } from "../brevo/brevo-contact-api.service";
 import { BrevoContactsArgs } from "./dto/brevo-contacts.args";
 import { PaginatedBrevoContacts } from "./dto/paginated-brevo-contact";
-import { SubscribeNewsletterResponse } from "./dto/subscribe-newsletter-response.enum";
+import { SubscribeResponse } from "./dto/subscribe-response.enum";
 
 @Injectable()
 export class BrevoContactsService {
@@ -25,13 +25,13 @@ export class BrevoContactsService {
         return new PaginatedBrevoContacts(contacts, count, args);
     }
 
-    public async createDoubleOptInContact(data: CreateDoubleOptInContactData, templateId: number): Promise<SubscribeNewsletterResponse> {
+    public async createDoubleOptInContact(data: CreateDoubleOptInContactData, templateId: number): Promise<SubscribeResponse> {
         const contactListId = 2;
 
         const created = await this.brevoContactsApiService.createDoubleOptInContact(data, [contactListId], templateId);
         if (created) {
-            return SubscribeNewsletterResponse.SUCCESSFUL;
+            return SubscribeResponse.SUCCESSFUL;
         }
-        return SubscribeNewsletterResponse.ERROR_UNKNOWN;
+        return SubscribeResponse.ERROR_UNKNOWN;
     }
 }

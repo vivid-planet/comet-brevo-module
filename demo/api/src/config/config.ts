@@ -57,6 +57,11 @@ export function createConfig(processEnv: NodeJS.ProcessEnv) {
         },
         brevo: {
             apiKey: envVars.BREVO_API_KEY,
+            templateDoubleOptIn: envVars.BREVO_TEMPLATE_DOUBLE_OPT_IN,
+            allowedRedirectUrl: envVars.BREVO_ALLOWED_REDIRECT_URL,
+        },
+        ecgRtrList: {
+            apiKey: envVars.ECG_RTR_LIST_API_KEY,
         },
     };
 }

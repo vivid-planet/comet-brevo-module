@@ -1,3 +1,4 @@
+import { BrevoModule } from "@comet/brevo-api";
 import {
     BlobStorageModule,
     BLOCKS_MODULE_TRANSFORMER_DEPENDENCIES,
@@ -124,13 +125,18 @@ export class AppModule {
                 ProductsModule,
                 MenusModule,
                 DependenciesModule,
-                // BrevoModule.register({
-                //     api: {
-                //         brevo: {
-                //             apiKey: config.brevo.apiKey,
-                //         },
-                //     },
-                // }),
+                BrevoModule.register({
+                    api: {
+                        brevo: {
+                            apiKey: config.brevo.apiKey,
+                            templateDoubleOptIn: config.brevo.templateDoubleOptIn,
+                            allowedRedirectUrl: config.brevo.allowedRedirectUrl,
+                        },
+                        ecgRtrList: {
+                            apiKey: config.ecgRtrList.apiKey,
+                        },
+                    },
+                }),
             ],
         };
     }
