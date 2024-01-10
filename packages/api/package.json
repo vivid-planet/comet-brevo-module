@@ -22,9 +22,6 @@
         "test": "jest",
         "test:watch": "jest --watch"
     },
-    "dependencies": {
-        "rimraf": "^3.0.0"
-    },
     "devDependencies": {
         "@comet/eslint-config": "^5.3.0",
         "@nestjs/common": "^9.0.0",
@@ -34,6 +31,7 @@
         "jest": "^29.5.0",
         "jest-junit": "^15.0.0",
         "reflect-metadata": "^0.1.13",
+        "rimraf": "^3.0.0",
         "rxjs": "^7.0.0",
         "ts-jest": "^29.0.5",
         "ts-node": "^10.0.0",
