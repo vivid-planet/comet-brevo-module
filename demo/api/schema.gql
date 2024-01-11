@@ -120,24 +120,6 @@ type FilenameResponse {
   isOccupied: Boolean!
 }
 
-type BrevoContact {
-  id: Int!
-  createdAt: String!
-  modifiedAt: String!
-  email: String!
-  emailBlacklisted: Boolean!
-  smsBlacklisted: Boolean!
-  listIds: [Float!]!
-  listUnsubscribed: [Float!]!
-  firstName: String
-  lastName: String
-}
-
-type PaginatedBrevoContacts {
-  nodes: [BrevoContact!]!
-  totalCount: Int!
-}
-
 type Product {
   id: ID!
   creatorId: String!
@@ -375,8 +357,6 @@ type Query {
   product(id: ID!): Product!
   products(offset: Int! = 0, limit: Int! = 25, search: String, filter: ProductFilter, sort: [ProductSort!]): PaginatedProducts!
   mainMenu(scope: PageTreeNodeScopeInput!): [PageTreeNode!]!
-  brevoContact(id: Int!): BrevoContact!
-  brevoContacts(offset: Int! = 0, limit: Int! = 25, email: String): PaginatedBrevoContacts!
 }
 
 enum SortDirection {
@@ -536,8 +516,6 @@ type Mutation {
   createProduct(input: ProductInput!): Product!
   updateProduct(id: ID!, input: ProductInput!, lastUpdatedAt: DateTime): Product!
   deleteProduct(id: ID!): Boolean!
-  updateBrevoContact(id: Int!, input: BrevoContactUpdateInput!): BrevoContact!
-  deleteBrevoContact(id: Int!): Boolean!
 }
 
 input CreateBuildsInput {
@@ -649,8 +627,4 @@ input UpdateDamFolderInput {
 input ProductInput {
   name: String!
   description: String!
-}
-
-input BrevoContactUpdateInput {
-  blocked: Boolean!
 }
