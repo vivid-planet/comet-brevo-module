@@ -1,15 +1,15 @@
-import { CrudField, CrudGenerator, DocumentInterface } from "@comet/cms-api";
+import { CrudField, DocumentInterface } from "@comet/cms-api";
 import { Entity, OptionalProps, PrimaryKey, Property } from "@mikro-orm/core";
 import { Field, ID, Int, ObjectType } from "@nestjs/graphql";
 import { v4 } from "uuid";
 
-import { SendingState } from "../subscribe-newsletter-response.enum";
+import { SendingState } from "../sending-state.enum";
 
 @Entity()
 @ObjectType({
     implements: () => [DocumentInterface],
 })
-@CrudGenerator({ targetDirectory: `${__dirname}/../generated/` })
+// @CrudGenerator({ targetDirectory: `${__dirname}/../generated/` })
 export class Mailing implements DocumentInterface {
     [OptionalProps]?: "createdAt" | "updatedAt" | "sendingState";
 
