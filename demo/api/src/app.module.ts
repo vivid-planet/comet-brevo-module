@@ -37,6 +37,8 @@ import { Config } from "./config/config";
 import { ConfigModule } from "./config/config.module";
 import { DamFile } from "./dam/entities/dam-file.entity";
 import { DamFolder } from "./dam/entities/dam-folder.entity";
+import { MailingContentBlock } from "./mailing/blocks/mailing-content.block";
+import { MailingContentScope } from "./mailing/mailing-content-scope";
 import { MenusModule } from "./menus/menus.module";
 import { StatusModule } from "./status/status.module";
 
@@ -132,10 +134,16 @@ export class AppModule {
                         BrevoContactAttributes,
                         doubleOptInTemplateId: config.brevo.doubleOptInTemplateId,
                         allowedRedirectUrl: config.brevo.allowedRedirectUrl,
+                        sender: {
+                            name: config.brevo.sender.name,
+                            email: config.brevo.sender.email,
+                        },
                     },
                     ecgRtrList: {
                         apiKey: config.ecgRtrList.apiKey,
                     },
+                    MailingContentBlock: MailingContentBlock,
+                    Scope: MailingContentScope,
                 }),
             ],
         };

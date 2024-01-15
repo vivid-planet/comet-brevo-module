@@ -418,6 +418,145 @@
         ]
     },
     {
+        "name": "MailingContent",
+        "fields": [
+            {
+                "name": "blocks",
+                "kind": "NestedObjectList",
+                "object": {
+                    "fields": [
+                        {
+                            "name": "key",
+                            "kind": "String",
+                            "nullable": false
+                        },
+                        {
+                            "name": "visible",
+                            "kind": "Boolean",
+                            "nullable": false
+                        },
+                        {
+                            "name": "type",
+                            "kind": "String",
+                            "nullable": false
+                        },
+                        {
+                            "name": "props",
+                            "kind": "OneOfBlocks",
+                            "blocks": {
+                                "text": "RichText",
+                                "divider": "MailingDivider"
+                            },
+                            "nullable": false
+                        }
+                    ]
+                },
+                "nullable": false
+            }
+        ],
+        "inputFields": [
+            {
+                "name": "blocks",
+                "kind": "NestedObjectList",
+                "object": {
+                    "fields": [
+                        {
+                            "name": "key",
+                            "kind": "String",
+                            "nullable": false
+                        },
+                        {
+                            "name": "visible",
+                            "kind": "Boolean",
+                            "nullable": false
+                        },
+                        {
+                            "name": "type",
+                            "kind": "String",
+                            "nullable": false
+                        },
+                        {
+                            "name": "props",
+                            "kind": "OneOfBlocks",
+                            "blocks": {
+                                "text": "RichText",
+                                "divider": "MailingDivider"
+                            },
+                            "nullable": false
+                        }
+                    ]
+                },
+                "nullable": false
+            }
+        ]
+    },
+    {
+        "name": "MailingDivider",
+        "fields": [],
+        "inputFields": []
+    },
+    {
+        "name": "MailingLink",
+        "fields": [
+            {
+                "name": "attachedBlocks",
+                "kind": "NestedObjectList",
+                "object": {
+                    "fields": [
+                        {
+                            "name": "type",
+                            "kind": "String",
+                            "nullable": false
+                        },
+                        {
+                            "name": "props",
+                            "kind": "OneOfBlocks",
+                            "blocks": {
+                                "external": "ExternalLink"
+                            },
+                            "nullable": false
+                        }
+                    ]
+                },
+                "nullable": false
+            },
+            {
+                "name": "activeType",
+                "kind": "String",
+                "nullable": true
+            },
+            {
+                "name": "block",
+                "kind": "NestedObject",
+                "object": {
+                    "fields": [
+                        {
+                            "name": "type",
+                            "kind": "String",
+                            "nullable": false
+                        },
+                        {
+                            "name": "props",
+                            "kind": "OneOfBlocks",
+                            "blocks": {
+                                "external": "ExternalLink"
+                            },
+                            "nullable": false
+                        }
+                    ]
+                },
+                "nullable": true
+            }
+        ],
+        "inputFields": [
+            {
+                "name": "activeType",
+                "kind": "String",
+                "nullable": true
+            }
+        ]
+    },
+    {
         "name": "OptionalPixelImage",
         "fields": [
             {
@@ -816,6 +955,23 @@
             {
                 "name": "activeType",
                 "kind": "String",
+                "nullable": false
+            }
+        ]
+    },
+    {
+        "name": "RichText",
+        "fields": [
+            {
+                "name": "draftContent",
+                "kind": "Json",
+                "nullable": false
+            }
+        ],
+        "inputFields": [
+            {
+                "name": "draftContent",
+                "kind": "Json",
                 "nullable": false
             }
         ]
