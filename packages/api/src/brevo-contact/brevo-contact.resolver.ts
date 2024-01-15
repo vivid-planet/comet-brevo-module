@@ -9,10 +9,7 @@ import { PaginatedBrevoContacts } from "./dto/paginated-brevo-contact";
 
 @Resolver(() => BrevoContact)
 export class BrevoContactResolver {
-    constructor(
-        private readonly brevoContactsService: BrevoContactsService,
-        private readonly brevoContactApiService: BrevoContactsApiService, // @Inject(CONFIG) private readonly config: Config,
-    ) {}
+    constructor(private readonly brevoContactsService: BrevoContactsService, private readonly brevoContactApiService: BrevoContactsApiService) {}
 
     @Query(() => BrevoContact)
     async brevoContact(@Args("id", { type: () => Int }) id: number): Promise<BrevoContact> {
