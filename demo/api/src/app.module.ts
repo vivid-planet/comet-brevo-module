@@ -1,3 +1,4 @@
+import { BrevoModule } from "@comet/brevo-api";
 import {
     BlobStorageModule,
     BLOCKS_MODULE_TRANSFORMER_DEPENDENCIES,
@@ -124,6 +125,7 @@ export class AppModule {
                 ProductsModule,
                 MenusModule,
                 DependenciesModule,
+                BrevoModule,
             ],
         };
     }

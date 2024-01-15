@@ -1,5 +1,19 @@
+const packageFolderMapping = {
+    "@comet/brevo-api": "packages/api",
+};
+
+const waitOnPackages = (...packages) => {
+    return packages.map((package) => `${packageFolderMapping[package]}/lib/index.d.ts`);
+};
+
 module.exports = {
     scripts: [
+        //group api
+        {
+            name: "api",
+            script: "pnpm --filter @comet/brevo-api run dev",
+            group: ["api"],
+        },
         //group demo admin
         {
             name: "demo-admin",
@@ -31,7 +45,7 @@ module.exports = {
                 " && ",
             ),
             group: ["demo-api", "demo"],
-            waitOn: ["tcp:$POSTGRESQL_PORT", "tcp:$IMGPROXY_PORT"],
+            waitOn: [...waitOnPackages("@comet/brevo-api"), "tcp:$POSTGRESQL_PORT", "tcp:$IMGPROXY_PORT"],
         },
 
         //group demo site
