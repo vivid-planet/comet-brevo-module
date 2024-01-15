@@ -19,6 +19,12 @@ sh install.sh
 
 _It is recommended to run `install.sh` every time you switch to the `main` branch._
 
+### Set environment variables
+
+The following variables must be set manually
+
+-   `BREVO_API_KEY`
+
 ### Start development processes
 
 [dev-process-manager](https://github.com/vivid-planet/dev-process-manager) is used for local development.
