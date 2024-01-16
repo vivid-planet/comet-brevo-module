@@ -1,12 +1,12 @@
 import { Injectable } from "@nestjs/common";
 
-import { BrevoContactsApiService } from "../brevo/brevo-contact-api.service";
+import { BrevoApiContactsService } from "../brevo-api/brevo-api-contact.service";
 import { BrevoContactsArgs } from "./dto/brevo-contacts.args";
 import { PaginatedBrevoContacts } from "./dto/paginated-brevo-contact";
 
 @Injectable()
 export class BrevoContactsService {
-    constructor(private readonly brevoContactsApiService: BrevoContactsApiService) {}
+    constructor(private readonly brevoContactsApiService: BrevoApiContactsService) {}
 
     public async findContacts({ email, ...args }: BrevoContactsArgs): Promise<PaginatedBrevoContacts> {
         // TODO: add correct lists when brevo contact list is implemented

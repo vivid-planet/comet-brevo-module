@@ -1,6 +1,6 @@
 import { Args, Int, Mutation, Query, Resolver } from "@nestjs/graphql";
 
-import { BrevoContactsApiService } from "../brevo/brevo-contact-api.service";
+import { BrevoApiContactsService } from "../brevo-api/brevo-api-contact.service";
 import { BrevoContactsService } from "./brevo-contacts.service";
 import { BrevoContact } from "./dto/brevo-contact";
 import { BrevoContactUpdateInput } from "./dto/brevo-contact.input";
@@ -9,7 +9,7 @@ import { PaginatedBrevoContacts } from "./dto/paginated-brevo-contact";
 
 @Resolver(() => BrevoContact)
 export class BrevoContactResolver {
-    constructor(private readonly brevoContactsService: BrevoContactsService, private readonly brevoContactApiService: BrevoContactsApiService) {}
+    constructor(private readonly brevoContactsService: BrevoContactsService, private readonly brevoContactApiService: BrevoApiContactsService) {}
 
     @Query(() => BrevoContact)
     async brevoContact(@Args("id", { type: () => Int }) id: number): Promise<BrevoContact> {

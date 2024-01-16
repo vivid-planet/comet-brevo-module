@@ -5,7 +5,7 @@ import { BrevoContact } from "../brevo-contact/dto/brevo-contact";
 import { BrevoContactUpdateInput } from "../brevo-contact/dto/brevo-contact.input";
 import { BrevoModuleConfig } from "../config/brevo-module.config";
 import { BREVO_MODULE_CONFIG } from "../config/brevo-module.constants";
-import { isErrorFromBrevo } from "./brevo.utils";
+import { isErrorFromBrevo } from "./brevo-api.utils";
 
 export interface CreateDoubleOptInContactData {
     email: string;
@@ -15,7 +15,7 @@ export interface CreateDoubleOptInContactData {
 }
 
 @Injectable()
-export class BrevoContactsApiService {
+export class BrevoApiContactsService {
     private readonly contactsApi: SibApiV3Sdk.ContactsApi;
 
     constructor(@Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig) {
