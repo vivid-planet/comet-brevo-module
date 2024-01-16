@@ -20,7 +20,7 @@ export class BrevoContactsApiService {
 
     constructor(@Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig) {
         this.contactsApi = new SibApiV3Sdk.ContactsApi();
-        this.contactsApi.setApiKey(SibApiV3Sdk.ContactsApiApiKeys.apiKey, config.api.brevo.apiKey);
+        this.contactsApi.setApiKey(SibApiV3Sdk.ContactsApiApiKeys.apiKey, config.brevo.apiKey);
     }
 
     public async createDoubleOptInContact(input: CreateDoubleOptInContactData, brevoIds: number[], templateId: number): Promise<boolean> {

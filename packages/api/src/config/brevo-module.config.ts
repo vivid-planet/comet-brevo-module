@@ -1,7 +1,5 @@
 export interface BrevoModuleConfig {
-    api: {
-        brevo: {
-            apiKey: string;
-        };
+    brevo: {
+        apiKey: string;
     };
 }
