@@ -11,7 +11,11 @@ export class BrevoModule {
     static register(config: BrevoModuleConfig): DynamicModule {
         return {
             module: BrevoModule,
-            imports: [BrevoApiModule, BrevoContactModule, ConfigModule.forRoot(config)],
+            imports: [
+                BrevoApiModule,
+                BrevoContactModule.register({ BrevoContactAttributes: config.brevo.BrevoContactAttributes }),
+                ConfigModule.forRoot(config),
+            ],
             exports: [],
         };
     }

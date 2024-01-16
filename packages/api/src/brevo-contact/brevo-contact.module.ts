@@ -1,11 +1,25 @@
-import { Module } from "@nestjs/common";
+import { DynamicModule, Module } from "@nestjs/common";
 
 import { BrevoApiModule } from "../brevo-api/brevo-api.module";
-import { BrevoContactResolver } from "./brevo-contact.resolver";
+import { BrevoContactAttributesInterface } from "../types";
+import { createBrevoContactResolver } from "./brevo-contact.resolver";
 import { BrevoContactsService } from "./brevo-contacts.service";
+import { BrevoContactFactory } from "./dto/brevo-contact.factory";
 
-@Module({
-    imports: [BrevoApiModule],
-    providers: [BrevoContactsService, BrevoContactResolver],
-})
-export class BrevoContactModule {}
+interface BrevoContactModuleConfig {
+    BrevoContactAttributes: BrevoContactAttributesInterface;
+}
+
+@Module({})
+export class BrevoContactModule {
+    static register({ BrevoContactAttributes }: BrevoContactModuleConfig): DynamicModule {
+        const BrevoContact = BrevoContactFactory.create({ BrevoContactAttributes });
+        const BrevoContactResolver = createBrevoContactResolver({ BrevoContact });
+
+        return {
+            module: BrevoContactModule,
+            imports: [BrevoApiModule],
+            providers: [BrevoContactsService, BrevoContactResolver],
+        };
+    }
+}

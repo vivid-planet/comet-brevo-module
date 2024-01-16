@@ -1,7 +1,8 @@
 import { Inject, Injectable } from "@nestjs/common";
 import * as SibApiV3Sdk from "@sendinblue/client";
+import { BrevoContactInterface } from "src/brevo-contact/dto/brevo-contact.factory";
+import { BrevoContactAttributesInterface } from "src/types";
 
-import { BrevoContact } from "../brevo-contact/dto/brevo-contact";
 import { BrevoContactUpdateInput } from "../brevo-contact/dto/brevo-contact.input";
 import { BrevoModuleConfig } from "../config/brevo-module.config";
 import { BREVO_MODULE_CONFIG } from "../config/brevo-module.constants";
@@ -9,9 +10,8 @@ import { isErrorFromBrevo } from "./brevo-api.utils";
 
 export interface CreateDoubleOptInContactData {
     email: string;
-    firstName?: string;
-    lastName?: string;
-    redirectURL: string;
+    attributes?: BrevoContactAttributesInterface;
+    redirectionUrl: string;
 }
 
 @Injectable()
@@ -23,24 +23,24 @@ export class BrevoApiContactsService {
         this.contactsApi.setApiKey(SibApiV3Sdk.ContactsApiApiKeys.apiKey, config.brevo.apiKey);
     }
 
-    public async createDoubleOptInContact(input: CreateDoubleOptInContactData, brevoIds: number[], templateId: number): Promise<boolean> {
+    public async createDoubleOptInContact(
+        { email, redirectionUrl, attributes }: CreateDoubleOptInContactData,
+        brevoIds: number[],
+        templateId: number,
+    ): Promise<boolean> {
         const contact = {
-            email: input.email,
+            email,
             includeListIds: brevoIds,
             templateId,
-            redirectionUrl: input.redirectURL,
-            // TODO: mapping
-            attributes: {
-                FIRSTNAME: input.firstName,
-                LASTNAME: input.lastName,
-            },
+            redirectionUrl,
+            attributes,
         };
         const { response } = await this.contactsApi.createDoiContact(contact);
 
         return response.statusCode === 204 || response.statusCode === 201;
     }
 
-    public async updateContact(id: number, { blocked }: BrevoContactUpdateInput): Promise<BrevoContact> {
+    public async updateContact(id: number, { blocked }: BrevoContactUpdateInput): Promise<BrevoContactInterface> {
         const idAsString = id.toString(); // brevo expects a string, because it can be an email or the id, so we have to transform the id to string
         await this.contactsApi.updateContact(idAsString, { emailBlacklisted: blocked });
         return this.findContact(id);
@@ -58,29 +58,19 @@ export class BrevoApiContactsService {
         return response.statusCode === 204;
     }
 
-    public async findContact(id: number): Promise<BrevoContact> {
+    public async findContact(id: number): Promise<BrevoContactInterface> {
         const idAsString = id.toString(); // brevo expects a string, because it can be an email or the id, so we have to transform the id to string
         const { body } = await this.contactsApi.getContactInfo(idAsString);
 
-        return {
-            ...body,
-            // TODO: mapping
-            firstName: body.attributes.FIRSTNAME,
-            lastName: body.attributes.LASTNAME,
-        };
+        return body;
     }
 
-    public async getContactInfoByEmail(email: string): Promise<BrevoContact | undefined> {
+    public async getContactInfoByEmail(email: string): Promise<BrevoContactInterface | undefined> {
         try {
             const data = await this.contactsApi.getContactInfo(email);
             const contact = data.body;
             if (!contact) return undefined;
-            return {
-                ...contact,
-                // TODO: mapping
-                firstName: contact.attributes.FIRSTNAME,
-                lastName: contact.attributes.LASTNAME,
-            };
+            return contact;
         } catch (error) {
             // Brevo throws 404 error if no contact was found
             if (isErrorFromBrevo(error) && error.response.statusCode === 404) {
@@ -91,18 +81,10 @@ export class BrevoApiContactsService {
         }
     }
 
-    public async findContactsByListId(id: number, limit: number, offset: number): Promise<[BrevoContact[], number]> {
+    public async findContactsByListId(id: number, limit: number, offset: number): Promise<[BrevoContactInterface[], number]> {
         const data = await this.contactsApi.getContactsFromList(id, undefined, limit, offset);
 
-        return [
-            data.body.contacts.map((data) => ({
-                ...data,
-                // TODO: mapping
-                firstName: data.attributes.FIRSTNAME,
-                lastName: data.attributes.LASTNAME,
-            })),
-            data.body.count,
-        ];
+        return [data.body.contacts, data.body.count];
     }
 
     public async blacklistMultipleContacts(emails: string[]): Promise<void> {
