@@ -4,6 +4,7 @@ import { BrevoApiModule } from "./brevo-api/brevo-api.module";
 import { BrevoContactModule } from "./brevo-contact/brevo-contact.module";
 import { BrevoModuleConfig } from "./config/brevo-module.config";
 import { ConfigModule } from "./config/config.module";
+import { MailingModule } from "./mailing/mailing.module";
 
 @Global()
 @Module({})
@@ -14,6 +15,7 @@ export class BrevoModule {
             imports: [
                 BrevoApiModule,
                 BrevoContactModule.register({ BrevoContactAttributes: config.brevo.BrevoContactAttributes }),
+                MailingModule.register(config),
                 ConfigModule.forRoot(config),
             ],
             exports: [],

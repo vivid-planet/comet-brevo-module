@@ -17,6 +17,6 @@ export interface BrevoModuleConfig {
     ecgRtrList: {
         apiKey: string;
     };
-    Scope?: MailingScopeInterface;
+    Scope: Type<MailingScopeInterface>;
     MailingContentBlock: Block;
 }

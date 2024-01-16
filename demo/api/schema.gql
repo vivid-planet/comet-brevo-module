@@ -262,6 +262,11 @@ type DamFile {
   dependents(offset: Int! = 0, limit: Int! = 25, filter: DependentFilter, forceRefresh: Boolean! = false): PaginatedDependencies!
 }
 
+type MailingContentScope {
+  domain: String!
+  language: String!
+}
+
 type PaginatedPageTreeNodes {
   nodes: [PageTreeNode!]!
   totalCount: Int!
@@ -343,6 +348,33 @@ type PaginatedBrevoContacts {
   totalCount: Int!
 }
 
+type Mailing implements DocumentInterface {
+  id: ID!
+  updatedAt: DateTime!
+  createdAt: DateTime!
+  title: String!
+  subject: String!
+  brevoId: Int
+  sendingState: SendingState!
+  scheduledAt: DateTime
+  content: MailingContentBlockData!
+  scope: MailingContentScope!
+}
+
+enum SendingState {
+  DRAFT
+  SENT
+  SCHEDULED
+}
+
+"""MailingContent root block data"""
+scalar MailingContentBlockData @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
+
+type PaginatedMailings {
+  nodes: [Mailing!]!
+  totalCount: Int!
+}
+
 input PageTreeNodeScopeInput {
   domain: String!
   language: String!
@@ -351,6 +383,11 @@ input PageTreeNodeScopeInput {
 input BrevoContactAttributesInput {
   LASTNAME: String!
   FIRSTNAME: String!
+}
+
+input MailingContentScopeInput {
+  domain: String!
+  language: String!
 }
 
 type Query {
@@ -386,6 +423,8 @@ type Query {
   mainMenu(scope: PageTreeNodeScopeInput!): [PageTreeNode!]!
   brevoContact(id: Int!): BrevoContact!
   brevoContacts(offset: Int! = 0, limit: Int! = 25, email: String): PaginatedBrevoContacts!
+  mailing(id: ID!): Mailing!
+  mailings(scope: MailingContentScopeInput!, search: String, filter: MailingFilter, sort: [MailingSort!], offset: Int! = 0, limit: Int! = 25): PaginatedMailings!
 }
 
 enum SortDirection {
@@ -512,6 +551,29 @@ enum ProductSortField {
   updatedAt
 }
 
+input MailingFilter {
+  createdAt: DateFilter
+  updatedAt: DateFilter
+  title: StringFilter
+  subject: StringFilter
+  scheduledAt: DateFilter
+  and: [MailingFilter!]
+  or: [MailingFilter!]
+}
+
+input MailingSort {
+  field: MailingSortField!
+  direction: SortDirection! = ASC
+}
+
+enum MailingSortField {
+  createdAt
+  updatedAt
+  title
+  subject
+  scheduledAt
+}
+
 type Mutation {
   currentUserSignOut: String!
   createBuilds(input: CreateBuildsInput!): Boolean!
@@ -548,6 +610,9 @@ type Mutation {
   updateBrevoContact(id: Int!, input: BrevoContactUpdateInput!): BrevoContact!
   deleteBrevoContact(id: Int!): Boolean!
   subscribeBrevoContact(input: SubscribeInput!): SubscribeResponse!
+  createMailing(scope: MailingContentScopeInput!, input: MailingInput!): Mailing!
+  updateMailing(id: ID!, input: MailingInput!, lastUpdatedAt: DateTime): Mailing!
+  deleteMailing(id: ID!): Boolean!
 }
 
 input CreateBuildsInput {
@@ -676,3 +741,13 @@ input SubscribeInput {
   redirectionUrl: String!
   attributes: BrevoContactAttributesInput!
 }
+
+input MailingInput {
+  title: String!
+  subject: String!
+  scheduledAt: DateTime
+  content: MailingContentBlockInput!
+}
+
+"""MailingContent root block input"""
+scalar MailingContentBlockInput @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
