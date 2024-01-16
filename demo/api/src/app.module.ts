@@ -125,7 +125,11 @@ export class AppModule {
                 ProductsModule,
                 MenusModule,
                 DependenciesModule,
-                BrevoModule,
+                BrevoModule.register({
+                    brevo: {
+                        apiKey: config.brevo.apiKey,
+                    },
+                }),
             ],
         };
     }

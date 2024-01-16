@@ -111,4 +111,7 @@ export class EnvironmentVariables {
     @ValidateIf((v) => v.DAM_STORAGE_DRIVER === "s3")
     @IsString()
     S3_SECRET_ACCESS_KEY: string;
+
+    @IsString()
+    BREVO_API_KEY: string;
 }
