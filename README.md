@@ -19,6 +19,10 @@ sh install.sh
 
 _It is recommended to run `install.sh` every time you switch to the `main` branch._
 
+### Define your contact attributes in the brevo module's config
+
+The attribute naming must be identical to the naming in brevo
+
 ### Set environment variables
 
 The following variables must be set manually

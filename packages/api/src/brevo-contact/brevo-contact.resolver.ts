@@ -1,38 +1,60 @@
-import { Args, Int, Mutation, Query, Resolver } from "@nestjs/graphql";
+import { PaginatedResponseFactory } from "@comet/cms-api";
+import { Type } from "@nestjs/common";
+import { Args, Int, Mutation, ObjectType, Query, Resolver } from "@nestjs/graphql";
 
 import { BrevoApiContactsService } from "../brevo-api/brevo-api-contact.service";
-import { BrevoContactsService } from "./brevo-contacts.service";
-import { BrevoContact } from "./dto/brevo-contact";
+import { BrevoContactInterface } from "./dto/brevo-contact.factory";
 import { BrevoContactUpdateInput } from "./dto/brevo-contact.input";
 import { BrevoContactsArgs } from "./dto/brevo-contacts.args";
-import { PaginatedBrevoContacts } from "./dto/paginated-brevo-contact";
 
-@Resolver(() => BrevoContact)
-export class BrevoContactResolver {
-    constructor(private readonly brevoContactsService: BrevoContactsService, private readonly brevoContactApiService: BrevoApiContactsService) {}
+export function createBrevoContactResolver({ BrevoContact }: { BrevoContact: Type<BrevoContactInterface> }): Type<unknown> {
+    @ObjectType()
+    class PaginatedBrevoContacts extends PaginatedResponseFactory.create(BrevoContact) {}
 
-    @Query(() => BrevoContact)
-    async brevoContact(@Args("id", { type: () => Int }) id: number): Promise<BrevoContact> {
-        return this.brevoContactApiService.findContact(id);
+    @Resolver(() => BrevoContact)
+    class BrevoContactResolver {
+        constructor(
+            private readonly brevoContactsApiService: BrevoApiContactsService,
+            private readonly brevoContactApiService: BrevoApiContactsService,
+        ) {}
+
+        @Query(() => BrevoContact)
+        async brevoContact(@Args("id", { type: () => Int }) id: number): Promise<BrevoContactInterface> {
+            return this.brevoContactApiService.findContact(id);
+        }
+
+        @Query(() => PaginatedBrevoContacts)
+        async brevoContacts(@Args() { offset, limit, email }: BrevoContactsArgs): Promise<PaginatedBrevoContacts> {
+            // TODO: add correct lists when brevo contact list is implemented
+            // 2 is the id of the first list in brevo that is created by default
+            const contactListId = 2;
+            if (email) {
+                const contact = await this.brevoContactsApiService.getContactInfoByEmail(email);
+                if (contact) {
+                    return new PaginatedBrevoContacts([contact], 1, { offset, limit });
+                }
+                return new PaginatedBrevoContacts([], 0, { offset, limit });
+            }
+
+            const [contacts, count] = await this.brevoContactsApiService.findContactsByListId(contactListId, limit, offset);
+            return new PaginatedBrevoContacts(contacts, count, { offset, limit });
+        }
+
+        @Mutation(() => BrevoContact)
+        async updateBrevoContact(
+            @Args("id", { type: () => Int }) id: number,
+            @Args("input", { type: () => BrevoContactUpdateInput }) input: BrevoContactUpdateInput,
+        ): Promise<BrevoContactInterface> {
+            return this.brevoContactApiService.updateContact(id, input);
+        }
+
+        @Mutation(() => Boolean)
+        async deleteBrevoContact(@Args("id", { type: () => Int }) id: number): Promise<boolean> {
+            return this.brevoContactApiService.deleteContact(id);
+        }
+
+        // TODO: subscribe to newsletter
     }
 
-    @Query(() => PaginatedBrevoContacts)
-    async brevoContacts(@Args() { offset, limit, email }: BrevoContactsArgs): Promise<PaginatedBrevoContacts> {
-        return this.brevoContactsService.findContacts({ offset, limit, email });
-    }
-
-    @Mutation(() => BrevoContact)
-    async updateBrevoContact(
-        @Args("id", { type: () => Int }) id: number,
-        @Args("input", { type: () => BrevoContactUpdateInput }) input: BrevoContactUpdateInput,
-    ): Promise<BrevoContact> {
-        return this.brevoContactApiService.updateContact(id, input);
-    }
-
-    @Mutation(() => Boolean)
-    async deleteBrevoContact(@Args("id", { type: () => Int }) id: number): Promise<boolean> {
-        return this.brevoContactApiService.deleteContact(id);
-    }
-
-    // TODO: subscribe to newsletter
+    return BrevoContactResolver;
 }

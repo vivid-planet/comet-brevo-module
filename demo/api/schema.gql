@@ -120,24 +120,6 @@ type FilenameResponse {
   isOccupied: Boolean!
 }
 
-type BrevoContact {
-  id: Int!
-  createdAt: String!
-  modifiedAt: String!
-  email: String!
-  emailBlacklisted: Boolean!
-  smsBlacklisted: Boolean!
-  listIds: [Float!]!
-  listUnsubscribed: [Float!]!
-  firstName: String
-  lastName: String
-}
-
-type PaginatedBrevoContacts {
-  nodes: [BrevoContact!]!
-  totalCount: Int!
-}
-
 type Product {
   id: ID!
   creatorId: String!
@@ -241,6 +223,11 @@ type PaginatedProducts {
   totalCount: Int!
 }
 
+type BrevoContactAttributes {
+  LASTNAME: String!
+  FIRSTNAME: String!
+}
+
 type DamFolder {
   id: ID!
   name: String!
@@ -339,9 +326,31 @@ type PaginatedDamFolders {
   totalCount: Int!
 }
 
+type BrevoContact {
+  id: Int!
+  createdAt: String!
+  modifiedAt: String!
+  email: String!
+  emailBlacklisted: Boolean!
+  smsBlacklisted: Boolean!
+  listIds: [Float!]!
+  listUnsubscribed: [Float!]!
+  attributes: BrevoContactAttributes!
+}
+
+type PaginatedBrevoContacts {
+  nodes: [BrevoContact!]!
+  totalCount: Int!
+}
+
 input PageTreeNodeScopeInput {
   domain: String!
   language: String!
+}
+
+input BrevoContactAttributesInput {
+  LASTNAME: String!
+  FIRSTNAME: String!
 }
 
 type Query {

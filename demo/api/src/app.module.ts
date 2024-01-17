@@ -32,6 +32,7 @@ import { Request } from "express";
 
 import { AuthModule } from "./auth/auth.module";
 import { AuthLocalModule } from "./auth/auth-local.module";
+import { BrevoContactAttributes } from "./brevo-contact/dto/brevo-contact-attributes";
 import { Config } from "./config/config";
 import { ConfigModule } from "./config/config.module";
 import { DamFile } from "./dam/entities/dam-file.entity";
@@ -128,6 +129,7 @@ export class AppModule {
                 BrevoModule.register({
                     brevo: {
                         apiKey: config.brevo.apiKey,
+                        BrevoContactAttributes,
                     },
                 }),
             ],
