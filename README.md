@@ -30,7 +30,6 @@ The following variables must be set manually
 -   `BREVO_API_KEY`
 -   `BREVO_DOUBLE_OPT_IN_TEMPLATE_ID`
 -   `ECG_RTR_LIST_API_KEY`
--   `BREVO_ALLOWED_REDIRECT_URL` (set to `SITE_URL` per default)
 
 ### Start development processes
 
