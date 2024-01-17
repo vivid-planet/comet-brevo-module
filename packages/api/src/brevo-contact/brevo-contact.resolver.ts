@@ -76,7 +76,7 @@ export function createBrevoContactResolver({
                 return SubscribeResponse.ERROR_CONTAINED_IN_ECG_RTR_LIST;
             }
 
-            const created = await this.brevoContactsService.createDoubleOptInContact(data, this.config.brevo.templateDoubleOptIn);
+            const created = await this.brevoContactsService.createDoubleOptInContact(data, this.config.brevo.doubleOptInTemplateId);
 
             if (created) {
                 return SubscribeResponse.SUCCESSFUL;

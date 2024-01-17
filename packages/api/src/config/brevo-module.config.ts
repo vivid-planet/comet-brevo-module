@@ -4,7 +4,7 @@ export interface BrevoModuleConfig {
     brevo: {
         apiKey: string;
         BrevoContactAttributes?: BrevoContactAttributesInterface;
-        templateDoubleOptIn: number;
+        doubleOptInTemplateId: number;
         allowedRedirectUrl: string;
     };
     ecgRtrList: {

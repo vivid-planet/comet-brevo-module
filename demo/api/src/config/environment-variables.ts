@@ -117,7 +117,7 @@ export class EnvironmentVariables {
 
     @IsNumber()
     @Type(() => Number)
-    BREVO_TEMPLATE_DOUBLE_OPT_IN: number;
+    BREVO_DOUBLE_OPT_IN_TEMPLATE_ID: number;
 
     @IsString()
     BREVO_ALLOWED_REDIRECT_URL: string;

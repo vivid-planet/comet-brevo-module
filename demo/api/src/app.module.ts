@@ -130,7 +130,7 @@ export class AppModule {
                     brevo: {
                         apiKey: config.brevo.apiKey,
                         BrevoContactAttributes,
-                        templateDoubleOptIn: config.brevo.templateDoubleOptIn,
+                        doubleOptInTemplateId: config.brevo.doubleOptInTemplateId,
                         allowedRedirectUrl: config.brevo.allowedRedirectUrl,
                     },
                     ecgRtrList: {
