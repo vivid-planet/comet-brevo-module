@@ -547,6 +547,7 @@ type Mutation {
   deleteProduct(id: ID!): Boolean!
   updateBrevoContact(id: Int!, input: BrevoContactUpdateInput!): BrevoContact!
   deleteBrevoContact(id: Int!): Boolean!
+  subscribeBrevoContact(input: SubscribeInput!): SubscribeResponse!
 }
 
 input CreateBuildsInput {
@@ -662,4 +663,16 @@ input ProductInput {
 
 input BrevoContactUpdateInput {
   blocked: Boolean!
+}
+
+enum SubscribeResponse {
+  SUCCESSFUL
+  ERROR_UNKNOWN
+  ERROR_CONTAINED_IN_ECG_RTR_LIST
+}
+
+input SubscribeInput {
+  attributes: BrevoContactAttributesInput!
+  email: String!
+  redirectionUrl: String!
 }
