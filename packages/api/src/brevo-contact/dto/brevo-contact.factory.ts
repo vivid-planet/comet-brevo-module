@@ -45,7 +45,7 @@ export class BrevoContactFactory {
         }
 
         if (BrevoContactAttributes) {
-            @ObjectType({})
+            @ObjectType()
             class BrevoContact extends BrevoContactBase {
                 @Field(() => BrevoContactAttributes)
                 attributes: typeof BrevoContactAttributes;
