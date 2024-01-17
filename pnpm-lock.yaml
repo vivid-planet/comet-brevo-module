@@ -631,6 +631,10 @@ importers:
         version: 4.9.5
 
   packages/api:
+    dependencies:
+      node-fetch:
+        specifier: ^2.6.1
+        version: 2.7.0
     devDependencies:
       '@aws-sdk/client-s3':
         specifier: ^3.47.0
@@ -677,6 +681,9 @@ importers:
       '@types/jest':
         specifier: ^29.5.0
         version: 29.5.11
+      '@types/node-fetch':
+        specifier: ^2.5.12
+        version: 2.6.10
       '@types/rimraf':
         specifier: ^3.0.0
         version: 3.0.2
