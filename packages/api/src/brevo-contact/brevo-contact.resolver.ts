@@ -1,4 +1,4 @@
-import { PaginatedResponseFactory, PublicApi } from "@comet/cms-api";
+import { PaginatedResponseFactory } from "@comet/cms-api";
 import { Inject, Type } from "@nestjs/common";
 import { Args, Int, Mutation, ObjectType, Query, Resolver } from "@nestjs/graphql";
 
@@ -68,7 +68,6 @@ export function createBrevoContactResolver({
         }
 
         @Mutation(() => SubscribeResponse)
-        @PublicApi()
         async subscribeBrevoContact(
             @Args("input", { type: () => BrevoContactSubscribeInput }) data: SubscribeInputInterface,
         ): Promise<SubscribeResponse> {
