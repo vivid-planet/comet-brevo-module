@@ -5,13 +5,11 @@ import { IsNotEmpty, IsString } from "class-validator";
 @ObjectType()
 @InputType("BrevoContactAttributesInput")
 export class BrevoContactAttributes {
-    @IsUndefinable()
     @IsNotEmpty()
     @IsString()
     @Field()
     LASTNAME: string;
 
-    @IsUndefinable()
     @IsNotEmpty()
     @IsString()
     @Field()
