@@ -333,8 +333,8 @@ type BrevoContact {
   email: String!
   emailBlacklisted: Boolean!
   smsBlacklisted: Boolean!
-  listIds: [Float!]!
-  listUnsubscribed: [Float!]!
+  listIds: [Int!]!
+  listUnsubscribed: [Int!]!
   attributes: BrevoContactAttributes!
 }
 

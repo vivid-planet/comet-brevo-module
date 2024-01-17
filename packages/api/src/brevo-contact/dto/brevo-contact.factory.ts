@@ -37,10 +37,10 @@ export class BrevoContactFactory {
             @Field(() => Boolean)
             smsBlacklisted: boolean;
 
-            @Field(() => [Number])
+            @Field(() => [Int])
             listIds: number[];
 
-            @Field(() => [Number])
+            @Field(() => [Int])
             listUnsubscribed?: number[];
         }
 
