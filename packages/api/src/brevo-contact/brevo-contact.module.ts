@@ -7,7 +7,7 @@ import { BrevoContactsService } from "./brevo-contacts.service";
 import { BrevoContactFactory } from "./dto/brevo-contact.factory";
 
 interface BrevoContactModuleConfig {
-    BrevoContactAttributes: BrevoContactAttributesInterface;
+    BrevoContactAttributes?: BrevoContactAttributesInterface;
 }
 
 @Module({})

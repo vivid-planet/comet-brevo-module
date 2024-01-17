@@ -16,9 +16,9 @@ export interface BrevoContactInterface {
 }
 
 export class BrevoContactFactory {
-    static create({ BrevoContactAttributes }: { BrevoContactAttributes: BrevoContactAttributesInterface }): Type<BrevoContactInterface> {
-        @ObjectType()
-        class BrevoContact implements BrevoContactInterface {
+    static create({ BrevoContactAttributes }: { BrevoContactAttributes?: BrevoContactAttributesInterface }): Type<BrevoContactInterface> {
+        @ObjectType({ isAbstract: true })
+        class BrevoContactBase implements BrevoContactInterface {
             @Field(() => Int)
             id: number;
 
@@ -42,11 +42,19 @@ export class BrevoContactFactory {
 
             @Field(() => [Number])
             listUnsubscribed?: number[];
-
-            @Field(() => BrevoContactAttributes)
-            attributes: typeof BrevoContactAttributes;
         }
 
+        if (BrevoContactAttributes) {
+            @ObjectType({})
+            class BrevoContact extends BrevoContactBase {
+                @Field(() => BrevoContactAttributes)
+                attributes: typeof BrevoContactAttributes;
+            }
+            return BrevoContact;
+        }
+
+        @ObjectType()
+        class BrevoContact extends BrevoContactBase {}
         return BrevoContact;
     }
 }
