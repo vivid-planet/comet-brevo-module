@@ -1,4 +1,4 @@
-import { DynamicModule, Module } from "@nestjs/common";
+import { DynamicModule, Module, Type } from "@nestjs/common";
 
 import { BrevoApiModule } from "../brevo-api/brevo-api.module";
 import { ConfigModule } from "../config/config.module";
@@ -11,7 +11,7 @@ import { EcgRtrListService } from "./ecg-rtr-list/ecg-rtr-list.service";
 import { IsValidRedirectURLConstraint } from "./validator/redirect-url.validator";
 
 interface BrevoContactModuleConfig {
-    BrevoContactAttributes?: BrevoContactAttributesInterface;
+    BrevoContactAttributes?: Type<BrevoContactAttributesInterface>;
 }
 
 @Module({})

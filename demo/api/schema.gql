@@ -672,7 +672,7 @@ enum SubscribeResponse {
 }
 
 input SubscribeInput {
-  attributes: BrevoContactAttributesInput!
   email: String!
   redirectionUrl: String!
+  attributes: BrevoContactAttributesInput!
 }
