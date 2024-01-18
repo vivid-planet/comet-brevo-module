@@ -1,7 +1,7 @@
 import { Block } from "@comet/blocks-api";
 import { Type } from "@nestjs/common";
 
-import { BrevoContactAttributesInterface, CampaignScopeInterface } from "../types";
+import { BrevoContactAttributesInterface, EmailCampaignScopeInterface } from "../types";
 
 export interface BrevoModuleConfig {
     brevo: {
@@ -17,6 +17,6 @@ export interface BrevoModuleConfig {
     ecgRtrList: {
         apiKey: string;
     };
-    Scope: Type<CampaignScopeInterface>;
-    CampaignContentBlock: Block;
+    Scope: Type<EmailCampaignScopeInterface>;
+    EmailCampaignContentBlock: Block;
 }

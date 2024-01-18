@@ -3,51 +3,51 @@ import { EntityManager, EntityRepository, FindOptions, wrap } from "@mikro-orm/c
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Type } from "@nestjs/common";
 import { Args, ArgsType, ID, Mutation, ObjectType, Query, Resolver } from "@nestjs/graphql";
-import { CampaignScopeInterface } from "src/types";
+import { EmailCampaignScopeInterface } from "src/types";
 
 import { DynamicDtoValidationPipe } from "../validation/dynamic-dto-validation.pipe";
-import { CampaignsService } from "./campaigns.service";
-import { CampaignArgsFactory } from "./dto/campaign-args.factory";
-import { CampaignInputInterface } from "./dto/campaign-input.factory";
-import { CampaignInterface } from "./entities/campaign-entity.factory";
+import { EmailCampaignArgsFactory } from "./dto/email-campaign-args.factory";
+import { EmailCampaignInputInterface } from "./dto/email-campaign-input.factory";
+import { EmailCampaignsService } from "./email-campaigns.service";
+import { EmailCampaignInterface } from "./entities/email-campaign-entity.factory";
 
-export function createCampaignsResolver({
-    Campaign,
-    CampaignInput,
+export function createEmailCampaignsResolver({
+    EmailCampaign,
+    EmailCampaignInput,
     Scope,
 }: {
-    Campaign: Type<CampaignInterface>;
-    CampaignInput: Type<CampaignInputInterface>;
-    Scope: Type<CampaignScopeInterface>;
+    EmailCampaign: Type<EmailCampaignInterface>;
+    EmailCampaignInput: Type<EmailCampaignInputInterface>;
+    Scope: Type<EmailCampaignScopeInterface>;
 }): Type<unknown> {
     @ObjectType()
-    class PaginatedCampaigns extends PaginatedResponseFactory.create(Campaign) {}
+    class PaginatedEmailCampaigns extends PaginatedResponseFactory.create(EmailCampaign) {}
 
     @ArgsType()
-    class CampaignsArgs extends CampaignArgsFactory.create({ Scope }) {}
+    class EmailCampaignsArgs extends EmailCampaignArgsFactory.create({ Scope }) {}
 
-    @Resolver(() => Campaign)
-    class CampaignsResolver {
+    @Resolver(() => EmailCampaign)
+    class EmailCampaignsResolver {
         constructor(
-            private readonly campaignsService: CampaignsService,
+            private readonly campaignsService: EmailCampaignsService,
             private readonly entityManager: EntityManager,
-            @InjectRepository("Campaign") private readonly repository: EntityRepository<CampaignInterface>,
+            @InjectRepository("EmailCampaign") private readonly repository: EntityRepository<EmailCampaignInterface>,
         ) {}
 
-        @Query(() => Campaign)
-        @SubjectEntity(Campaign)
-        async campaign(@Args("id", { type: () => ID }) id: string): Promise<CampaignInterface> {
+        @Query(() => EmailCampaign)
+        @SubjectEntity(EmailCampaign)
+        async emailCampaign(@Args("id", { type: () => ID }) id: string): Promise<EmailCampaignInterface> {
             const campaign = await this.repository.findOneOrFail(id);
             return campaign;
         }
 
-        @Query(() => PaginatedCampaigns)
-        async campaigns(@Args() { search, filter, sort, offset, limit, scope }: CampaignsArgs): Promise<PaginatedCampaigns> {
+        @Query(() => PaginatedEmailCampaigns)
+        async emailCampaigns(@Args() { search, filter, sort, offset, limit, scope }: EmailCampaignsArgs): Promise<PaginatedEmailCampaigns> {
             const where = this.campaignsService.getFindCondition({ search, filter });
 
             (where as any).scope = scope;
 
-            const options: FindOptions<CampaignInterface> = { offset, limit };
+            const options: FindOptions<EmailCampaignInterface> = { offset, limit };
 
             if (sort) {
                 options.orderBy = sort.map((sortItem) => {
@@ -58,15 +58,15 @@ export function createCampaignsResolver({
             }
 
             const [entities, totalCount] = await this.repository.findAndCount(where, options);
-            return new PaginatedCampaigns(entities, totalCount);
+            return new PaginatedEmailCampaigns(entities, totalCount);
         }
 
-        @Mutation(() => Campaign)
-        async createCampaign(
+        @Mutation(() => EmailCampaign)
+        async createEmailCampaign(
             @Args("scope", { type: () => Scope }, new DynamicDtoValidationPipe(Scope))
             scope: typeof Scope,
-            @Args("input", { type: () => CampaignInput }, new DynamicDtoValidationPipe(CampaignInput)) input: CampaignInputInterface,
-        ): Promise<CampaignInterface> {
+            @Args("input", { type: () => EmailCampaignInput }, new DynamicDtoValidationPipe(EmailCampaignInput)) input: EmailCampaignInputInterface,
+        ): Promise<EmailCampaignInterface> {
             const campaign = this.repository.create({
                 ...input,
                 scope,
@@ -78,13 +78,13 @@ export function createCampaignsResolver({
             return campaign;
         }
 
-        @Mutation(() => Campaign)
-        @SubjectEntity(Campaign)
-        async updateCampaign(
+        @Mutation(() => EmailCampaign)
+        @SubjectEntity(EmailCampaign)
+        async updateEmailCampaign(
             @Args("id", { type: () => ID }) id: string,
-            @Args("input", { type: () => CampaignInput }, new DynamicDtoValidationPipe(CampaignInput)) input: CampaignInputInterface,
+            @Args("input", { type: () => EmailCampaignInput }, new DynamicDtoValidationPipe(EmailCampaignInput)) input: EmailCampaignInputInterface,
             @Args("lastUpdatedAt", { type: () => Date, nullable: true }) lastUpdatedAt?: Date,
-        ): Promise<CampaignInterface> {
+        ): Promise<EmailCampaignInterface> {
             const campaign = await this.repository.findOneOrFail(id);
 
             if (lastUpdatedAt) {
@@ -102,8 +102,8 @@ export function createCampaignsResolver({
         }
 
         @Mutation(() => Boolean)
-        @SubjectEntity(Campaign)
-        async deleteCampaign(@Args("id", { type: () => ID }) id: string): Promise<boolean> {
+        @SubjectEntity(EmailCampaign)
+        async deleteEmailCampaign(@Args("id", { type: () => ID }) id: string): Promise<boolean> {
             const campaign = await this.repository.findOneOrFail(id);
             await this.entityManager.remove(campaign);
             await this.entityManager.flush();
@@ -111,5 +111,5 @@ export function createCampaignsResolver({
         }
     }
 
-    return CampaignsResolver;
+    return EmailCampaignsResolver;
 }

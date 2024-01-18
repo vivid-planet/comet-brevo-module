@@ -2,22 +2,22 @@ import { SortDirection } from "@comet/cms-api";
 import { Field, InputType, registerEnumType } from "@nestjs/graphql";
 import { IsEnum } from "class-validator";
 
-export enum CampaignSortField {
+export enum EmailCampaignSortField {
     createdAt = "createdAt",
     updatedAt = "updatedAt",
     title = "title",
     subject = "subject",
     scheduledAt = "scheduledAt",
 }
-registerEnumType(CampaignSortField, {
-    name: "CampaignSortField",
+registerEnumType(EmailCampaignSortField, {
+    name: "EmailCampaignSortField",
 });
 
 @InputType()
-export class CampaignSort {
-    @Field(() => CampaignSortField)
-    @IsEnum(CampaignSortField)
-    field: CampaignSortField;
+export class EmailCampaignSort {
+    @Field(() => EmailCampaignSortField)
+    @IsEnum(EmailCampaignSortField)
+    field: EmailCampaignSortField;
 
     @Field(() => SortDirection, { defaultValue: SortDirection.ASC })
     @IsEnum(SortDirection)

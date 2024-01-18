@@ -5,17 +5,17 @@ import { Field, InputType } from "@nestjs/graphql";
 import { Transform } from "class-transformer";
 import { IsDate, IsNotEmpty, IsString, ValidateNested } from "class-validator";
 
-export interface CampaignInputInterface {
+export interface EmailCampaignInputInterface {
     title: string;
     subject: string;
     scheduledAt?: Date;
     content: BlockInputInterface;
 }
 
-export class CampaignInputFactory {
-    static create({ CampaignContentBlock }: { CampaignContentBlock: Block }): Type<CampaignInputInterface> {
+export class EmailCampaignInputFactory {
+    static create({ EmailCampaignContentBlock }: { EmailCampaignContentBlock: Block }): Type<EmailCampaignInputInterface> {
         @InputType()
-        class CampaignInput implements CampaignInputInterface {
+        class EmailCampaignInput implements EmailCampaignInputInterface {
             @IsNotEmpty()
             @IsString()
             @Field()
@@ -31,12 +31,14 @@ export class CampaignInputFactory {
             @Field({ nullable: true })
             scheduledAt?: Date;
 
-            @Field(() => RootBlockInputScalar(CampaignContentBlock))
-            @Transform(({ value }) => (isBlockInputInterface(value) ? value : CampaignContentBlock.blockInputFactory(value)), { toClassOnly: true })
+            @Field(() => RootBlockInputScalar(EmailCampaignContentBlock))
+            @Transform(({ value }) => (isBlockInputInterface(value) ? value : EmailCampaignContentBlock.blockInputFactory(value)), {
+                toClassOnly: true,
+            })
             @ValidateNested()
             content: BlockInputInterface;
         }
 
-        return CampaignInput;
+        return EmailCampaignInput;
     }
 }

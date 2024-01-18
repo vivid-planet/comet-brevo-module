@@ -5,10 +5,10 @@ import { Type } from "@nestjs/common";
 import { Field, ID, Int, ObjectType } from "@nestjs/graphql";
 import { v4 } from "uuid";
 
-import { CampaignScopeInterface } from "../../types";
+import { EmailCampaignScopeInterface } from "../../types";
 import { SendingState } from "../sending-state.enum";
 
-export interface CampaignInterface {
+export interface EmailCampaignInterface {
     [OptionalProps]?: "createdAt" | "updatedAt" | "sendingState";
     id: string;
     createdAt: Date;
@@ -18,16 +18,22 @@ export interface CampaignInterface {
     brevoId?: number;
     updatedAt: Date;
     content: BlockDataInterface;
-    scope: CampaignScopeInterface;
+    scope: EmailCampaignScopeInterface;
 }
 
-export class CampaignEntityFactory {
-    static create({ CampaignContentBlock, Scope }: { CampaignContentBlock: Block; Scope: CampaignScopeInterface }): Type<CampaignInterface> {
+export class EmailCampaignEntityFactory {
+    static create({
+        EmailCampaignContentBlock,
+        Scope,
+    }: {
+        EmailCampaignContentBlock: Block;
+        Scope: EmailCampaignScopeInterface;
+    }): Type<EmailCampaignInterface> {
         @Entity()
         @ObjectType({
             implements: () => [DocumentInterface],
         })
-        class Campaign implements CampaignInterface, DocumentInterface {
+        class EmailCampaign implements EmailCampaignInterface, DocumentInterface {
             [OptionalProps]?: "createdAt" | "updatedAt" | "sendingState";
             @PrimaryKey({ columnType: "uuid" })
             @Field(() => ID)
@@ -65,9 +71,9 @@ export class CampaignEntityFactory {
             @Field(() => Date, { nullable: true })
             scheduledAt?: Date;
 
-            @RootBlock(CampaignContentBlock)
-            @Property({ customType: new RootBlockType(CampaignContentBlock) })
-            @Field(() => RootBlockDataScalar(CampaignContentBlock))
+            @RootBlock(EmailCampaignContentBlock)
+            @Property({ customType: new RootBlockType(EmailCampaignContentBlock) })
+            @Field(() => RootBlockDataScalar(EmailCampaignContentBlock))
             content: BlockDataInterface;
 
             @Embedded(() => Scope)
@@ -75,6 +81,6 @@ export class CampaignEntityFactory {
             scope: typeof Scope;
         }
 
-        return Campaign;
+        return EmailCampaign;
     }
 }
