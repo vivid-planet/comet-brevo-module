@@ -44,8 +44,7 @@ export function createEmailCampaignsResolver({
         @Query(() => PaginatedEmailCampaigns)
         async emailCampaigns(@Args() { search, filter, sort, offset, limit, scope }: EmailCampaignsArgs): Promise<PaginatedEmailCampaigns> {
             const where = this.campaignsService.getFindCondition({ search, filter });
-
-            (where as any).scope = scope;
+            where.scope = scope;
 
             const options: FindOptions<EmailCampaignInterface> = { offset, limit };
 
