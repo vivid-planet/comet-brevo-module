@@ -33,12 +33,12 @@ import { Request } from "express";
 import { AuthModule } from "./auth/auth.module";
 import { AuthLocalModule } from "./auth/auth-local.module";
 import { BrevoContactAttributes } from "./brevo-contact/dto/brevo-contact-attributes";
+import { CampaignContentBlock } from "./campaign/blocks/campaign-content.block";
+import { CampaignContentScope } from "./campaign/campaign-content-scope";
 import { Config } from "./config/config";
 import { ConfigModule } from "./config/config.module";
 import { DamFile } from "./dam/entities/dam-file.entity";
 import { DamFolder } from "./dam/entities/dam-folder.entity";
-import { MailingContentBlock } from "./mailing/blocks/mailing-content.block";
-import { MailingContentScope } from "./mailing/mailing-content-scope";
 import { MenusModule } from "./menus/menus.module";
 import { StatusModule } from "./status/status.module";
 
@@ -142,8 +142,8 @@ export class AppModule {
                     ecgRtrList: {
                         apiKey: config.ecgRtrList.apiKey,
                     },
-                    MailingContentBlock: MailingContentBlock,
-                    Scope: MailingContentScope,
+                    CampaignContentBlock,
+                    Scope: CampaignContentScope,
                 }),
             ],
         };

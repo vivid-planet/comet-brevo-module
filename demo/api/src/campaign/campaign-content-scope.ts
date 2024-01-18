@@ -4,8 +4,8 @@ import { IsString } from "class-validator";
 
 @Embeddable()
 @ObjectType()
-@InputType("MailingContentScopeInput")
-export class MailingContentScope {
+@InputType("CampaignContentScopeInput")
+export class CampaignContentScope {
     @Property({ columnType: "text" })
     @Field()
     @IsString()

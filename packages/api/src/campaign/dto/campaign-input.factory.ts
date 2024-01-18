@@ -5,17 +5,17 @@ import { Field, InputType } from "@nestjs/graphql";
 import { Transform } from "class-transformer";
 import { IsDate, IsNotEmpty, IsString, ValidateNested } from "class-validator";
 
-export interface MailingInputInterface {
+export interface CampaignInputInterface {
     title: string;
     subject: string;
     scheduledAt?: Date;
     content: BlockInputInterface;
 }
 
-export class MailingInputFactory {
-    static create({ MailingContentBlock }: { MailingContentBlock: Block }): Type<MailingInputInterface> {
+export class CampaignInputFactory {
+    static create({ CampaignContentBlock }: { CampaignContentBlock: Block }): Type<CampaignInputInterface> {
         @InputType()
-        class MailingInput implements MailingInputInterface {
+        class CampaignInput implements CampaignInputInterface {
             @IsNotEmpty()
             @IsString()
             @Field()
@@ -31,12 +31,12 @@ export class MailingInputFactory {
             @Field({ nullable: true })
             scheduledAt?: Date;
 
-            @Field(() => RootBlockInputScalar(MailingContentBlock))
-            @Transform(({ value }) => (isBlockInputInterface(value) ? value : MailingContentBlock.blockInputFactory(value)), { toClassOnly: true })
+            @Field(() => RootBlockInputScalar(CampaignContentBlock))
+            @Transform(({ value }) => (isBlockInputInterface(value) ? value : CampaignContentBlock.blockInputFactory(value)), { toClassOnly: true })
             @ValidateNested()
             content: BlockInputInterface;
         }
 
-        return MailingInput;
+        return CampaignInput;
     }
 }

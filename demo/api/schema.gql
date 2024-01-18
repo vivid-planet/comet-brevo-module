@@ -67,8 +67,6 @@ type DamFileLicense {
 enum LicenseType {
   ROYALTY_FREE
   RIGHTS_MANAGED
-  SUBSCRIPTION
-  MICRO
 }
 
 """
@@ -228,6 +226,11 @@ type BrevoContactAttributes {
   FIRSTNAME: String!
 }
 
+type CampaignContentScope {
+  domain: String!
+  language: String!
+}
+
 type DamFolder {
   id: ID!
   name: String!
@@ -256,15 +259,12 @@ type DamFile {
   license: DamFileLicense
   createdAt: DateTime!
   updatedAt: DateTime!
+  importSourceId: String
+  importSourceType: String
   fileUrl: String!
   duplicates: [DamFile!]!
   damPath: String!
   dependents(offset: Int! = 0, limit: Int! = 25, filter: DependentFilter, forceRefresh: Boolean! = false): PaginatedDependencies!
-}
-
-type MailingContentScope {
-  domain: String!
-  language: String!
 }
 
 type PaginatedPageTreeNodes {
@@ -348,7 +348,7 @@ type PaginatedBrevoContacts {
   totalCount: Int!
 }
 
-type Mailing implements DocumentInterface {
+type Campaign implements DocumentInterface {
   id: ID!
   updatedAt: DateTime!
   createdAt: DateTime!
@@ -357,8 +357,8 @@ type Mailing implements DocumentInterface {
   brevoId: Int
   sendingState: SendingState!
   scheduledAt: DateTime
-  content: MailingContentBlockData!
-  scope: MailingContentScope!
+  content: CampaignContentBlockData!
+  scope: CampaignContentScope!
 }
 
 enum SendingState {
@@ -367,11 +367,11 @@ enum SendingState {
   SCHEDULED
 }
 
-"""MailingContent root block data"""
-scalar MailingContentBlockData @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
+"""CampaignContent root block data"""
+scalar CampaignContentBlockData @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
 
-type PaginatedMailings {
-  nodes: [Mailing!]!
+type PaginatedCampaigns {
+  nodes: [Campaign!]!
   totalCount: Int!
 }
 
@@ -385,7 +385,7 @@ input BrevoContactAttributesInput {
   FIRSTNAME: String!
 }
 
-input MailingContentScopeInput {
+input CampaignContentScopeInput {
   domain: String!
   language: String!
 }
@@ -423,8 +423,8 @@ type Query {
   mainMenu(scope: PageTreeNodeScopeInput!): [PageTreeNode!]!
   brevoContact(id: Int!): BrevoContact!
   brevoContacts(offset: Int! = 0, limit: Int! = 25, email: String): PaginatedBrevoContacts!
-  mailing(id: ID!): Mailing!
-  mailings(scope: MailingContentScopeInput!, search: String, filter: MailingFilter, sort: [MailingSort!], offset: Int! = 0, limit: Int! = 25): PaginatedMailings!
+  campaign(id: ID!): Campaign!
+  campaigns(scope: CampaignContentScopeInput!, search: String, filter: CampaignFilter, sort: [CampaignSort!], offset: Int! = 0, limit: Int! = 25): PaginatedCampaigns!
 }
 
 enum SortDirection {
@@ -551,22 +551,22 @@ enum ProductSortField {
   updatedAt
 }
 
-input MailingFilter {
+input CampaignFilter {
   createdAt: DateFilter
   updatedAt: DateFilter
   title: StringFilter
   subject: StringFilter
   scheduledAt: DateFilter
-  and: [MailingFilter!]
-  or: [MailingFilter!]
+  and: [CampaignFilter!]
+  or: [CampaignFilter!]
 }
 
-input MailingSort {
-  field: MailingSortField!
+input CampaignSort {
+  field: CampaignSortField!
   direction: SortDirection! = ASC
 }
 
-enum MailingSortField {
+enum CampaignSortField {
   createdAt
   updatedAt
   title
@@ -610,9 +610,9 @@ type Mutation {
   updateBrevoContact(id: Int!, input: BrevoContactUpdateInput!): BrevoContact!
   deleteBrevoContact(id: Int!): Boolean!
   subscribeBrevoContact(input: SubscribeInput!): SubscribeResponse!
-  createMailing(scope: MailingContentScopeInput!, input: MailingInput!): Mailing!
-  updateMailing(id: ID!, input: MailingInput!, lastUpdatedAt: DateTime): Mailing!
-  deleteMailing(id: ID!): Boolean!
+  createCampaign(scope: CampaignContentScopeInput!, input: CampaignInput!): Campaign!
+  updateCampaign(id: ID!, input: CampaignInput!, lastUpdatedAt: DateTime): Campaign!
+  deleteCampaign(id: ID!): Boolean!
 }
 
 input CreateBuildsInput {
@@ -742,12 +742,12 @@ input SubscribeInput {
   attributes: BrevoContactAttributesInput!
 }
 
-input MailingInput {
+input CampaignInput {
   title: String!
   subject: String!
   scheduledAt: DateTime
-  content: MailingContentBlockInput!
+  content: CampaignContentBlockInput!
 }
 
-"""MailingContent root block input"""
-scalar MailingContentBlockInput @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
+"""CampaignContent root block input"""
+scalar CampaignContentBlockInput @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")

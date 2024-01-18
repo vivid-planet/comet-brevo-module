@@ -4,7 +4,7 @@ import { Type } from "class-transformer";
 import { IsOptional, ValidateNested } from "class-validator";
 
 @InputType()
-export class MailingFilter {
+export class CampaignFilter {
     @Field(() => DateFilter, { nullable: true })
     @ValidateNested()
     @IsOptional()
@@ -35,15 +35,15 @@ export class MailingFilter {
     @Type(() => DateFilter)
     scheduledAt?: DateFilter;
 
-    @Field(() => [MailingFilter], { nullable: true })
-    @Type(() => MailingFilter)
+    @Field(() => [CampaignFilter], { nullable: true })
+    @Type(() => CampaignFilter)
     @ValidateNested({ each: true })
     @IsOptional()
-    and?: MailingFilter[];
+    and?: CampaignFilter[];
 
-    @Field(() => [MailingFilter], { nullable: true })
-    @Type(() => MailingFilter)
+    @Field(() => [CampaignFilter], { nullable: true })
+    @Type(() => CampaignFilter)
     @ValidateNested({ each: true })
     @IsOptional()
-    or?: MailingFilter[];
+    or?: CampaignFilter[];
 }

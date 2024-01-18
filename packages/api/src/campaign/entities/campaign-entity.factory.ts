@@ -3,12 +3,12 @@ import { DocumentInterface, RootBlockDataScalar, RootBlockType } from "@comet/cm
 import { Embedded, Entity, OptionalProps, PrimaryKey, Property } from "@mikro-orm/core";
 import { Type } from "@nestjs/common";
 import { Field, ID, Int, ObjectType } from "@nestjs/graphql";
-import { MailingScopeInterface } from "src/types";
 import { v4 } from "uuid";
 
+import { CampaignScopeInterface } from "../../types";
 import { SendingState } from "../sending-state.enum";
 
-export interface MailingInterface {
+export interface CampaignInterface {
     [OptionalProps]?: "createdAt" | "updatedAt" | "sendingState";
     id: string;
     createdAt: Date;
@@ -18,16 +18,16 @@ export interface MailingInterface {
     brevoId?: number;
     updatedAt: Date;
     content: BlockDataInterface;
-    scope: MailingScopeInterface;
+    scope: CampaignScopeInterface;
 }
 
-export class MailingEntityFactory {
-    static create({ MailingContentBlock, Scope }: { MailingContentBlock: Block; Scope: MailingScopeInterface }): Type<MailingInterface> {
+export class CampaignEntityFactory {
+    static create({ CampaignContentBlock, Scope }: { CampaignContentBlock: Block; Scope: CampaignScopeInterface }): Type<CampaignInterface> {
         @Entity()
         @ObjectType({
             implements: () => [DocumentInterface],
         })
-        class Mailing implements MailingInterface, DocumentInterface {
+        class Campaign implements CampaignInterface, DocumentInterface {
             [OptionalProps]?: "createdAt" | "updatedAt" | "sendingState";
             @PrimaryKey({ columnType: "uuid" })
             @Field(() => ID)
@@ -65,9 +65,9 @@ export class MailingEntityFactory {
             @Field(() => Date, { nullable: true })
             scheduledAt?: Date;
 
-            @RootBlock(MailingContentBlock)
-            @Property({ customType: new RootBlockType(MailingContentBlock) })
-            @Field(() => RootBlockDataScalar(MailingContentBlock))
+            @RootBlock(CampaignContentBlock)
+            @Property({ customType: new RootBlockType(CampaignContentBlock) })
+            @Field(() => RootBlockDataScalar(CampaignContentBlock))
             content: BlockDataInterface;
 
             @Embedded(() => Scope)
@@ -75,6 +75,6 @@ export class MailingEntityFactory {
             scope: typeof Scope;
         }
 
-        return Mailing;
+        return Campaign;
     }
 }

@@ -2,9 +2,9 @@ import { DynamicModule, Global, Module } from "@nestjs/common";
 
 import { BrevoApiModule } from "./brevo-api/brevo-api.module";
 import { BrevoContactModule } from "./brevo-contact/brevo-contact.module";
+import { CampaignModule } from "./campaign/campaign.module";
 import { BrevoModuleConfig } from "./config/brevo-module.config";
 import { ConfigModule } from "./config/config.module";
-import { MailingModule } from "./mailing/mailing.module";
 
 @Global()
 @Module({})
@@ -15,7 +15,7 @@ export class BrevoModule {
             imports: [
                 BrevoApiModule,
                 BrevoContactModule.register({ BrevoContactAttributes: config.brevo.BrevoContactAttributes }),
-                MailingModule.register(config),
+                CampaignModule.register(config),
                 ConfigModule.forRoot(config),
             ],
             exports: [],

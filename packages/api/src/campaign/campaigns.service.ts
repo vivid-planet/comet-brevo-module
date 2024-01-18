@@ -2,12 +2,12 @@ import { filtersToMikroOrmQuery, searchToMikroOrmQuery } from "@comet/cms-api";
 import { ObjectQuery } from "@mikro-orm/core";
 import { Injectable } from "@nestjs/common";
 
-import { MailingFilter } from "./dto/mailing.filter";
-import { MailingInterface } from "./entities/mailing-entity.factory";
+import { CampaignFilter } from "./dto/campaign.filter";
+import { CampaignInterface } from "./entities/campaign-entity.factory";
 
 @Injectable()
-export class MailingsService {
-    getFindCondition(options: { search?: string; filter?: MailingFilter }): ObjectQuery<MailingInterface> {
+export class CampaignsService {
+    getFindCondition(options: { search?: string; filter?: CampaignFilter }): ObjectQuery<CampaignInterface> {
         const andFilters = [];
 
         if (options.search) {
