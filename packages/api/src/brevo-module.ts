@@ -5,6 +5,7 @@ import { BrevoContactModule } from "./brevo-contact/brevo-contact.module";
 import { BrevoModuleConfig } from "./config/brevo-module.config";
 import { ConfigModule } from "./config/config.module";
 import { EmailCampaignModule } from "./email-campaign/email-campaign.module";
+import { TargetGroupModule } from "./target-group/target-group.module";
 
 @Global()
 @Module({})
@@ -16,6 +17,7 @@ export class BrevoModule {
                 BrevoApiModule,
                 BrevoContactModule.register({ BrevoContactAttributes: config.brevo.BrevoContactAttributes }),
                 EmailCampaignModule.register(config),
+                TargetGroupModule.register({ Scope: config.Scope, BrevoFilterAttributes: config.brevo.BrevoContactFilterAttributes }),
                 ConfigModule.forRoot(config),
             ],
             exports: [],

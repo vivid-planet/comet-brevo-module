@@ -1,6 +1,7 @@
 import { Migration } from "@mikro-orm/migrations";
 
 export class Migration20240115095733 extends Migration {
+    // TODO: move to package
     async up(): Promise<void> {
         this.addSql(
             'create table "EmailCampaign" ("id" uuid not null, "createdAt" timestamp with time zone not null, "updatedAt" timestamp with time zone not null, "title" text not null, "subject" text not null, "scheduledAt" timestamp with time zone null, "scope_domain" text not null, "scope_language" text not null, "brevoId" int null, "contactList" uuid null, "content" json not null, constraint "Campaign_pkey" primary key ("id"));',

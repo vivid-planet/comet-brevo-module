@@ -224,6 +224,16 @@ type PaginatedProducts {
 type BrevoContactAttributes {
   LASTNAME: String!
   FIRSTNAME: String!
+  SALUTATION: BrevoContactSalutation
+}
+
+enum BrevoContactSalutation {
+  MALE
+  FEMALE
+}
+
+type BrevoContactFilterAttributes {
+  SALUTATION: [BrevoContactSalutation!]
 }
 
 type DamFolder {
@@ -375,6 +385,24 @@ type PaginatedEmailCampaigns {
   totalCount: Int!
 }
 
+type TargetGroup implements DocumentInterface {
+  id: ID!
+  updatedAt: DateTime!
+  createdAt: DateTime!
+  title: String!
+  isMainList: Boolean!
+  brevoId: Int!
+  totalSubscribers: Int!
+  totalContactsBlocked: Int!
+  scope: EmailCampaignContentScope!
+  filters: BrevoContactFilterAttributes
+}
+
+type PaginatedTargetGroups {
+  nodes: [TargetGroup!]!
+  totalCount: Int!
+}
+
 input PageTreeNodeScopeInput {
   domain: String!
   language: String!
@@ -383,6 +411,11 @@ input PageTreeNodeScopeInput {
 input BrevoContactAttributesInput {
   LASTNAME: String!
   FIRSTNAME: String!
+  SALUTATION: BrevoContactSalutation
+}
+
+input BrevoContactFilterAttributesInput {
+  SALUTATION: [BrevoContactSalutation!]
 }
 
 input EmailCampaignContentScopeInput {
@@ -425,6 +458,8 @@ type Query {
   brevoContacts(offset: Int! = 0, limit: Int! = 25, email: String): PaginatedBrevoContacts!
   emailCampaign(id: ID!): EmailCampaign!
   emailCampaigns(scope: EmailCampaignContentScopeInput!, search: String, filter: EmailCampaignFilter, sort: [EmailCampaignSort!], offset: Int! = 0, limit: Int! = 25): PaginatedEmailCampaigns!
+  targetGroup(id: ID!): TargetGroup!
+  targetGroups(scope: EmailCampaignContentScopeInput!, search: String, filter: TargetGroupFilter, sort: [TargetGroupSort!], offset: Int! = 0, limit: Int! = 25): PaginatedTargetGroups!
 }
 
 enum SortDirection {
@@ -574,6 +609,25 @@ enum EmailCampaignSortField {
   scheduledAt
 }
 
+input TargetGroupFilter {
+  createdAt: DateFilter
+  updatedAt: DateFilter
+  title: StringFilter
+  and: [TargetGroupFilter!]
+  or: [TargetGroupFilter!]
+}
+
+input TargetGroupSort {
+  field: TargetGroupSortField!
+  direction: SortDirection! = ASC
+}
+
+enum TargetGroupSortField {
+  createdAt
+  updatedAt
+  title
+}
+
 type Mutation {
   currentUserSignOut: String!
   createBuilds(input: CreateBuildsInput!): Boolean!
@@ -613,6 +667,9 @@ type Mutation {
   createEmailCampaign(scope: EmailCampaignContentScopeInput!, input: EmailCampaignInput!): EmailCampaign!
   updateEmailCampaign(id: ID!, input: EmailCampaignInput!, lastUpdatedAt: DateTime): EmailCampaign!
   deleteEmailCampaign(id: ID!): Boolean!
+  createTargetGroup(scope: EmailCampaignContentScopeInput!, input: TargetGroupInput!): TargetGroup!
+  updateTargetGroup(id: ID!, input: TargetGroupInput!, lastUpdatedAt: DateTime): TargetGroup!
+  deleteTargetGroup(id: ID!): Boolean!
 }
 
 input CreateBuildsInput {
@@ -751,3 +808,8 @@ input EmailCampaignInput {
 
 """EmailCampaignContent root block input"""
 scalar EmailCampaignContentBlockInput @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
+
+input TargetGroupInput {
+  title: String!
+  filters: BrevoContactFilterAttributesInput
+}
