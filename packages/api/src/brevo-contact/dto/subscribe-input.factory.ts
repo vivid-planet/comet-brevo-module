@@ -8,16 +8,13 @@ import { IsValidRedirectURLConstraint } from "../validator/redirect-url.validato
 export interface SubscribeInputInterface {
     email: string;
     redirectionUrl: string;
-    attributes: BrevoContactAttributesInterface;
+    attributes?: BrevoContactAttributesInterface;
 }
 
 export class SubscribeInputFactory {
-    static create({ BrevoContactAttributes }: { BrevoContactAttributes: BrevoContactAttributesInterface }): Type<SubscribeInputInterface> {
-        @InputType()
-        class SubscribeInput implements SubscribeInputInterface {
-            @Field(() => BrevoContactAttributes)
-            attributes: typeof BrevoContactAttributes;
-
+    static create({ BrevoContactAttributes }: { BrevoContactAttributes?: Type<BrevoContactAttributesInterface> }): Type<SubscribeInputInterface> {
+        @InputType({ isAbstract: true })
+        class SubscribeInputBase implements SubscribeInputInterface {
             @Field()
             @IsEmail()
             email: string;
@@ -27,6 +24,19 @@ export class SubscribeInputFactory {
             @Validate(IsValidRedirectURLConstraint)
             redirectionUrl: string;
         }
+
+        if (BrevoContactAttributes) {
+            @InputType()
+            class SubscribeInput extends SubscribeInputBase {
+                @Field(() => BrevoContactAttributes)
+                attributes?: BrevoContactAttributesInterface;
+            }
+
+            return SubscribeInput;
+        }
+
+        @InputType()
+        class SubscribeInput extends SubscribeInputBase {}
 
         return SubscribeInput;
     }
