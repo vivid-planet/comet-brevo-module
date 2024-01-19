@@ -28,6 +28,10 @@ export class BrevoContactAttributes {
 @ObjectType()
 @InputType("BrevoContactFilterAttributesInput")
 export class BrevoContactFilterAttributes {
+    // index signature to match Record<string, string> in BrevoContactFilterAttributesInterface
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    [key: string]: Array<any> | undefined;
+
     @Field(() => [BrevoContactSalutation], { nullable: true })
     @IsEnum(BrevoContactSalutation, { each: true })
     @Enum({ items: () => BrevoContactSalutation, array: true })

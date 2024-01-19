@@ -1,12 +1,14 @@
 import { Inject, Injectable } from "@nestjs/common";
 import * as SibApiV3Sdk from "@sendinblue/client";
-import { BrevoContactInterface } from "src/brevo-contact/dto/brevo-contact.factory";
 import { BrevoContactAttributesInterface } from "src/types";
 
+import { BrevoContactInterface } from "../brevo-contact/dto/brevo-contact.factory";
 import { BrevoContactUpdateInput } from "../brevo-contact/dto/brevo-contact.input";
 import { BrevoModuleConfig } from "../config/brevo-module.config";
 import { BREVO_MODULE_CONFIG } from "../config/brevo-module.constants";
+import { TargetGroupInputInterface } from "../target-group/dto/target-group-input.factory";
 import { isErrorFromBrevo } from "./brevo-api.utils";
+import { BrevoApiContactList } from "./dto/brevo-api-contact-list";
 
 export interface CreateDoubleOptInContactData {
     email: string;
@@ -23,7 +25,7 @@ export class BrevoApiContactsService {
         this.contactsApi.setApiKey(SibApiV3Sdk.ContactsApiApiKeys.apiKey, config.brevo.apiKey);
     }
 
-    public async createDoubleOptInContact(
+    public async createDoubleOptInBrevoContact(
         { email, redirectionUrl, attributes }: CreateDoubleOptInContactData,
         brevoIds: number[],
         templateId: number,
@@ -91,5 +93,58 @@ export class BrevoApiContactsService {
         const blacklistedContacts = emails.map((email) => ({ email, emailBlacklisted: true }));
 
         await this.contactsApi.updateBatchContacts({ contacts: blacklistedContacts });
+    }
+
+    public async createBrevoContactList(input: TargetGroupInputInterface): Promise<number | undefined> {
+        const contactList = {
+            name: input.title,
+            folderId: 1, // folderId is required, folder #1 is created by default
+        };
+
+        const data = await this.contactsApi.createList(contactList);
+        return data.body.id;
+    }
+
+    public async updateBrevoContactList(id: number, input: TargetGroupInputInterface): Promise<boolean> {
+        const data = await this.contactsApi.updateList(id, { name: input.title });
+        return data.response.statusCode === 204;
+    }
+
+    public async deleteBrevoContactList(id: number): Promise<boolean> {
+        const data = await this.contactsApi.deleteList(id);
+        return data.response.statusCode === 204;
+    }
+
+    public async findBrevoContactListById(id: number): Promise<BrevoApiContactList> {
+        const data = await this.contactsApi.getList(id);
+        return data.body;
+    }
+
+    public async findBrevoContactListsByIds(ids: number[]): Promise<BrevoApiContactList[]> {
+        const lists: BrevoApiContactList[] = [];
+        for await (const list of await this.getBrevoContactListResponses()) {
+            if (ids.includes(list.id)) {
+                lists.push(list);
+            }
+        }
+
+        return lists;
+    }
+
+    async *getBrevoContactListResponses(): AsyncGenerator<BrevoApiContactList, void, undefined> {
+        const limit = 50;
+        let offset = 0;
+
+        while (true) {
+            const listsResponse = await this.contactsApi.getLists(limit, offset);
+            const lists = listsResponse.body.lists ?? [];
+
+            if (lists.length === 0) {
+                break;
+            }
+            yield* lists;
+
+            offset += limit;
+        }
     }
 }
