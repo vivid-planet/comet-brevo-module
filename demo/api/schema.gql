@@ -67,8 +67,6 @@ type DamFileLicense {
 enum LicenseType {
   ROYALTY_FREE
   RIGHTS_MANAGED
-  SUBSCRIPTION
-  MICRO
 }
 
 """
@@ -256,10 +254,17 @@ type DamFile {
   license: DamFileLicense
   createdAt: DateTime!
   updatedAt: DateTime!
+  importSourceId: String
+  importSourceType: String
   fileUrl: String!
   duplicates: [DamFile!]!
   damPath: String!
   dependents(offset: Int! = 0, limit: Int! = 25, filter: DependentFilter, forceRefresh: Boolean! = false): PaginatedDependencies!
+}
+
+type EmailCampaignContentScope {
+  domain: String!
+  language: String!
 }
 
 type PaginatedPageTreeNodes {
@@ -343,6 +348,33 @@ type PaginatedBrevoContacts {
   totalCount: Int!
 }
 
+type EmailCampaign implements DocumentInterface {
+  id: ID!
+  updatedAt: DateTime!
+  createdAt: DateTime!
+  title: String!
+  subject: String!
+  brevoId: Int
+  sendingState: SendingState!
+  scheduledAt: DateTime
+  content: EmailCampaignContentBlockData!
+  scope: EmailCampaignContentScope!
+}
+
+enum SendingState {
+  DRAFT
+  SENT
+  SCHEDULED
+}
+
+"""EmailCampaignContent root block data"""
+scalar EmailCampaignContentBlockData @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
+
+type PaginatedEmailCampaigns {
+  nodes: [EmailCampaign!]!
+  totalCount: Int!
+}
+
 input PageTreeNodeScopeInput {
   domain: String!
   language: String!
@@ -351,6 +383,11 @@ input PageTreeNodeScopeInput {
 input BrevoContactAttributesInput {
   LASTNAME: String!
   FIRSTNAME: String!
+}
+
+input EmailCampaignContentScopeInput {
+  domain: String!
+  language: String!
 }
 
 type Query {
@@ -386,6 +423,8 @@ type Query {
   mainMenu(scope: PageTreeNodeScopeInput!): [PageTreeNode!]!
   brevoContact(id: Int!): BrevoContact!
   brevoContacts(offset: Int! = 0, limit: Int! = 25, email: String): PaginatedBrevoContacts!
+  emailCampaign(id: ID!): EmailCampaign!
+  emailCampaigns(scope: EmailCampaignContentScopeInput!, search: String, filter: EmailCampaignFilter, sort: [EmailCampaignSort!], offset: Int! = 0, limit: Int! = 25): PaginatedEmailCampaigns!
 }
 
 enum SortDirection {
@@ -512,6 +551,29 @@ enum ProductSortField {
   updatedAt
 }
 
+input EmailCampaignFilter {
+  createdAt: DateFilter
+  updatedAt: DateFilter
+  title: StringFilter
+  subject: StringFilter
+  scheduledAt: DateFilter
+  and: [EmailCampaignFilter!]
+  or: [EmailCampaignFilter!]
+}
+
+input EmailCampaignSort {
+  field: EmailCampaignSortField!
+  direction: SortDirection! = ASC
+}
+
+enum EmailCampaignSortField {
+  createdAt
+  updatedAt
+  title
+  subject
+  scheduledAt
+}
+
 type Mutation {
   currentUserSignOut: String!
   createBuilds(input: CreateBuildsInput!): Boolean!
@@ -548,6 +610,9 @@ type Mutation {
   updateBrevoContact(id: Int!, input: BrevoContactUpdateInput!): BrevoContact!
   deleteBrevoContact(id: Int!): Boolean!
   subscribeBrevoContact(input: SubscribeInput!): SubscribeResponse!
+  createEmailCampaign(scope: EmailCampaignContentScopeInput!, input: EmailCampaignInput!): EmailCampaign!
+  updateEmailCampaign(id: ID!, input: EmailCampaignInput!, lastUpdatedAt: DateTime): EmailCampaign!
+  deleteEmailCampaign(id: ID!): Boolean!
 }
 
 input CreateBuildsInput {
@@ -676,3 +741,13 @@ input SubscribeInput {
   redirectionUrl: String!
   attributes: BrevoContactAttributesInput!
 }
+
+input EmailCampaignInput {
+  title: String!
+  subject: String!
+  scheduledAt: DateTime
+  content: EmailCampaignContentBlockInput!
+}
+
+"""EmailCampaignContent root block input"""
+scalar EmailCampaignContentBlockInput @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")

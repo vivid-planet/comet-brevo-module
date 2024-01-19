@@ -29,6 +29,8 @@ The following variables must be set manually
 
 -   `BREVO_API_KEY`
 -   `BREVO_DOUBLE_OPT_IN_TEMPLATE_ID`
+-   `BREVO_SENDER_NAME`
+-   `BREVO_SENDER_EMAIL`
 -   `ECG_RTR_LIST_API_KEY`
 
 ### Start development processes

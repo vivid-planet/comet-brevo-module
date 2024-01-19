@@ -23,6 +23,7 @@
         "test:watch": "jest --watch"
     },
     "peerDependencies": {
+        "@comet/blocks-api": "^5.3.0",
         "@comet/cms-api": "^5.3.0",
         "@mikro-orm/cli": "^5.7.1",
         "@mikro-orm/core": "^5.0.5",
@@ -39,6 +40,7 @@
     "devDependencies": {
         "@aws-sdk/client-s3": "^3.47.0",
         "@azure/storage-blob": "^12.0.0",
+        "@comet/blocks-api": "^5.3.0",
         "@comet/cms-api": "^5.3.0",
         "@comet/eslint-config": "^5.3.0",
         "@kubernetes/client-node": "^0.18.0",
@@ -50,8 +52,8 @@
         "@nestjs/common": "^9.0.0",
         "@nestjs/core": "^9.0.0",
         "@nestjs/graphql": "^10.0.0",
-        "@types/jest": "^29.5.0",
         "@sendinblue/client": "^3.3.1",
+        "@types/jest": "^29.5.0",
         "@types/rimraf": "^3.0.0",
         "@types/node-fetch": "^2.5.12",
         "@types/uuid": "^8.3.0",
