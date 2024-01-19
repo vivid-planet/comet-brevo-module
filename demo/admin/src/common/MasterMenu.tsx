@@ -1,5 +1,6 @@
 import { Menu, MenuCollapsibleItem, MenuContext, MenuItemRouterLink, useWindowSize } from "@comet/admin";
 import { Assets, Dashboard, Data, PageTree, Wrench } from "@comet/admin-icons";
+import { BrevoContactsPage } from "@comet/brevo-admin";
 import * as React from "react";
 import { useIntl } from "react-intl";
 import { useRouteMatch } from "react-router";
@@ -30,6 +31,7 @@ export const MasterMenu: React.FC = () => {
                 icon={<Dashboard />}
                 to={`${match.url}/dashboard`}
             />
+            <BrevoContactsPage />
             <MenuItemRouterLink
                 primary={intl.formatMessage({ id: "menu.pageTree", defaultMessage: "Page tree" })}
                 icon={<PageTree />}
