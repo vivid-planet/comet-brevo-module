@@ -1,7 +1,9 @@
 import { MikroOrmModule } from "@mikro-orm/nestjs";
+import { HttpModule } from "@nestjs/axios";
 import { DynamicModule, Module } from "@nestjs/common";
 
-import { BrevoModule } from "../brevo-module";
+import { BrevoApiModule } from "../brevo-api/brevo-api.module";
+import { EcgRtrListService } from "../brevo-contact/ecg-rtr-list/ecg-rtr-list.service";
 import { BrevoModuleConfig } from "../config/brevo-module.config";
 import { ConfigModule } from "../config/config.module";
 import { EmailCampaignInputFactory } from "./dto/email-campaign-input.factory";
@@ -12,14 +14,24 @@ import { EmailCampaignEntityFactory } from "./entities/email-campaign-entity.fac
 @Module({})
 export class EmailCampaignModule {
     static register(config: BrevoModuleConfig): DynamicModule {
-        const EmailCampaign = EmailCampaignEntityFactory.create({ Scope: config.Scope, EmailCampaignContentBlock: config.EmailCampaignContentBlock });
-        const EmailCampaignInput = EmailCampaignInputFactory.create({ EmailCampaignContentBlock: config.EmailCampaignContentBlock });
-        const EmailCampaignsResolver = createEmailCampaignsResolver({ EmailCampaign, EmailCampaignInput, Scope: config.Scope });
+        const EmailCampaign = EmailCampaignEntityFactory.create({
+            Scope: config.emailCampaigns.Scope,
+            EmailCampaignContentBlock: config.emailCampaigns.EmailCampaignContentBlock,
+        });
+        const EmailCampaignInput = EmailCampaignInputFactory.create({ EmailCampaignContentBlock: config.emailCampaigns.EmailCampaignContentBlock });
+        const EmailCampaignsResolver = createEmailCampaignsResolver({ EmailCampaign, EmailCampaignInput, Scope: config.emailCampaigns.Scope });
 
         return {
             module: EmailCampaignModule,
-            imports: [ConfigModule, BrevoModule, MikroOrmModule.forFeature([EmailCampaign])],
-            providers: [EmailCampaignsResolver, EmailCampaignsService],
+            imports: [
+                ConfigModule,
+                BrevoApiModule,
+                HttpModule.register({
+                    timeout: 5000,
+                }),
+                MikroOrmModule.forFeature([EmailCampaign]),
+            ],
+            providers: [EmailCampaignsResolver, EmailCampaignsService, EcgRtrListService],
         };
     }
 }

@@ -143,8 +143,17 @@ export class AppModule {
                     ecgRtrList: {
                         apiKey: config.ecgRtrList.apiKey,
                     },
-                    EmailCampaignContentBlock,
-                    Scope: EmailCampaignContentScope,
+                    emailCampaigns: {
+                        EmailCampaignContentBlock,
+                        Scope: EmailCampaignContentScope,
+                        frontend: {
+                            url: config.campaignsFrontend.url,
+                            basicAuth: {
+                                username: config.campaignsFrontend.basicAuth.username,
+                                password: config.campaignsFrontend.basicAuth.password,
+                            },
+                        },
+                    },
                 }),
             ],
         };

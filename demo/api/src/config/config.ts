@@ -64,6 +64,13 @@ export function createConfig(processEnv: NodeJS.ProcessEnv) {
                 email: envVars.BREVO_SENDER_EMAIL,
             },
         },
+        campaignsFrontend: {
+            url: envVars.CAMPAIGNS_FRONTEND_URL,
+            basicAuth: {
+                username: envVars.CAMPAIGNS_FRONTEND_BASIC_AUTH_USERNAME,
+                password: envVars.CAMPAIGNS_FRONTEND_BASIC_AUTH_PASSWORD,
+            },
+        },
         ecgRtrList: {
             apiKey: envVars.ECG_RTR_LIST_API_KEY,
         },

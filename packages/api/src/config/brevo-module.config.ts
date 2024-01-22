@@ -19,6 +19,16 @@ export interface BrevoModuleConfig {
     ecgRtrList: {
         apiKey: string;
     };
-    Scope: Type<EmailCampaignScopeInterface>;
-    EmailCampaignContentBlock: Block;
+
+    emailCampaigns: {
+        Scope: Type<EmailCampaignScopeInterface>;
+        EmailCampaignContentBlock: Block;
+        frontend: {
+            url: string;
+            basicAuth: {
+                username: string;
+                password: string;
+            };
+        };
+    };
 }

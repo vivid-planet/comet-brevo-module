@@ -67,8 +67,6 @@ type DamFileLicense {
 enum LicenseType {
   ROYALTY_FREE
   RIGHTS_MANAGED
-  SUBSCRIPTION
-  MICRO
 }
 
 """
@@ -118,6 +116,46 @@ type FilenameResponse {
   name: String!
   folderId: ID
   isOccupied: Boolean!
+}
+
+type BrevoApiCampaignStatistics {
+  """Number of unique clicks for the campaign"""
+  uniqueClicks: Int!
+
+  """Number of total clicks for the campaign"""
+  clickers: Int!
+
+  """Number of complaints (Spam reports) for the campaign"""
+  complaints: Int!
+
+  """Number of delivered emails for the campaign"""
+  delivered: Int!
+
+  """Number of sent emails for the campaign"""
+  sent: Int!
+
+  """Number of softbounce for the campaign"""
+  softBounces: Int!
+
+  """Number of hardbounces for the campaign"""
+  hardBounces: Int!
+
+  """Number of unique openings for the campaign"""
+  uniqueViews: Int!
+
+  """Number of unique openings for the campaign"""
+  trackableViews: Int!
+
+  """
+  Rate of recipients without any privacy protection option enabled in their email client, applied to all delivered emails
+  """
+  estimatedViews: Int!
+
+  """Number of unsubscription for the campaign"""
+  unsubscriptions: Int!
+
+  """Number of openings for the campaign"""
+  viewed: Int!
 }
 
 type Product {
@@ -266,6 +304,8 @@ type DamFile {
   license: DamFileLicense
   createdAt: DateTime!
   updatedAt: DateTime!
+  importSourceId: String
+  importSourceType: String
   fileUrl: String!
   duplicates: [DamFile!]!
   damPath: String!
@@ -358,24 +398,6 @@ type PaginatedBrevoContacts {
   totalCount: Int!
 }
 
-type TargetGroup implements DocumentInterface {
-  id: ID!
-  updatedAt: DateTime!
-  createdAt: DateTime!
-  title: String!
-  isMainList: Boolean!
-  brevoId: Int!
-  totalSubscribers: Int!
-  totalContactsBlocked: Int!
-  scope: EmailCampaignContentScope!
-  filters: BrevoContactFilterAttributes
-}
-
-type PaginatedTargetGroups {
-  nodes: [TargetGroup!]!
-  totalCount: Int!
-}
-
 type EmailCampaign implements DocumentInterface {
   id: ID!
   updatedAt: DateTime!
@@ -400,6 +422,24 @@ scalar EmailCampaignContentBlockData @specifiedBy(url: "http://www.ecma-internat
 
 type PaginatedEmailCampaigns {
   nodes: [EmailCampaign!]!
+  totalCount: Int!
+}
+
+type TargetGroup implements DocumentInterface {
+  id: ID!
+  updatedAt: DateTime!
+  createdAt: DateTime!
+  title: String!
+  isMainList: Boolean!
+  brevoId: Int!
+  totalSubscribers: Int!
+  totalContactsBlocked: Int!
+  scope: EmailCampaignContentScope!
+  filters: BrevoContactFilterAttributes
+}
+
+type PaginatedTargetGroups {
+  nodes: [TargetGroup!]!
   totalCount: Int!
 }
 
@@ -458,6 +498,7 @@ type Query {
   brevoContacts(targetGroupId: ID, email: String, scope: EmailCampaignContentScopeInput!, offset: Int! = 0, limit: Int! = 25): PaginatedBrevoContacts!
   emailCampaign(id: ID!): EmailCampaign!
   emailCampaigns(scope: EmailCampaignContentScopeInput!, search: String, filter: EmailCampaignFilter, sort: [EmailCampaignSort!], offset: Int! = 0, limit: Int! = 25): PaginatedEmailCampaigns!
+  emailCampaignStatistics(id: ID!): BrevoApiCampaignStatistics
   targetGroup(id: ID!): TargetGroup!
   targetGroups(scope: EmailCampaignContentScopeInput!, search: String, filter: TargetGroupFilter, sort: [TargetGroupSort!], offset: Int! = 0, limit: Int! = 25): PaginatedTargetGroups!
 }
@@ -667,6 +708,8 @@ type Mutation {
   createEmailCampaign(scope: EmailCampaignContentScopeInput!, input: EmailCampaignInput!): EmailCampaign!
   updateEmailCampaign(id: ID!, input: EmailCampaignInput!, lastUpdatedAt: DateTime): EmailCampaign!
   deleteEmailCampaign(id: ID!): Boolean!
+  sendEmailCampaignNow(id: ID!): Boolean!
+  sendEmailCampaignToTestEmails(id: ID!, data: SendTestEmailCampaignArgs!): Boolean!
   createTargetGroup(scope: EmailCampaignContentScopeInput!, input: TargetGroupInput!): TargetGroup!
   updateTargetGroup(id: ID!, input: TargetGroupInput!, lastUpdatedAt: DateTime): TargetGroup!
   deleteTargetGroup(id: ID!): Boolean!
@@ -809,6 +852,10 @@ input EmailCampaignInput {
 
 """EmailCampaignContent root block input"""
 scalar EmailCampaignContentBlockInput @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
+
+input SendTestEmailCampaignArgs {
+  emails: [String!]!
+}
 
 input TargetGroupInput {
   title: String!
