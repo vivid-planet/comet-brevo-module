@@ -6,6 +6,7 @@
         "build:api": "pnpm recursive --filter '@comet/brevo-api' run build",
         "build:api:skippable": "test -f packages/api/lib/index.d.ts && echo 'Skipping API build' || $npm_execpath build:api",
         "clean": "pnpm recursive run clean",
+        "copy-schema-files": "node copy-schema-files.js",
         "dev:demo": "dotenv -c -- dev-pm start @demo",
         "dev:demo:admin": "dotenv -c -- dev-pm start @demo-admin",
         "dev:demo:api": "$npm_execpath build:api:skippable && dotenv -c -- dev-pm start @demo-api",
