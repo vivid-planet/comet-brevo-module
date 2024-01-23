@@ -2,9 +2,10 @@ import { PaginatedResponseFactory, SubjectEntity, validateNotModified } from "@c
 import { EntityManager, EntityRepository, FindOptions, wrap } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Type } from "@nestjs/common";
-import { Args, ArgsType, ID, Mutation, ObjectType, Query, Resolver } from "@nestjs/graphql";
+import { Args, ArgsType, ID, Mutation, ObjectType, Parent, Query, ResolveField, Resolver } from "@nestjs/graphql";
 import { EmailCampaignScopeInterface } from "src/types";
 
+import { BrevoApiContactsService } from "../brevo-api/brevo-api-contact.service";
 import { DynamicDtoValidationPipe } from "../validation/dynamic-dto-validation.pipe";
 import { TargetGroupArgsFactory } from "./dto/target-group-args.factory";
 import { TargetGroupInputInterface } from "./dto/target-group-input.factory";
@@ -30,6 +31,7 @@ export function createTargetGroupsResolver({
     class TargetGroupResolver {
         constructor(
             private readonly targetGroupsService: TargetGroupsService,
+            private readonly brevoApiContactsService: BrevoApiContactsService,
             private readonly entityManager: EntityManager,
             @InjectRepository("TargetGroup") private readonly repository: EntityRepository<TargetGroupInterface>,
         ) {}
@@ -57,6 +59,19 @@ export function createTargetGroupsResolver({
             }
 
             const [entities, totalCount] = await this.repository.findAndCount(where, options);
+
+            const brevoContactLists = await this.brevoApiContactsService.findBrevoContactListsByIds(entities.map((list) => list.brevoId));
+
+            for (const contactList of entities) {
+                const brevoContactList = brevoContactLists.find((item) => item.id === contactList.brevoId);
+
+                if (brevoContactList) {
+                    contactList.totalSubscribers = brevoContactList.uniqueSubscribers;
+                    // TODO: brevo is returning a wrong value for totalBlacklisted
+                    // contactList.totalContactsBlocked = brevoContactList.totalBlacklisted;
+                }
+            }
+
             return new PaginatedTargetGroups(entities, totalCount);
         }
 
@@ -66,18 +81,19 @@ export function createTargetGroupsResolver({
             scope: typeof Scope,
             @Args("input", { type: () => TargetGroupInput }, new DynamicDtoValidationPipe(TargetGroupInput)) input: TargetGroupInputInterface,
         ): Promise<TargetGroupInterface> {
-            const targetGroup = this.repository.create({
-                ...input,
-                scope,
-                // TODO: add correct brevo id
-                brevoId: 1,
-                // TODO: add correct logic for main list
-                isMainList: false,
-            });
+            const brevoId = await this.brevoApiContactsService.createBrevoContactList(input);
 
-            await this.entityManager.flush();
+            if (brevoId) {
+                const targetGroup = this.repository.create({ ...input, brevoId, scope, isMainList: false });
 
-            return targetGroup;
+                await this.entityManager.flush();
+
+                await this.targetGroupsService.assignContactsToContactList(input, targetGroup.brevoId, targetGroup.scope);
+
+                return targetGroup;
+            }
+
+            throw new Error("Brevo Error: Could not create target group in brevo");
         }
 
         @Mutation(() => TargetGroup)
@@ -93,6 +109,15 @@ export function createTargetGroupsResolver({
                 validateNotModified(targetGroup, lastUpdatedAt);
             }
 
+            await this.targetGroupsService.assignContactsToContactList(input, targetGroup.brevoId, targetGroup.scope);
+
+            if (input.title !== targetGroup.title) {
+                const successfullyUpdatedContactList = await this.brevoApiContactsService.updateBrevoContactList(targetGroup.brevoId, input);
+                if (!successfullyUpdatedContactList) {
+                    throw Error("Brevo Error: Could not update contact list");
+                }
+            }
+
             wrap(targetGroup).assign({
                 ...input,
             });
@@ -106,9 +131,35 @@ export function createTargetGroupsResolver({
         @SubjectEntity(TargetGroup)
         async deleteTargetGroup(@Args("id", { type: () => ID }) id: string): Promise<boolean> {
             const targetGroup = await this.repository.findOneOrFail(id);
+
+            const isDeletedInBrevo = await this.brevoApiContactsService.deleteBrevoContactList(targetGroup.brevoId);
+
+            if (!isDeletedInBrevo) {
+                return false;
+            }
+
             await this.entityManager.remove(targetGroup);
             await this.entityManager.flush();
+
             return true;
+        }
+
+        @ResolveField()
+        async totalSubscribers(@Parent() targetGroup: TargetGroupInterface): Promise<number> {
+            if (targetGroup.totalSubscribers !== undefined) return targetGroup.totalSubscribers;
+
+            const { uniqueSubscribers } = await this.brevoApiContactsService.findBrevoContactListById(targetGroup.brevoId);
+
+            return uniqueSubscribers;
+        }
+
+        @ResolveField()
+        async totalContactsBlocked(@Parent() targetGroup: TargetGroupInterface): Promise<number> {
+            if (targetGroup.totalContactsBlocked !== undefined) return targetGroup.totalContactsBlocked;
+
+            const { totalBlacklisted } = await this.brevoApiContactsService.findBrevoContactListById(targetGroup.brevoId);
+
+            return totalBlacklisted;
         }
     }
 

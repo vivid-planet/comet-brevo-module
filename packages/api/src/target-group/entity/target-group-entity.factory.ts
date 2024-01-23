@@ -17,7 +17,7 @@ export interface TargetGroupInterface {
     totalSubscribers: number;
     totalContactsBlocked: number;
     scope: EmailCampaignScopeInterface;
-    filters?: BrevoContactFilterAttributesInterface;
+    filters?: Type<BrevoContactFilterAttributesInterface>;
 }
 
 export class TargetGroupEntityFactory {

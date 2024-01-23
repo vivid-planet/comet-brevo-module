@@ -1,7 +1,7 @@
 import { MikroOrmModule } from "@mikro-orm/nestjs";
 import { DynamicModule, Module, Type } from "@nestjs/common";
 
-import { BrevoModule } from "../brevo-module";
+import { BrevoApiModule } from "../brevo-api/brevo-api.module";
 import { ConfigModule } from "../config/config.module";
 import { BrevoContactFilterAttributesInterface, EmailCampaignScopeInterface } from "../types";
 import { TargetGroupInputFactory } from "./dto/target-group-input.factory";
@@ -23,8 +23,9 @@ export class TargetGroupModule {
 
         return {
             module: TargetGroupModule,
-            imports: [ConfigModule, BrevoModule, MikroOrmModule.forFeature([TargetGroup])],
+            imports: [ConfigModule, BrevoApiModule, MikroOrmModule.forFeature([TargetGroup])],
             providers: [TargetGroupResolver, TargetGroupsService],
+            exports: [TargetGroupsService],
         };
     }
 }

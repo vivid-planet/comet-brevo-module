@@ -15,9 +15,13 @@ export class BrevoModule {
             module: BrevoModule,
             imports: [
                 BrevoApiModule,
-                BrevoContactModule.register({ BrevoContactAttributes: config.brevo.BrevoContactAttributes }),
+                BrevoContactModule.register({
+                    BrevoContactAttributes: config.brevo.BrevoContactAttributes,
+                    BrevoFilterAttributes: config.brevo.BrevoContactFilterAttributes,
+                    Scope: config.Scope,
+                }),
                 EmailCampaignModule.register(config),
-                TargetGroupModule.register({ Scope: config.Scope, BrevoFilterAttributes: config.brevo.BrevoContactFilterAttributes }),
+                TargetGroupModule,
                 ConfigModule.forRoot(config),
             ],
             exports: [],
