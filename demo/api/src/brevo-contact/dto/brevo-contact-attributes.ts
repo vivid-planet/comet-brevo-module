@@ -28,7 +28,7 @@ export class BrevoContactAttributes {
 @ObjectType()
 @InputType("BrevoContactFilterAttributesInput")
 export class BrevoContactFilterAttributes {
-    // index signature to match Record<string, string> in BrevoContactFilterAttributesInterface
+    // index signature to match Array<any> | undefined in BrevoContactFilterAttributesInterface
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     [key: string]: Array<any> | undefined;
 
