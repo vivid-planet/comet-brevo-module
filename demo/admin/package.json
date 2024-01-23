@@ -25,6 +25,7 @@
         "@comet/admin-icons": "^5.3.0",
         "@comet/admin-rte": "^5.3.0",
         "@comet/admin-theme": "^5.3.0",
+        "@comet/brevo-admin": "workspace:*",
         "@comet/blocks-admin": "^5.3.0",
         "@comet/cms-admin": "^5.3.0",
         "@emotion/react": "^11.9.3",

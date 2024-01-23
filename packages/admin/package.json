@@ -1,0 +1,48 @@
+{
+    "name": "@comet/brevo-admin",
+    "version": "1.0.0",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/vivid-planet/comet-brevo-module/",
+        "directory": "packages/api/"
+    },
+    "license": "BSD-2-Clause",
+    "main": "lib/index.js",
+    "types": "lib/index.d.ts",
+    "files": [
+        "lib"
+    ],
+    "scripts": {
+        "build": "$npm_execpath run clean && run-p build:babel build:types",
+        "build:babel": "npx babel ./src -x \".ts,.tsx\" -d lib",
+        "build:types": "tsc --project ./tsconfig.json --emitDeclarationOnly",
+        "clean": "rimraf lib",
+        "lint": "run-p lint:eslint lint:tsc",
+        "lint:eslint": "eslint --max-warnings 0 src/ package.json",
+        "lint:tsc": "tsc --noEmit",
+        "start": "run-p start:babel start:types",
+        "start:babel": "npx babel ./src -x \".ts,.tsx\" -d lib -w",
+        "start:types": "tsc --project ./tsconfig.json --emitDeclarationOnly --watch --preserveWatchOutput"
+    },
+    "peerDependencies": {
+        "react": "^17.0",
+        "react-dom": "^17.0",
+        "react-intl": "^5.24.6"
+    },
+    "dependencies": {},
+    "devDependencies": {
+        "@babel/cli": "^7.17.6",
+        "@babel/core": "^7.20.12",
+        "@comet/admin-babel-preset": "^5.3.0",
+        "@comet/eslint-config": "^5.3.0",
+        "@types/react": "^17.0",
+        "@types/react-dom": "^17.0.0",
+        "eslint": "^8.0.0",
+        "prettier": "^2.0.0",
+        "react": "^17.0",
+        "react-dom": "^17.0",
+        "react-intl": "^5.24.6",
+        "rimraf": "^3.0.2",
+        "typescript": "^4.0.0"
+    }
+}
