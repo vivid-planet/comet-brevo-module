@@ -2,7 +2,7 @@ import { OffsetBasedPaginationArgs } from "@comet/cms-api";
 import { Type } from "@nestjs/common";
 import { ArgsType, Field, ID } from "@nestjs/graphql";
 import { Type as TransformerType } from "class-transformer";
-import { IsOptional, IsString, ValidateNested } from "class-validator";
+import { IsEmail, IsOptional, IsString, ValidateNested } from "class-validator";
 
 import { EmailCampaignScopeInterface } from "../../types";
 
@@ -23,6 +23,7 @@ export class BrevoContactsArgsFactory {
 
             @Field(() => String, { nullable: true })
             @IsOptional()
+            @IsEmail()
             email?: string;
 
             @Field(() => Scope)
