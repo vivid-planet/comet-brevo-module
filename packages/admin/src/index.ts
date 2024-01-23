@@ -1,1 +1,1 @@
-export { BrevoContactsPage } from "./brevoContacts/BrevoContactsPage";
+export { createBrevoContactsPage } from "./brevoContacts/BrevoContactsPage";

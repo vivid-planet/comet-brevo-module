@@ -19,6 +19,9 @@ nvm use
 npm i -g pnpm@8
 pnpm install
 
+# create admin symlinks
+ln -sf ../api/schema.gql ./packages/admin/schema.gql
+
 # create demo api symlinks
 ln -sf ../../.env ./demo/api/.env
 ln -sf ../../.env.local ./demo/api

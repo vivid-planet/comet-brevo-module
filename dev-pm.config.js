@@ -15,6 +15,11 @@ module.exports = {
             script: "pnpm --filter @comet/brevo-api run dev",
             group: ["api"],
         },
+        {
+            name: "api-codegen-schema",
+            script: "pnpm --filter @comet/brevo-api run generate-schema:watch",
+            group: ["api"],
+        },
         //group admin
         {
             name: "admin",

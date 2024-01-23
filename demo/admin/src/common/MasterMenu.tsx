@@ -1,6 +1,5 @@
 import { Menu, MenuCollapsibleItem, MenuContext, MenuItemRouterLink, useWindowSize } from "@comet/admin";
-import { Assets, Dashboard, Data, PageTree, Wrench } from "@comet/admin-icons";
-import { BrevoContactsPage } from "@comet/brevo-admin";
+import { Assets, Dashboard, Data, Mail, PageTree, Wrench } from "@comet/admin-icons";
 import * as React from "react";
 import { useIntl } from "react-intl";
 import { useRouteMatch } from "react-router";
@@ -31,12 +30,17 @@ export const MasterMenu: React.FC = () => {
                 icon={<Dashboard />}
                 to={`${match.url}/dashboard`}
             />
-            <BrevoContactsPage />
             <MenuItemRouterLink
                 primary={intl.formatMessage({ id: "menu.pageTree", defaultMessage: "Page tree" })}
                 icon={<PageTree />}
                 to={`${match.url}/pages/pagetree/main-navigation`}
             />
+            <MenuCollapsibleItem primary={intl.formatMessage({ id: "menu.newsletter", defaultMessage: "Newsletter" })} icon={<Mail />}>
+                <MenuItemRouterLink
+                    primary={intl.formatMessage({ id: "menu.newsletter.contacts", defaultMessage: "Contacts" })}
+                    to={`${match.url}/newsletter/contacts`}
+                />
+            </MenuCollapsibleItem>
             <MenuCollapsibleItem primary={intl.formatMessage({ id: "menu.structuredContent", defaultMessage: "Structured content" })} icon={<Data />}>
                 <MenuItemRouterLink
                     primary={intl.formatMessage({ id: "menu.products", defaultMessage: "Products" })}

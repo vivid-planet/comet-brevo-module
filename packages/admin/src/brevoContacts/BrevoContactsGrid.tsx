@@ -1,21 +1,22 @@
 import { gql, useApolloClient, useQuery } from "@apollo/client";
 import {
-    CrudContextMenu,
     MainContent,
-    muiGridSortToGql,
-    StackLink,
+    messages,
+    RowActionsItem,
+    RowActionsMenu,
     Toolbar,
-    ToolbarAutomaticTitleItem,
     ToolbarFillSpace,
+    ToolbarItem,
+    ToolbarTitleItem,
     useBufferedRowCount,
     useDataGridRemote,
     usePersistentColumnState,
 } from "@comet/admin";
-import { Edit } from "@comet/admin-icons";
-import { IconButton } from "@mui/material";
-import { DataGridPro, GridColDef } from "@mui/x-data-grid-pro";
+import { Block, Check, Delete } from "@comet/admin-icons";
+import { ContentScopeInterface } from "@comet/cms-admin";
+import { DataGrid, GridColDef, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import * as React from "react";
-import { useIntl } from "react-intl";
+import { FormattedMessage, IntlShape, useIntl } from "react-intl";
 
 import {
     GQLBrevoContactsGridQuery,
@@ -23,6 +24,8 @@ import {
     GQLBrevoContactsListFragment,
     GQLDeleteBrevoContactMutation,
     GQLDeleteBrevoContactMutationVariables,
+    GQLUpdateBrevoContactMutation,
+    GQLUpdateBrevoContactMutationVariables,
 } from "./BrevoContactsGrid.generated";
 
 const brevoContactsFragment = gql`
@@ -37,8 +40,8 @@ const brevoContactsFragment = gql`
 `;
 
 const brevoContactsQuery = gql`
-    query BrevoContactsGrid($offset: Int, $limit: Int) {
-        brevoContacts(offset: $offset, limit: $limit) {
+    query BrevoContactsGrid($offset: Int, $limit: Int, $email: String, $scope: EmailCampaignContentScopeInput!) {
+        brevoContacts(offset: $offset, limit: $limit, email: $email, scope: $scope) {
             nodes {
                 ...BrevoContactsList
             }
@@ -49,22 +52,36 @@ const brevoContactsQuery = gql`
 `;
 
 const deleteBrevoContactMutation = gql`
-    mutation DeleteBrevoContact($id: ID!) {
+    mutation DeleteBrevoContact($id: Int!) {
         deleteBrevoContact(id: $id)
     }
 `;
 
-function BrevoContactsGridToolbar() {
+const updateBrevoContactMutation = gql`
+    mutation UpdateBrevoContact($id: Int!, $input: BrevoContactUpdateInput!) {
+        updateBrevoContact(id: $id, input: $input) {
+            id
+        }
+    }
+`;
+
+function BrevoContactsGridToolbar({ intl }: { intl: IntlShape }) {
     return (
         <Toolbar>
-            <ToolbarAutomaticTitleItem />
-
+            <ToolbarTitleItem>
+                <FormattedMessage id="comet.brevoContact.title" defaultMessage="Contacts" />
+            </ToolbarTitleItem>
+            <ToolbarItem>
+                <GridToolbarQuickFilter
+                    placeholder={intl.formatMessage({ id: "comet.brevoContact.search", defaultMessage: "Search email address" })}
+                />
+            </ToolbarItem>
             <ToolbarFillSpace />
         </Toolbar>
     );
 }
 
-export function BrevoContactsGrid(): React.ReactElement {
+export function BrevoContactsGrid({ scope }: { scope: ContentScopeInterface }): React.ReactElement {
     const client = useApolloClient();
     const intl = useIntl();
     const dataGridProps = { ...useDataGridRemote(), ...usePersistentColumnState("BrevoContactsGrid") };
@@ -72,41 +89,37 @@ export function BrevoContactsGrid(): React.ReactElement {
     const columns: GridColDef<GQLBrevoContactsListFragment>[] = [
         {
             field: "createdAt",
-            headerName: intl.formatMessage({ id: "brevoContact.createdAt", defaultMessage: "Created At" }),
+            headerName: intl.formatMessage({ id: "comet.brevoContact.subscribedAt", defaultMessage: "Subscribed At" }),
             filterable: false,
             sortable: false,
             width: 150,
+            renderCell: ({ row }) => intl.formatDate(new Date(row.createdAt)),
         },
         {
             field: "modifiedAt",
-            headerName: intl.formatMessage({ id: "brevoContact.modifiedAt", defaultMessage: "Modified At" }),
+            headerName: intl.formatMessage({ id: "comet.brevoContact.modifiedAt", defaultMessage: "Modified At" }),
             filterable: false,
             sortable: false,
             width: 150,
+            renderCell: ({ row }) => intl.formatDate(new Date(row.modifiedAt)),
         },
         {
             field: "email",
-            headerName: intl.formatMessage({ id: "brevoContact.email", defaultMessage: "Email" }),
+            headerName: intl.formatMessage({ id: "comet.brevoContact.email", defaultMessage: "Email" }),
             filterable: false,
             sortable: false,
             width: 150,
+            flex: 1,
         },
         {
             field: "emailBlacklisted",
-            headerName: intl.formatMessage({ id: "brevoContact.emailBlacklisted", defaultMessage: "Email Blacklisted" }),
+            headerName: intl.formatMessage({ id: "comet.brevoContact.emailBlocked", defaultMessage: "Email blocked" }),
             type: "boolean",
             filterable: false,
             sortable: false,
             width: 150,
         },
-        {
-            field: "smsBlacklisted",
-            headerName: intl.formatMessage({ id: "brevoContact.smsBlacklisted", defaultMessage: "Sms Blacklisted" }),
-            type: "boolean",
-            filterable: false,
-            sortable: false,
-            width: 150,
-        },
+        // TODO: add configurable contact attributes
         {
             field: "actions",
             headerName: "",
@@ -115,20 +128,39 @@ export function BrevoContactsGrid(): React.ReactElement {
             type: "actions",
             renderCell: (params) => {
                 return (
-                    <>
-                        <IconButton component={StackLink} pageName="edit" payload={params.row.id}>
-                            <Edit color="primary" />
-                        </IconButton>
-                        <CrudContextMenu
-                            onDelete={async () => {
-                                await client.mutate<GQLDeleteBrevoContactMutation, GQLDeleteBrevoContactMutationVariables>({
-                                    mutation: deleteBrevoContactMutation,
-                                    variables: { id: params.row.id },
-                                });
-                            }}
-                            refetchQueries={[brevoContactsQuery]}
-                        />
-                    </>
+                    <RowActionsMenu>
+                        <RowActionsMenu>
+                            <RowActionsItem
+                                onClick={async () => {
+                                    await client.mutate<GQLUpdateBrevoContactMutation, GQLUpdateBrevoContactMutationVariables>({
+                                        mutation: updateBrevoContactMutation,
+                                        variables: { id: params.row.id, input: { blocked: !params.row.emailBlacklisted } },
+                                        refetchQueries: [brevoContactsQuery],
+                                    });
+                                }}
+                                icon={params.row.emailBlacklisted ? <Block /> : <Check />}
+                            >
+                                {params.row.emailBlacklisted ? (
+                                    <FormattedMessage id="comet.brevoContact.actions.block" defaultMessage="Block" />
+                                ) : (
+                                    <FormattedMessage id="comet.brevoContact.actions.unblock" defaultMessage="Unblock" />
+                                )}
+                            </RowActionsItem>
+
+                            <RowActionsItem
+                                onClick={async () => {
+                                    await client.mutate<GQLDeleteBrevoContactMutation, GQLDeleteBrevoContactMutationVariables>({
+                                        mutation: deleteBrevoContactMutation,
+                                        variables: { id: params.row.id },
+                                        refetchQueries: [brevoContactsQuery],
+                                    });
+                                }}
+                                icon={<Delete />}
+                            >
+                                <FormattedMessage {...messages.delete} />
+                            </RowActionsItem>
+                        </RowActionsMenu>
+                    </RowActionsMenu>
                 );
             },
         },
@@ -138,16 +170,18 @@ export function BrevoContactsGrid(): React.ReactElement {
         variables: {
             offset: dataGridProps.page * dataGridProps.pageSize,
             limit: dataGridProps.pageSize,
-            sort: muiGridSortToGql(dataGridProps.sortModel),
+            email: dataGridProps.filterModel?.quickFilterValues ? dataGridProps.filterModel?.quickFilterValues[0] : undefined,
+            scope,
         },
     });
+
     const rowCount = useBufferedRowCount(data?.brevoContacts.totalCount);
     if (error) throw error;
     const rows = data?.brevoContacts.nodes ?? [];
 
     return (
-        <MainContent fullHeight disablePadding>
-            <DataGridPro
+        <MainContent fullHeight>
+            <DataGrid
                 {...dataGridProps}
                 disableSelectionOnClick
                 rows={rows}
@@ -156,6 +190,11 @@ export function BrevoContactsGrid(): React.ReactElement {
                 loading={loading}
                 components={{
                     Toolbar: BrevoContactsGridToolbar,
+                }}
+                componentsProps={{
+                    toolbar: {
+                        intl,
+                    },
                 }}
             />
         </MainContent>

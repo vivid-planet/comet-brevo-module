@@ -1,25 +1,25 @@
-import { Stack, StackPage, StackSwitch } from "@comet/admin";
+import { useContentScope } from "@comet/cms-admin";
 import * as React from "react";
-import { useIntl } from "react-intl";
 
-import { BrevoContactForm } from "./BrevoContactForm";
 import { BrevoContactsGrid } from "./BrevoContactsGrid";
 
-export function BrevoContactsPage(): React.ReactElement {
-    const intl = useIntl();
-    return (
-        <Stack topLevelTitle={intl.formatMessage({ id: "brevoContacts.brevoContacts", defaultMessage: "Brevo Contacts" })}>
-            <StackSwitch>
-                <StackPage name="grid">
-                    <BrevoContactsGrid />
-                </StackPage>
-                <StackPage name="edit" title={intl.formatMessage({ id: "brevoContacts.editBrevoContact", defaultMessage: "Edit Brevo Contact" })}>
-                    {(selectedId) => <BrevoContactForm id={selectedId} />}
-                </StackPage>
-                <StackPage name="add" title={intl.formatMessage({ id: "brevoContacts.addBrevoContact", defaultMessage: "Add Brevo Contact" })}>
-                    <BrevoContactForm />
-                </StackPage>
-            </StackSwitch>
-        </Stack>
-    );
+interface CreateContactsPageOptions {
+    scopeParts: string[];
 }
+
+function createBrevoContactsPage({ scopeParts }: CreateContactsPageOptions) {
+    function BrevoContactsPage(): JSX.Element {
+        const { scope: completeScope } = useContentScope();
+
+        const scope = scopeParts.reduce((acc, scopePart) => {
+            acc[scopePart] = completeScope[scopePart];
+            return acc;
+        }, {} as { [key: string]: unknown });
+
+        return <BrevoContactsGrid scope={scope} />;
+    }
+
+    return BrevoContactsPage;
+}
+
+export { createBrevoContactsPage };

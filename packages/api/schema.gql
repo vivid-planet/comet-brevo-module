@@ -1,0 +1,68 @@
+type Dependency {
+  rootId: String!
+  rootGraphqlObjectType: String!
+  rootColumnName: String!
+  jsonPath: String!
+  visible: Boolean!
+  targetGraphqlObjectType: String!
+  targetId: String!
+}
+
+type ImageCropArea {
+  focalPoint: FocalPoint!
+  width: Float
+  height: Float
+  x: Float
+  y: Float
+}
+
+enum FocalPoint {
+  SMART
+  CENTER
+  NORTHWEST
+  NORTHEAST
+  SOUTHWEST
+  SOUTHEAST
+}
+
+type BrevoContact {
+  id: Int!
+  createdAt: String!
+  modifiedAt: String!
+  email: String!
+  emailBlacklisted: Boolean!
+  smsBlacklisted: Boolean!
+  listIds: [Int!]!
+  listUnsubscribed: [Int!]!
+}
+
+type PaginatedBrevoContacts {
+  nodes: [BrevoContact!]!
+  totalCount: Int!
+}
+
+type Query {
+  brevoContact(id: Int!): BrevoContact!
+  brevoContacts(offset: Int! = 0, limit: Int! = 25, email: String): PaginatedBrevoContacts!
+}
+
+type Mutation {
+  updateBrevoContact(id: Int!, input: BrevoContactUpdateInput!): BrevoContact!
+  deleteBrevoContact(id: Int!): Boolean!
+  subscribeBrevoContact(input: SubscribeInput!): SubscribeResponse!
+}
+
+input BrevoContactUpdateInput {
+  blocked: Boolean!
+}
+
+enum SubscribeResponse {
+  SUCCESSFUL
+  ERROR_UNKNOWN
+  ERROR_CONTAINED_IN_ECG_RTR_LIST
+}
+
+input SubscribeInput {
+  email: String!
+  redirectionUrl: String!
+}
