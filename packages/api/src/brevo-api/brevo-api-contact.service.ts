@@ -74,11 +74,10 @@ export class BrevoApiContactsService {
             if (!contact) return undefined;
             return contact;
         } catch (error) {
-            // Brevo throws 404 error if no contact was found
-            if (isErrorFromBrevo(error) && error.response.statusCode === 404) {
+            // Brevo throws 400 error if no contact was found
+            if (isErrorFromBrevo(error) && error.response.statusCode === 400) {
                 return undefined;
             }
-
             throw error;
         }
     }
