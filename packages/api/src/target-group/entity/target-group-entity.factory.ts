@@ -17,7 +17,7 @@ export interface TargetGroupInterface {
     totalSubscribers: number;
     totalContactsBlocked: number;
     scope: EmailCampaignScopeInterface;
-    filters?: Type<BrevoContactFilterAttributesInterface>;
+    filters?: BrevoContactFilterAttributesInterface;
 }
 
 export class TargetGroupEntityFactory {
@@ -78,7 +78,7 @@ export class TargetGroupEntityFactory {
             class TargetGroup extends TargetGroupBase {
                 @Embedded(() => BrevoFilterAttributes, { nullable: true })
                 @Field(() => BrevoFilterAttributes, { nullable: true })
-                filters?: Type<BrevoContactFilterAttributesInterface>;
+                filters?: BrevoContactFilterAttributesInterface;
             }
 
             return TargetGroup;
