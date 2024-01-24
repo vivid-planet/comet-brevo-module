@@ -138,12 +138,12 @@ export function BrevoContactsGrid({ scope }: { scope: ContentScopeInterface }): 
                                         refetchQueries: [brevoContactsQuery],
                                     });
                                 }}
-                                icon={params.row.emailBlacklisted ? <Block /> : <Check />}
+                                icon={params.row.emailBlacklisted ? <Check /> : <Block />}
                             >
                                 {params.row.emailBlacklisted ? (
-                                    <FormattedMessage id="cometBrevoModule.brevoContact.actions.block" defaultMessage="Block" />
-                                ) : (
                                     <FormattedMessage id="cometBrevoModule.brevoContact.actions.unblock" defaultMessage="Unblock" />
+                                ) : (
+                                    <FormattedMessage id="cometBrevoModule.brevoContact.actions.block" defaultMessage="Block" />
                                 )}
                             </RowActionsItem>
 
