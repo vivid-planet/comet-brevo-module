@@ -43,7 +43,11 @@ type PaginatedBrevoContacts {
 
 type Query {
   brevoContact(id: Int!): BrevoContact!
-  brevoContacts(offset: Int! = 0, limit: Int! = 25, email: String): PaginatedBrevoContacts!
+  brevoContacts(targetGroupId: ID, email: String, scope: EmailCampaignContentScopeInput!, offset: Int! = 0, limit: Int! = 25): PaginatedBrevoContacts!
+}
+
+input EmailCampaignContentScopeInput {
+  thisScopeHasNoFields____: String
 }
 
 type Mutation {
@@ -65,4 +69,5 @@ enum SubscribeResponse {
 input SubscribeInput {
   email: String!
   redirectionUrl: String!
+  scope: EmailCampaignContentScopeInput!
 }

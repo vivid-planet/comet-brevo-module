@@ -2,3 +2,4 @@ lib
 block-meta.json
 schema.gql
 src/**/*.generated.ts
+**/*.generated.ts
