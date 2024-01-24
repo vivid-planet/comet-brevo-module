@@ -69,11 +69,11 @@ function BrevoContactsGridToolbar({ intl }: { intl: IntlShape }) {
     return (
         <Toolbar>
             <ToolbarTitleItem>
-                <FormattedMessage id="comet.brevoContact.title" defaultMessage="Contacts" />
+                <FormattedMessage id="cometBrevoModule.brevoContact.title" defaultMessage="Contacts" />
             </ToolbarTitleItem>
             <ToolbarItem>
                 <GridToolbarQuickFilter
-                    placeholder={intl.formatMessage({ id: "comet.brevoContact.search", defaultMessage: "Search email address" })}
+                    placeholder={intl.formatMessage({ id: "cometBrevoModule.brevoContact.searchEmail", defaultMessage: "Search email address" })}
                 />
             </ToolbarItem>
             <ToolbarFillSpace />
@@ -89,7 +89,7 @@ export function BrevoContactsGrid({ scope }: { scope: ContentScopeInterface }): 
     const columns: GridColDef<GQLBrevoContactsListFragment>[] = [
         {
             field: "createdAt",
-            headerName: intl.formatMessage({ id: "comet.brevoContact.subscribedAt", defaultMessage: "Subscribed At" }),
+            headerName: intl.formatMessage({ id: "cometBrevoModule.brevoContact.subscribedAt", defaultMessage: "Subscribed At" }),
             filterable: false,
             sortable: false,
             width: 150,
@@ -97,7 +97,7 @@ export function BrevoContactsGrid({ scope }: { scope: ContentScopeInterface }): 
         },
         {
             field: "modifiedAt",
-            headerName: intl.formatMessage({ id: "comet.brevoContact.modifiedAt", defaultMessage: "Modified At" }),
+            headerName: intl.formatMessage({ id: "cometBrevoModule.brevoContact.modifiedAt", defaultMessage: "Modified At" }),
             filterable: false,
             sortable: false,
             width: 150,
@@ -105,7 +105,7 @@ export function BrevoContactsGrid({ scope }: { scope: ContentScopeInterface }): 
         },
         {
             field: "email",
-            headerName: intl.formatMessage({ id: "comet.brevoContact.email", defaultMessage: "Email" }),
+            headerName: intl.formatMessage({ id: "cometBrevoModule.brevoContact.email", defaultMessage: "Email" }),
             filterable: false,
             sortable: false,
             width: 150,
@@ -113,7 +113,7 @@ export function BrevoContactsGrid({ scope }: { scope: ContentScopeInterface }): 
         },
         {
             field: "emailBlacklisted",
-            headerName: intl.formatMessage({ id: "comet.brevoContact.emailBlocked", defaultMessage: "Email blocked" }),
+            headerName: intl.formatMessage({ id: "cometBrevoModule.brevoContact.emailBlocked", defaultMessage: "Email blocked" }),
             type: "boolean",
             filterable: false,
             sortable: false,
@@ -141,9 +141,9 @@ export function BrevoContactsGrid({ scope }: { scope: ContentScopeInterface }): 
                                 icon={params.row.emailBlacklisted ? <Block /> : <Check />}
                             >
                                 {params.row.emailBlacklisted ? (
-                                    <FormattedMessage id="comet.brevoContact.actions.block" defaultMessage="Block" />
+                                    <FormattedMessage id="cometBrevoModule.brevoContact.actions.block" defaultMessage="Block" />
                                 ) : (
-                                    <FormattedMessage id="comet.brevoContact.actions.unblock" defaultMessage="Unblock" />
+                                    <FormattedMessage id="cometBrevoModule.brevoContact.actions.unblock" defaultMessage="Unblock" />
                                 )}
                             </RowActionsItem>
 
