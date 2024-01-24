@@ -2,14 +2,19 @@ import { PaginatedResponseFactory, SubjectEntity, validateNotModified } from "@c
 import { EntityManager, EntityRepository, FindOptions, wrap } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Type } from "@nestjs/common";
-import { Args, ArgsType, ID, Mutation, ObjectType, Query, Resolver } from "@nestjs/graphql";
-import { EmailCampaignScopeInterface } from "src/types";
+import { Args, ArgsType, ID, Mutation, ObjectType, Parent, Query, ResolveField, Resolver } from "@nestjs/graphql";
 
+import { BrevoApiCampaignsService } from "../brevo-api/brevo-api-campaigns.service";
+import { BrevoApiCampaignStatistics } from "../brevo-api/dto/brevo-api-campaign-statistics";
+import { EcgRtrListService } from "../brevo-contact/ecg-rtr-list/ecg-rtr-list.service";
+import { EmailCampaignScopeInterface } from "../types";
 import { DynamicDtoValidationPipe } from "../validation/dynamic-dto-validation.pipe";
 import { EmailCampaignArgsFactory } from "./dto/email-campaign-args.factory";
 import { EmailCampaignInputInterface } from "./dto/email-campaign-input.factory";
+import { SendTestEmailCampaignArgs } from "./dto/send-test-email-campaign.args";
 import { EmailCampaignsService } from "./email-campaigns.service";
 import { EmailCampaignInterface } from "./entities/email-campaign-entity.factory";
+import { SendingState } from "./sending-state.enum";
 
 export function createEmailCampaignsResolver({
     EmailCampaign,
@@ -30,6 +35,8 @@ export function createEmailCampaignsResolver({
     class EmailCampaignsResolver {
         constructor(
             private readonly campaignsService: EmailCampaignsService,
+            private readonly brevoApiCampaignsService: BrevoApiCampaignsService,
+            private readonly ecgRtrListService: EcgRtrListService,
             private readonly entityManager: EntityManager,
             @InjectRepository("EmailCampaign") private readonly repository: EntityRepository<EmailCampaignInterface>,
         ) {}
@@ -57,7 +64,10 @@ export function createEmailCampaignsResolver({
             }
 
             const [entities, totalCount] = await this.repository.findAndCount(where, options);
-            return new PaginatedEmailCampaigns(entities, totalCount);
+
+            const emailCampaigns = this.campaignsService.loadEmailCampaignSendingStatesForEmailCampaigns(entities);
+
+            return new PaginatedEmailCampaigns(emailCampaigns, totalCount);
         }
 
         @Mutation(() => EmailCampaign)
@@ -73,6 +83,10 @@ export function createEmailCampaignsResolver({
             });
 
             await this.entityManager.flush();
+
+            if (input.scheduledAt) {
+                await this.campaignsService.saveEmailCampaignInBrevo(campaign.id, input.scheduledAt);
+            }
 
             return campaign;
         }
@@ -93,9 +107,31 @@ export function createEmailCampaignsResolver({
             wrap(campaign).assign({
                 ...input,
                 content: input.content.transformToBlockData(),
+                scheduledAt: input.scheduledAt ?? null,
             });
 
             await this.entityManager.flush();
+
+            let hasScheduleRemoved = false;
+
+            if (campaign.brevoId) {
+                const brevoEmailCampaign = await this.brevoApiCampaignsService.loadBrevoCampaignById(campaign.brevoId);
+                const sendingState = this.brevoApiCampaignsService.getSendingInformationFromBrevoCampaign(brevoEmailCampaign);
+
+                if (sendingState === SendingState.SENT) {
+                    throw new Error("Cannot update email campaign that has already been sent.");
+                }
+
+                hasScheduleRemoved = input.scheduledAt == null && brevoEmailCampaign.scheduledAt !== null;
+
+                if (hasScheduleRemoved && !(sendingState === SendingState.DRAFT)) {
+                    await this.campaignsService.suspendEmailCampaign(campaign.brevoId);
+                }
+            }
+
+            if (!hasScheduleRemoved && input.scheduledAt) {
+                await this.campaignsService.saveEmailCampaignInBrevo(campaign.id, input.scheduledAt);
+            }
 
             return campaign;
         }
@@ -104,9 +140,57 @@ export function createEmailCampaignsResolver({
         @SubjectEntity(EmailCampaign)
         async deleteEmailCampaign(@Args("id", { type: () => ID }) id: string): Promise<boolean> {
             const campaign = await this.repository.findOneOrFail(id);
+
+            if (campaign.brevoId) {
+                throw new Error("Cannot delete campaign that has already been scheduled once before.");
+            }
+
             await this.entityManager.remove(campaign);
             await this.entityManager.flush();
             return true;
+        }
+
+        @Mutation(() => Boolean)
+        async sendEmailCampaignNow(@Args("id", { type: () => ID }) id: string): Promise<boolean> {
+            return this.campaignsService.sendEmailCampaignNow(id);
+        }
+
+        @Mutation(() => Boolean)
+        async sendEmailCampaignToTestEmails(
+            @Args("id", { type: () => ID }) id: string,
+            @Args("data", { type: () => SendTestEmailCampaignArgs }) data: SendTestEmailCampaignArgs,
+        ): Promise<boolean> {
+            const campaign = await this.campaignsService.saveEmailCampaignInBrevo(id);
+
+            const containedEcgRtrListEmails = await this.ecgRtrListService.getContainedEcgRtrListEmails(data.emails);
+            const emailsNotInEcgRtrList = data.emails.filter((email) => !containedEcgRtrListEmails.includes(email));
+
+            if (campaign.brevoId) {
+                return this.brevoApiCampaignsService.sendTestEmail(campaign.brevoId, emailsNotInEcgRtrList);
+            }
+
+            return false;
+        }
+
+        @Query(() => BrevoApiCampaignStatistics, { nullable: true })
+        async emailCampaignStatistics(@Args("id", { type: () => ID }) id: string): Promise<BrevoApiCampaignStatistics | null> {
+            const campaign = await this.repository.findOneOrFail(id);
+
+            return campaign.brevoId ? this.brevoApiCampaignsService.loadBrevoCampaignStatisticsById(campaign.brevoId) : null;
+        }
+
+        @ResolveField(() => SendingState)
+        async sendingState(@Parent() campaign: EmailCampaignInterface): Promise<SendingState> {
+            if (campaign.sendingState) {
+                return campaign.sendingState;
+            }
+
+            if (campaign.brevoId) {
+                const brevoCampaign = await this.brevoApiCampaignsService.loadBrevoCampaignById(campaign.brevoId);
+                return this.brevoApiCampaignsService.getSendingInformationFromBrevoCampaign(brevoCampaign);
+            }
+
+            return SendingState.DRAFT;
         }
     }
 

@@ -18,13 +18,13 @@ export class BrevoModule {
                 BrevoContactModule.register({
                     BrevoContactAttributes: config.brevo.BrevoContactAttributes,
                     BrevoFilterAttributes: config.brevo.BrevoContactFilterAttributes,
-                    Scope: config.Scope,
+                    Scope: config.emailCampaigns.Scope,
                 }),
                 EmailCampaignModule.register(config),
-                TargetGroupModule,
+                TargetGroupModule.register({ Scope: config.emailCampaigns.Scope, BrevoFilterAttributes: config.brevo.BrevoContactFilterAttributes }),
                 ConfigModule.forRoot(config),
             ],
-            exports: [],
+            exports: [TargetGroupModule],
         };
     }
 }

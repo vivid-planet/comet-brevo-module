@@ -2,7 +2,6 @@ import { DynamicModule, Module, Type } from "@nestjs/common";
 
 import { BrevoApiModule } from "../brevo-api/brevo-api.module";
 import { ConfigModule } from "../config/config.module";
-import { TargetGroupModule } from "../target-group/target-group.module";
 import { BrevoContactAttributesInterface, BrevoContactFilterAttributesInterface, EmailCampaignScopeInterface } from "../types";
 import { createBrevoContactResolver } from "./brevo-contact.resolver";
 import { BrevoContactsService } from "./brevo-contacts.service";
@@ -26,7 +25,7 @@ export class BrevoContactModule {
 
         return {
             module: BrevoContactModule,
-            imports: [BrevoApiModule, ConfigModule, TargetGroupModule.register({ Scope, BrevoFilterAttributes })],
+            imports: [BrevoApiModule, ConfigModule],
             providers: [BrevoContactsService, BrevoContactResolver, EcgRtrListService, IsValidRedirectURLConstraint],
         };
     }

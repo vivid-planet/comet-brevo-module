@@ -32,6 +32,9 @@ The following variables must be set manually
 -   `BREVO_SENDER_NAME`
 -   `BREVO_SENDER_EMAIL`
 -   `ECG_RTR_LIST_API_KEY`
+-   `CAMPAIGNS_FRONTEND_URL`
+-   `CAMPAIGNS_FRONTEND_BASIC_AUTH_USERNAME`
+-   `CAMPAIGNS_FRONTEND_BASIC_AUTH_PASSWORD`
 
 ### Start development processes
 

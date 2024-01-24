@@ -23,6 +23,8 @@
         "test:watch": "jest --watch"
     },
     "dependencies": {
+        "@nestjs/axios": "^1.0.0",
+        "@sendinblue/client": "^3.3.1",
         "node-fetch": "^2.6.1"
     },
     "devDependencies": {
@@ -40,11 +42,11 @@
         "@nestjs/common": "^9.0.0",
         "@nestjs/core": "^9.0.0",
         "@nestjs/graphql": "^10.0.0",
-        "@sendinblue/client": "^3.3.1",
         "@types/jest": "^29.5.0",
         "@types/node-fetch": "^2.5.12",
         "@types/rimraf": "^3.0.0",
         "@types/uuid": "^8.3.0",
+        "axios": "^0.21.0",
         "class-transformer": "^0.5.0",
         "class-validator": "^0.13.1",
         "eslint": "^8.0.0",
@@ -72,6 +74,7 @@
         "@mikro-orm/nestjs": "^5.0.0",
         "@mikro-orm/postgresql": "^5.0.4",
         "@nestjs/common": "^9.0.0",
+        "axios": "^0.21.0",
         "reflect-metadata": "^0.1.13",
         "rxjs": "^7.0.0"
     }

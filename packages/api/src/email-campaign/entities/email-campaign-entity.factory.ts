@@ -19,6 +19,7 @@ export interface EmailCampaignInterface {
     updatedAt: Date;
     content: BlockDataInterface;
     scope: EmailCampaignScopeInterface;
+    sendingState: SendingState;
 }
 
 export class EmailCampaignEntityFactory {
