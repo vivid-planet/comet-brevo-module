@@ -7,6 +7,7 @@
         "build:admin": "pnpm recursive --filter '@comet/brevo-admin' run build",
         "build:api:skippable": "test -f packages/api/lib/index.d.ts && echo 'Skipping API build' || $npm_execpath build:api",
         "build:admin:skippable": "test -f packages/admin/lib/index.d.ts && echo 'Skipping Admin build' || $npm_execpath build:admin",
+        "build:lib": "pnpm recursive --filter '@comet/*' run build",
         "clean": "pnpm recursive run clean",
         "copy-schema-files": "node copy-schema-files.js",
         "dev:demo": "dotenv -c -- dev-pm start @demo",
@@ -19,7 +20,9 @@
         "lint": "pnpm recursive run lint",
         "lint:eslint": "pnpm recursive run lint:eslint",
         "lint:tsc": "pnpm recursive run lint:tsc",
-        "intl:extract": "formatjs extract \"src/**/*.ts*\" --ignore ./**.d.ts --out-file lang-extracted/en.json --format simple"
+        "intl:extract": "formatjs extract \"src/**/*.ts*\" --ignore ./**.d.ts --out-file lang-extracted/en.json --format simple",
+        "version": "$npm_execpath changeset version && pnpm install --lockfile-only",
+        "publish": "pnpm run build:lib && $npm_execpath changeset publish"
     },
     "devDependencies": {
         "@comet/dev-process-manager": "^2.0.0",
