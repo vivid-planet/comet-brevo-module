@@ -34,7 +34,7 @@ jobs:
 
       - name: Get version to be published
         run: |
-          cd packages/admin/admin
+          cd packages/admin
           echo "PUBLISHED_VERSION=$(pnpm pkg get version | sed -r 's/"//g')" >> $GITHUB_ENV
 
       - name: Create Release Pull Request or Publish to npm
