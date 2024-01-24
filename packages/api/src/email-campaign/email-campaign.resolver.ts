@@ -1,8 +1,10 @@
-import { PaginatedResponseFactory, SubjectEntity, validateNotModified } from "@comet/cms-api";
-import { EntityManager, EntityRepository, FindOptions, wrap } from "@mikro-orm/core";
+import { extractGraphqlFields, PaginatedResponseFactory, SubjectEntity, validateNotModified } from "@comet/cms-api";
+import { EntityManager, EntityRepository, FindOptions, Reference, wrap } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Type } from "@nestjs/common";
-import { Args, ArgsType, ID, Mutation, ObjectType, Parent, Query, ResolveField, Resolver } from "@nestjs/graphql";
+import { Args, ArgsType, ID, Info, Mutation, ObjectType, Parent, Query, ResolveField, Resolver } from "@nestjs/graphql";
+import { GraphQLResolveInfo } from "graphql";
+import { TargetGroupInterface } from "src/target-group/entity/target-group-entity.factory";
 
 import { BrevoApiCampaignsService } from "../brevo-api/brevo-api-campaigns.service";
 import { BrevoApiCampaignStatistics } from "../brevo-api/dto/brevo-api-campaign-statistics";
@@ -20,10 +22,12 @@ export function createEmailCampaignsResolver({
     EmailCampaign,
     EmailCampaignInput,
     Scope,
+    TargetGroup,
 }: {
     EmailCampaign: Type<EmailCampaignInterface>;
     EmailCampaignInput: Type<EmailCampaignInputInterface>;
     Scope: Type<EmailCampaignScopeInterface>;
+    TargetGroup: Type<TargetGroupInterface>;
 }): Type<unknown> {
     @ObjectType()
     class PaginatedEmailCampaigns extends PaginatedResponseFactory.create(EmailCampaign) {}
@@ -39,6 +43,7 @@ export function createEmailCampaignsResolver({
             private readonly ecgRtrListService: EcgRtrListService,
             private readonly entityManager: EntityManager,
             @InjectRepository("EmailCampaign") private readonly repository: EntityRepository<EmailCampaignInterface>,
+            @InjectRepository("TargetGroup") private readonly targetGroupRepository: EntityRepository<TargetGroupInterface>,
         ) {}
 
         @Query(() => EmailCampaign)
@@ -49,11 +54,21 @@ export function createEmailCampaignsResolver({
         }
 
         @Query(() => PaginatedEmailCampaigns)
-        async emailCampaigns(@Args() { search, filter, sort, offset, limit, scope }: EmailCampaignsArgs): Promise<PaginatedEmailCampaigns> {
+        async emailCampaigns(
+            @Args() { search, filter, sort, offset, limit, scope }: EmailCampaignsArgs,
+            @Info() info: GraphQLResolveInfo,
+        ): Promise<PaginatedEmailCampaigns> {
             const where = this.campaignsService.getFindCondition({ search, filter });
             where.scope = scope;
 
-            const options: FindOptions<EmailCampaignInterface> = { offset, limit };
+            const fields = extractGraphqlFields(info, { root: "nodes" });
+            const populate: string[] = [];
+            if (fields.includes("targetGroup")) {
+                populate.push("targetGroup");
+            }
+
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const options: FindOptions<EmailCampaignInterface, any> = { offset, limit, populate };
 
             if (sort) {
                 options.orderBy = sort.map((sortItem) => {
@@ -76,9 +91,12 @@ export function createEmailCampaignsResolver({
             scope: typeof Scope,
             @Args("input", { type: () => EmailCampaignInput }, new DynamicDtoValidationPipe(EmailCampaignInput)) input: EmailCampaignInputInterface,
         ): Promise<EmailCampaignInterface> {
+            const { targetGroup: targetGroupInput } = input;
+
             const campaign = this.repository.create({
                 ...input,
                 scope,
+                targetGroup: targetGroupInput ? Reference.create(await this.targetGroupRepository.findOneOrFail(targetGroupInput)) : undefined,
                 content: input.content.transformToBlockData(),
             });
 
@@ -191,6 +209,11 @@ export function createEmailCampaignsResolver({
             }
 
             return SendingState.DRAFT;
+        }
+
+        @ResolveField(() => TargetGroup, { nullable: true })
+        async targetGroup(@Parent() emailCampaign: EmailCampaignInterface): Promise<TargetGroupInterface | undefined> {
+            return emailCampaign.targetGroup?.load();
         }
     }
 

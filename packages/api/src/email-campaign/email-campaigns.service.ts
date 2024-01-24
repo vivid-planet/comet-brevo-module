@@ -101,17 +101,14 @@ export class EmailCampaignsService {
     public async sendEmailCampaignNow(id: string): Promise<boolean> {
         const campaign = await this.saveEmailCampaignInBrevo(id);
 
-        // TODO: add correct list of contact list / target groups after they are implemented
-        const contactList = {
-            brevoId: 2,
-        };
+        const targetGroup = await campaign.targetGroup?.load();
 
-        if (contactList?.brevoId) {
+        if (targetGroup?.brevoId) {
             let currentOffset = 0;
             let totalContacts = 0;
             const limit = 50;
             do {
-                const [contacts, total] = await this.brevoApiContactsService.findContactsByListId(contactList.brevoId, limit, currentOffset);
+                const [contacts, total] = await this.brevoApiContactsService.findContactsByListId(targetGroup.brevoId, limit, currentOffset);
                 const emails = contacts.map((contact) => contact.email);
                 const containedEmails = await this.ecgRtrListService.getContainedEcgRtrListEmails(emails);
 
