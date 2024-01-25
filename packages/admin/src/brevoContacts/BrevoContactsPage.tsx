@@ -1,10 +1,25 @@
+import { useContentScope } from "@comet/cms-admin";
 import * as React from "react";
 
-export const BrevoContactsPage = (): JSX.Element => {
-    return (
-        <>
-            {/* eslint-disable-next-line @calm/react-intl/missing-formatted-message */}
-            <h1>Brevo Contacts</h1>
-        </>
-    );
-};
+import { BrevoContactsGrid } from "./BrevoContactsGrid";
+
+interface CreateContactsPageOptions {
+    scopeParts: string[];
+}
+
+function createBrevoContactsPage({ scopeParts }: CreateContactsPageOptions) {
+    function BrevoContactsPage(): JSX.Element {
+        const { scope: completeScope } = useContentScope();
+
+        const scope = scopeParts.reduce((acc, scopePart) => {
+            acc[scopePart] = completeScope[scopePart];
+            return acc;
+        }, {} as { [key: string]: unknown });
+
+        return <BrevoContactsGrid scope={scope} />;
+    }
+
+    return BrevoContactsPage;
+}
+
+export { createBrevoContactsPage };
