@@ -15,10 +15,12 @@ import { TargetGroupsService } from "./target-groups.service";
 export function createTargetGroupsResolver({
     TargetGroup,
     TargetGroupInput,
+    TargetGroupUpdateInput,
     Scope,
 }: {
     TargetGroup: Type<TargetGroupInterface>;
     TargetGroupInput: Type<TargetGroupInputInterface>;
+    TargetGroupUpdateInput: Type<Partial<TargetGroupInputInterface>>;
     Scope: Type<EmailCampaignScopeInterface>;
 }): Type<unknown> {
     @ObjectType()
@@ -88,7 +90,7 @@ export function createTargetGroupsResolver({
 
                 await this.entityManager.flush();
 
-                await this.targetGroupsService.assignContactsToContactList(input, targetGroup.brevoId, targetGroup.scope);
+                await this.targetGroupsService.assignContactsToContactList(input.filters, targetGroup.brevoId, targetGroup.scope);
 
                 return targetGroup;
             }
@@ -100,7 +102,8 @@ export function createTargetGroupsResolver({
         @SubjectEntity(TargetGroup)
         async updateTargetGroup(
             @Args("id", { type: () => ID }) id: string,
-            @Args("input", { type: () => TargetGroupInput }, new DynamicDtoValidationPipe(TargetGroupInput)) input: TargetGroupInputInterface,
+            @Args("input", { type: () => TargetGroupUpdateInput }, new DynamicDtoValidationPipe(TargetGroupUpdateInput))
+            input: Partial<TargetGroupInputInterface>,
             @Args("lastUpdatedAt", { type: () => Date, nullable: true }) lastUpdatedAt?: Date,
         ): Promise<TargetGroupInterface> {
             const targetGroup = await this.repository.findOneOrFail(id);
@@ -109,9 +112,9 @@ export function createTargetGroupsResolver({
                 validateNotModified(targetGroup, lastUpdatedAt);
             }
 
-            await this.targetGroupsService.assignContactsToContactList(input, targetGroup.brevoId, targetGroup.scope);
+            await this.targetGroupsService.assignContactsToContactList(input.filters, targetGroup.brevoId, targetGroup.scope);
 
-            if (input.title !== targetGroup.title) {
+            if (input.title && input.title !== targetGroup.title) {
                 const successfullyUpdatedContactList = await this.brevoApiContactsService.updateBrevoContactList(targetGroup.brevoId, input);
                 if (!successfullyUpdatedContactList) {
                     throw Error("Brevo Error: Could not update contact list");

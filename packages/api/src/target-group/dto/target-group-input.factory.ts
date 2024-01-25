@@ -1,4 +1,4 @@
-import { IsUndefinable } from "@comet/cms-api";
+import { IsUndefinable, PartialType } from "@comet/cms-api";
 import { Type } from "@nestjs/common";
 import { Field, InputType } from "@nestjs/graphql";
 import { Type as TypeTransformer } from "class-transformer";
@@ -16,7 +16,7 @@ export class TargetGroupInputFactory {
         BrevoFilterAttributes,
     }: {
         BrevoFilterAttributes?: Type<BrevoContactFilterAttributesInterface>;
-    }): Type<TargetGroupInputInterface> {
+    }): [Type<TargetGroupInputInterface>, Type<Partial<TargetGroupInputInterface>>] {
         @InputType({
             isAbstract: true,
         })
@@ -36,13 +36,18 @@ export class TargetGroupInputFactory {
                 @IsUndefinable()
                 filters?: BrevoContactFilterAttributesInterface;
             }
+            @InputType()
+            class TargetGroupUpdateInput extends PartialType(TargetGroupInput) {}
 
-            return TargetGroupInput;
+            return [TargetGroupInput, TargetGroupUpdateInput];
         }
 
         @InputType()
         class TargetGroupInput extends TargetGroupInputBase {}
 
-        return TargetGroupInput;
+        @InputType()
+        class TargetGroupUpdateInput extends PartialType(TargetGroupInput) {}
+
+        return [TargetGroupInput, TargetGroupUpdateInput];
     }
 }

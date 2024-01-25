@@ -8,7 +8,6 @@ import { BrevoContactInterface } from "../brevo-contact/dto/brevo-contact.factor
 import { SubscribeInputInterface } from "../brevo-contact/dto/subscribe-input.factory";
 import { BrevoContactAttributesInterface, BrevoContactFilterAttributesInterface, EmailCampaignScopeInterface } from "../types";
 import { TargetGroupFilter } from "./dto/target-group.filter";
-import { TargetGroupInputInterface } from "./dto/target-group-input.factory";
 import { TargetGroupInterface } from "./entity/target-group-entity.factory";
 
 @Injectable()
@@ -54,7 +53,11 @@ export class TargetGroupsService {
         return true;
     }
 
-    public async assignContactsToContactList(input: TargetGroupInputInterface, brevoId: number, scope: EmailCampaignScopeInterface): Promise<true> {
+    public async assignContactsToContactList(
+        filters: BrevoContactFilterAttributesInterface = {},
+        brevoId: number,
+        scope: EmailCampaignScopeInterface,
+    ): Promise<true> {
         const mainScopeTargetGroupList = await this.repository.findOneOrFail({ scope, isMainList: true });
 
         let offset = 0;
@@ -68,7 +71,7 @@ export class TargetGroupsService {
             const contactsNotInContactList: BrevoContactInterface[] = [];
 
             for (const contact of contacts) {
-                const contactIsInTargetGroup = this.checkIfContactIsInTargetGroup(contact.attributes, input.filters);
+                const contactIsInTargetGroup = this.checkIfContactIsInTargetGroup(contact.attributes, filters);
 
                 if (contactIsInTargetGroup) {
                     contactsInContactList.push(contact);
