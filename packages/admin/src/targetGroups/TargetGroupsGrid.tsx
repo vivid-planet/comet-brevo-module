@@ -16,9 +16,9 @@ import {
     usePersistentColumnState,
 } from "@comet/admin";
 import { Add as AddIcon, Edit } from "@comet/admin-icons";
+import { ContentScopeInterface } from "@comet/cms-admin";
 import { Button, IconButton } from "@mui/material";
-import { DataGridPro, GridColDef, GridToolbarQuickFilter } from "@mui/x-data-grid-pro";
-import { useContentScope } from "@src/common/ContentScopeProvider";
+import { DataGrid, GridColDef, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import * as React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
@@ -35,11 +35,7 @@ import {
 const targetGroupsFragment = gql`
     fragment TargetGroupsList on TargetGroup {
         id
-        updatedAt
-        createdAt
         title
-        isMainList
-        brevoId
         totalSubscribers
         totalContactsBlocked
     }
@@ -52,7 +48,7 @@ const targetGroupsQuery = gql`
         $sort: [TargetGroupSort!]
         $search: String
         $filter: TargetGroupFilter
-        $scope: TargetGroupContentScopeInput!
+        $scope: EmailCampaignContentScopeInput!
     ) {
         targetGroups(offset: $offset, limit: $limit, sort: $sort, search: $search, filter: $filter, scope: $scope) {
             nodes {
@@ -71,7 +67,7 @@ const deleteTargetGroupMutation = gql`
 `;
 
 const createTargetGroupMutation = gql`
-    mutation CreateTargetGroup($scope: TargetGroupContentScopeInput!, $input: TargetGroupInput!) {
+    mutation CreateTargetGroup($scope: EmailCampaignContentScopeInput!, $input: TargetGroupInput!) {
         createTargetGroup(scope: $scope, input: $input) {
             id
         }
@@ -91,66 +87,35 @@ function TargetGroupsGridToolbar() {
             <ToolbarFillSpace />
             <ToolbarActions>
                 <Button startIcon={<AddIcon />} component={StackLink} pageName="add" payload="add" variant="contained" color="primary">
-                    <FormattedMessage id="targetGroup.newTargetGroup" defaultMessage="New TargetGroup" />
+                    <FormattedMessage id="cometBrevoModule.targetGroup.newTargetGroup" defaultMessage="New target group" />
                 </Button>
             </ToolbarActions>
         </Toolbar>
     );
 }
 
-export function TargetGroupsGrid(): React.ReactElement {
+export function TargetGroupsGrid({ scope }: { scope: ContentScopeInterface }): React.ReactElement {
     const client = useApolloClient();
     const intl = useIntl();
     const dataGridProps = { ...useDataGridRemote(), ...usePersistentColumnState("TargetGroupsGrid") };
-    const { scope } = useContentScope();
 
     const columns: GridColDef<GQLTargetGroupsListFragment>[] = [
-        {
-            field: "updatedAt",
-            headerName: intl.formatMessage({ id: "targetGroup.updatedAt", defaultMessage: "Updated At" }),
-            type: "dateTime",
-            valueGetter: ({ value }) => value && new Date(value),
-            width: 150,
-        },
-        {
-            field: "createdAt",
-            headerName: intl.formatMessage({ id: "targetGroup.createdAt", defaultMessage: "Created At" }),
-            type: "dateTime",
-            valueGetter: ({ value }) => value && new Date(value),
-            width: 150,
-        },
-        { field: "title", headerName: intl.formatMessage({ id: "targetGroup.title", defaultMessage: "Title" }), width: 150 },
-        {
-            field: "isMainList",
-            headerName: intl.formatMessage({ id: "targetGroup.isMainList", defaultMessage: "Is Main List" }),
-            type: "boolean",
-            filterable: false,
-            sortable: false,
-            width: 150,
-        },
-        {
-            field: "brevoId",
-            headerName: intl.formatMessage({ id: "targetGroup.brevoId", defaultMessage: "Brevo Id" }),
-            type: "number",
-            filterable: false,
-            sortable: false,
-            width: 150,
-        },
+        { field: "title", headerName: intl.formatMessage({ id: "cometBrevoModule.targetGroup.title", defaultMessage: "Title" }), flex: 1 },
         {
             field: "totalSubscribers",
-            headerName: intl.formatMessage({ id: "targetGroup.totalSubscribers", defaultMessage: "Total Subscribers" }),
+            headerName: intl.formatMessage({ id: "cometBrevoModule.targetGroup.totalSubscribers", defaultMessage: "Total subscribers" }),
             type: "number",
             filterable: false,
             sortable: false,
-            width: 150,
+            width: 200,
         },
         {
             field: "totalContactsBlocked",
-            headerName: intl.formatMessage({ id: "targetGroup.totalContactsBlocked", defaultMessage: "Total Contacts Blocked" }),
+            headerName: intl.formatMessage({ id: "cometBrevoModule.targetGroup.totalContactsBlocked", defaultMessage: "Total contacts blocked" }),
             type: "number",
             filterable: false,
             sortable: false,
-            width: 150,
+            width: 200,
         },
         {
             field: "actions",
@@ -208,8 +173,8 @@ export function TargetGroupsGrid(): React.ReactElement {
     const rows = data?.targetGroups.nodes ?? [];
 
     return (
-        <MainContent fullHeight disablePadding>
-            <DataGridPro
+        <MainContent fullHeight>
+            <DataGrid
                 {...dataGridProps}
                 disableSelectionOnClick
                 rows={rows}

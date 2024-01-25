@@ -17,15 +17,13 @@ import {
     useStackSwitchApi,
 } from "@comet/admin";
 import { ArrowLeft } from "@comet/admin-icons";
-import { EditPageLayout, queryUpdatedAt, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
+import { ContentScopeInterface, EditPageLayout, queryUpdatedAt, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
 import { IconButton } from "@mui/material";
-import { useContentScope } from "@src/common/ContentScopeProvider";
 import { FormApi } from "final-form";
-import { filter } from "graphql-anywhere";
 import React from "react";
 import { FormattedMessage } from "react-intl";
 
-import { createTargetGroupMutation, targetGroupFormFragment, targetGroupFormQuery, updateTargetGroupMutation } from "./TargetGroupForm.gql";
+import { createTargetGroupMutation, targetGroupFormQuery, updateTargetGroupMutation } from "./TargetGroupForm.gql";
 import {
     GQLCreateTargetGroupMutation,
     GQLCreateTargetGroupMutationVariables,
@@ -40,15 +38,15 @@ type FormValues = GQLTargetGroupFormFragment;
 
 interface FormProps {
     id?: string;
+    scope: ContentScopeInterface;
 }
 
-export function TargetGroupForm({ id }: FormProps): React.ReactElement {
+export function TargetGroupForm({ id, scope }: FormProps): React.ReactElement {
     const stackApi = useStackApi();
     const client = useApolloClient();
     const mode = id ? "edit" : "add";
     const formApiRef = useFormApiRef<FormValues>();
     const stackSwitchApi = useStackSwitchApi();
-    const { scope } = useContentScope();
 
     const { data, error, loading, refetch } = useQuery<GQLTargetGroupFormQuery, GQLTargetGroupFormQueryVariables>(
         targetGroupFormQuery,
@@ -59,7 +57,7 @@ export function TargetGroupForm({ id }: FormProps): React.ReactElement {
         () =>
             data?.targetGroup
                 ? {
-                      ...filter<GQLTargetGroupFormFragment>(targetGroupFormFragment, data.targetGroup),
+                      title: data.targetGroup.title,
                   }
                 : {},
         [data],
@@ -94,12 +92,12 @@ export function TargetGroupForm({ id }: FormProps): React.ReactElement {
                 variables: { id, input: output, lastUpdatedAt: data?.targetGroup?.updatedAt },
             });
         } else {
-            const { data: mutationReponse } = await client.mutate<GQLCreateTargetGroupMutation, GQLCreateTargetGroupMutationVariables>({
+            const { data: mutationResponse } = await client.mutate<GQLCreateTargetGroupMutation, GQLCreateTargetGroupMutationVariables>({
                 mutation: createTargetGroupMutation,
                 variables: { scope, input: output },
             });
             if (!event.navigatingBack) {
-                const id = mutationReponse?.createTargetGroup.id;
+                const id = mutationResponse?.createTargetGroup.id;
                 if (id) {
                     setTimeout(() => {
                         stackSwitchApi.activatePage("edit", id);
@@ -135,7 +133,7 @@ export function TargetGroupForm({ id }: FormProps): React.ReactElement {
                             </IconButton>
                         </ToolbarItem>
                         <ToolbarTitleItem>
-                            <FormattedMessage id="targetGroups.TargetGroup" defaultMessage="Target Group" />
+                            <FormattedMessage id="cometBrevoModule.targetGroups.TargetGroup" defaultMessage="Target group" />
                         </ToolbarTitleItem>
                         <ToolbarFillSpace />
                         <ToolbarActions>
@@ -148,7 +146,7 @@ export function TargetGroupForm({ id }: FormProps): React.ReactElement {
                             fullWidth
                             name="title"
                             component={FinalFormInput}
-                            label={<FormattedMessage id="targetGroup.title" defaultMessage="Title" />}
+                            label={<FormattedMessage id="cometBrevoModule.targetGroup.title" defaultMessage="Title" />}
                         />
                     </MainContent>
                 </EditPageLayout>

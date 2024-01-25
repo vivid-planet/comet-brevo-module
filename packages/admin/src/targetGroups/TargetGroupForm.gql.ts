@@ -26,7 +26,7 @@ export const targetGroupFormCheckForChangesQuery = gql`
 `;
 
 export const createTargetGroupMutation = gql`
-    mutation CreateTargetGroup($scope: TargetGroupContentScopeInput!, $input: TargetGroupInput!) {
+    mutation CreateTargetGroup($scope: EmailCampaignContentScopeInput!, $input: TargetGroupInput!) {
         createTargetGroup(scope: $scope, input: $input) {
             id
             updatedAt
