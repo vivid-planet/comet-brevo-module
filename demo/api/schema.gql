@@ -381,6 +381,19 @@ type PaginatedDamFolders {
   totalCount: Int!
 }
 
+type TargetGroup implements DocumentInterface {
+  id: ID!
+  updatedAt: DateTime!
+  createdAt: DateTime!
+  title: String!
+  isMainList: Boolean!
+  brevoId: Int!
+  totalSubscribers: Int!
+  totalContactsBlocked: Int!
+  scope: EmailCampaignContentScope!
+  filters: BrevoContactFilterAttributes
+}
+
 type BrevoContact {
   id: Int!
   createdAt: String!
@@ -407,6 +420,7 @@ type EmailCampaign implements DocumentInterface {
   brevoId: Int
   sendingState: SendingState!
   scheduledAt: DateTime
+  targetGroup: TargetGroup
   content: EmailCampaignContentBlockData!
   scope: EmailCampaignContentScope!
 }
@@ -423,19 +437,6 @@ scalar EmailCampaignContentBlockData @specifiedBy(url: "http://www.ecma-internat
 type PaginatedEmailCampaigns {
   nodes: [EmailCampaign!]!
   totalCount: Int!
-}
-
-type TargetGroup implements DocumentInterface {
-  id: ID!
-  updatedAt: DateTime!
-  createdAt: DateTime!
-  title: String!
-  isMainList: Boolean!
-  brevoId: Int!
-  totalSubscribers: Int!
-  totalContactsBlocked: Int!
-  scope: EmailCampaignContentScope!
-  filters: BrevoContactFilterAttributes
 }
 
 type PaginatedTargetGroups {
@@ -847,6 +848,7 @@ input EmailCampaignInput {
   title: String!
   subject: String!
   scheduledAt: DateTime
+  targetGroup: ID = null
   content: EmailCampaignContentBlockInput!
 }
 

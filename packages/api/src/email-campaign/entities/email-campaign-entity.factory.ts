@@ -1,10 +1,11 @@
 import { Block, BlockDataInterface, RootBlock } from "@comet/blocks-api";
 import { DocumentInterface, RootBlockDataScalar, RootBlockType } from "@comet/cms-api";
-import { Embedded, Entity, OptionalProps, PrimaryKey, Property } from "@mikro-orm/core";
+import { Embedded, Entity, ManyToOne, OptionalProps, PrimaryKey, Property, Ref } from "@mikro-orm/core";
 import { Type } from "@nestjs/common";
 import { Field, ID, Int, ObjectType } from "@nestjs/graphql";
 import { v4 } from "uuid";
 
+import { TargetGroupInterface } from "../../target-group/entity/target-group-entity.factory";
 import { EmailCampaignScopeInterface } from "../../types";
 import { SendingState } from "../sending-state.enum";
 
@@ -20,15 +21,18 @@ export interface EmailCampaignInterface {
     content: BlockDataInterface;
     scope: EmailCampaignScopeInterface;
     sendingState: SendingState;
+    targetGroup?: Ref<TargetGroupInterface>;
 }
 
 export class EmailCampaignEntityFactory {
     static create({
         EmailCampaignContentBlock,
         Scope,
+        TargetGroup,
     }: {
         EmailCampaignContentBlock: Block;
         Scope: EmailCampaignScopeInterface;
+        TargetGroup: Type<TargetGroupInterface>;
     }): Type<EmailCampaignInterface> {
         @Entity()
         @ObjectType({
@@ -71,6 +75,10 @@ export class EmailCampaignEntityFactory {
             @Property({ columnType: "timestamp with time zone", nullable: true })
             @Field(() => Date, { nullable: true })
             scheduledAt?: Date;
+
+            @ManyToOne(() => TargetGroup, { nullable: true, ref: true })
+            @Field(() => TargetGroup, { nullable: true })
+            targetGroup?: Ref<TargetGroupInterface> = undefined;
 
             @RootBlock(EmailCampaignContentBlock)
             @Property({ customType: new RootBlockType(EmailCampaignContentBlock) })

@@ -1,15 +1,16 @@
 import { Block, BlockInputInterface, isBlockInputInterface } from "@comet/blocks-api";
 import { IsUndefinable, RootBlockInputScalar } from "@comet/cms-api";
 import { Type } from "@nestjs/common";
-import { Field, InputType } from "@nestjs/graphql";
+import { Field, ID, InputType } from "@nestjs/graphql";
 import { Transform } from "class-transformer";
-import { IsDate, IsNotEmpty, IsString, MinDate, ValidateNested } from "class-validator";
+import { IsDate, IsNotEmpty, IsString, IsUUID, MinDate, ValidateNested } from "class-validator";
 
 export interface EmailCampaignInputInterface {
     title: string;
     subject: string;
     scheduledAt?: Date;
     content: BlockInputInterface;
+    targetGroup?: string;
 }
 
 export class EmailCampaignInputFactory {
@@ -31,6 +32,11 @@ export class EmailCampaignInputFactory {
             @MinDate(new Date())
             @Field(() => Date, { nullable: true })
             scheduledAt?: Date;
+
+            @IsUndefinable()
+            @Field(() => ID, { nullable: true })
+            @IsUUID()
+            targetGroup?: string;
 
             @Field(() => RootBlockInputScalar(EmailCampaignContentBlock))
             @Transform(({ value }) => (isBlockInputInterface(value) ? value : EmailCampaignContentBlock.blockInputFactory(value)), {

@@ -28,12 +28,13 @@ export class BrevoApiCampaignsService {
     }
 
     public async createBrevoCampaign(campaign: EmailCampaignInterface, htmlContent: string, scheduledAt?: Date): Promise<number> {
+        const targetGroup = await campaign.targetGroup?.load();
+
         const emailCampaign = {
             name: campaign.title,
             subject: campaign.subject,
             sender: { name: this.config.brevo.sender.name, email: this.config.brevo.sender.email },
-            // TODO: add correct list after contact list/target groups are implemented
-            recipients: { listIds: [2] },
+            recipients: { listIds: targetGroup ? [targetGroup?.brevoId] : [] },
             htmlContent,
             scheduledAt: scheduledAt?.toISOString(),
         };
@@ -43,12 +44,13 @@ export class BrevoApiCampaignsService {
     }
 
     public async updateBrevoCampaign(id: number, campaign: EmailCampaignInterface, htmlContent: string, scheduledAt?: Date): Promise<boolean> {
+        const targetGroup = await campaign.targetGroup?.load();
+
         const emailCampaign = {
             name: campaign.title,
             subject: campaign.subject,
             sender: { name: this.config.brevo.sender.name, email: this.config.brevo.sender.email },
-            // TODO: add correct list after contact list/target groups are implemented
-            recipients: { listIds: [2] },
+            recipients: { listIds: targetGroup ? [targetGroup?.brevoId] : [] },
             htmlContent,
             scheduledAt: scheduledAt?.toISOString(),
         };
