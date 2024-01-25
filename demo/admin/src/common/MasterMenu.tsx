@@ -40,6 +40,10 @@ export const MasterMenu: React.FC = () => {
                     primary={intl.formatMessage({ id: "menu.newsletter.contacts", defaultMessage: "Contacts" })}
                     to={`${match.url}/newsletter/contacts`}
                 />
+                <MenuItemRouterLink
+                    primary={intl.formatMessage({ id: "menu.newsletter.targetGroups", defaultMessage: "Target groups" })}
+                    to={`${match.url}/newsletter/target-groups`}
+                />
             </MenuCollapsibleItem>
             <MenuCollapsibleItem primary={intl.formatMessage({ id: "menu.structuredContent", defaultMessage: "Structured content" })} icon={<Data />}>
                 <MenuItemRouterLink
