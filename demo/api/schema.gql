@@ -848,7 +848,7 @@ input EmailCampaignInput {
   title: String!
   subject: String!
   scheduledAt: DateTime
-  targetGroup: ID = null
+  targetGroup: ID
   content: EmailCampaignContentBlockInput!
 }
 
