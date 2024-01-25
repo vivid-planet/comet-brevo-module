@@ -1,4 +1,4 @@
-import { gql, useApolloClient, useQuery } from "@apollo/client";
+import { DocumentNode, gql, useApolloClient, useQuery } from "@apollo/client";
 import {
     MainContent,
     messages,
@@ -39,18 +39,6 @@ const brevoContactsFragment = gql`
     }
 `;
 
-const brevoContactsQuery = gql`
-    query BrevoContactsGrid($offset: Int, $limit: Int, $email: String, $scope: EmailCampaignContentScopeInput!) {
-        brevoContacts(offset: $offset, limit: $limit, email: $email, scope: $scope) {
-            nodes {
-                ...BrevoContactsList
-            }
-            totalCount
-        }
-    }
-    ${brevoContactsFragment}
-`;
-
 const deleteBrevoContactMutation = gql`
     mutation DeleteBrevoContact($id: Int!) {
         deleteBrevoContact(id: $id)
@@ -81,7 +69,28 @@ function BrevoContactsGridToolbar({ intl }: { intl: IntlShape }) {
     );
 }
 
-export function BrevoContactsGrid({ scope }: { scope: ContentScopeInterface }): React.ReactElement {
+export function BrevoContactsGrid({
+    scope,
+    additionalAttributesFragment,
+    additionalGridFields = [],
+}: {
+    scope: ContentScopeInterface;
+    additionalAttributesFragment?: { name: string; fragment: DocumentNode };
+    additionalGridFields?: GridColDef[];
+}): React.ReactElement {
+    const brevoContactsQuery = gql`
+        query BrevoContactsGrid($offset: Int, $limit: Int, $email: String, $scope: EmailCampaignContentScopeInput!) {
+            brevoContacts(offset: $offset, limit: $limit, email: $email, scope: $scope) {
+                nodes {
+                    ...BrevoContactsList
+                    ${additionalAttributesFragment ? "...".concat(additionalAttributesFragment?.name) : ""}
+                }
+                totalCount
+            }
+        }
+        ${brevoContactsFragment}
+        ${additionalAttributesFragment?.fragment ?? ""}
+    `;
     const client = useApolloClient();
     const intl = useIntl();
     const dataGridProps = { ...useDataGridRemote(), ...usePersistentColumnState("BrevoContactsGrid") };
@@ -119,7 +128,7 @@ export function BrevoContactsGrid({ scope }: { scope: ContentScopeInterface }): 
             sortable: false,
             width: 150,
         },
-        // TODO: add configurable contact attributes
+        ...additionalGridFields,
         {
             field: "actions",
             headerName: "",
