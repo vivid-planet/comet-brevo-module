@@ -1,10 +1,11 @@
-import { useApolloClient, useQuery } from "@apollo/client";
+import { DocumentNode, gql, useApolloClient, useQuery } from "@apollo/client";
 import {
     Field,
     FinalForm,
     FinalFormInput,
     FinalFormSaveSplitButton,
     FinalFormSubmitEvent,
+    FormSection,
     Loading,
     MainContent,
     Toolbar,
@@ -18,7 +19,7 @@ import {
 } from "@comet/admin";
 import { ArrowLeft } from "@comet/admin-icons";
 import { ContentScopeInterface, EditPageLayout, queryUpdatedAt, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
-import { IconButton } from "@mui/material";
+import { Card, IconButton } from "@mui/material";
 import { FormApi } from "final-form";
 import React from "react";
 import { FormattedMessage } from "react-intl";
@@ -36,32 +37,55 @@ import {
 
 type FormValues = GQLTargetGroupFormFragment;
 
+export interface EditTargetGroupFinalFormValues {
+    [key: string]: unknown;
+}
+
 interface FormProps {
     id?: string;
     scope: ContentScopeInterface;
+    additionalFormFields?: React.ReactNode;
+    nodeFragment?: { name: string; fragment: DocumentNode };
+    dataToInitialValues?: (values?: EditTargetGroupFinalFormValues) => EditTargetGroupFinalFormValues;
+    valuesToOutput?: (values: EditTargetGroupFinalFormValues) => EditTargetGroupFinalFormValues;
 }
 
-export function TargetGroupForm({ id, scope }: FormProps): React.ReactElement {
+export function TargetGroupForm({
+    id,
+    scope,
+    additionalFormFields,
+    dataToInitialValues,
+    nodeFragment,
+    valuesToOutput,
+}: FormProps): React.ReactElement {
     const stackApi = useStackApi();
     const client = useApolloClient();
     const mode = id ? "edit" : "add";
     const formApiRef = useFormApiRef<FormValues>();
     const stackSwitchApi = useStackSwitchApi();
 
+    const targetGroupFormFragment = gql`
+        fragment TargetGroupForm on TargetGroup {
+            title
+            ${nodeFragment ? "...".concat(nodeFragment?.name) : ""}
+        }
+        ${nodeFragment?.fragment ?? ""}
+    `;
+
     const { data, error, loading, refetch } = useQuery<GQLTargetGroupFormQuery, GQLTargetGroupFormQueryVariables>(
-        targetGroupFormQuery,
+        targetGroupFormQuery(targetGroupFormFragment),
         id ? { variables: { id } } : { skip: true },
     );
 
-    const initialValues = React.useMemo<Partial<FormValues>>(
-        () =>
-            data?.targetGroup
-                ? {
-                      title: data.targetGroup.title,
-                  }
-                : {},
-        [data],
-    );
+    const initialValues = React.useMemo<Partial<FormValues>>(() => {
+        let additionalInitialValues = {};
+
+        if (dataToInitialValues) {
+            additionalInitialValues = dataToInitialValues(data?.targetGroup);
+        }
+
+        return data?.targetGroup ? { title: data.targetGroup.title, ...additionalInitialValues } : { ...additionalInitialValues };
+    }, [data?.targetGroup, dataToInitialValues]);
 
     const saveConflict = useFormSaveConflict({
         checkConflict: async () => {
@@ -79,21 +103,25 @@ export function TargetGroupForm({ id, scope }: FormProps): React.ReactElement {
             throw new Error("Conflicts detected");
         }
 
-        const output = {
+        let output = {
             ...state,
         };
+
+        if (valuesToOutput) {
+            output = { title: output.title, ...valuesToOutput(output) };
+        }
 
         if (mode === "edit") {
             if (!id) {
                 throw new Error("Missing id in edit mode");
             }
             await client.mutate<GQLUpdateTargetGroupMutation, GQLUpdateTargetGroupMutationVariables>({
-                mutation: updateTargetGroupMutation,
+                mutation: updateTargetGroupMutation(targetGroupFormFragment),
                 variables: { id, input: output, lastUpdatedAt: data?.targetGroup?.updatedAt },
             });
         } else {
             const { data: mutationResponse } = await client.mutate<GQLCreateTargetGroupMutation, GQLCreateTargetGroupMutationVariables>({
-                mutation: createTargetGroupMutation,
+                mutation: createTargetGroupMutation(targetGroupFormFragment),
                 variables: { scope, input: output },
             });
             if (!event.navigatingBack) {
@@ -148,6 +176,13 @@ export function TargetGroupForm({ id, scope }: FormProps): React.ReactElement {
                             component={FinalFormInput}
                             label={<FormattedMessage id="cometBrevoModule.targetGroup.title" defaultMessage="Title" />}
                         />
+                        {additionalFormFields && (
+                            <Card sx={{ padding: 4 }}>
+                                <FormSection title={<FormattedMessage id="cometBrevoModule.targetGroup.filters" defaultMessage="Filters" />}>
+                                    {additionalFormFields}
+                                </FormSection>
+                            </Card>
+                        )}
                     </MainContent>
                 </EditPageLayout>
             )}

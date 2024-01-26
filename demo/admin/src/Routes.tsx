@@ -9,6 +9,7 @@ import { useIntl } from "react-intl";
 import { RouteComponentProps } from "react-router";
 import { Redirect, Route, Switch } from "react-router-dom";
 
+import { additionalFormConfig } from "./common/brevoModuleConfig/targetGroupFormConfig";
 import { ContentScopeIndicatorContent, ContentScopeIndicatorDomain, ContentScopeIndicatorLanguage } from "./common/ContentScopeIndicatorStyles";
 import { ContentScopeProvider } from "./common/ContentScopeProvider";
 import { MasterHeader } from "./common/MasterHeader";
@@ -19,16 +20,22 @@ import { Page } from "./documents/pages/Page";
 import { ProductsPage } from "./products/ProductsPage";
 
 const RedirectsPage = createRedirectsPage();
-const TargetGroupsPage = createTargetGroupsPage({ scopeParts: ["domain", "language"] });
 
 export const Routes: React.FC = () => {
     const intl = useIntl();
     const brevoContactConfig = getBrevoContactConfig(intl);
-
     const BrevoContactsPage = createBrevoContactsPage({
         scopeParts: ["domain", "language"],
         additionalAttributesFragment: brevoContactConfig.additionalAttributesFragment,
         additionalGridFields: brevoContactConfig.additionalGridFields,
+    });
+
+    const TargetGroupsPage = createTargetGroupsPage({
+        scopeParts: ["domain", "language"],
+        additionalFormFields: additionalFormConfig.additionalFormFields,
+        nodeFragment: additionalFormConfig.nodeFragment,
+        dataToInitialValues: additionalFormConfig.dataToInitialValues,
+        valuesToOutput: additionalFormConfig.valuesToOutput,
     });
 
     return (
