@@ -104,8 +104,8 @@ export class BrevoApiContactsService {
         return data.body.id;
     }
 
-    public async updateBrevoContactList(id: number, input: TargetGroupInputInterface): Promise<boolean> {
-        const data = await this.contactsApi.updateList(id, { name: input.title });
+    public async updateBrevoContactList(id: number, title: string): Promise<boolean> {
+        const data = await this.contactsApi.updateList(id, { name: title });
         return data.response.statusCode === 204;
     }
 

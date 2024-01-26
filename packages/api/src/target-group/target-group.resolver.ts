@@ -115,7 +115,7 @@ export function createTargetGroupsResolver({
             await this.targetGroupsService.assignContactsToContactList(input.filters, targetGroup.brevoId, targetGroup.scope);
 
             if (input.title && input.title !== targetGroup.title) {
-                const successfullyUpdatedContactList = await this.brevoApiContactsService.updateBrevoContactList(targetGroup.brevoId, input);
+                const successfullyUpdatedContactList = await this.brevoApiContactsService.updateBrevoContactList(targetGroup.brevoId, input.title);
                 if (!successfullyUpdatedContactList) {
                     throw Error("Brevo Error: Could not update contact list");
                 }
