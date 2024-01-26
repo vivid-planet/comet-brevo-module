@@ -35,7 +35,6 @@ export const Routes: React.FC = () => {
         additionalFormFields: additionalFormConfig.additionalFormFields,
         nodeFragment: additionalFormConfig.nodeFragment,
         dataToInitialValues: additionalFormConfig.dataToInitialValues,
-        valuesToOutput: additionalFormConfig.valuesToOutput,
     });
 
     return (

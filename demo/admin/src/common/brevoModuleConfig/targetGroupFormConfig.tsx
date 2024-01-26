@@ -27,26 +27,17 @@ export const additionalPageTreeNodeFieldsFragment = {
 };
 
 export const additionalFormConfig = {
-    valuesToOutput: (values: { salutation: string[] }) => {
-        const valuesWithoutSalutation: { salutation?: string[] } = { ...values };
-        delete valuesWithoutSalutation.salutation;
-
-        return {
-            ...valuesWithoutSalutation,
-            filters: {
-                SALUTATION: values.salutation,
-            },
-        };
-    },
     dataToInitialValues: (values?: { filters: { SALUTATION: string[] } }) => {
         return {
-            salutation: values?.filters?.SALUTATION ?? [],
+            filters: {
+                SALUTATION: values?.filters?.SALUTATION ?? [],
+            },
         };
     },
     nodeFragment: additionalPageTreeNodeFieldsFragment,
     additionalFormFields: (
         <>
-            <Field label={<FormattedMessage id="targetGroup.fields.salutation" defaultMessage="Salutation" />} name="salutation" fullWidth>
+            <Field label={<FormattedMessage id="targetGroup.fields.salutation" defaultMessage="Salutation" />} name="filters.SALUTATION" fullWidth>
                 {(props) => (
                     <FinalFormSelect {...props} fullWidth multiple clearable>
                         {salutationOptions.map((option) => (

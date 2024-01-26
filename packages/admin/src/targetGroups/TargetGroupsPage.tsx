@@ -15,13 +15,7 @@ interface CreateContactsPageOptions {
     valuesToOutput?: (values: EditTargetGroupFinalFormValues) => EditTargetGroupFinalFormValues;
 }
 
-export function createTargetGroupsPage({
-    scopeParts,
-    additionalFormFields,
-    nodeFragment,
-    dataToInitialValues,
-    valuesToOutput,
-}: CreateContactsPageOptions) {
+export function createTargetGroupsPage({ scopeParts, additionalFormFields, nodeFragment, dataToInitialValues }: CreateContactsPageOptions) {
     function TargetGroupsPage(): JSX.Element {
         const { scope: completeScope } = useContentScope();
         const intl = useIntl();
@@ -48,7 +42,6 @@ export function createTargetGroupsPage({
                                 additionalFormFields={additionalFormFields}
                                 nodeFragment={nodeFragment}
                                 dataToInitialValues={dataToInitialValues}
-                                valuesToOutput={valuesToOutput}
                             />
                         )}
                     </StackPage>
@@ -61,7 +54,6 @@ export function createTargetGroupsPage({
                             additionalFormFields={additionalFormFields}
                             nodeFragment={nodeFragment}
                             dataToInitialValues={dataToInitialValues}
-                            valuesToOutput={valuesToOutput}
                         />
                     </StackPage>
                 </StackSwitch>

@@ -47,17 +47,9 @@ interface FormProps {
     additionalFormFields?: React.ReactNode;
     nodeFragment?: { name: string; fragment: DocumentNode };
     dataToInitialValues?: (values?: EditTargetGroupFinalFormValues) => EditTargetGroupFinalFormValues;
-    valuesToOutput?: (values: EditTargetGroupFinalFormValues) => EditTargetGroupFinalFormValues;
 }
 
-export function TargetGroupForm({
-    id,
-    scope,
-    additionalFormFields,
-    dataToInitialValues,
-    nodeFragment,
-    valuesToOutput,
-}: FormProps): React.ReactElement {
+export function TargetGroupForm({ id, scope, additionalFormFields, dataToInitialValues, nodeFragment }: FormProps): React.ReactElement {
     const stackApi = useStackApi();
     const client = useApolloClient();
     const mode = id ? "edit" : "add";
@@ -103,13 +95,9 @@ export function TargetGroupForm({
             throw new Error("Conflicts detected");
         }
 
-        let output = {
+        const output = {
             ...state,
         };
-
-        if (valuesToOutput) {
-            output = { title: output.title, ...valuesToOutput(output) };
-        }
 
         if (mode === "edit") {
             if (!id) {
