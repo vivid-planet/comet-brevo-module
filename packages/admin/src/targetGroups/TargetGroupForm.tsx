@@ -34,12 +34,8 @@ import {
     GQLUpdateTargetGroupMutationVariables,
 } from "./TargetGroupForm.gql.generated";
 
-type FormValues = {
-    title: string;
-    [key: string]: unknown;
-};
-
 export interface EditTargetGroupFinalFormValues {
+    title: string;
     [key: string]: unknown;
 }
 
@@ -55,7 +51,7 @@ export function TargetGroupForm({ id, scope, additionalFormFields, dataToInitial
     const stackApi = useStackApi();
     const client = useApolloClient();
     const mode = id ? "edit" : "add";
-    const formApiRef = useFormApiRef<FormValues>();
+    const formApiRef = useFormApiRef<EditTargetGroupFinalFormValues>();
     const stackSwitchApi = useStackSwitchApi();
 
     const targetGroupFormFragment = gql`
@@ -71,7 +67,7 @@ export function TargetGroupForm({ id, scope, additionalFormFields, dataToInitial
         id ? { variables: { id } } : { skip: true },
     );
 
-    const initialValues = React.useMemo<Partial<FormValues>>(() => {
+    const initialValues = React.useMemo<Partial<EditTargetGroupFinalFormValues>>(() => {
         let additionalInitialValues = {};
 
         if (dataToInitialValues) {
@@ -92,7 +88,11 @@ export function TargetGroupForm({ id, scope, additionalFormFields, dataToInitial
         },
     });
 
-    const handleSubmit = async (state: FormValues, form: FormApi<FormValues>, event: FinalFormSubmitEvent) => {
+    const handleSubmit = async (
+        state: EditTargetGroupFinalFormValues,
+        form: FormApi<EditTargetGroupFinalFormValues>,
+        event: FinalFormSubmitEvent,
+    ) => {
         if (await saveConflict.checkForConflicts()) {
             throw new Error("Conflicts detected");
         }
@@ -132,7 +132,7 @@ export function TargetGroupForm({ id, scope, additionalFormFields, dataToInitial
     }
 
     return (
-        <FinalForm<FormValues>
+        <FinalForm<EditTargetGroupFinalFormValues>
             apiRef={formApiRef}
             onSubmit={handleSubmit}
             mode={mode}
