@@ -1,10 +1,11 @@
 import { gql } from "@apollo/client";
 import { Field, FinalFormSelect } from "@comet/admin";
 import { MenuItem } from "@mui/material";
+import { GQLBrevoContactSalutation } from "@src/graphql.generated";
 import * as React from "react";
 import { FormattedMessage } from "react-intl";
 
-const salutationOptions = [
+const salutationOptions: Array<{ label: React.ReactNode; value: GQLBrevoContactSalutation }> = [
     {
         label: <FormattedMessage id="targetGroup.filters.salutation.male." defaultMessage="Male" />,
         value: "MALE",
@@ -27,7 +28,7 @@ export const additionalPageTreeNodeFieldsFragment = {
 };
 
 export const additionalFormConfig = {
-    dataToInitialValues: (values?: { filters: { SALUTATION: string[] } }) => {
+    dataToInitialValues: (values?: { filters: { SALUTATION: Array<GQLBrevoContactSalutation> } }) => {
         return {
             filters: {
                 SALUTATION: values?.filters?.SALUTATION ?? [],
