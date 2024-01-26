@@ -28,14 +28,16 @@ import { createTargetGroupMutation, targetGroupFormQuery, updateTargetGroupMutat
 import {
     GQLCreateTargetGroupMutation,
     GQLCreateTargetGroupMutationVariables,
-    GQLTargetGroupFormFragment,
     GQLTargetGroupFormQuery,
     GQLTargetGroupFormQueryVariables,
     GQLUpdateTargetGroupMutation,
     GQLUpdateTargetGroupMutationVariables,
 } from "./TargetGroupForm.gql.generated";
 
-type FormValues = GQLTargetGroupFormFragment;
+type FormValues = {
+    title: string;
+    [key: string]: unknown;
+};
 
 export interface EditTargetGroupFinalFormValues {
     [key: string]: unknown;
