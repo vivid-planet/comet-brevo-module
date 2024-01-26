@@ -2,8 +2,10 @@ import { MasterLayout, RouteWithErrorBoundary } from "@comet/admin";
 import { Domain } from "@comet/admin-icons";
 import { createBrevoContactsPage } from "@comet/brevo-admin";
 import { ContentScopeIndicator, createRedirectsPage, DamPage, PagesPage, PublisherPage, SitePreview } from "@comet/cms-admin";
+import { getBrevoContactConfig } from "@src/common/brevoModuleConfig/brevoContactsPageAttributesConfig";
 import { pageTreeCategories, urlParamToCategory } from "@src/pageTree/pageTreeCategories";
 import * as React from "react";
+import { useIntl } from "react-intl";
 import { RouteComponentProps } from "react-router";
 import { Redirect, Route, Switch } from "react-router-dom";
 
@@ -17,9 +19,17 @@ import { Page } from "./documents/pages/Page";
 import { ProductsPage } from "./products/ProductsPage";
 
 const RedirectsPage = createRedirectsPage();
-const BrevoContactsPage = createBrevoContactsPage({ scopeParts: ["domain", "language"] });
 
 export const Routes: React.FC = () => {
+    const intl = useIntl();
+    const brevoContactConfig = getBrevoContactConfig(intl);
+
+    const BrevoContactsPage = createBrevoContactsPage({
+        scopeParts: ["domain", "language"],
+        additionalAttributesFragment: brevoContactConfig.additionalAttributesFragment,
+        additionalGridFields: brevoContactConfig.additionalGridFields,
+    });
+
     return (
         <ContentScopeProvider>
             {({ match }) => (
