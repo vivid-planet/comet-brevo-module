@@ -707,7 +707,7 @@ type Mutation {
   deleteBrevoContact(id: Int!): Boolean!
   subscribeBrevoContact(input: SubscribeInput!): SubscribeResponse!
   createEmailCampaign(scope: EmailCampaignContentScopeInput!, input: EmailCampaignInput!): EmailCampaign!
-  updateEmailCampaign(id: ID!, input: EmailCampaignInput!, lastUpdatedAt: DateTime): EmailCampaign!
+  updateEmailCampaign(id: ID!, input: EmailCampaignUpdateInput!, lastUpdatedAt: DateTime): EmailCampaign!
   deleteEmailCampaign(id: ID!): Boolean!
   sendEmailCampaignNow(id: ID!): Boolean!
   sendEmailCampaignToTestEmails(id: ID!, data: SendTestEmailCampaignArgs!): Boolean!
@@ -854,6 +854,14 @@ input EmailCampaignInput {
 
 """EmailCampaignContent root block input"""
 scalar EmailCampaignContentBlockInput @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
+
+input EmailCampaignUpdateInput {
+  title: String
+  subject: String
+  scheduledAt: DateTime
+  targetGroup: ID
+  content: EmailCampaignContentBlockInput
+}
 
 input SendTestEmailCampaignArgs {
   emails: [String!]!
