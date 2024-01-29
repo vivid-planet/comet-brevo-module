@@ -1,6 +1,6 @@
 import { MasterLayout, RouteWithErrorBoundary } from "@comet/admin";
 import { Domain } from "@comet/admin-icons";
-import { createBrevoContactsPage } from "@comet/brevo-admin";
+import { createBrevoContactsPage, createTargetGroupsPage } from "@comet/brevo-admin";
 import { ContentScopeIndicator, createRedirectsPage, DamPage, PagesPage, PublisherPage, SitePreview } from "@comet/cms-admin";
 import { getBrevoContactConfig } from "@src/common/brevoModuleConfig/brevoContactsPageAttributesConfig";
 import { pageTreeCategories, urlParamToCategory } from "@src/pageTree/pageTreeCategories";
@@ -19,6 +19,7 @@ import { Page } from "./documents/pages/Page";
 import { ProductsPage } from "./products/ProductsPage";
 
 const RedirectsPage = createRedirectsPage();
+const TargetGroupsPage = createTargetGroupsPage({ scopeParts: ["domain", "language"] });
 
 export const Routes: React.FC = () => {
     const intl = useIntl();
@@ -75,6 +76,7 @@ export const Routes: React.FC = () => {
                                     />
 
                                     <RouteWithErrorBoundary path={`${match.path}/newsletter/contacts`} component={BrevoContactsPage} />
+                                    <RouteWithErrorBoundary path={`${match.path}/newsletter/target-groups`} component={TargetGroupsPage} />
 
                                     <RouteWithErrorBoundary path={`${match.path}/structured-content/products`} component={ProductsPage} />
                                     <RouteWithErrorBoundary path={`${match.path}/assets`} component={DamPage} />

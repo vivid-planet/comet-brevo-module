@@ -25,6 +25,10 @@ enum FocalPoint {
   SOUTHEAST
 }
 
+type EmailCampaignContentScope {
+  thisScopeHasNoFields____: String
+}
+
 type BrevoContact {
   id: Int!
   createdAt: String!
@@ -41,19 +45,92 @@ type PaginatedBrevoContacts {
   totalCount: Int!
 }
 
-type Query {
-  brevoContact(id: Int!): BrevoContact!
-  brevoContacts(targetGroupId: ID, email: String, scope: EmailCampaignContentScopeInput!, offset: Int! = 0, limit: Int! = 25): PaginatedBrevoContacts!
+type TargetGroup implements DocumentInterface {
+  id: ID!
+  updatedAt: DateTime!
+  createdAt: DateTime!
+  title: String!
+  isMainList: Boolean!
+  brevoId: Int!
+  totalSubscribers: Int!
+  totalContactsBlocked: Int!
+  scope: EmailCampaignContentScope!
+}
+
+interface DocumentInterface {
+  id: ID!
+  updatedAt: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type PaginatedTargetGroups {
+  nodes: [TargetGroup!]!
+  totalCount: Int!
 }
 
 input EmailCampaignContentScopeInput {
   thisScopeHasNoFields____: String
 }
 
+type Query {
+  brevoContact(id: Int!): BrevoContact!
+  brevoContacts(targetGroupId: ID, email: String, scope: EmailCampaignContentScopeInput!, offset: Int! = 0, limit: Int! = 25): PaginatedBrevoContacts!
+  targetGroup(id: ID!): TargetGroup!
+  targetGroups(scope: EmailCampaignContentScopeInput!, search: String, filter: TargetGroupFilter, sort: [TargetGroupSort!], offset: Int! = 0, limit: Int! = 25): PaginatedTargetGroups!
+}
+
+input TargetGroupFilter {
+  createdAt: DateFilter
+  updatedAt: DateFilter
+  title: StringFilter
+  and: [TargetGroupFilter!]
+  or: [TargetGroupFilter!]
+}
+
+input DateFilter {
+  equal: DateTime
+  lowerThan: DateTime
+  greaterThan: DateTime
+  lowerThanEqual: DateTime
+  greaterThanEqual: DateTime
+  notEqual: DateTime
+}
+
+input StringFilter {
+  contains: String
+  startsWith: String
+  endsWith: String
+  equal: String
+  notEqual: String
+}
+
+input TargetGroupSort {
+  field: TargetGroupSortField!
+  direction: SortDirection! = ASC
+}
+
+enum TargetGroupSortField {
+  createdAt
+  updatedAt
+  title
+}
+
+enum SortDirection {
+  ASC
+  DESC
+}
+
 type Mutation {
   updateBrevoContact(id: Int!, input: BrevoContactUpdateInput!): BrevoContact!
   deleteBrevoContact(id: Int!): Boolean!
   subscribeBrevoContact(input: SubscribeInput!): SubscribeResponse!
+  createTargetGroup(scope: EmailCampaignContentScopeInput!, input: TargetGroupInput!): TargetGroup!
+  updateTargetGroup(id: ID!, input: TargetGroupUpdateInput!, lastUpdatedAt: DateTime): TargetGroup!
+  deleteTargetGroup(id: ID!): Boolean!
 }
 
 input BrevoContactUpdateInput {
@@ -70,4 +147,18 @@ input SubscribeInput {
   email: String!
   redirectionUrl: String!
   scope: EmailCampaignContentScopeInput!
+}
+
+input TargetGroupInput {
+  title: String!
+  filters: BrevoContactFilterAttributesInput
+}
+
+input BrevoContactFilterAttributesInput {
+  thisFilterHasNoFields____: [String!]
+}
+
+input TargetGroupUpdateInput {
+  title: String
+  filters: BrevoContactFilterAttributesInput
 }

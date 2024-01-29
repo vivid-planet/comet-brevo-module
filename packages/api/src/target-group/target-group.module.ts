@@ -18,8 +18,8 @@ interface TargetGroupModuleConfig {
 @Module({})
 export class TargetGroupModule {
     static register({ Scope, BrevoFilterAttributes, TargetGroup }: TargetGroupModuleConfig): DynamicModule {
-        const TargetGroupInput = TargetGroupInputFactory.create({ BrevoFilterAttributes });
-        const TargetGroupResolver = createTargetGroupsResolver({ TargetGroup, TargetGroupInput, Scope });
+        const [TargetGroupInput, TargetGroupUpdateInput] = TargetGroupInputFactory.create({ BrevoFilterAttributes });
+        const TargetGroupResolver = createTargetGroupsResolver({ TargetGroup, TargetGroupInput, TargetGroupUpdateInput, Scope });
 
         return {
             module: TargetGroupModule,

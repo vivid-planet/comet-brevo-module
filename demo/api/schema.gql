@@ -712,7 +712,7 @@ type Mutation {
   sendEmailCampaignNow(id: ID!): Boolean!
   sendEmailCampaignToTestEmails(id: ID!, data: SendTestEmailCampaignArgs!): Boolean!
   createTargetGroup(scope: EmailCampaignContentScopeInput!, input: TargetGroupInput!): TargetGroup!
-  updateTargetGroup(id: ID!, input: TargetGroupInput!, lastUpdatedAt: DateTime): TargetGroup!
+  updateTargetGroup(id: ID!, input: TargetGroupUpdateInput!, lastUpdatedAt: DateTime): TargetGroup!
   deleteTargetGroup(id: ID!): Boolean!
 }
 
@@ -861,5 +861,10 @@ input SendTestEmailCampaignArgs {
 
 input TargetGroupInput {
   title: String!
+  filters: BrevoContactFilterAttributesInput
+}
+
+input TargetGroupUpdateInput {
+  title: String
   filters: BrevoContactFilterAttributesInput
 }
