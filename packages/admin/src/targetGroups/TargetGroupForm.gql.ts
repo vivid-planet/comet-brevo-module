@@ -1,12 +1,6 @@
-import { gql } from "@apollo/client";
+import { DocumentNode, gql } from "@apollo/client";
 
-export const targetGroupFormFragment = gql`
-    fragment TargetGroupForm on TargetGroup {
-        title
-    }
-`;
-
-export const targetGroupFormQuery = gql`
+export const targetGroupFormQuery = (targetGroupFormFragment: DocumentNode) => gql`
     query TargetGroupForm($id: ID!) {
         targetGroup(id: $id) {
             id
@@ -25,7 +19,7 @@ export const targetGroupFormCheckForChangesQuery = gql`
     }
 `;
 
-export const createTargetGroupMutation = gql`
+export const createTargetGroupMutation = (targetGroupFormFragment: DocumentNode) => gql`
     mutation CreateTargetGroup($scope: EmailCampaignContentScopeInput!, $input: TargetGroupInput!) {
         createTargetGroup(scope: $scope, input: $input) {
             id
@@ -36,7 +30,7 @@ export const createTargetGroupMutation = gql`
     ${targetGroupFormFragment}
 `;
 
-export const updateTargetGroupMutation = gql`
+export const updateTargetGroupMutation = (targetGroupFormFragment: DocumentNode) => gql`
     mutation UpdateTargetGroup($id: ID!, $input: TargetGroupUpdateInput!, $lastUpdatedAt: DateTime) {
         updateTargetGroup(id: $id, input: $input, lastUpdatedAt: $lastUpdatedAt) {
             id
