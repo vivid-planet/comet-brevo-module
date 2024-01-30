@@ -108,6 +108,10 @@ export function createTargetGroupsResolver({
         ): Promise<TargetGroupInterface> {
             const targetGroup = await this.repository.findOneOrFail(id);
 
+            if (targetGroup.isMainList) {
+                throw new Error("Cannot edit a main target group");
+            }
+
             if (lastUpdatedAt) {
                 validateNotModified(targetGroup, lastUpdatedAt);
             }
@@ -134,6 +138,10 @@ export function createTargetGroupsResolver({
         @SubjectEntity(TargetGroup)
         async deleteTargetGroup(@Args("id", { type: () => ID }) id: string): Promise<boolean> {
             const targetGroup = await this.repository.findOneOrFail(id);
+
+            if (targetGroup.isMainList) {
+                throw new Error("Cannot delete a main target group");
+            }
 
             const isDeletedInBrevo = await this.brevoApiContactsService.deleteBrevoContactList(targetGroup.brevoId);
 

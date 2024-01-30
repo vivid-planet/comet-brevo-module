@@ -38,6 +38,7 @@ const targetGroupsFragment = gql`
         title
         totalSubscribers
         totalContactsBlocked
+        isMainList
     }
 `;
 
@@ -123,15 +124,15 @@ export function TargetGroupsGrid({ scope }: { scope: ContentScopeInterface }): R
             sortable: false,
             filterable: false,
             type: "actions",
-            renderCell: (params) => {
+            renderCell: ({ row }) => {
+                if (row.isMainList) return;
                 return (
                     <>
-                        <IconButton component={StackLink} pageName="edit" payload={params.row.id}>
+                        <IconButton component={StackLink} pageName="edit" payload={row.id}>
                             <Edit color="primary" />
                         </IconButton>
                         <CrudContextMenu
                             copyData={() => {
-                                const row = params.row;
                                 return {
                                     title: row.title,
                                 };
@@ -145,7 +146,7 @@ export function TargetGroupsGrid({ scope }: { scope: ContentScopeInterface }): R
                             onDelete={async () => {
                                 await client.mutate<GQLDeleteTargetGroupMutation, GQLDeleteTargetGroupMutationVariables>({
                                     mutation: deleteTargetGroupMutation,
-                                    variables: { id: params.row.id },
+                                    variables: { id: row.id },
                                 });
                             }}
                             refetchQueries={[targetGroupsQuery]}
