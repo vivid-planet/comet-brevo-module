@@ -28,7 +28,7 @@ export const additionalPageTreeNodeFieldsFragment = {
 };
 
 export const additionalFormConfig = {
-    dataToInitialValues: (values?: { filters: { SALUTATION: Array<GQLBrevoContactSalutation> } }) => {
+    input2State: (values?: { filters: { SALUTATION: Array<GQLBrevoContactSalutation> } }) => {
         return {
             filters: {
                 SALUTATION: values?.filters?.SALUTATION ?? [],

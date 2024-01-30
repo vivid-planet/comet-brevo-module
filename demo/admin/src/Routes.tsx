@@ -34,7 +34,7 @@ export const Routes: React.FC = () => {
         scopeParts: ["domain", "language"],
         additionalFormFields: additionalFormConfig.additionalFormFields,
         nodeFragment: additionalFormConfig.nodeFragment,
-        dataToInitialValues: additionalFormConfig.dataToInitialValues,
+        input2State: additionalFormConfig.input2State,
     });
 
     return (

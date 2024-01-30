@@ -44,10 +44,10 @@ interface FormProps {
     scope: ContentScopeInterface;
     additionalFormFields?: React.ReactNode;
     nodeFragment?: { name: string; fragment: DocumentNode };
-    dataToInitialValues?: (values?: EditTargetGroupFinalFormValues) => EditTargetGroupFinalFormValues;
+    input2State?: (values?: EditTargetGroupFinalFormValues) => EditTargetGroupFinalFormValues;
 }
 
-export function TargetGroupForm({ id, scope, additionalFormFields, dataToInitialValues, nodeFragment }: FormProps): React.ReactElement {
+export function TargetGroupForm({ id, scope, additionalFormFields, input2State, nodeFragment }: FormProps): React.ReactElement {
     const stackApi = useStackApi();
     const client = useApolloClient();
     const mode = id ? "edit" : "add";
@@ -70,12 +70,12 @@ export function TargetGroupForm({ id, scope, additionalFormFields, dataToInitial
     const initialValues = React.useMemo<Partial<EditTargetGroupFinalFormValues>>(() => {
         let additionalInitialValues = {};
 
-        if (dataToInitialValues) {
-            additionalInitialValues = dataToInitialValues(data?.targetGroup);
+        if (input2State) {
+            additionalInitialValues = input2State(data?.targetGroup);
         }
 
         return data?.targetGroup ? { title: data.targetGroup.title, ...additionalInitialValues } : { ...additionalInitialValues };
-    }, [data?.targetGroup, dataToInitialValues]);
+    }, [data?.targetGroup, input2State]);
 
     const saveConflict = useFormSaveConflict({
         checkConflict: async () => {

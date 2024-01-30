@@ -11,11 +11,11 @@ interface CreateContactsPageOptions {
     scopeParts: string[];
     additionalFormFields?: React.ReactNode;
     nodeFragment?: { name: string; fragment: DocumentNode };
-    dataToInitialValues?: (values?: EditTargetGroupFinalFormValues) => EditTargetGroupFinalFormValues;
+    input2State?: (values?: EditTargetGroupFinalFormValues) => EditTargetGroupFinalFormValues;
     valuesToOutput?: (values: EditTargetGroupFinalFormValues) => EditTargetGroupFinalFormValues;
 }
 
-export function createTargetGroupsPage({ scopeParts, additionalFormFields, nodeFragment, dataToInitialValues }: CreateContactsPageOptions) {
+export function createTargetGroupsPage({ scopeParts, additionalFormFields, nodeFragment, input2State }: CreateContactsPageOptions) {
     function TargetGroupsPage(): JSX.Element {
         const { scope: completeScope } = useContentScope();
         const intl = useIntl();
@@ -41,7 +41,7 @@ export function createTargetGroupsPage({ scopeParts, additionalFormFields, nodeF
                                 scope={scope}
                                 additionalFormFields={additionalFormFields}
                                 nodeFragment={nodeFragment}
-                                dataToInitialValues={dataToInitialValues}
+                                input2State={input2State}
                             />
                         )}
                     </StackPage>
@@ -53,7 +53,7 @@ export function createTargetGroupsPage({ scopeParts, additionalFormFields, nodeF
                             scope={scope}
                             additionalFormFields={additionalFormFields}
                             nodeFragment={nodeFragment}
-                            dataToInitialValues={dataToInitialValues}
+                            input2State={input2State}
                         />
                     </StackPage>
                 </StackSwitch>
