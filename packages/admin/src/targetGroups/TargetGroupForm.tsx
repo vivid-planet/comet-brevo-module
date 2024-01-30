@@ -74,7 +74,7 @@ export function TargetGroupForm({ id, scope, additionalFormFields, input2State, 
             additionalInitialValues = input2State(data?.targetGroup);
         }
 
-        return data?.targetGroup ? { title: data.targetGroup.title, ...additionalInitialValues } : { ...additionalInitialValues };
+        return data?.targetGroup ? { title: data.targetGroup.title, ...additionalInitialValues } : additionalInitialValues;
     }, [data?.targetGroup, input2State]);
 
     const saveConflict = useFormSaveConflict({
