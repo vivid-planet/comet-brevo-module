@@ -4,8 +4,8 @@ import { useContentScope } from "@comet/cms-admin";
 import * as React from "react";
 import { useIntl } from "react-intl";
 
-import { EmailCampaignForm } from "./EmailCampaignForm";
 import { EmailCampaignsGrid } from "./EmailCampaignsGrid";
+import { EmailCampaignForm } from "./form/EmailCampaignForm";
 
 interface CreateEmailCampaignsPageOptions {
     scopeParts: string[];

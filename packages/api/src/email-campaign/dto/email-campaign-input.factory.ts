@@ -1,5 +1,5 @@
 import { Block, BlockInputInterface, isBlockInputInterface } from "@comet/blocks-api";
-import { IsUndefinable, RootBlockInputScalar } from "@comet/cms-api";
+import { IsNullable, RootBlockInputScalar } from "@comet/cms-api";
 import { Type } from "@nestjs/common";
 import { Field, ID, InputType, PartialType } from "@nestjs/graphql";
 import { Transform } from "class-transformer";
@@ -31,13 +31,13 @@ export class EmailCampaignInputFactory {
             @Field()
             subject: string;
 
-            @IsUndefinable()
+            @IsNullable()
             @IsDate()
             @MinDate(new Date())
             @Field(() => Date, { nullable: true })
             scheduledAt?: Date;
 
-            @IsUndefinable()
+            @IsNullable()
             @Field(() => ID, { nullable: true })
             @IsUUID()
             targetGroup?: string;

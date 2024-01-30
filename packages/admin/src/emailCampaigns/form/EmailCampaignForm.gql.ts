@@ -6,6 +6,7 @@ export const emailCampaignFormFragment = gql`
         subject
         scheduledAt
         content
+        sendingState
         targetGroup {
             id
         }
@@ -33,7 +34,7 @@ export const emailCampaignFormCheckForChangesQuery = gql`
 
 export const createEmailCampaignMutation = gql`
     mutation CreateEmailCampaign($scope: EmailCampaignContentScopeInput!, $input: EmailCampaignInput!) {
-        createEmailCampaign(scope: $scope, input: $input) {
+        emailCampaign: createEmailCampaign(scope: $scope, input: $input) {
             id
             updatedAt
             ...EmailCampaignForm
@@ -44,7 +45,7 @@ export const createEmailCampaignMutation = gql`
 
 export const updateEmailCampaignMutation = gql`
     mutation UpdateEmailCampaign($id: ID!, $input: EmailCampaignUpdateInput!, $lastUpdatedAt: DateTime) {
-        updateEmailCampaign(id: $id, input: $input, lastUpdatedAt: $lastUpdatedAt) {
+        emailCampaign: updateEmailCampaign(id: $id, input: $input, lastUpdatedAt: $lastUpdatedAt) {
             id
             updatedAt
             ...EmailCampaignForm
