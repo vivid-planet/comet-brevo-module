@@ -16,15 +16,13 @@ import {
     usePersistentColumnState,
 } from "@comet/admin";
 import { Add as AddIcon, Edit } from "@comet/admin-icons";
-import { BlockPreviewContent } from "@comet/blocks-admin";
+import { BlockInterface } from "@comet/blocks-admin";
+import { ContentScopeInterface } from "@comet/cms-admin";
 import { Button, IconButton } from "@mui/material";
-import { DataGridPro, GridColDef, GridToolbarQuickFilter } from "@mui/x-data-grid-pro";
-import { useContentScope } from "@src/common/ContentScopeProvider";
+import { DataGrid, GridColDef, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import * as React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
-import { EmailCampaignContentBlock } from "../blocks/EmailCampaignContentBlock";
-import { EmailCampaignContentBlock } from "../emailCampaigns/blocks/EmailCampaignContentBlock";
 import {
     GQLCreateEmailCampaignMutation,
     GQLCreateEmailCampaignMutationVariables,
@@ -34,6 +32,7 @@ import {
     GQLEmailCampaignsGridQueryVariables,
     GQLEmailCampaignsListFragment,
 } from "./EmailCampaignsGrid.generated";
+import { SendingStateColumn } from "./SendingStateColumn";
 
 const emailCampaignsFragment = gql`
     fragment EmailCampaignsList on EmailCampaign {
@@ -42,10 +41,14 @@ const emailCampaignsFragment = gql`
         createdAt
         title
         subject
-        brevoId
         sendingState
         scheduledAt
+        brevoId
         content
+        targetGroup {
+            id
+            title
+        }
     }
 `;
 
@@ -95,76 +98,67 @@ function EmailCampaignsGridToolbar() {
             <ToolbarFillSpace />
             <ToolbarActions>
                 <Button startIcon={<AddIcon />} component={StackLink} pageName="add" payload="add" variant="contained" color="primary">
-                    <FormattedMessage id="emailCampaign.newEmailCampaign" defaultMessage="New EmailCampaign" />
+                    <FormattedMessage id="cometBrevoModule.emailCampaign.newEmailCampaign" defaultMessage="New email campaign" />
                 </Button>
             </ToolbarActions>
         </Toolbar>
     );
 }
 
-export function EmailCampaignsGrid(): React.ReactElement {
+export function EmailCampaignsGrid({
+    scope,
+    EmailCampaignContentBlock,
+}: {
+    scope: ContentScopeInterface;
+    EmailCampaignContentBlock: BlockInterface;
+}): React.ReactElement {
     const client = useApolloClient();
     const intl = useIntl();
     const dataGridProps = { ...useDataGridRemote(), ...usePersistentColumnState("EmailCampaignsGrid") };
-    const { scope } = useContentScope();
 
     const columns: GridColDef<GQLEmailCampaignsListFragment>[] = [
         {
             field: "updatedAt",
-            headerName: intl.formatMessage({ id: "emailCampaign.updatedAt", defaultMessage: "Updated At" }),
+            headerName: intl.formatMessage({ id: "cometBrevoModule.emailCampaign.updatedAt", defaultMessage: "Updated At" }),
             type: "dateTime",
             valueGetter: ({ value }) => value && new Date(value),
             width: 150,
+            filterable: false,
+            sortable: false,
         },
         {
             field: "createdAt",
-            headerName: intl.formatMessage({ id: "emailCampaign.createdAt", defaultMessage: "Created At" }),
+            headerName: intl.formatMessage({ id: "cometBrevoModule.emailCampaign.createdAt", defaultMessage: "Created At" }),
             type: "dateTime",
             valueGetter: ({ value }) => value && new Date(value),
             width: 150,
-        },
-        { field: "title", headerName: intl.formatMessage({ id: "emailCampaign.title", defaultMessage: "Title" }), width: 150 },
-        { field: "subject", headerName: intl.formatMessage({ id: "emailCampaign.subject", defaultMessage: "Subject" }), width: 150 },
-        {
-            field: "brevoId",
-            headerName: intl.formatMessage({ id: "emailCampaign.brevoId", defaultMessage: "Brevo Id" }),
-            type: "number",
             filterable: false,
             sortable: false,
-            width: 150,
         },
+        { field: "title", headerName: intl.formatMessage({ id: "cometBrevoModule.emailCampaign.title", defaultMessage: "Title" }), flex: 2 },
+        { field: "subject", headerName: intl.formatMessage({ id: "cometBrevoModule.emailCampaign.subject", defaultMessage: "Subject" }), flex: 1 },
         {
             field: "sendingState",
-            headerName: intl.formatMessage({ id: "emailCampaign.sendingState", defaultMessage: "Sending State" }),
-            type: "singleSelect",
+            headerName: intl.formatMessage({ id: "cometBrevoModule.emailCampaign.sendingState", defaultMessage: "Sending State" }),
+            renderCell: ({ value }) => <SendingStateColumn sendingState={value} />,
+            width: 150,
             filterable: false,
             sortable: false,
-            valueOptions: [
-                { value: "DRAFT", label: intl.formatMessage({ id: "emailCampaign.sendingState.dRAFT", defaultMessage: "D R A F T" }) },
-                { value: "SENT", label: intl.formatMessage({ id: "emailCampaign.sendingState.sENT", defaultMessage: "S E N T" }) },
-                {
-                    value: "SCHEDULED",
-                    label: intl.formatMessage({ id: "emailCampaign.sendingState.sCHEDULED", defaultMessage: "S C H E D U L E D" }),
-                },
-            ],
-            width: 150,
         },
         {
             field: "scheduledAt",
-            headerName: intl.formatMessage({ id: "emailCampaign.scheduledAt", defaultMessage: "Scheduled At" }),
+            headerName: intl.formatMessage({ id: "cometBrevoModule.emailCampaign.scheduledAt", defaultMessage: "Scheduled At" }),
             type: "dateTime",
-            valueGetter: ({ value }) => value && new Date(value),
-            width: 150,
+            valueGetter: ({ value }) => (value ? new Date(value) : "-"),
+            width: 200,
         },
         {
-            field: "content",
-            headerName: intl.formatMessage({ id: "emailCampaign.content", defaultMessage: "Content" }),
+            field: "targetGroup",
+            headerName: intl.formatMessage({ id: "cometBrevoModule.emailCampaign.targetGroup", defaultMessage: "Target group" }),
+            width: 150,
+            renderCell: ({ value }) => (value ? value.title : "-"),
             filterable: false,
             sortable: false,
-            width: 150,
-            renderCell: (params) => {
-                return <BlockPreviewContent block={EmailCampaignContentBlock} input={params.row.content} />;
-            },
         },
         {
             field: "actions",
@@ -172,19 +166,17 @@ export function EmailCampaignsGrid(): React.ReactElement {
             sortable: false,
             filterable: false,
             type: "actions",
-            renderCell: (params) => {
+            renderCell: ({ row }) => {
                 return (
                     <>
-                        <IconButton component={StackLink} pageName="edit" payload={params.row.id}>
+                        <IconButton component={StackLink} pageName="edit" payload={row.id}>
                             <Edit color="primary" />
                         </IconButton>
                         <CrudContextMenu
                             copyData={() => {
-                                const row = params.row;
                                 return {
                                     title: row.title,
                                     subject: row.subject,
-                                    scheduledAt: row.scheduledAt,
                                     content: EmailCampaignContentBlock.state2Output(EmailCampaignContentBlock.input2State(row.content)),
                                 };
                             }}
@@ -194,12 +186,16 @@ export function EmailCampaignsGrid(): React.ReactElement {
                                     variables: { scope, input },
                                 });
                             }}
-                            onDelete={async () => {
-                                await client.mutate<GQLDeleteEmailCampaignMutation, GQLDeleteEmailCampaignMutationVariables>({
-                                    mutation: deleteEmailCampaignMutation,
-                                    variables: { id: params.row.id },
-                                });
-                            }}
+                            onDelete={
+                                !row.brevoId
+                                    ? async () => {
+                                          await client.mutate<GQLDeleteEmailCampaignMutation, GQLDeleteEmailCampaignMutationVariables>({
+                                              mutation: deleteEmailCampaignMutation,
+                                              variables: { id: row.id },
+                                          });
+                                      }
+                                    : undefined
+                            }
                             refetchQueries={[emailCampaignsQuery]}
                         />
                     </>
@@ -225,8 +221,8 @@ export function EmailCampaignsGrid(): React.ReactElement {
     const rows = data?.emailCampaigns.nodes ?? [];
 
     return (
-        <MainContent fullHeight disablePadding>
-            <DataGridPro
+        <MainContent fullHeight>
+            <DataGrid
                 {...dataGridProps}
                 disableSelectionOnClick
                 rows={rows}

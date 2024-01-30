@@ -18,19 +18,15 @@ import {
 } from "@comet/admin";
 import { FinalFormDatePicker } from "@comet/admin-date-time";
 import { ArrowLeft } from "@comet/admin-icons";
-import { BlockState, createFinalFormBlock } from "@comet/blocks-admin";
-import { EditPageLayout, queryUpdatedAt, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
+import { BlockInterface, BlockState, createFinalFormBlock } from "@comet/blocks-admin";
+import { ContentScopeInterface, EditPageLayout, queryUpdatedAt, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
 import { IconButton } from "@mui/material";
-import { useContentScope } from "@src/common/ContentScopeProvider";
 import { FormApi } from "final-form";
-import { filter } from "graphql-anywhere";
 import isEqual from "lodash.isequal";
 import React from "react";
 import { FormattedMessage } from "react-intl";
 
-import { EmailCampaignContentBlock } from "../blocks/EmailCampaignContentBlock";
-import { EmailCampaignContentBlock } from "../emailCampaigns/blocks/EmailCampaignContentBlock";
-import { createEmailCampaignMutation, emailCampaignFormFragment, emailCampaignFormQuery, updateEmailCampaignMutation } from "./EmailCampaignForm.gql";
+import { createEmailCampaignMutation, emailCampaignFormQuery, updateEmailCampaignMutation } from "./EmailCampaignForm.gql";
 import {
     GQLCreateEmailCampaignMutation,
     GQLCreateEmailCampaignMutationVariables,
@@ -41,27 +37,26 @@ import {
     GQLUpdateEmailCampaignMutationVariables,
 } from "./EmailCampaignForm.gql.generated";
 
-const rootBlocks = {
-    emailContentBlock: EmailCampaignContentBlock,
-    content: EmailCampaignContentBlock,
-};
-
-type FormValues = GQLEmailCampaignFormFragment & {
-    emailContentBlock: BlockState<typeof rootBlocks.emailContentBlock>;
-    content: BlockState<typeof rootBlocks.content>;
-};
-
 interface FormProps {
     id?: string;
+    EmailCampaignContentBlock: BlockInterface;
+    scope: ContentScopeInterface;
 }
 
-export function EmailCampaignForm({ id }: FormProps): React.ReactElement {
+export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope }: FormProps): React.ReactElement {
+    const rootBlocks = {
+        content: EmailCampaignContentBlock,
+    };
+
+    type FormValues = GQLEmailCampaignFormFragment & {
+        content: BlockState<typeof rootBlocks.content>;
+    };
+
     const stackApi = useStackApi();
     const client = useApolloClient();
     const mode = id ? "edit" : "add";
     const formApiRef = useFormApiRef<FormValues>();
     const stackSwitchApi = useStackSwitchApi();
-    const { scope } = useContentScope();
 
     const { data, error, loading, refetch } = useQuery<GQLEmailCampaignFormQuery, GQLEmailCampaignFormQueryVariables>(
         emailCampaignFormQuery,
@@ -72,16 +67,15 @@ export function EmailCampaignForm({ id }: FormProps): React.ReactElement {
         () =>
             data?.emailCampaign
                 ? {
-                      ...filter<GQLEmailCampaignFormFragment>(emailCampaignFormFragment, data.emailCampaign),
-
-                      emailContentBlock: rootBlocks.emailContentBlock.input2State(data.emailCampaign.emailContentBlock),
+                      title: data.emailCampaign.title,
+                      subject: data.emailCampaign.subject,
+                      scheduledAt: data.emailCampaign.scheduledAt,
                       content: rootBlocks.content.input2State(data.emailCampaign.content),
                   }
                 : {
-                      emailContentBlock: rootBlocks.emailContentBlock.defaultValues(),
-                      content: rootBlocks.content.defaultValues(),
+                      content: EmailCampaignContentBlock.defaultValues(),
                   },
-        [data],
+        [EmailCampaignContentBlock, data?.emailCampaign, rootBlocks.content],
     );
 
     const saveConflict = useFormSaveConflict({
@@ -103,7 +97,6 @@ export function EmailCampaignForm({ id }: FormProps): React.ReactElement {
         const output = {
             ...state,
 
-            emailContentBlock: rootBlocks.emailContentBlock.state2Output(state.emailContentBlock),
             content: rootBlocks.content.state2Output(state.content),
         };
 
@@ -113,15 +106,15 @@ export function EmailCampaignForm({ id }: FormProps): React.ReactElement {
             }
             await client.mutate<GQLUpdateEmailCampaignMutation, GQLUpdateEmailCampaignMutationVariables>({
                 mutation: updateEmailCampaignMutation,
-                variables: { id, input: output, lastUpdatedAt: data?.emailCampaign?.updatedAt },
+                variables: { id, input: { ...output, targetGroup: output.targetGroup?.id }, lastUpdatedAt: data?.emailCampaign?.updatedAt },
             });
         } else {
-            const { data: mutationReponse } = await client.mutate<GQLCreateEmailCampaignMutation, GQLCreateEmailCampaignMutationVariables>({
+            const { data: mutationResponse } = await client.mutate<GQLCreateEmailCampaignMutation, GQLCreateEmailCampaignMutationVariables>({
                 mutation: createEmailCampaignMutation,
-                variables: { scope, input: output },
+                variables: { scope, input: { ...output, targetGroup: output.targetGroup?.id } },
             });
             if (!event.navigatingBack) {
-                const id = mutationReponse?.createEmailCampaign.id;
+                const id = mutationResponse?.createEmailCampaign.id;
                 if (id) {
                     setTimeout(() => {
                         stackSwitchApi.activatePage("edit", id);

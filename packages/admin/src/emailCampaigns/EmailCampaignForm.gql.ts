@@ -6,6 +6,9 @@ export const emailCampaignFormFragment = gql`
         subject
         scheduledAt
         content
+        targetGroup {
+            id
+        }
     }
 `;
 
