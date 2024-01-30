@@ -1,3 +1,5 @@
+import { createOneOfBlock, createRichTextBlock, ExternalLinkBlock } from "@comet/blocks-api";
+import {} from "@comet/cms-api";
 import { Embeddable } from "@mikro-orm/core";
 import { NestFactory } from "@nestjs/core";
 import { Field, GraphQLSchemaBuilderModule, GraphQLSchemaFactory, InputType, ObjectType } from "@nestjs/graphql";
@@ -7,6 +9,9 @@ import { printSchema } from "graphql";
 import { createBrevoContactResolver } from "./src/brevo-contact/brevo-contact.resolver";
 import { BrevoContactFactory } from "./src/brevo-contact/dto/brevo-contact.factory";
 import { SubscribeInputFactory } from "./src/brevo-contact/dto/subscribe-input.factory";
+import { EmailCampaignInputFactory } from "./src/email-campaign/dto/email-campaign-input.factory";
+import { createEmailCampaignsResolver } from "./src/email-campaign/email-campaign.resolver";
+import { EmailCampaignEntityFactory } from "./src/email-campaign/entities/email-campaign-entity.factory";
 import { TargetGroupInputFactory } from "./src/target-group/dto/target-group-input.factory";
 import { TargetGroupEntityFactory } from "./src/target-group/entity/target-group-entity.factory";
 import { createTargetGroupsResolver } from "./src/target-group/target-group.resolver";
@@ -38,6 +43,19 @@ async function generateSchema(): Promise<void> {
     const app = await NestFactory.create(GraphQLSchemaBuilderModule);
     await app.init();
 
+    const LinkBlock = createOneOfBlock(
+        {
+            supportedBlocks: { external: ExternalLinkBlock },
+            allowEmpty: false,
+        },
+        "Link",
+    );
+
+    const EmailCampaignContentBlock = createOneOfBlock(
+        { supportedBlocks: { internal: createRichTextBlock({ link: LinkBlock }) }, allowEmpty: true },
+        "EmailCampaignContent",
+    );
+
     const gqlSchemaFactory = app.get(GraphQLSchemaFactory);
 
     const BrevoContact = BrevoContactFactory.create({});
@@ -48,7 +66,17 @@ async function generateSchema(): Promise<void> {
     const [TargetGroupInput, TargetGroupUpdateInput] = TargetGroupInputFactory.create({ BrevoFilterAttributes: BrevoContactFilterAttributes });
     const TargetGroupResolver = createTargetGroupsResolver({ TargetGroup, TargetGroupInput, TargetGroupUpdateInput, Scope: EmailCampaignScope });
 
-    const schema = await gqlSchemaFactory.create([BrevoContactResolver, TargetGroupResolver]);
+    const EmailCampaign = EmailCampaignEntityFactory.create({ Scope: EmailCampaignScope, TargetGroup: TargetGroup, EmailCampaignContentBlock });
+    const [EmailCampaignInput, EmailCampaignUpdateInput] = EmailCampaignInputFactory.create({ EmailCampaignContentBlock });
+    const EmailCampaignResolver = createEmailCampaignsResolver({
+        EmailCampaign,
+        TargetGroup,
+        EmailCampaignInput,
+        EmailCampaignUpdateInput,
+        Scope: EmailCampaignScope,
+    });
+
+    const schema = await gqlSchemaFactory.create([BrevoContactResolver, TargetGroupResolver, EmailCampaignResolver]);
 
     await writeFile("schema.gql", printSchema(schema));
 
