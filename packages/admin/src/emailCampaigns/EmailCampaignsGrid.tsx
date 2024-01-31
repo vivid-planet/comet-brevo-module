@@ -114,7 +114,10 @@ export function EmailCampaignsGrid({
 }): React.ReactElement {
     const client = useApolloClient();
     const intl = useIntl();
-    const dataGridProps = { ...useDataGridRemote(), ...usePersistentColumnState("EmailCampaignsGrid") };
+    const dataGridProps = {
+        ...useDataGridRemote({ initialSort: [{ field: "updatedAt", sort: "desc" }] }),
+        ...usePersistentColumnState("EmailCampaignsGrid"),
+    };
 
     const columns: GridColDef<GQLEmailCampaignsListFragment>[] = [
         {
@@ -124,7 +127,6 @@ export function EmailCampaignsGrid({
             valueGetter: ({ value }) => value && new Date(value),
             width: 150,
             filterable: false,
-            sortable: false,
         },
         {
             field: "createdAt",
@@ -133,7 +135,6 @@ export function EmailCampaignsGrid({
             valueGetter: ({ value }) => value && new Date(value),
             width: 150,
             filterable: false,
-            sortable: false,
         },
         { field: "title", headerName: intl.formatMessage({ id: "cometBrevoModule.emailCampaign.title", defaultMessage: "Title" }), flex: 2 },
         { field: "subject", headerName: intl.formatMessage({ id: "cometBrevoModule.emailCampaign.subject", defaultMessage: "Subject" }), flex: 1 },
