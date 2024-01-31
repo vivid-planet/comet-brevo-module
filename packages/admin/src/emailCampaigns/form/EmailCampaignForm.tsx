@@ -57,9 +57,10 @@ interface FormProps {
     id?: string;
     EmailCampaignContentBlock: BlockInterface;
     scope: ContentScopeInterface;
+    previewUrl: string;
 }
 
-export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope }: FormProps): React.ReactElement {
+export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope, previewUrl }: FormProps): React.ReactElement {
     const rootBlocks = {
         content: EmailCampaignContentBlock,
     };
@@ -211,9 +212,6 @@ export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope }: Form
         emailCampaignId: id,
         content: EmailCampaignContentBlock.createPreviewState(state.content, previewContext),
     };
-
-    // TODO: Add previewUrl
-    const previewUrl = undefined;
 
     const isScheduleDateDisabled = state.sendingState === "SENT" || mode === "add" || !state.targetGroup;
 

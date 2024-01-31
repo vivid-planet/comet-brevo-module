@@ -10,9 +10,10 @@ import { EmailCampaignForm } from "./form/EmailCampaignForm";
 interface CreateEmailCampaignsPageOptions {
     scopeParts: string[];
     EmailCampaignContentBlock: BlockInterface;
+    previewUrl: string;
 }
 
-export function createEmailCampaignsPage({ scopeParts, EmailCampaignContentBlock }: CreateEmailCampaignsPageOptions) {
+export function createEmailCampaignsPage({ scopeParts, EmailCampaignContentBlock, previewUrl }: CreateEmailCampaignsPageOptions) {
     function EmailCampaignsPage(): JSX.Element {
         const { scope: completeScope } = useContentScope();
         const intl = useIntl();
@@ -32,13 +33,20 @@ export function createEmailCampaignsPage({ scopeParts, EmailCampaignContentBlock
                         name="edit"
                         title={intl.formatMessage({ id: "cometBrevoModule.emailCampaigns.editEmailCampaign", defaultMessage: "Edit email campaign" })}
                     >
-                        {(selectedId) => <EmailCampaignForm id={selectedId} EmailCampaignContentBlock={EmailCampaignContentBlock} scope={scope} />}
+                        {(selectedId) => (
+                            <EmailCampaignForm
+                                previewUrl={previewUrl}
+                                id={selectedId}
+                                EmailCampaignContentBlock={EmailCampaignContentBlock}
+                                scope={scope}
+                            />
+                        )}
                     </StackPage>
                     <StackPage
                         name="add"
                         title={intl.formatMessage({ id: "cometBrevoModule.emailCampaigns.addEmailCampaign", defaultMessage: "Add email campaign" })}
                     >
-                        <EmailCampaignForm EmailCampaignContentBlock={EmailCampaignContentBlock} scope={scope} />
+                        <EmailCampaignForm previewUrl={previewUrl} EmailCampaignContentBlock={EmailCampaignContentBlock} scope={scope} />
                     </StackPage>
                 </StackSwitch>
             </Stack>

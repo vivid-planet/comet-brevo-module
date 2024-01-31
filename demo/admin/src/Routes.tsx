@@ -3,6 +3,7 @@ import { Domain } from "@comet/admin-icons";
 import { createBrevoContactsPage, createEmailCampaignsPage, createTargetGroupsPage } from "@comet/brevo-admin";
 import { ContentScopeIndicator, createRedirectsPage, DamPage, PagesPage, PublisherPage, SitePreview } from "@comet/cms-admin";
 import { getBrevoContactConfig } from "@src/common/brevoModuleConfig/brevoContactsPageAttributesConfig";
+import { config } from "@src/config";
 import { pageTreeCategories, urlParamToCategory } from "@src/pageTree/pageTreeCategories";
 import * as React from "react";
 import { useIntl } from "react-intl";
@@ -42,6 +43,7 @@ export const Routes: React.FC = () => {
     const EmailCampaignsPage = createEmailCampaignsPage({
         scopeParts: ["domain", "language"],
         EmailCampaignContentBlock: EmailCampaignContentBlock,
+        previewUrl: `${config.campaignsFrontendUrl}/preview`,
     });
 
     return (
