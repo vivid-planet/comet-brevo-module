@@ -166,13 +166,16 @@ export function EmailCampaignsGrid({
             headerName: "",
             sortable: false,
             filterable: false,
+            align: "right",
             type: "actions",
             renderCell: ({ row }) => {
                 return (
                     <>
-                        <IconButton component={StackLink} pageName="edit" payload={row.id}>
-                            <Edit color="primary" />
-                        </IconButton>
+                        {!(row.sendingState === "SENT" || (row.scheduledAt && row.scheduledAt < new Date())) && (
+                            <IconButton component={StackLink} pageName="edit" payload={row.id}>
+                                <Edit color="primary" />
+                            </IconButton>
+                        )}
                         <CrudContextMenu
                             copyData={() => {
                                 return {
