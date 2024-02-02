@@ -125,6 +125,6 @@ export class EmailCampaignsService {
             } while (currentOffset < totalContacts);
         }
 
-        return campaign.brevoId ? this.brevoApiCampaignService.sendBrevoCampaign(campaign.brevoId) : false;
+        return false;
     }
 }

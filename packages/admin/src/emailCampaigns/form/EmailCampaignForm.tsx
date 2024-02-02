@@ -288,7 +288,12 @@ export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope, previe
                                         scheduledAt: state.scheduledAt,
                                     }}
                                 >
-                                    <SendManagerFields scope={scope} disableScheduling={isScheduleDateDisabled} />
+                                    <SendManagerFields
+                                        scope={scope}
+                                        disableScheduling={isScheduleDateDisabled}
+                                        isSendable={!hasChanges && state.targetGroup != undefined}
+                                        id={id}
+                                    />
                                     <TestEmailCampaignForm id={id} isSendable={!hasChanges && state.targetGroup != undefined} />
                                 </BlocksFinalForm>
                             ),

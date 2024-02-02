@@ -10,3 +10,9 @@ export const targetGroupsSelectQuery = gql`
         }
     }
 `;
+
+export const sendEmailCampaignNowMutation = gql`
+    mutation SendEmailCampaignNow($id: ID!) {
+        sendEmailCampaignNow(id: $id)
+    }
+`;
