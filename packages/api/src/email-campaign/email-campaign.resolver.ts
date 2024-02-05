@@ -173,7 +173,21 @@ export function createEmailCampaignsResolver({
 
         @Mutation(() => Boolean)
         async sendEmailCampaignNow(@Args("id", { type: () => ID }) id: string): Promise<boolean> {
-            return this.campaignsService.sendEmailCampaignNow(id);
+            const campaignSent = await this.campaignsService.sendEmailCampaignNow(id);
+
+            if (campaignSent) {
+                const campaign = await this.repository.findOneOrFail(id);
+
+                wrap(campaign).assign({
+                    scheduledAt: new Date(),
+                });
+
+                await this.entityManager.flush();
+
+                return true;
+            }
+
+            return false;
         }
 
         @Mutation(() => Boolean)
