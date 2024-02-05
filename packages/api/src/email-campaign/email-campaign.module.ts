@@ -27,8 +27,14 @@ export class EmailCampaignModule {
             EmailCampaignContentBlock,
             TargetGroup,
         });
-        const EmailCampaignInput = EmailCampaignInputFactory.create({ EmailCampaignContentBlock });
-        const EmailCampaignsResolver = createEmailCampaignsResolver({ EmailCampaign, EmailCampaignInput, Scope, TargetGroup });
+        const [EmailCampaignInput, EmailCampaignUpdateInput] = EmailCampaignInputFactory.create({ EmailCampaignContentBlock });
+        const EmailCampaignsResolver = createEmailCampaignsResolver({
+            EmailCampaign,
+            EmailCampaignInput,
+            EmailCampaignUpdateInput,
+            Scope,
+            TargetGroup,
+        });
 
         return {
             module: EmailCampaignModule,

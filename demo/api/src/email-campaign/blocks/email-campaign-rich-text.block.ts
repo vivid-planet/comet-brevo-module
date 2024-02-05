@@ -1,5 +1,5 @@
 import { createRichTextBlock } from "@comet/blocks-api";
 
-import { EmailCampaignLinkBlock } from "./emailCampaign-link.block";
+import { EmailCampaignLinkBlock } from "./email-campaign-link.block";
 
 export const EmailCampaignRichTextBlock = createRichTextBlock({ link: EmailCampaignLinkBlock });

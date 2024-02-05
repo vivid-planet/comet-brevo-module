@@ -22,7 +22,10 @@ export function createConfig() {
         buildDate: environmentVariables.BUILD_DATE,
         buildNumber: environmentVariables.BUILD_NUMBER,
         commitSha: environmentVariables.COMMIT_SHA,
+        campaignsFrontendUrl: environmentVariables.CAMPAIGNS_FRONTEND_URL,
     };
 }
+
+export const config = createConfig();
 
 export type Config = ReturnType<typeof createConfig>;

@@ -21,11 +21,13 @@ import { SendingState } from "./sending-state.enum";
 export function createEmailCampaignsResolver({
     EmailCampaign,
     EmailCampaignInput,
+    EmailCampaignUpdateInput,
     Scope,
     TargetGroup,
 }: {
     EmailCampaign: Type<EmailCampaignInterface>;
     EmailCampaignInput: Type<EmailCampaignInputInterface>;
+    EmailCampaignUpdateInput: Type<Partial<EmailCampaignInputInterface>>;
     Scope: Type<EmailCampaignScopeInterface>;
     TargetGroup: Type<TargetGroupInterface>;
 }): Type<unknown> {
@@ -113,7 +115,8 @@ export function createEmailCampaignsResolver({
         @SubjectEntity(EmailCampaign)
         async updateEmailCampaign(
             @Args("id", { type: () => ID }) id: string,
-            @Args("input", { type: () => EmailCampaignInput }, new DynamicDtoValidationPipe(EmailCampaignInput)) input: EmailCampaignInputInterface,
+            @Args("input", { type: () => EmailCampaignUpdateInput }, new DynamicDtoValidationPipe(EmailCampaignUpdateInput))
+            input: Partial<EmailCampaignInputInterface>,
             @Args("lastUpdatedAt", { type: () => Date, nullable: true }) lastUpdatedAt?: Date,
         ): Promise<EmailCampaignInterface> {
             const campaign = await this.repository.findOneOrFail(id);
@@ -124,7 +127,7 @@ export function createEmailCampaignsResolver({
 
             wrap(campaign).assign({
                 ...input,
-                content: input.content.transformToBlockData(),
+                content: input.content ? input.content.transformToBlockData() : undefined,
                 scheduledAt: input.scheduledAt ?? null,
             });
 

@@ -1,7 +1,7 @@
 import { Block, BlockInputInterface, isBlockInputInterface } from "@comet/blocks-api";
 import { IsUndefinable, RootBlockInputScalar } from "@comet/cms-api";
 import { Type } from "@nestjs/common";
-import { Field, ID, InputType } from "@nestjs/graphql";
+import { Field, ID, InputType, PartialType } from "@nestjs/graphql";
 import { Transform } from "class-transformer";
 import { IsDate, IsNotEmpty, IsString, IsUUID, MinDate, ValidateNested } from "class-validator";
 
@@ -14,7 +14,11 @@ export interface EmailCampaignInputInterface {
 }
 
 export class EmailCampaignInputFactory {
-    static create({ EmailCampaignContentBlock }: { EmailCampaignContentBlock: Block }): Type<EmailCampaignInputInterface> {
+    static create({
+        EmailCampaignContentBlock,
+    }: {
+        EmailCampaignContentBlock: Block;
+    }): [Type<EmailCampaignInputInterface>, Type<Partial<EmailCampaignInputInterface>>] {
         @InputType()
         class EmailCampaignInput implements EmailCampaignInputInterface {
             @IsNotEmpty()
@@ -46,6 +50,9 @@ export class EmailCampaignInputFactory {
             content: BlockInputInterface;
         }
 
-        return EmailCampaignInput;
+        @InputType()
+        class EmailCampaignUpdateInput extends PartialType(EmailCampaignInput) {}
+
+        return [EmailCampaignInput, EmailCampaignUpdateInput];
     }
 }

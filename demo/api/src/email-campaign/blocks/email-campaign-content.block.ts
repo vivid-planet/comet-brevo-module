@@ -1,7 +1,7 @@
 import { createBlocksBlock } from "@comet/blocks-api";
 
-import { EmailCampaignDividerBlock } from "./emailCampaign-divider.block";
-import { EmailCampaignRichTextBlock } from "./emailCampaign-rich-text.block";
+import { EmailCampaignDividerBlock } from "./email-campaign-divider.block";
+import { EmailCampaignRichTextBlock } from "./email-campaign-rich-text.block";
 
 export const EmailCampaignContentBlock = createBlocksBlock(
     {

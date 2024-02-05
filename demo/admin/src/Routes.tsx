@@ -1,8 +1,9 @@
 import { MasterLayout, RouteWithErrorBoundary } from "@comet/admin";
 import { Domain } from "@comet/admin-icons";
-import { createBrevoContactsPage, createTargetGroupsPage } from "@comet/brevo-admin";
+import { createBrevoContactsPage, createEmailCampaignsPage, createTargetGroupsPage } from "@comet/brevo-admin";
 import { ContentScopeIndicator, createRedirectsPage, DamPage, PagesPage, PublisherPage, SitePreview } from "@comet/cms-admin";
 import { getBrevoContactConfig } from "@src/common/brevoModuleConfig/brevoContactsPageAttributesConfig";
+import { config } from "@src/config";
 import { pageTreeCategories, urlParamToCategory } from "@src/pageTree/pageTreeCategories";
 import * as React from "react";
 import { useIntl } from "react-intl";
@@ -17,6 +18,7 @@ import { MasterMenu } from "./common/MasterMenu";
 import { DashboardPage } from "./dashboard/DashboardPage";
 import { Link } from "./documents/links/Link";
 import { Page } from "./documents/pages/Page";
+import { EmailCampaignContentBlock } from "./emailCampaigns/blocks/EmailCampaignContentBlock";
 import { ProductsPage } from "./products/ProductsPage";
 
 const RedirectsPage = createRedirectsPage();
@@ -24,6 +26,7 @@ const RedirectsPage = createRedirectsPage();
 export const Routes: React.FC = () => {
     const intl = useIntl();
     const brevoContactConfig = getBrevoContactConfig(intl);
+
     const BrevoContactsPage = createBrevoContactsPage({
         scopeParts: ["domain", "language"],
         additionalAttributesFragment: brevoContactConfig.additionalAttributesFragment,
@@ -35,6 +38,12 @@ export const Routes: React.FC = () => {
         additionalFormFields: additionalFormConfig.additionalFormFields,
         nodeFragment: additionalFormConfig.nodeFragment,
         input2State: additionalFormConfig.input2State,
+    });
+
+    const EmailCampaignsPage = createEmailCampaignsPage({
+        scopeParts: ["domain", "language"],
+        EmailCampaignContentBlock: EmailCampaignContentBlock,
+        previewUrl: `${config.campaignsFrontendUrl}/preview`,
     });
 
     return (
@@ -83,6 +92,7 @@ export const Routes: React.FC = () => {
 
                                     <RouteWithErrorBoundary path={`${match.path}/newsletter/contacts`} component={BrevoContactsPage} />
                                     <RouteWithErrorBoundary path={`${match.path}/newsletter/target-groups`} component={TargetGroupsPage} />
+                                    <RouteWithErrorBoundary path={`${match.path}/newsletter/email-campaigns`} component={EmailCampaignsPage} />
 
                                     <RouteWithErrorBoundary path={`${match.path}/structured-content/products`} component={ProductsPage} />
                                     <RouteWithErrorBoundary path={`${match.path}/assets`} component={DamPage} />
