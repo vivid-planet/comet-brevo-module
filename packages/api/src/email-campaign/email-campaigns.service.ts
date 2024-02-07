@@ -116,13 +116,13 @@ export class EmailCampaignsService {
                     await this.brevoApiContactsService.blacklistMultipleContacts(containedEmails);
                 }
 
-                if (campaign.brevoId) {
-                    return this.brevoApiCampaignService.sendBrevoCampaign(campaign.brevoId);
-                }
-
                 currentOffset += limit;
                 totalContacts = total;
             } while (currentOffset < totalContacts);
+
+            if (campaign.brevoId) {
+                return this.brevoApiCampaignService.sendBrevoCampaign(campaign.brevoId);
+            }
         }
 
         return false;
