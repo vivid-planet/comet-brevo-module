@@ -100,7 +100,7 @@ export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope, previe
                 title: emailCampaign?.title,
                 subject: emailCampaign?.subject,
                 content: EmailCampaignContentBlock.input2State(emailCampaign.content),
-                scheduledAt: emailCampaign?.scheduledAt ? new Date(emailCampaign.scheduledAt) : undefined,
+                scheduledAt: emailCampaign?.scheduledAt ? new Date(emailCampaign.scheduledAt) : null,
                 sendingState: emailCampaign?.sendingState,
                 targetGroup: emailCampaign?.targetGroup?.id,
             };
@@ -108,8 +108,7 @@ export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope, previe
         state2Output: (state) => ({
             ...state,
             content: EmailCampaignContentBlock.state2Output(state.content),
-            targetGroup: state.targetGroup ?? undefined,
-            scheduledAt: state.targetGroup ? state.scheduledAt : undefined,
+            scheduledAt: state.targetGroup ? state.scheduledAt ?? null : null,
             sendingState: undefined,
         }),
         defaultState: {

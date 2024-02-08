@@ -100,6 +100,7 @@ export function createEmailCampaignsResolver({
                 scope,
                 targetGroup: targetGroupInput ? Reference.create(await this.targetGroupRepository.findOneOrFail(targetGroupInput)) : undefined,
                 content: input.content.transformToBlockData(),
+                scheduledAt: input.scheduledAt ?? undefined,
             });
 
             await this.entityManager.flush();
@@ -128,7 +129,6 @@ export function createEmailCampaignsResolver({
             wrap(campaign).assign({
                 ...input,
                 content: input.content ? input.content.transformToBlockData() : undefined,
-                scheduledAt: input.scheduledAt ?? null,
             });
 
             await this.entityManager.flush();
@@ -143,8 +143,7 @@ export function createEmailCampaignsResolver({
                     throw new Error("Cannot update email campaign that has already been sent.");
                 }
 
-                hasScheduleRemoved = input.scheduledAt == null && brevoEmailCampaign.scheduledAt !== null;
-
+                hasScheduleRemoved = input.scheduledAt === null && brevoEmailCampaign.scheduledAt !== null;
                 if (hasScheduleRemoved && !(sendingState === SendingState.DRAFT)) {
                     await this.campaignsService.suspendEmailCampaign(campaign.brevoId);
                 }
