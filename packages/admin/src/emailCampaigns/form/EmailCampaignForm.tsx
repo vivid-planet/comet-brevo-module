@@ -68,7 +68,7 @@ export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope, previe
 
     type EmailCampaignState = Omit<GQLEmailCampaignFormFragment, "content" | "targetGroup"> & {
         [key in keyof typeof rootBlocks]: BlockState<(typeof rootBlocks)[key]>;
-    } & { targetGroup: string | null };
+    } & { targetGroup?: string };
 
     const stackApi = useStackApi();
     const stackSwitchApi = useStackSwitchApi();
@@ -102,13 +102,12 @@ export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope, previe
                 content: EmailCampaignContentBlock.input2State(emailCampaign.content),
                 scheduledAt: emailCampaign?.scheduledAt ? new Date(emailCampaign.scheduledAt) : null,
                 sendingState: emailCampaign?.sendingState,
-                targetGroup: emailCampaign?.targetGroup?.id ?? null,
+                targetGroup: emailCampaign?.targetGroup?.id,
             };
         },
         state2Output: (state) => ({
             ...state,
             content: EmailCampaignContentBlock.state2Output(state.content),
-            targetGroup: state.targetGroup ?? null,
             scheduledAt: state.targetGroup ? state.scheduledAt ?? null : null,
             sendingState: undefined,
         }),
@@ -116,9 +115,8 @@ export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope, previe
             title: "",
             subject: "",
             content: EmailCampaignContentBlock.defaultValues(),
-            scheduledAt: null,
-            targetGroup: null,
             sendingState: "DRAFT",
+            scheduledAt: undefined,
         },
     });
 

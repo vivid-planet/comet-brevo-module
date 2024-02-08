@@ -1,5 +1,5 @@
 import { Block, BlockInputInterface, isBlockInputInterface } from "@comet/blocks-api";
-import { IsUndefinable, RootBlockInputScalar } from "@comet/cms-api";
+import { IsNullable, IsUndefinable, RootBlockInputScalar } from "@comet/cms-api";
 import { Type } from "@nestjs/common";
 import { Field, ID, InputType, PartialType } from "@nestjs/graphql";
 import { Transform } from "class-transformer";
@@ -8,7 +8,7 @@ import { IsDate, IsNotEmpty, IsString, IsUUID, MinDate, ValidateNested } from "c
 export interface EmailCampaignInputInterface {
     title: string;
     subject: string;
-    scheduledAt?: Date;
+    scheduledAt?: Date | null;
     content: BlockInputInterface;
     targetGroup?: string;
 }
@@ -31,11 +31,12 @@ export class EmailCampaignInputFactory {
             @Field()
             subject: string;
 
-            @IsUndefinable()
+            @IsUndefinable() // When sending undefined, the previous scheduledAt value will be kept
+            @IsNullable() // When sending null, the scheduledAt value will be removed
             @IsDate()
             @MinDate(new Date())
             @Field(() => Date, { nullable: true })
-            scheduledAt?: Date;
+            scheduledAt?: Date | null;
 
             @IsUndefinable()
             @Field(() => ID, { nullable: true })
