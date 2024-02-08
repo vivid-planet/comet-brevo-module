@@ -35,7 +35,7 @@ import {
     useSaveState,
 } from "@comet/cms-admin";
 import { IconButton } from "@mui/material";
-import React from "react";
+import React, { useMemo } from "react";
 import { FormattedMessage } from "react-intl";
 import { useRouteMatch } from "react-router";
 
@@ -79,7 +79,7 @@ export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope, previe
     const blockContext = useCmsBlockContext();
     const match = useRouteMatch();
 
-    const FinalFormEmailCampaignContentBlock = createFinalFormBlock(EmailCampaignContentBlock);
+    const FinalFormEmailCampaignContentBlock = useMemo(() => createFinalFormBlock(EmailCampaignContentBlock), [EmailCampaignContentBlock]);
 
     const { data, error, loading, refetch } = useQuery<GQLEmailCampaignFormQuery, GQLEmailCampaignFormQueryVariables>(
         emailCampaignFormQuery,
