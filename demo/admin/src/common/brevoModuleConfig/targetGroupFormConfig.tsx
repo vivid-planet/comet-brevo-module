@@ -1,5 +1,6 @@
 import { gql } from "@apollo/client";
 import { Field, FinalFormSelect } from "@comet/admin";
+import { EditTargetGroupFinalFormValues } from "@comet/brevo-admin";
 import { MenuItem } from "@mui/material";
 import { GQLBrevoContactSalutation } from "@src/graphql.generated";
 import * as React from "react";
@@ -27,9 +28,16 @@ export const additionalPageTreeNodeFieldsFragment = {
     name: "TargetGroupFilters",
 };
 
+interface AdditionalFormConfigInputProps extends EditTargetGroupFinalFormValues {
+    filters: {
+        SALUTATION: Array<GQLBrevoContactSalutation>;
+    };
+}
+
 export const additionalFormConfig = {
-    input2State: (values?: { filters: { SALUTATION: Array<GQLBrevoContactSalutation> } }) => {
+    input2State: (values?: AdditionalFormConfigInputProps) => {
         return {
+            title: values?.title ?? "",
             filters: {
                 SALUTATION: values?.filters?.SALUTATION ?? [],
             },
