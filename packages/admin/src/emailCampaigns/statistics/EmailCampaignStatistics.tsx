@@ -1,8 +1,8 @@
 import { useQuery } from "@apollo/client";
-import { MainContent, StackLink, Toolbar, ToolbarActions, ToolbarFillSpace, ToolbarItem, useStackApi } from "@comet/admin";
-import { Add as AddIcon, ArrowLeft } from "@comet/admin-icons";
+import { MainContent, StackLink, Toolbar, ToolbarActions, ToolbarBackButton, ToolbarFillSpace } from "@comet/admin";
+import { Add as AddIcon } from "@comet/admin-icons";
 import { useContentScopeConfig } from "@comet/cms-admin";
-import { Button, Grid, IconButton } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import React from "react";
 import { FormattedMessage } from "react-intl";
 
@@ -15,7 +15,6 @@ interface Props {
 }
 
 export const EmailCampaignStatistics = ({ id }: Props): React.ReactElement => {
-    const stackApi = useStackApi();
     useContentScopeConfig({ redirectPathAfterChange: "/newsletter/email-campaigns" });
 
     const { data: campaignStatistics } = useQuery<GQLEmailCampaignStatisticsQuery, GQLEmailCampaignStatisticsQueryVariables>(
@@ -29,11 +28,7 @@ export const EmailCampaignStatistics = ({ id }: Props): React.ReactElement => {
     return (
         <>
             <Toolbar>
-                <ToolbarItem>
-                    <IconButton onClick={stackApi?.goBack} size="large">
-                        <ArrowLeft />
-                    </IconButton>
-                </ToolbarItem>
+                <ToolbarBackButton />
                 <ToolbarFillSpace />
                 <ToolbarActions>
                     <Button startIcon={<AddIcon />} component={StackLink} pageName="add" payload="add" variant="contained" color="primary">
