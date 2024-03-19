@@ -15,7 +15,7 @@ import {
     useDataGridRemote,
     usePersistentColumnState,
 } from "@comet/admin";
-import { Add as AddIcon, Edit } from "@comet/admin-icons";
+import { Add as AddIcon, Edit, Statistics } from "@comet/admin-icons";
 import { BlockInterface } from "@comet/blocks-admin";
 import { ContentScopeInterface } from "@comet/cms-admin";
 import { Button, IconButton } from "@mui/material";
@@ -202,6 +202,11 @@ export function EmailCampaignsGrid({
                             }
                             refetchQueries={[emailCampaignsQuery]}
                         />
+                        {row.sendingState === "SENT" && (
+                            <IconButton component={StackLink} pageName="statistics" payload={row.id}>
+                                <Statistics color="primary" />
+                            </IconButton>
+                        )}
                     </>
                 );
             },

@@ -6,6 +6,7 @@ import { useIntl } from "react-intl";
 
 import { EmailCampaignsGrid } from "./EmailCampaignsGrid";
 import { EmailCampaignForm } from "./form/EmailCampaignForm";
+import { EmailCampaignStatistics } from "./statistics/EmailCampaignStatistics";
 
 interface CreateEmailCampaignsPageOptions {
     scopeParts: string[];
@@ -29,6 +30,7 @@ export function createEmailCampaignsPage({ scopeParts, EmailCampaignContentBlock
                     <StackPage name="grid">
                         <EmailCampaignsGrid scope={scope} EmailCampaignContentBlock={EmailCampaignContentBlock} />
                     </StackPage>
+                    <StackPage name="statistics">{(selectedId) => <EmailCampaignStatistics id={selectedId} />}</StackPage>
                     <StackPage
                         name="edit"
                         title={intl.formatMessage({ id: "cometBrevoModule.emailCampaigns.editEmailCampaign", defaultMessage: "Edit email campaign" })}
