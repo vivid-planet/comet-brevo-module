@@ -176,6 +176,11 @@ export function EmailCampaignsGrid({
                                 <Edit color="primary" />
                             </IconButton>
                         )}
+                        {row.sendingState === "SENT" && (
+                            <IconButton component={StackLink} pageName="statistics" payload={row.id}>
+                                <Statistics color="primary" />
+                            </IconButton>
+                        )}
                         <CrudContextMenu
                             copyData={() => {
                                 return {
@@ -202,11 +207,6 @@ export function EmailCampaignsGrid({
                             }
                             refetchQueries={[emailCampaignsQuery]}
                         />
-                        {row.sendingState === "SENT" && (
-                            <IconButton component={StackLink} pageName="statistics" payload={row.id}>
-                                <Statistics color="primary" />
-                            </IconButton>
-                        )}
                     </>
                 );
             },
