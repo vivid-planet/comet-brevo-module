@@ -1,4 +1,4 @@
-import { extractGraphqlFields, PaginatedResponseFactory, SubjectEntity, validateNotModified } from "@comet/cms-api";
+import { extractGraphqlFields, PaginatedResponseFactory, AffectedEntity, validateNotModified } from "@comet/cms-api";
 import { EntityManager, EntityRepository, FindOptions, Reference, wrap } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Type } from "@nestjs/common";
@@ -49,7 +49,7 @@ export function createEmailCampaignsResolver({
         ) {}
 
         @Query(() => EmailCampaign)
-        @SubjectEntity(EmailCampaign)
+        @AffectedEntity(EmailCampaign)
         async emailCampaign(@Args("id", { type: () => ID }) id: string): Promise<EmailCampaignInterface> {
             const campaign = await this.repository.findOneOrFail(id);
             return campaign;
@@ -113,7 +113,7 @@ export function createEmailCampaignsResolver({
         }
 
         @Mutation(() => EmailCampaign)
-        @SubjectEntity(EmailCampaign)
+        @AffectedEntity(EmailCampaign)
         async updateEmailCampaign(
             @Args("id", { type: () => ID }) id: string,
             @Args("input", { type: () => EmailCampaignUpdateInput }, new DynamicDtoValidationPipe(EmailCampaignUpdateInput))
@@ -157,7 +157,7 @@ export function createEmailCampaignsResolver({
         }
 
         @Mutation(() => Boolean)
-        @SubjectEntity(EmailCampaign)
+        @AffectedEntity(EmailCampaign)
         async deleteEmailCampaign(@Args("id", { type: () => ID }) id: string): Promise<boolean> {
             const campaign = await this.repository.findOneOrFail(id);
 
