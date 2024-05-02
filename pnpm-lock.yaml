@@ -54,26 +54,26 @@ importers:
         specifier: ^7.0.0
         version: 7.23.7
       '@comet/admin':
-        specifier: ^5.3.0
-        version: 5.5.0(@apollo/client@3.8.9)(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@mui/icons-material@5.14.5)(@mui/material@5.15.5)(@mui/styles@5.15.5)(@mui/x-data-grid@5.17.26)(@types/react@17.0.75)(final-form@4.20.10)(graphql@15.8.0)(history@4.10.1)(react-dnd@16.0.1)(react-dom@17.0.2)(react-final-form@6.5.9)(react-intl@5.25.1)(react-router-dom@5.3.4)(react-router@5.3.4)(react@17.0.2)
+        specifier: ^6.8.0
+        version: 6.8.0(@apollo/client@3.8.9)(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@mui/icons-material@5.14.5)(@mui/material@5.15.5)(@mui/styles@5.15.5)(@mui/x-data-grid@5.17.26)(@types/react@17.0.75)(final-form@4.20.10)(graphql@15.8.0)(history@4.10.1)(react-dnd@16.0.1)(react-dom@17.0.2)(react-final-form@6.5.9)(react-intl@5.25.1)(react-router-dom@5.3.4)(react-router@5.3.4)(react@17.0.2)
       '@comet/admin-icons':
-        specifier: ^5.3.0
-        version: 5.5.0(@mui/material@5.15.5)(react-dom@17.0.2)(react@17.0.2)
+        specifier: ^6.8.0
+        version: 6.8.0(@mui/material@5.15.5)(react-dom@17.0.2)(react@17.0.2)
       '@comet/admin-rte':
-        specifier: ^5.3.0
-        version: 5.5.0(@mui/icons-material@5.14.5)(@mui/material@5.15.5)(@mui/styles@5.15.5)(draft-js@0.11.7)(final-form@4.20.10)(react-dom@17.0.2)(react-final-form@6.5.9)(react-intl@5.25.1)(react@17.0.2)
+        specifier: ^6.8.0
+        version: 6.8.0(@apollo/client@3.8.9)(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@mui/icons-material@5.14.5)(@mui/material@5.15.5)(@mui/styles@5.15.5)(@mui/x-data-grid@5.17.26)(@types/react@17.0.75)(draft-js@0.11.7)(final-form@4.20.10)(graphql@15.8.0)(history@4.10.1)(react-dnd@16.0.1)(react-dom@17.0.2)(react-final-form@6.5.9)(react-intl@5.25.1)(react-router-dom@5.3.4)(react-router@5.3.4)(react@17.0.2)
       '@comet/admin-theme':
-        specifier: ^5.3.0
-        version: 5.5.0(@mui/material@5.15.5)(@mui/styles@5.15.5)(@mui/system@5.15.5)(@types/react@17.0.75)(react-dom@17.0.2)(react@17.0.2)
+        specifier: ^6.8.0
+        version: 6.8.0(@mui/material@5.15.5)(@mui/styles@5.15.5)(@mui/system@5.15.5)(@types/react@17.0.75)(react-dom@17.0.2)(react@17.0.2)
       '@comet/blocks-admin':
-        specifier: ^5.3.0
-        version: 5.5.0(@apollo/client@3.8.9)(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@mui/icons-material@5.14.5)(@mui/material@5.15.5)(@mui/styles@5.15.5)(@mui/x-data-grid@5.17.26)(@types/react@17.0.75)(final-form@4.20.10)(graphql@15.8.0)(history@4.10.1)(react-dnd@16.0.1)(react-dom@17.0.2)(react-final-form@6.5.9)(react-intl@5.25.1)(react-router-dom@5.3.4)(react-router@5.3.4)(react@17.0.2)
+        specifier: ^6.8.0
+        version: 6.8.0(@apollo/client@3.8.9)(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@mui/icons-material@5.14.5)(@mui/material@5.15.5)(@mui/styles@5.15.5)(@mui/x-data-grid@5.17.26)(@types/react@17.0.75)(final-form@4.20.10)(graphql@15.8.0)(history@4.10.1)(react-dnd@16.0.1)(react-dom@17.0.2)(react-final-form@6.5.9)(react-intl@5.25.1)(react-router-dom@5.3.4)(react-router@5.3.4)(react@17.0.2)
       '@comet/brevo-admin':
         specifier: workspace:*
         version: link:../../packages/admin
       '@comet/cms-admin':
-        specifier: ^5.3.0
-        version: 5.5.0(@apollo/client@3.8.9)(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@mui/icons-material@5.14.5)(@mui/material@5.15.5)(@mui/styles@5.15.5)(@mui/system@5.15.5)(@mui/x-data-grid@5.17.26)(@types/react@17.0.75)(axios@0.21.4)(draft-js@0.11.7)(final-form@4.20.10)(graphql@15.8.0)(history@4.10.1)(react-dnd-html5-backend@16.0.1)(react-dnd@16.0.1)(react-dom@17.0.2)(react-final-form@6.5.9)(react-intl@5.25.1)(react-router-dom@5.3.4)(react-router@5.3.4)(react@17.0.2)
+        specifier: ^6.8.0
+        version: 6.8.0(@apollo/client@3.8.9)(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@mui/icons-material@5.14.5)(@mui/material@5.15.5)(@mui/styles@5.15.5)(@mui/system@5.15.5)(@mui/x-data-grid@5.17.26)(@types/react@17.0.75)(axios@0.21.4)(draft-js@0.11.7)(final-form@4.20.10)(graphql@15.8.0)(history@4.10.1)(react-dnd-html5-backend@16.0.1)(react-dnd@16.0.1)(react-dom@17.0.2)(react-final-form@6.5.9)(react-intl@5.25.1)(react-router-dom@5.3.4)(react-router@5.3.4)(react@17.0.2)
       '@emotion/react':
         specifier: ^11.9.3
         version: 11.11.3(@types/react@17.0.75)(react@17.0.2)
@@ -166,11 +166,11 @@ importers:
         version: 5.3.4(react@17.0.2)
     devDependencies:
       '@comet/cli':
-        specifier: ^5.3.0
-        version: 5.5.0
+        specifier: ^6.8.0
+        version: 6.8.0
       '@comet/eslint-config':
-        specifier: ^5.3.0
-        version: 5.5.0(eslint@8.56.0)(next@12.3.4)(prettier@2.8.8)(typescript@4.9.5)
+        specifier: ^6.8.0
+        version: 6.8.0(eslint@8.56.0)(next@12.3.4)(prettier@2.8.8)(typescript@4.9.5)
       '@emotion/babel-plugin':
         specifier: ^11.0.0
         version: 11.11.0
@@ -286,14 +286,14 @@ importers:
         specifier: ^12.0.0
         version: 12.17.0
       '@comet/blocks-api':
-        specifier: ^5.3.0
-        version: 5.5.0(@nestjs/common@9.4.3)(class-transformer@0.5.1)(class-validator@0.13.2)
+        specifier: ^6.8.0
+        version: 6.8.0(@nestjs/common@9.4.3)(class-transformer@0.5.1)(class-validator@0.13.2)
       '@comet/brevo-api':
         specifier: workspace:*
         version: link:../../packages/api
       '@comet/cms-api':
-        specifier: ^5.3.0
-        version: 5.5.0(@aws-sdk/client-s3@3.490.0)(@azure/storage-blob@12.17.0)(@kubernetes/client-node@0.18.1)(@mikro-orm/cli@5.9.7)(@mikro-orm/core@5.9.7)(@mikro-orm/migrations@5.9.7)(@mikro-orm/nestjs@5.2.3)(@mikro-orm/postgresql@5.9.7)(@nestjs/common@9.4.3)(@nestjs/core@9.4.3)(@nestjs/graphql@10.2.1)(class-transformer@0.5.1)(express@4.18.2)(graphql@15.8.0)(nestjs-console@8.0.0)(pg-error-constants@1.0.0)(rxjs@7.8.1)
+        specifier: ^6.8.0
+        version: 6.8.0(@aws-sdk/client-s3@3.490.0)(@azure/storage-blob@12.17.0)(@kubernetes/client-node@0.18.1)(@mikro-orm/cli@5.9.7)(@mikro-orm/core@5.9.7)(@mikro-orm/migrations@5.9.7)(@mikro-orm/nestjs@5.2.3)(@mikro-orm/postgresql@5.9.7)(@nestjs/common@9.4.3)(@nestjs/core@9.4.3)(@nestjs/graphql@10.2.1)(class-transformer@0.5.1)(express@4.18.2)(graphql@15.8.0)(nestjs-console@8.0.0)(pg-error-constants@1.0.0)(rxjs@7.8.1)
       '@faker-js/faker':
         specifier: ^8.3.1
         version: 8.3.1
@@ -434,8 +434,8 @@ importers:
         version: 5.89.0(webpack-cli@4.10.0)
     devDependencies:
       '@comet/eslint-config':
-        specifier: ^5.3.0
-        version: 5.5.0(eslint@8.56.0)(prettier@2.8.8)(ts-jest@27.1.5)(typescript@4.9.5)
+        specifier: ^6.8.0
+        version: 6.8.0(eslint@8.56.0)(prettier@2.8.8)(ts-jest@27.1.5)(typescript@4.9.5)
       '@nestjs/cli':
         specifier: ^9.0.0
         version: 9.5.0
@@ -503,8 +503,8 @@ importers:
   demo/site:
     dependencies:
       '@comet/cms-site':
-        specifier: ^5.3.0
-        version: 5.5.0(next@12.3.4)(react-dom@17.0.2)(react@17.0.2)(styled-components@5.3.11)
+        specifier: ^6.8.0
+        version: 6.8.0(next@12.3.4)(react-dom@17.0.2)(react@17.0.2)(styled-components@5.3.11)
       '@next/bundle-analyzer':
         specifier: ^12.3.4
         version: 12.3.4
@@ -570,11 +570,11 @@ importers:
         specifier: ^7.16.0
         version: 7.23.7
       '@comet/cli':
-        specifier: ^5.3.0
-        version: 5.5.0
+        specifier: ^6.8.0
+        version: 6.8.0
       '@comet/eslint-config':
-        specifier: ^5.3.0
-        version: 5.5.0(eslint@8.56.0)(next@12.3.4)(prettier@2.8.8)(typescript@4.9.5)
+        specifier: ^6.8.0
+        version: 6.8.0(eslint@8.56.0)(next@12.3.4)(prettier@2.8.8)(typescript@4.9.5)
       '@formatjs/cli':
         specifier: ^4.2.33
         version: 4.8.4
@@ -658,26 +658,26 @@ importers:
         specifier: ^7.20.12
         version: 7.23.7
       '@comet/admin':
-        specifier: ^5.3.0
-        version: 5.5.0(@apollo/client@3.8.9)(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@mui/icons-material@5.14.5)(@mui/material@5.15.5)(@mui/styles@5.15.5)(@mui/x-data-grid@5.17.26)(@types/react@17.0.75)(final-form@4.20.10)(graphql@15.8.0)(history@4.10.1)(react-dnd@16.0.1)(react-dom@17.0.2)(react-final-form@6.5.9)(react-intl@5.25.1)(react-router-dom@5.3.4)(react-router@5.3.4)(react@17.0.2)
+        specifier: ^6.8.0
+        version: 6.8.0(@apollo/client@3.8.9)(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@mui/icons-material@5.14.5)(@mui/material@5.15.5)(@mui/styles@5.15.5)(@mui/x-data-grid@5.17.26)(@types/react@17.0.75)(final-form@4.20.10)(graphql@15.8.0)(history@4.10.1)(react-dnd@16.0.1)(react-dom@17.0.2)(react-final-form@6.5.9)(react-intl@5.25.1)(react-router-dom@5.3.4)(react-router@5.3.4)(react@17.0.2)
       '@comet/admin-babel-preset':
-        specifier: ^5.3.0
-        version: 5.5.0(@babel/cli@7.23.4)
+        specifier: ^6.8.0
+        version: 6.8.0(@babel/cli@7.23.4)
       '@comet/admin-date-time':
-        specifier: ^5.3.0
-        version: 5.5.0(@apollo/client@3.8.9)(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@mui/icons-material@5.14.5)(@mui/material@5.15.5)(@mui/styles@5.15.5)(@mui/x-data-grid@5.17.26)(@types/react@17.0.75)(final-form@4.20.10)(graphql@15.8.0)(history@4.10.1)(react-dnd@16.0.1)(react-dom@17.0.2)(react-final-form@6.5.9)(react-intl@5.25.1)(react-router-dom@5.3.4)(react-router@5.3.4)(react@17.0.2)
+        specifier: ^6.8.0
+        version: 6.8.0(@apollo/client@3.8.9)(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@mui/icons-material@5.14.5)(@mui/material@5.15.5)(@mui/styles@5.15.5)(@mui/x-data-grid@5.17.26)(@types/react@17.0.75)(final-form@4.20.10)(graphql@15.8.0)(history@4.10.1)(react-dnd@16.0.1)(react-dom@17.0.2)(react-final-form@6.5.9)(react-intl@5.25.1)(react-router-dom@5.3.4)(react-router@5.3.4)(react@17.0.2)
       '@comet/admin-icons':
-        specifier: ^5.3.0
-        version: 5.5.0(@mui/material@5.15.5)(react-dom@17.0.2)(react@17.0.2)
+        specifier: ^6.8.0
+        version: 6.8.0(@mui/material@5.15.5)(react-dom@17.0.2)(react@17.0.2)
       '@comet/blocks-admin':
-        specifier: ^5.3.0
-        version: 5.5.0(@apollo/client@3.8.9)(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@mui/icons-material@5.14.5)(@mui/material@5.15.5)(@mui/styles@5.15.5)(@mui/x-data-grid@5.17.26)(@types/react@17.0.75)(final-form@4.20.10)(graphql@15.8.0)(history@4.10.1)(react-dnd@16.0.1)(react-dom@17.0.2)(react-final-form@6.5.9)(react-intl@5.25.1)(react-router-dom@5.3.4)(react-router@5.3.4)(react@17.0.2)
+        specifier: ^6.8.0
+        version: 6.8.0(@apollo/client@3.8.9)(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@mui/icons-material@5.14.5)(@mui/material@5.15.5)(@mui/styles@5.15.5)(@mui/x-data-grid@5.17.26)(@types/react@17.0.75)(final-form@4.20.10)(graphql@15.8.0)(history@4.10.1)(react-dnd@16.0.1)(react-dom@17.0.2)(react-final-form@6.5.9)(react-intl@5.25.1)(react-router-dom@5.3.4)(react-router@5.3.4)(react@17.0.2)
       '@comet/cms-admin':
-        specifier: ^5.3.0
-        version: 5.5.0(@apollo/client@3.8.9)(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@mui/icons-material@5.14.5)(@mui/material@5.15.5)(@mui/styles@5.15.5)(@mui/system@5.15.5)(@mui/x-data-grid@5.17.26)(@types/react@17.0.75)(axios@0.21.4)(draft-js@0.11.7)(final-form@4.20.10)(graphql@15.8.0)(history@4.10.1)(react-dnd-html5-backend@16.0.1)(react-dnd@16.0.1)(react-dom@17.0.2)(react-final-form@6.5.9)(react-intl@5.25.1)(react-router-dom@5.3.4)(react-router@5.3.4)(react@17.0.2)
+        specifier: ^6.8.0
+        version: 6.8.0(@apollo/client@3.8.9)(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@mui/icons-material@5.14.5)(@mui/material@5.15.5)(@mui/styles@5.15.5)(@mui/system@5.15.5)(@mui/x-data-grid@5.17.26)(@types/react@17.0.75)(axios@0.21.4)(draft-js@0.11.7)(final-form@4.20.10)(graphql@15.8.0)(history@4.10.1)(react-dnd-html5-backend@16.0.1)(react-dnd@16.0.1)(react-dom@17.0.2)(react-final-form@6.5.9)(react-intl@5.25.1)(react-router-dom@5.3.4)(react-router@5.3.4)(react@17.0.2)
       '@comet/eslint-config':
-        specifier: ^5.3.0
-        version: 5.5.0(eslint@8.56.0)(next@12.3.4)(prettier@2.8.8)(typescript@4.9.5)
+        specifier: ^6.8.0
+        version: 6.8.0(eslint@8.56.0)(next@12.3.4)(prettier@2.8.8)(typescript@4.9.5)
       '@emotion/react':
         specifier: ^11.9.3
         version: 11.11.3(@types/react@17.0.75)(react@17.0.2)
@@ -785,14 +785,14 @@ importers:
         specifier: ^12.0.0
         version: 12.17.0
       '@comet/blocks-api':
-        specifier: ^5.3.0
-        version: 5.5.0(@nestjs/common@9.4.3)(class-transformer@0.5.1)(class-validator@0.13.2)
+        specifier: ^6.8.0
+        version: 6.8.0(@nestjs/common@9.4.3)(class-transformer@0.5.1)(class-validator@0.13.2)
       '@comet/cms-api':
-        specifier: ^5.3.0
-        version: 5.5.0(@aws-sdk/client-s3@3.490.0)(@azure/storage-blob@12.17.0)(@kubernetes/client-node@0.18.1)(@mikro-orm/cli@5.9.7)(@mikro-orm/core@5.9.7)(@mikro-orm/migrations@5.9.7)(@mikro-orm/nestjs@5.2.3)(@mikro-orm/postgresql@5.9.7)(@nestjs/common@9.4.3)(@nestjs/core@9.4.3)(@nestjs/graphql@10.2.1)(class-transformer@0.5.1)(express@4.18.2)(graphql@15.8.0)(nestjs-console@8.0.0)(pg-error-constants@1.0.0)(rxjs@7.8.1)
+        specifier: ^6.8.0
+        version: 6.8.0(@aws-sdk/client-s3@3.490.0)(@azure/storage-blob@12.17.0)(@kubernetes/client-node@0.18.1)(@mikro-orm/cli@5.9.7)(@mikro-orm/core@5.9.7)(@mikro-orm/migrations@5.9.7)(@mikro-orm/nestjs@5.2.3)(@mikro-orm/postgresql@5.9.7)(@nestjs/common@9.4.3)(@nestjs/core@9.4.3)(@nestjs/graphql@10.2.1)(class-transformer@0.5.1)(express@4.18.2)(graphql@15.8.0)(nestjs-console@8.0.0)(pg-error-constants@1.0.0)(rxjs@7.8.1)
       '@comet/eslint-config':
-        specifier: ^5.3.0
-        version: 5.5.0(eslint@8.56.0)(prettier@2.8.8)(ts-jest@29.1.1)(typescript@4.9.5)
+        specifier: ^6.8.0
+        version: 6.8.0(eslint@8.56.0)(prettier@2.8.8)(ts-jest@29.1.1)(typescript@4.9.5)
       '@kubernetes/client-node':
         specifier: ^0.18.0
         version: 0.18.1
@@ -3435,8 +3435,8 @@ packages:
     dev: true
     optional: true
 
-  /@comet/admin-babel-preset@5.5.0(@babel/cli@7.23.4):
-    resolution: {integrity: sha512-Re1e7oqp7VeXJ9N+JSL331TlRce5TZdSyGVedMuFTDQwguwkiaAjpC9ayk6lRs4Zu75AtiVO61KKXoPwsIndcA==}
+  /@comet/admin-babel-preset@6.8.0(@babel/cli@7.23.4):
+    resolution: {integrity: sha512-DeV6vC0BoyQobXgYSU6Erk6CcFBu6pP/wj8spDOVk8MDjyxzYIcyOZRLKtwM7E03Ig34XbGRylElIzvNicSqGQ==}
     peerDependencies:
       '@babel/cli': '>= 7'
     dependencies:
@@ -3451,8 +3451,8 @@ packages:
       - supports-color
     dev: true
 
-  /@comet/admin-date-time@5.5.0(@apollo/client@3.8.9)(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@mui/icons-material@5.14.5)(@mui/material@5.15.5)(@mui/styles@5.15.5)(@mui/x-data-grid@5.17.26)(@types/react@17.0.75)(final-form@4.20.10)(graphql@15.8.0)(history@4.10.1)(react-dnd@16.0.1)(react-dom@17.0.2)(react-final-form@6.5.9)(react-intl@5.25.1)(react-router-dom@5.3.4)(react-router@5.3.4)(react@17.0.2):
-    resolution: {integrity: sha512-5hQyto0yReF8SZu8JBfyFxxejYY2pNOWwLUVr1ZmCvuzZWwM8gKLkVc0XDISaHU5QsNbJbzCgH0tVqNhvshWEQ==}
+  /@comet/admin-date-time@6.8.0(@apollo/client@3.8.9)(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@mui/icons-material@5.14.5)(@mui/material@5.15.5)(@mui/styles@5.15.5)(@mui/x-data-grid@5.17.26)(@types/react@17.0.75)(final-form@4.20.10)(graphql@15.8.0)(history@4.10.1)(react-dnd@16.0.1)(react-dom@17.0.2)(react-final-form@6.5.9)(react-intl@5.25.1)(react-router-dom@5.3.4)(react-router@5.3.4)(react@17.0.2):
+    resolution: {integrity: sha512-umYoHvB7aP+4lCn8LDcdkGVtjzMDPGwNlZYzIK5fFKHpJlcgzR3oam32dwbrwLT7mQsWncIUga48UGxh7nKrmg==}
     peerDependencies:
       '@mui/material': ^5.0.0
       '@mui/styles': ^5.0.0
@@ -3461,8 +3461,8 @@ packages:
       react-final-form: ^6.5.7
       react-intl: ^5.24.6
     dependencies:
-      '@comet/admin': 5.5.0(@apollo/client@3.8.9)(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@mui/icons-material@5.14.5)(@mui/material@5.15.5)(@mui/styles@5.15.5)(@mui/x-data-grid@5.17.26)(@types/react@17.0.75)(final-form@4.20.10)(graphql@15.8.0)(history@4.10.1)(react-dnd@16.0.1)(react-dom@17.0.2)(react-final-form@6.5.9)(react-intl@5.25.1)(react-router-dom@5.3.4)(react-router@5.3.4)(react@17.0.2)
-      '@comet/admin-icons': 5.5.0(@mui/material@5.15.5)(react-dom@17.0.2)(react@17.0.2)
+      '@comet/admin': 6.8.0(@apollo/client@3.8.9)(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@mui/icons-material@5.14.5)(@mui/material@5.15.5)(@mui/styles@5.15.5)(@mui/x-data-grid@5.17.26)(@types/react@17.0.75)(final-form@4.20.10)(graphql@15.8.0)(history@4.10.1)(react-dnd@16.0.1)(react-dom@17.0.2)(react-final-form@6.5.9)(react-intl@5.25.1)(react-router-dom@5.3.4)(react-router@5.3.4)(react@17.0.2)
+      '@comet/admin-icons': 6.8.0(@mui/material@5.15.5)(react-dom@17.0.2)(react@17.0.2)
       '@mui/material': 5.15.5(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@types/react@17.0.75)(react-dom@17.0.2)(react@17.0.2)
       '@mui/styles': 5.15.5(@types/react@17.0.75)(react@17.0.2)
       '@mui/utils': 5.15.5(@types/react@17.0.75)(react@17.0.2)
@@ -3489,8 +3489,8 @@ packages:
       - react-router
       - react-router-dom
 
-  /@comet/admin-icons@5.5.0(@mui/material@5.15.5)(react-dom@17.0.2)(react@17.0.2):
-    resolution: {integrity: sha512-UBZh8ZQ7VPwFsfejHBPbEE8ng3J6PISdzVbld3WqtMJtE5Wc2g9vsLSpH9OQVNm15eqla14phYPgg3YfsPHjXA==}
+  /@comet/admin-icons@6.8.0(@mui/material@5.15.5)(react-dom@17.0.2)(react@17.0.2):
+    resolution: {integrity: sha512-JUw6qd+JGLbpeA/905zyIaWjlj+p/Lr9kwNFLVk6VkrD8JlfQ22MODDRINiIYKslNxAjfhve0jA92sxIYreFrw==}
     peerDependencies:
       '@mui/material': ^5.0.0
       react: ^17.0
@@ -3500,8 +3500,8 @@ packages:
       react: 17.0.2
       react-dom: 17.0.2(react@17.0.2)
 
-  /@comet/admin-rte@5.5.0(@mui/icons-material@5.14.5)(@mui/material@5.15.5)(@mui/styles@5.15.5)(draft-js@0.11.7)(final-form@4.20.10)(react-dom@17.0.2)(react-final-form@6.5.9)(react-intl@5.25.1)(react@17.0.2):
-    resolution: {integrity: sha512-fezPouJ+64beVtsatS5bbjw9xVhHzQTsFLgK0hKSoGyvJiRFVWJD0U/zp1LjcoSqGkpTgQC925lnoUsCcIu2sg==}
+  /@comet/admin-rte@6.8.0(@apollo/client@3.8.9)(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@mui/icons-material@5.14.5)(@mui/material@5.15.5)(@mui/styles@5.15.5)(@mui/x-data-grid@5.17.26)(@types/react@17.0.75)(draft-js@0.11.7)(final-form@4.20.10)(graphql@15.8.0)(history@4.10.1)(react-dnd@16.0.1)(react-dom@17.0.2)(react-final-form@6.5.9)(react-intl@5.25.1)(react-router-dom@5.3.4)(react-router@5.3.4)(react@17.0.2):
+    resolution: {integrity: sha512-c7fhxRk3plCpkfj2DBDQfwZvYpwvowmGULiDW1FByKqnLVV5bmS9jFGtZDgpRe6SGFHEjKLa5TGAU2my44qmqA==}
     peerDependencies:
       '@mui/icons-material': ^5.0.0
       '@mui/material': ^5.0.0
@@ -3513,12 +3513,15 @@ packages:
       react-final-form: ^6.3.1
       react-intl: ^5.10.0
     dependencies:
-      '@comet/admin-icons': 5.5.0(@mui/material@5.15.5)(react-dom@17.0.2)(react@17.0.2)
+      '@comet/admin': 6.8.0(@apollo/client@3.8.9)(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@mui/icons-material@5.14.5)(@mui/material@5.15.5)(@mui/styles@5.15.5)(@mui/x-data-grid@5.17.26)(@types/react@17.0.75)(final-form@4.20.10)(graphql@15.8.0)(history@4.10.1)(react-dnd@16.0.1)(react-dom@17.0.2)(react-final-form@6.5.9)(react-intl@5.25.1)(react-router-dom@5.3.4)(react-router@5.3.4)(react@17.0.2)
+      '@comet/admin-icons': 6.8.0(@mui/material@5.15.5)(react-dom@17.0.2)(react@17.0.2)
       '@mui/icons-material': 5.14.5(@mui/material@5.15.5)(@types/react@17.0.75)(react@17.0.2)
       '@mui/material': 5.15.5(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@types/react@17.0.75)(react-dom@17.0.2)(react@17.0.2)
       '@mui/styles': 5.15.5(@types/react@17.0.75)(react@17.0.2)
       detect-browser: 5.3.0
       draft-js: 0.11.7(react-dom@17.0.2)(react@17.0.2)
+      draft-js-export-html: 1.4.1(draft-js@0.11.7)(immutable@3.7.6)
+      draft-js-import-html: 1.4.1(draft-js@0.11.7)(immutable@3.7.6)
       draftjs-conductor: 3.0.0(draft-js@0.11.7)
       final-form: 4.20.10
       immutable: 3.7.6
@@ -3526,16 +3529,29 @@ packages:
       react-dom: 17.0.2(react@17.0.2)
       react-final-form: 6.5.9(final-form@4.20.10)(react@17.0.2)
       react-intl: 5.25.1(react@17.0.2)(typescript@4.9.5)
+    transitivePeerDependencies:
+      - '@apollo/client'
+      - '@emotion/react'
+      - '@emotion/styled'
+      - '@mui/x-data-grid'
+      - '@mui/x-data-grid-premium'
+      - '@mui/x-data-grid-pro'
+      - '@types/react'
+      - graphql
+      - history
+      - react-dnd
+      - react-router
+      - react-router-dom
 
-  /@comet/admin-theme@5.5.0(@mui/material@5.15.5)(@mui/styles@5.15.5)(@mui/system@5.15.5)(@types/react@17.0.75)(react-dom@17.0.2)(react@17.0.2):
-    resolution: {integrity: sha512-Hoy/05QSYvkwG0hyuiDVz7VNLkayvsGy4yqTGJs6134tsWdbU6tMVEIooRLGpCzNcIDXuBPiJA1aRCG+KBcnhg==}
+  /@comet/admin-theme@6.8.0(@mui/material@5.15.5)(@mui/styles@5.15.5)(@mui/system@5.15.5)(@types/react@17.0.75)(react-dom@17.0.2)(react@17.0.2):
+    resolution: {integrity: sha512-dfitsWnVVFMLVpvph+86P9a+u3WxG23+O3MtEJIbsUjMQ5nyIw2gfg36dmY0V656wDyvWpP4ZX44eme3R8RvpQ==}
     peerDependencies:
       '@mui/material': ^5.0.0
       '@mui/styles': ^5.0.0
       '@mui/system': ^5.0.0
       react: ^17.0
     dependencies:
-      '@comet/admin-icons': 5.5.0(@mui/material@5.15.5)(react-dom@17.0.2)(react@17.0.2)
+      '@comet/admin-icons': 6.8.0(@mui/material@5.15.5)(react-dom@17.0.2)(react@17.0.2)
       '@mui/material': 5.15.5(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@types/react@17.0.75)(react-dom@17.0.2)(react@17.0.2)
       '@mui/styles': 5.15.5(@types/react@17.0.75)(react@17.0.2)
       '@mui/system': 5.15.5(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@types/react@17.0.75)(react@17.0.2)
@@ -3545,8 +3561,8 @@ packages:
       - '@types/react'
       - react-dom
 
-  /@comet/admin@5.5.0(@apollo/client@3.8.9)(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@mui/icons-material@5.14.5)(@mui/material@5.15.5)(@mui/styles@5.15.5)(@mui/x-data-grid@5.17.26)(@types/react@17.0.75)(final-form@4.20.10)(graphql@15.8.0)(history@4.10.1)(react-dnd@16.0.1)(react-dom@17.0.2)(react-final-form@6.5.9)(react-intl@5.25.1)(react-router-dom@5.3.4)(react-router@5.3.4)(react@17.0.2):
-    resolution: {integrity: sha512-R7gXmgbfLlJCX9nc8NNQhiQEIRA5yBjTKtW8AAfs9ANIUn8Cj7hC1GVBu4GUDlp2rUJ2gChOnEiOoKSy+SAxOA==}
+  /@comet/admin@6.8.0(@apollo/client@3.8.9)(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@mui/icons-material@5.14.5)(@mui/material@5.15.5)(@mui/styles@5.15.5)(@mui/x-data-grid@5.17.26)(@types/react@17.0.75)(final-form@4.20.10)(graphql@15.8.0)(history@4.10.1)(react-dnd@16.0.1)(react-dom@17.0.2)(react-final-form@6.5.9)(react-intl@5.25.1)(react-router-dom@5.3.4)(react-router@5.3.4)(react@17.0.2):
+    resolution: {integrity: sha512-8B6pgqdOsBLO3ghDyOgU+AVOk+LvsMmFuuUzJp8tUYXcA7lUFvPdsZqMgHmeaGOJApA/zO3AQ/evZ0DxDlMeWw==}
     peerDependencies:
       '@apollo/client': ^3.7.0
       '@emotion/react': ^11.5.0
@@ -3576,7 +3592,7 @@ packages:
         optional: true
     dependencies:
       '@apollo/client': 3.8.9(graphql@15.8.0)(react-dom@17.0.2)(react@17.0.2)
-      '@comet/admin-icons': 5.5.0(@mui/material@5.15.5)(react-dom@17.0.2)(react@17.0.2)
+      '@comet/admin-icons': 6.8.0(@mui/material@5.15.5)(react-dom@17.0.2)(react@17.0.2)
       '@emotion/react': 11.11.3(@types/react@17.0.75)(react@17.0.2)
       '@emotion/styled': 11.11.0(@emotion/react@11.11.3)(@types/react@17.0.75)(react@17.0.2)
       '@mui/icons-material': 5.14.5(@mui/material@5.15.5)(@types/react@17.0.75)(react@17.0.2)
@@ -3608,8 +3624,8 @@ packages:
     transitivePeerDependencies:
       - '@types/react'
 
-  /@comet/blocks-admin@5.5.0(@apollo/client@3.8.9)(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@mui/icons-material@5.14.5)(@mui/material@5.15.5)(@mui/styles@5.15.5)(@mui/x-data-grid@5.17.26)(@types/react@17.0.75)(final-form@4.20.10)(graphql@15.8.0)(history@4.10.1)(react-dnd@16.0.1)(react-dom@17.0.2)(react-final-form@6.5.9)(react-intl@5.25.1)(react-router-dom@5.3.4)(react-router@5.3.4)(react@17.0.2):
-    resolution: {integrity: sha512-o7PhbHRGRe4x6bl2CR3WQqBkGnrdBd472MSq+FUjsOz89DaFKftcsvl0GFXCBiKhIpaDBSfxwAw1rM/KhH8+iQ==}
+  /@comet/blocks-admin@6.8.0(@apollo/client@3.8.9)(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@mui/icons-material@5.14.5)(@mui/material@5.15.5)(@mui/styles@5.15.5)(@mui/x-data-grid@5.17.26)(@types/react@17.0.75)(final-form@4.20.10)(graphql@15.8.0)(history@4.10.1)(react-dnd@16.0.1)(react-dom@17.0.2)(react-final-form@6.5.9)(react-intl@5.25.1)(react-router-dom@5.3.4)(react-router@5.3.4)(react@17.0.2):
+    resolution: {integrity: sha512-fAO8G4z65c4XdEhPmjhDktetmg+8qc7XdRcGyPTYQmQFBLRXBgFrddJCKAIo+KJoXfTYDdCfWl9aVElNDkK91Q==}
     peerDependencies:
       '@mui/material': ^5.0.0
       '@mui/styles': ^5.0.0
@@ -3621,8 +3637,8 @@ packages:
       react-router: ^5.0.0
       react-router-dom: ^5.0.0
     dependencies:
-      '@comet/admin': 5.5.0(@apollo/client@3.8.9)(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@mui/icons-material@5.14.5)(@mui/material@5.15.5)(@mui/styles@5.15.5)(@mui/x-data-grid@5.17.26)(@types/react@17.0.75)(final-form@4.20.10)(graphql@15.8.0)(history@4.10.1)(react-dnd@16.0.1)(react-dom@17.0.2)(react-final-form@6.5.9)(react-intl@5.25.1)(react-router-dom@5.3.4)(react-router@5.3.4)(react@17.0.2)
-      '@comet/admin-icons': 5.5.0(@mui/material@5.15.5)(react-dom@17.0.2)(react@17.0.2)
+      '@comet/admin': 6.8.0(@apollo/client@3.8.9)(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@mui/icons-material@5.14.5)(@mui/material@5.15.5)(@mui/styles@5.15.5)(@mui/x-data-grid@5.17.26)(@types/react@17.0.75)(final-form@4.20.10)(graphql@15.8.0)(history@4.10.1)(react-dnd@16.0.1)(react-dom@17.0.2)(react-final-form@6.5.9)(react-intl@5.25.1)(react-router-dom@5.3.4)(react-router@5.3.4)(react@17.0.2)
+      '@comet/admin-icons': 6.8.0(@mui/material@5.15.5)(react-dom@17.0.2)(react@17.0.2)
       '@mui/lab': 5.0.0-alpha.161(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@mui/material@5.15.5)(@types/react@17.0.75)(react-dom@17.0.2)(react@17.0.2)
       '@mui/material': 5.15.5(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@types/react@17.0.75)(react-dom@17.0.2)(react@17.0.2)
       '@mui/styles': 5.15.5(@types/react@17.0.75)(react@17.0.2)
@@ -3652,8 +3668,8 @@ packages:
       - graphql
       - history
 
-  /@comet/blocks-api@5.5.0(@nestjs/common@9.4.3)(class-transformer@0.5.1)(class-validator@0.13.2):
-    resolution: {integrity: sha512-uRXT1J4Alj2RVFy+ioPrH7Yxcds0BssTQwKWj7seOhUtuggk5/5RMXDjYQZA2iV+hl+dlz7TQ13p4O8M+lD9Gw==}
+  /@comet/blocks-api@6.8.0(@nestjs/common@9.4.3)(class-transformer@0.5.1)(class-validator@0.13.2):
+    resolution: {integrity: sha512-CC52ICQnK58OliLnGAubj6hnZ5J+KnnPBStPHoTAOC2XJpBEvCJMwzusLKSEW3+oGUzN7OKc6n4ws1hmEhvvyQ==}
     peerDependencies:
       '@nestjs/common': ^9.0.0
       class-transformer: ^0.5.0
@@ -3664,16 +3680,16 @@ packages:
       class-validator: 0.13.2
       rimraf: 3.0.2
 
-  /@comet/cli@5.5.0:
-    resolution: {integrity: sha512-LKRmJ8Xh+CjK7EXiTl3U0Z3325xSTDoByzi6vaBBZMFd4+M5Qx5mzchsXPMxkJwANiN342jP06B5j9bRSl+lqQ==}
+  /@comet/cli@6.8.0:
+    resolution: {integrity: sha512-COPWyYzZFD+pfcLNM3+1Tq1GCDzZ++XAghBU0KArxEF/IIbsoR0q+N7L8GBcQJprdLN/meYoj5rFYIb1mzEsTQ==}
     hasBin: true
     dependencies:
       commander: 9.5.0
       prettier: 2.8.8
     dev: true
 
-  /@comet/cms-admin@5.5.0(@apollo/client@3.8.9)(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@mui/icons-material@5.14.5)(@mui/material@5.15.5)(@mui/styles@5.15.5)(@mui/system@5.15.5)(@mui/x-data-grid@5.17.26)(@types/react@17.0.75)(axios@0.21.4)(draft-js@0.11.7)(final-form@4.20.10)(graphql@15.8.0)(history@4.10.1)(react-dnd-html5-backend@16.0.1)(react-dnd@16.0.1)(react-dom@17.0.2)(react-final-form@6.5.9)(react-intl@5.25.1)(react-router-dom@5.3.4)(react-router@5.3.4)(react@17.0.2):
-    resolution: {integrity: sha512-xcf8BHpKOXXSk8+PBZMWT/oV5+ulxkHr/QDlvvECB6AGsfbh3vK7gnVFF0t89Z8sZ+8qQr/T0R/xeXGTXJmjdQ==}
+  /@comet/cms-admin@6.8.0(@apollo/client@3.8.9)(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@mui/icons-material@5.14.5)(@mui/material@5.15.5)(@mui/styles@5.15.5)(@mui/system@5.15.5)(@mui/x-data-grid@5.17.26)(@types/react@17.0.75)(axios@0.21.4)(draft-js@0.11.7)(final-form@4.20.10)(graphql@15.8.0)(history@4.10.1)(react-dnd-html5-backend@16.0.1)(react-dnd@16.0.1)(react-dom@17.0.2)(react-final-form@6.5.9)(react-intl@5.25.1)(react-router-dom@5.3.4)(react-router@5.3.4)(react@17.0.2):
+    resolution: {integrity: sha512-bwtCaw6XknQVjYHlsRSUrpGbPK4SMjSsDJDfF1D+UUD70m6WyLsZTkgAHR92y7pv/MV+MZqpZ6ir0nleOiMSVg==}
     hasBin: true
     peerDependencies:
       '@apollo/client': ^3.7.0
@@ -3696,12 +3712,12 @@ packages:
       react-router-dom: ^5.0.0
     dependencies:
       '@apollo/client': 3.8.9(graphql@15.8.0)(react-dom@17.0.2)(react@17.0.2)
-      '@comet/admin': 5.5.0(@apollo/client@3.8.9)(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@mui/icons-material@5.14.5)(@mui/material@5.15.5)(@mui/styles@5.15.5)(@mui/x-data-grid@5.17.26)(@types/react@17.0.75)(final-form@4.20.10)(graphql@15.8.0)(history@4.10.1)(react-dnd@16.0.1)(react-dom@17.0.2)(react-final-form@6.5.9)(react-intl@5.25.1)(react-router-dom@5.3.4)(react-router@5.3.4)(react@17.0.2)
-      '@comet/admin-date-time': 5.5.0(@apollo/client@3.8.9)(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@mui/icons-material@5.14.5)(@mui/material@5.15.5)(@mui/styles@5.15.5)(@mui/x-data-grid@5.17.26)(@types/react@17.0.75)(final-form@4.20.10)(graphql@15.8.0)(history@4.10.1)(react-dnd@16.0.1)(react-dom@17.0.2)(react-final-form@6.5.9)(react-intl@5.25.1)(react-router-dom@5.3.4)(react-router@5.3.4)(react@17.0.2)
-      '@comet/admin-icons': 5.5.0(@mui/material@5.15.5)(react-dom@17.0.2)(react@17.0.2)
-      '@comet/admin-rte': 5.5.0(@mui/icons-material@5.14.5)(@mui/material@5.15.5)(@mui/styles@5.15.5)(draft-js@0.11.7)(final-form@4.20.10)(react-dom@17.0.2)(react-final-form@6.5.9)(react-intl@5.25.1)(react@17.0.2)
-      '@comet/admin-theme': 5.5.0(@mui/material@5.15.5)(@mui/styles@5.15.5)(@mui/system@5.15.5)(@types/react@17.0.75)(react-dom@17.0.2)(react@17.0.2)
-      '@comet/blocks-admin': 5.5.0(@apollo/client@3.8.9)(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@mui/icons-material@5.14.5)(@mui/material@5.15.5)(@mui/styles@5.15.5)(@mui/x-data-grid@5.17.26)(@types/react@17.0.75)(final-form@4.20.10)(graphql@15.8.0)(history@4.10.1)(react-dnd@16.0.1)(react-dom@17.0.2)(react-final-form@6.5.9)(react-intl@5.25.1)(react-router-dom@5.3.4)(react-router@5.3.4)(react@17.0.2)
+      '@comet/admin': 6.8.0(@apollo/client@3.8.9)(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@mui/icons-material@5.14.5)(@mui/material@5.15.5)(@mui/styles@5.15.5)(@mui/x-data-grid@5.17.26)(@types/react@17.0.75)(final-form@4.20.10)(graphql@15.8.0)(history@4.10.1)(react-dnd@16.0.1)(react-dom@17.0.2)(react-final-form@6.5.9)(react-intl@5.25.1)(react-router-dom@5.3.4)(react-router@5.3.4)(react@17.0.2)
+      '@comet/admin-date-time': 6.8.0(@apollo/client@3.8.9)(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@mui/icons-material@5.14.5)(@mui/material@5.15.5)(@mui/styles@5.15.5)(@mui/x-data-grid@5.17.26)(@types/react@17.0.75)(final-form@4.20.10)(graphql@15.8.0)(history@4.10.1)(react-dnd@16.0.1)(react-dom@17.0.2)(react-final-form@6.5.9)(react-intl@5.25.1)(react-router-dom@5.3.4)(react-router@5.3.4)(react@17.0.2)
+      '@comet/admin-icons': 6.8.0(@mui/material@5.15.5)(react-dom@17.0.2)(react@17.0.2)
+      '@comet/admin-rte': 6.8.0(@apollo/client@3.8.9)(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@mui/icons-material@5.14.5)(@mui/material@5.15.5)(@mui/styles@5.15.5)(@mui/x-data-grid@5.17.26)(@types/react@17.0.75)(draft-js@0.11.7)(final-form@4.20.10)(graphql@15.8.0)(history@4.10.1)(react-dnd@16.0.1)(react-dom@17.0.2)(react-final-form@6.5.9)(react-intl@5.25.1)(react-router-dom@5.3.4)(react-router@5.3.4)(react@17.0.2)
+      '@comet/admin-theme': 6.8.0(@mui/material@5.15.5)(@mui/styles@5.15.5)(@mui/system@5.15.5)(@types/react@17.0.75)(react-dom@17.0.2)(react@17.0.2)
+      '@comet/blocks-admin': 6.8.0(@apollo/client@3.8.9)(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@mui/icons-material@5.14.5)(@mui/material@5.15.5)(@mui/styles@5.15.5)(@mui/x-data-grid@5.17.26)(@types/react@17.0.75)(final-form@4.20.10)(graphql@15.8.0)(history@4.10.1)(react-dnd@16.0.1)(react-dom@17.0.2)(react-final-form@6.5.9)(react-intl@5.25.1)(react-router-dom@5.3.4)(react-router@5.3.4)(react@17.0.2)
       '@emotion/react': 11.11.3(@types/react@17.0.75)(react@17.0.2)
       '@emotion/styled': 11.11.0(@emotion/react@11.11.3)(@types/react@17.0.75)(react@17.0.2)
       '@graphql-tools/graphql-file-loader': 7.5.17(graphql@15.8.0)
@@ -3762,8 +3778,8 @@ packages:
       - draft-js
       - history
 
-  /@comet/cms-api@5.5.0(@aws-sdk/client-s3@3.490.0)(@azure/storage-blob@12.17.0)(@kubernetes/client-node@0.18.1)(@mikro-orm/cli@5.9.7)(@mikro-orm/core@5.9.7)(@mikro-orm/migrations@5.9.7)(@mikro-orm/nestjs@5.2.3)(@mikro-orm/postgresql@5.9.7)(@nestjs/common@9.4.3)(@nestjs/core@9.4.3)(@nestjs/graphql@10.2.1)(class-transformer@0.5.1)(express@4.18.2)(graphql@15.8.0)(nestjs-console@8.0.0)(pg-error-constants@1.0.0)(rxjs@7.8.1):
-    resolution: {integrity: sha512-bH8aEk2CS7cIV0pPbGKsdcHpi3wn5Unq4BrFLWvKq5VvCBERX085sPBJdLGNgXgMOCx177QZ1YvcuKuOwCkSvw==}
+  /@comet/cms-api@6.8.0(@aws-sdk/client-s3@3.490.0)(@azure/storage-blob@12.17.0)(@kubernetes/client-node@0.18.1)(@mikro-orm/cli@5.9.7)(@mikro-orm/core@5.9.7)(@mikro-orm/migrations@5.9.7)(@mikro-orm/nestjs@5.2.3)(@mikro-orm/postgresql@5.9.7)(@nestjs/common@9.4.3)(@nestjs/core@9.4.3)(@nestjs/graphql@10.2.1)(class-transformer@0.5.1)(express@4.18.2)(graphql@15.8.0)(nestjs-console@8.0.0)(pg-error-constants@1.0.0)(rxjs@7.8.1):
+    resolution: {integrity: sha512-SaK5Z6jyzpxenAYKDivU6tp1OKyAvbLYbkcbPYAvn3u/H/1lau56ugUCXqgDE5xLKVXgQav2zgFRNo9cp5aR+Q==}
     hasBin: true
     peerDependencies:
       '@aws-sdk/client-s3': ^3.47.0
@@ -3786,7 +3802,8 @@ packages:
     dependencies:
       '@aws-sdk/client-s3': 3.490.0
       '@azure/storage-blob': 12.17.0
-      '@comet/blocks-api': 5.5.0(@nestjs/common@9.4.3)(class-transformer@0.5.1)(class-validator@0.13.2)
+      '@comet/blocks-api': 6.8.0(@nestjs/common@9.4.3)(class-transformer@0.5.1)(class-validator@0.13.2)
+      '@golevelup/nestjs-discovery': 3.0.1(@nestjs/common@9.4.3)(@nestjs/core@9.4.3)
       '@hapi/accept': 5.0.2
       '@kubernetes/client-node': 0.18.1
       '@mikro-orm/cli': 5.9.7(@mikro-orm/migrations@5.9.7)(@mikro-orm/postgresql@5.9.7)
@@ -3820,6 +3837,7 @@ packages:
       graphql-type-json: 0.3.2(graphql@15.8.0)
       hasha: 5.2.2
       jsonwebtoken: 8.5.1
+      jszip: 3.10.1
       jwks-rsa: 3.1.0
       lodash.isequal: 4.5.0
       mime: 3.0.0
@@ -3835,24 +3853,25 @@ packages:
       pluralize: 8.0.0
       probe-image-size: 7.2.3
       reflect-metadata: 0.1.14
+      request-ip: 3.3.0
       rimraf: 3.0.2
       rxjs: 7.8.1
       slugify: 1.6.6
       ts-morph: 16.0.0
       uuid: 9.0.1
+      uuid-by-string: 4.0.0
     transitivePeerDependencies:
       - encoding
       - supports-color
 
-  /@comet/cms-site@5.5.0(next@12.3.4)(react-dom@17.0.2)(react@17.0.2)(styled-components@5.3.11):
-    resolution: {integrity: sha512-qtKV+oF7lt/Ef1koKQlvfRnkXI1v5zhvri0EqOvV0iytmoCz+XHUymQ4A28N7m47q6PgnIYTYEtXcVFNYGJpsg==}
+  /@comet/cms-site@6.8.0(next@12.3.4)(react-dom@17.0.2)(react@17.0.2)(styled-components@5.3.11):
+    resolution: {integrity: sha512-VXQx4cS70ra0UHIFkvv++SFOvHswPh/K542wKsNig3AmXGB7CVj7k5IqSi5hOBi+OO9SFywRKKtlxhO5TNT8BA==}
     peerDependencies:
       next: ^12.0.0
       react: ^17.0.0
       react-dom: ^17.0.0
       styled-components: ^5.0.0
     dependencies:
-      '@types/jsonwebtoken': 8.5.9
       jsonwebtoken: 8.5.1
       jwks-rsa: 3.1.0
       next: 12.3.4(@babel/core@7.23.7)(react-dom@17.0.2)(react@17.0.2)
@@ -3885,8 +3904,8 @@ packages:
       - debug
     dev: true
 
-  /@comet/eslint-config@5.5.0(eslint@8.56.0)(next@12.3.4)(prettier@2.8.8)(typescript@4.9.5):
-    resolution: {integrity: sha512-+9RXamrVXvQafnxTI71accsEuQbaI80ctJAe+Q7HL0gtfiFeLcnGglCGZheT1IAJ/kVJ+zJoSFpUeFggG5gmfg==}
+  /@comet/eslint-config@6.8.0(eslint@8.56.0)(next@12.3.4)(prettier@2.8.8)(typescript@4.9.5):
+    resolution: {integrity: sha512-Spr1+2qp/EzDGrrjGlI3hXrdeqr9lXU02TTIzqkcK+CR/AhR3SDA5cCVLdJiYt8BxR1G5Y0M/wAZYePgje8TcA==}
     peerDependencies:
       eslint: '>= 8'
       next: '*'
@@ -3896,7 +3915,7 @@ packages:
         optional: true
     dependencies:
       '@calm/eslint-plugin-react-intl': 1.4.1
-      '@comet/eslint-plugin': 5.5.0(eslint@8.56.0)
+      '@comet/eslint-plugin': 6.8.0(eslint@8.56.0)
       '@next/eslint-plugin-next': 12.3.4
       '@typescript-eslint/eslint-plugin': 5.62.0(@typescript-eslint/parser@5.62.0)(eslint@8.56.0)(typescript@4.9.5)
       '@typescript-eslint/parser': 5.62.0(eslint@8.56.0)(typescript@4.9.5)
@@ -3921,8 +3940,8 @@ packages:
       - typescript
     dev: true
 
-  /@comet/eslint-config@5.5.0(eslint@8.56.0)(prettier@2.8.8)(ts-jest@27.1.5)(typescript@4.9.5):
-    resolution: {integrity: sha512-+9RXamrVXvQafnxTI71accsEuQbaI80ctJAe+Q7HL0gtfiFeLcnGglCGZheT1IAJ/kVJ+zJoSFpUeFggG5gmfg==}
+  /@comet/eslint-config@6.8.0(eslint@8.56.0)(prettier@2.8.8)(ts-jest@27.1.5)(typescript@4.9.5):
+    resolution: {integrity: sha512-Spr1+2qp/EzDGrrjGlI3hXrdeqr9lXU02TTIzqkcK+CR/AhR3SDA5cCVLdJiYt8BxR1G5Y0M/wAZYePgje8TcA==}
     peerDependencies:
       eslint: '>= 8'
       next: '*'
@@ -3932,7 +3951,7 @@ packages:
         optional: true
     dependencies:
       '@calm/eslint-plugin-react-intl': 1.4.1
-      '@comet/eslint-plugin': 5.5.0(eslint@8.56.0)
+      '@comet/eslint-plugin': 6.8.0(eslint@8.56.0)
       '@next/eslint-plugin-next': 12.3.4
       '@typescript-eslint/eslint-plugin': 5.62.0(@typescript-eslint/parser@5.62.0)(eslint@8.56.0)(typescript@4.9.5)
       '@typescript-eslint/parser': 5.62.0(eslint@8.56.0)(typescript@4.9.5)
@@ -3956,8 +3975,8 @@ packages:
       - typescript
     dev: true
 
-  /@comet/eslint-config@5.5.0(eslint@8.56.0)(prettier@2.8.8)(ts-jest@29.1.1)(typescript@4.9.5):
-    resolution: {integrity: sha512-+9RXamrVXvQafnxTI71accsEuQbaI80ctJAe+Q7HL0gtfiFeLcnGglCGZheT1IAJ/kVJ+zJoSFpUeFggG5gmfg==}
+  /@comet/eslint-config@6.8.0(eslint@8.56.0)(prettier@2.8.8)(ts-jest@29.1.1)(typescript@4.9.5):
+    resolution: {integrity: sha512-Spr1+2qp/EzDGrrjGlI3hXrdeqr9lXU02TTIzqkcK+CR/AhR3SDA5cCVLdJiYt8BxR1G5Y0M/wAZYePgje8TcA==}
     peerDependencies:
       eslint: '>= 8'
       next: '*'
@@ -3967,7 +3986,7 @@ packages:
         optional: true
     dependencies:
       '@calm/eslint-plugin-react-intl': 1.4.1
-      '@comet/eslint-plugin': 5.5.0(eslint@8.56.0)
+      '@comet/eslint-plugin': 6.8.0(eslint@8.56.0)
       '@next/eslint-plugin-next': 12.3.4
       '@typescript-eslint/eslint-plugin': 5.62.0(@typescript-eslint/parser@5.62.0)(eslint@8.56.0)(typescript@4.9.5)
       '@typescript-eslint/parser': 5.62.0(eslint@8.56.0)(typescript@4.9.5)
@@ -3991,8 +4010,8 @@ packages:
       - typescript
     dev: true
 
-  /@comet/eslint-plugin@5.5.0(eslint@8.56.0):
-    resolution: {integrity: sha512-ldUuvbCT6qNaf5OaWgJ/0CSSdJg7PC4fbLIOIZbXBWAA9KocRfcdwhZoz+0d4iSxDQE4BPKDdesyE9BW+GflkQ==}
+  /@comet/eslint-plugin@6.8.0(eslint@8.56.0):
+    resolution: {integrity: sha512-g70w5dSCAlT0PpDRJRH3mV6S+efDo4v4a64UImWvy3LyV1r1PI+p+v5zHamNcsL5YFR1fPETicAsWXyzR88mmg==}
     peerDependencies:
       eslint: '8'
     dependencies:
@@ -4450,6 +4469,16 @@ packages:
       qs: 6.11.2
       xcase: 2.0.1
     dev: true
+
+  /@golevelup/nestjs-discovery@3.0.1(@nestjs/common@9.4.3)(@nestjs/core@9.4.3):
+    resolution: {integrity: sha512-kK/GBYVxb8XGlwXgtCWAkPOwDVh7dXyLRaoZuk2bBYntV3DZkYGAIbLKOFTGz+MGz71vEeQ9bGLP7cHKtCee4g==}
+    peerDependencies:
+      '@nestjs/common': ^9.x
+      '@nestjs/core': ^9.x
+    dependencies:
+      '@nestjs/common': 9.4.3(class-transformer@0.5.1)(class-validator@0.13.2)(reflect-metadata@0.1.14)(rxjs@7.8.1)
+      '@nestjs/core': 9.4.3(@nestjs/common@9.4.3)(@nestjs/platform-express@9.4.3)(reflect-metadata@0.1.14)(rxjs@7.8.1)
+      lodash: 4.17.21
 
   /@graphql-codegen/add@3.2.3(graphql@15.8.0):
     resolution: {integrity: sha512-sQOnWpMko4JLeykwyjFTxnhqjd/3NOG2OyMuvK76Wnnwh8DRrNf2VEs2kmSvLl7MndMlOj7Kh5U154dVcvhmKQ==}
@@ -8594,12 +8623,6 @@ packages:
     dependencies:
       '@types/node': 18.19.8
 
-  /@types/jsonwebtoken@8.5.9:
-    resolution: {integrity: sha512-272FMnFGzAVMGtu9tkr29hRL6bZj4Zs1KZNeHLnKqAvp06tAIcarTMwOh8/8bz4FmKRcMxZhZNeUAQsNLoiPhg==}
-    dependencies:
-      '@types/node': 18.19.8
-    dev: false
-
   /@types/jsonwebtoken@9.0.5:
     resolution: {integrity: sha512-VRLSGzik+Unrup6BsouBeHsf4d1hOEgYWTm/7Nmw1sXoN1+tRly/Gy/po3yeahnP4jfnQWWAhQAqcNfH7ngOkA==}
     dependencies:
@@ -11650,6 +11673,46 @@ packages:
   /dotenv@16.3.1:
     resolution: {integrity: sha512-IPzF4w4/Rd94bA9imS68tZBaYyBWSCE47V1RGuMrB94iyTOIEwRmVL2x/4An+6mETpLrKJ5hQkB8W4kFAadeIQ==}
     engines: {node: '>=12'}
+
+  /draft-js-export-html@1.4.1(draft-js@0.11.7)(immutable@3.7.6):
+    resolution: {integrity: sha512-G4VGBSalPowktIE4wp3rFbhjs+Ln9IZ2FhXeHjsZDSw0a2+h+BjKu5Enq+mcsyVb51RW740GBK8Xbf7Iic51tw==}
+    peerDependencies:
+      draft-js: '>=0.10.0'
+      immutable: 3.x.x
+    dependencies:
+      draft-js: 0.11.7(react-dom@17.0.2)(react@17.0.2)
+      draft-js-utils: 1.4.1(draft-js@0.11.7)(immutable@3.7.6)
+      immutable: 3.7.6
+
+  /draft-js-import-element@1.4.0(draft-js@0.11.7)(immutable@3.7.6):
+    resolution: {integrity: sha512-WmYT5PrCm47lGL5FkH6sRO3TTAcn7qNHsD3igiPqLG/RXrqyKrqN4+wBgbcT2lhna/yfWTRtgzAbQsSJoS1Meg==}
+    peerDependencies:
+      draft-js: '>=0.10.0'
+      immutable: 3.x.x
+    dependencies:
+      draft-js: 0.11.7(react-dom@17.0.2)(react@17.0.2)
+      draft-js-utils: 1.4.1(draft-js@0.11.7)(immutable@3.7.6)
+      immutable: 3.7.6
+      synthetic-dom: 1.4.0
+
+  /draft-js-import-html@1.4.1(draft-js@0.11.7)(immutable@3.7.6):
+    resolution: {integrity: sha512-KOZmtgxZriCDgg5Smr3Y09TjubvXe7rHPy/2fuLSsL+aSzwUDwH/aHDA/k47U+WfpmL4qgyg4oZhqx9TYJV0tg==}
+    peerDependencies:
+      draft-js: '>=0.10.0'
+      immutable: 3.x.x
+    dependencies:
+      draft-js: 0.11.7(react-dom@17.0.2)(react@17.0.2)
+      draft-js-import-element: 1.4.0(draft-js@0.11.7)(immutable@3.7.6)
+      immutable: 3.7.6
+
+  /draft-js-utils@1.4.1(draft-js@0.11.7)(immutable@3.7.6):
+    resolution: {integrity: sha512-xE81Y+z/muC5D5z9qWmKfxEW1XyXfsBzSbSBk2JRsoD0yzMGGHQm/0MtuqHl/EUDkaBJJLjJ2EACycoDMY/OOg==}
+    peerDependencies:
+      draft-js: '>=0.10.0'
+      immutable: 3.x.x
+    dependencies:
+      draft-js: 0.11.7(react-dom@17.0.2)(react@17.0.2)
+      immutable: 3.7.6
 
   /draft-js@0.11.7(react-dom@17.0.2)(react@17.0.2):
     resolution: {integrity: sha512-ne7yFfN4sEL82QPQEn80xnADR8/Q6ALVworbC5UOSzOvjffmYfFsr3xSZtxbIirti14R7Y33EZC5rivpLgIbsg==}
@@ -15230,6 +15293,12 @@ packages:
   /jpeg-js@0.4.4:
     resolution: {integrity: sha512-WZzeDOEtTOBK4Mdsar0IqEU5sMr3vSV2RqkAIzUEV2BHnUfKGyswWFPFwK5EeDo93K3FohSHbLAjj0s1Wzd+dg==}
 
+  /js-md5@0.7.3:
+    resolution: {integrity: sha512-ZC41vPSTLKGwIRjqDh8DfXoCrdQIyBgspJVPXHBGu4nZlAEvG3nf+jO9avM9RmLiGakg7vz974ms99nEV0tmTQ==}
+
+  /js-sha1@0.6.0:
+    resolution: {integrity: sha512-01gwBFreYydzmU9BmZxpVk6svJJHrVxEN3IOiGl6VO93bVKYETJ0sIth6DASI6mIFdt7NmfX9UiByRzsYHGU9w==}
+
   /js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
 
@@ -18083,6 +18152,9 @@ packages:
       strip-ansi: 6.0.1
     dev: true
 
+  /request-ip@3.3.0:
+    resolution: {integrity: sha512-cA6Xh6e0fDBBBwH77SLJaJPBmD3nWVAcF9/XAcsrIHdjhFzFiB5aNQFytdjCGPezU3ROwrR11IddKAM08vohxA==}
+
   /request@2.88.2:
     resolution: {integrity: sha512-MsvtOrfG9ZcrOwAW+Qi+F6HbD0CWXEh9ou77uOb7FM2WPhwT7smM833PzanhJLsgXjN89Ir6V2PczXNnMpwKhw==}
     engines: {node: '>= 6'}
@@ -19100,6 +19172,9 @@ packages:
     resolution: {integrity: sha512-9QNk5KwDF+Bvz+PyObkmSYjI5ksVUYtjW7AU22r2NKcfLJcXp96hkDWU3+XndOsUb+AQ9QhfzfCT2O+CNWT5Tw==}
     dev: true
 
+  /synthetic-dom@1.4.0:
+    resolution: {integrity: sha512-mHv51ZsmZ+ShT/4s5kg+MGUIhY7Ltq4v03xpN1c8T1Krb5pScsh/lzEjyhrVD0soVDbThbd2e+4dD9vnDG4rhg==}
+
   /tapable@1.1.3:
     resolution: {integrity: sha512-4WK/bYZmj8xLr+HUCODHGF1ZFzsYffasLUgEiMBY4fgtltdO6B4WJtlSbPaDTLpYTcGVwM2qLnFTICEcNxs3kA==}
     engines: {node: '>=6'}
@@ -19908,6 +19983,12 @@ packages:
   /utils-merge@1.0.1:
     resolution: {integrity: sha512-pMZTvIkT1d+TFGvDOqodOclx0QWkkgi6Tdoa8gC8ffGAAqz9pzPTZWAybbsHHoED/ztMtkv/VoYTYyShUn81hA==}
     engines: {node: '>= 0.4.0'}
+
+  /uuid-by-string@4.0.0:
+    resolution: {integrity: sha512-88ZSfcSkN04juiLqSsuyteqlSrXNFdsEPzSv3urnElDXNsZUXQN0smeTnh99x2DE15SCUQNgqKBfro54CuzHNQ==}
+    dependencies:
+      js-md5: 0.7.3
+      js-sha1: 0.6.0
 
   /uuid@3.4.0:
     resolution: {integrity: sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==}
