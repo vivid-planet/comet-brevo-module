@@ -1,4 +1,4 @@
-import { PaginatedResponseFactory, AffectedEntity, validateNotModified } from "@comet/cms-api";
+import { AffectedEntity, PaginatedResponseFactory, RequiredPermission, validateNotModified } from "@comet/cms-api";
 import { EntityManager, EntityRepository, FindOptions, wrap } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Type } from "@nestjs/common";
@@ -30,6 +30,7 @@ export function createTargetGroupsResolver({
     class TargetGroupsArgs extends TargetGroupArgsFactory.create({ Scope }) {}
 
     @Resolver(() => TargetGroup)
+    @RequiredPermission(["pageTree"])
     class TargetGroupResolver {
         constructor(
             private readonly targetGroupsService: TargetGroupsService,

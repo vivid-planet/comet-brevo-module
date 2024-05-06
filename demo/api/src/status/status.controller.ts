@@ -1,9 +1,10 @@
-import { PublicApi } from "@comet/cms-api";
+import { PublicApi, RequiredPermission } from "@comet/cms-api";
 import { EntityManager } from "@mikro-orm/postgresql";
 import { Controller, Get } from "@nestjs/common";
 
 @Controller("status")
 @PublicApi()
+@RequiredPermission(["pageTree"])
 export class StatusController {
     constructor(private readonly entityManager: EntityManager) {}
 

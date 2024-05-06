@@ -1,5 +1,5 @@
 // Scaffolded by the CRUD generator on 2023-03-20.
-import { AffectedEntity, CurrentUser, GetCurrentUser, validateNotModified } from "@comet/cms-api";
+import { AffectedEntity, CurrentUser, GetCurrentUser, RequiredPermission, validateNotModified } from "@comet/cms-api";
 import { FindOptions } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { EntityRepository } from "@mikro-orm/postgresql";
@@ -13,6 +13,7 @@ import { ProductsAclService } from "./products.acl.service";
 import { ProductsService } from "./products.service";
 
 @Resolver(() => Product)
+@RequiredPermission(["pageTree"])
 export class ProductCrudResolver {
     constructor(
         private readonly productsService: ProductsService,

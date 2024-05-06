@@ -1,4 +1,4 @@
-import { extractGraphqlFields, PaginatedResponseFactory, AffectedEntity, validateNotModified } from "@comet/cms-api";
+import { AffectedEntity, extractGraphqlFields, PaginatedResponseFactory, RequiredPermission, validateNotModified } from "@comet/cms-api";
 import { EntityManager, EntityRepository, FindOptions, Reference, wrap } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Type } from "@nestjs/common";
@@ -38,6 +38,7 @@ export function createEmailCampaignsResolver({
     class EmailCampaignsArgs extends EmailCampaignArgsFactory.create({ Scope }) {}
 
     @Resolver(() => EmailCampaign)
+    @RequiredPermission(["pageTree"])
     class EmailCampaignsResolver {
         constructor(
             private readonly campaignsService: EmailCampaignsService,

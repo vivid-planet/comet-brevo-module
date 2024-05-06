@@ -1,4 +1,4 @@
-import { PaginatedResponseFactory } from "@comet/cms-api";
+import { PaginatedResponseFactory, RequiredPermission } from "@comet/cms-api";
 import { FilterQuery } from "@mikro-orm/core";
 import { Inject, Type } from "@nestjs/common";
 import { Args, ArgsType, Int, Mutation, ObjectType, Query, Resolver } from "@nestjs/graphql";
@@ -33,6 +33,7 @@ export function createBrevoContactResolver({
     class BrevoContactsArgs extends BrevoContactsArgsFactory.create({ Scope }) {}
 
     @Resolver(() => BrevoContact)
+    @RequiredPermission(["pageTree"])
     class BrevoContactResolver {
         constructor(
             @Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig,

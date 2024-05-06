@@ -3,6 +3,7 @@ import {
     PageTreeNodeInterface,
     PageTreeNodeVisibility,
     PageTreeService,
+    RequiredPermission,
     SortArgs,
     SortDirection,
     validateNotModified,
@@ -22,6 +23,7 @@ import { Page } from "./entities/page.entity";
 class PagesArgs extends IntersectionType(OffsetBasedPaginationArgs, SortArgs) {}
 
 @Resolver(() => Page)
+@RequiredPermission(["pageTree"])
 export class PagesResolver {
     constructor(@InjectRepository(Page) private readonly repository: EntityRepository<Page>, private readonly pageTreeService: PageTreeService) {}
 
