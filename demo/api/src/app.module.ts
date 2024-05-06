@@ -44,6 +44,8 @@ import { StatusModule } from "./status/status.module";
 @Module({})
 export class AppModule {
     static forRoot(config: Config): DynamicModule {
+        const authModule = config.auth.useAuthProxy ? AuthModule.forRoot(config) : AuthLocalModule.forRoot(config);
+
         return {
             module: AppModule,
             imports: [
@@ -72,16 +74,14 @@ export class AppModule {
                     }),
                     inject: [BLOCKS_MODULE_TRANSFORMER_DEPENDENCIES],
                 }),
-                config.auth.useAuthProxy ? AuthModule.forRoot(config) : AuthLocalModule.forRoot(config),
+
                 UserPermissionsModule.forRootAsync({
                     useFactory: (accessControlService: AccessControlService) => ({
-                        availableContentScopes: [
-                            /* Array of content Scopes */
-                        ],
+                        availableContentScopes: [{ domain: "main" }, { domain: "secondary" }],
                         accessControlService,
                     }),
                     inject: [AccessControlService],
-                    imports: [AuthModule.forRoot(config)],
+                    imports: [authModule],
                 }),
                 BlocksModule.forRoot({
                     imports: [PageTreeModule, DamModule],
