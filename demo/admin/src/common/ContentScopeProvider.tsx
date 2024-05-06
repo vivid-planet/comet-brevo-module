@@ -1,4 +1,3 @@
-import { gql, useQuery } from "@apollo/client";
 import { Loading } from "@comet/admin";
 import { Domain as DomainIcon, Language as LanguageIcon } from "@comet/admin-icons";
 import {
@@ -11,11 +10,10 @@ import {
     useContentScope as useContentScopeLibrary,
     UseContentScopeApi,
     useContentScopeConfig as useContentScopeConfigLibrary,
+    useCurrentUser,
     useSitesConfig,
 } from "@comet/cms-admin";
 import React from "react";
-
-import { GQLCurrentUserScopeQuery, GQLCurrentUserScopeQueryVariables } from "./ContentScopeProvider.generated";
 
 type Domain = "main" | "secondary" | string;
 type Language = "en" | string;
@@ -49,23 +47,13 @@ export function useContentScopeConfig(p: ContentScopeConfigProps): void {
     return useContentScopeConfigLibrary(p);
 }
 
-const currentUserQuery = gql`
-    query CurrentUserScope {
-        currentUser {
-            id
-            role
-            domains
-        }
-    }
-`;
-
 export const ContentScopeProvider: React.FC<Pick<ContentScopeProviderProps, "children">> = ({ children }) => {
     const sitesConfig = useSitesConfig();
-    const { loading, data } = useQuery<GQLCurrentUserScopeQuery, GQLCurrentUserScopeQueryVariables>(currentUserQuery);
+    const user = useCurrentUser();
 
-    if (loading || !data) return <Loading behavior="fillPageHeight" />;
+    const allowedUserDomains = user.allowedContentScopes.map((contentScope) => contentScope.domain);
 
-    const allowedUserDomains = data.currentUser.domains;
+    if (!user) return <Loading behavior="fillPageHeight" />;
 
     const allowedSiteConfigs = Object.fromEntries(
         Object.entries(sitesConfig.configs).filter(([siteKey, siteConfig]) => (allowedUserDomains ? allowedUserDomains.includes(siteKey) : true)),
