@@ -5,9 +5,6 @@ import {
     BlocksModule,
     BlocksTransformerMiddlewareFactory,
     BuildsModule,
-    ContentScope,
-    ContentScopeModule,
-    CurrentUser,
     DamModule,
     DependenciesModule,
     FilesService,
@@ -16,6 +13,7 @@ import {
     PageTreeModule,
     PageTreeService,
     RedirectsModule,
+    UserPermissionsModule,
 } from "@comet/cms-api";
 import { ApolloDriver } from "@nestjs/apollo";
 import { DynamicModule, Module } from "@nestjs/common";
@@ -30,6 +28,7 @@ import { PageTreeNode } from "@src/page-tree/entities/page-tree-node.entity";
 import { ProductsModule } from "@src/products/products.module";
 import { Request } from "express";
 
+import { AccessControlService } from "./auth/access-control.service";
 import { AuthModule } from "./auth/auth.module";
 import { AuthLocalModule } from "./auth/auth-local.module";
 import { BrevoContactAttributes, BrevoContactFilterAttributes } from "./brevo-contact/dto/brevo-contact-attributes";
@@ -74,11 +73,15 @@ export class AppModule {
                     inject: [BLOCKS_MODULE_TRANSFORMER_DEPENDENCIES],
                 }),
                 config.auth.useAuthProxy ? AuthModule.forRoot(config) : AuthLocalModule.forRoot(config),
-                ContentScopeModule.forRoot({
-                    canAccessScope(requestScope: ContentScope, user: CurrentUser) {
-                        if (!user.domains) return true; //all domains
-                        return user.domains.includes(requestScope.domain);
-                    },
+                UserPermissionsModule.forRootAsync({
+                    useFactory: (accessControlService: AccessControlService) => ({
+                        availableContentScopes: [
+                            /* Array of content Scopes */
+                        ],
+                        accessControlService,
+                    }),
+                    inject: [AccessControlService],
+                    imports: [AuthModule.forRoot(config)],
                 }),
                 BlocksModule.forRoot({
                     imports: [PageTreeModule, DamModule],
