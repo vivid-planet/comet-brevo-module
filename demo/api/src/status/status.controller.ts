@@ -1,13 +1,11 @@
-import { PublicApi, RequiredPermission } from "@comet/cms-api";
+import { PublicApi } from "@comet/cms-api";
 import { EntityManager } from "@mikro-orm/postgresql";
 import { Controller, Get } from "@nestjs/common";
 
 @Controller("status")
 @PublicApi()
-@RequiredPermission(["pageTree"])
 export class StatusController {
     constructor(private readonly entityManager: EntityManager) {}
-
     @Get("liveness")
     liveness(): string {
         // If this controller returns a non 2xx status code, the pod is restarted by kubernetes

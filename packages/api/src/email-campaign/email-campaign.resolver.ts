@@ -38,7 +38,7 @@ export function createEmailCampaignsResolver({
     class EmailCampaignsArgs extends EmailCampaignArgsFactory.create({ Scope }) {}
 
     @Resolver(() => EmailCampaign)
-    @RequiredPermission(["pageTree"])
+    @RequiredPermission(["brevo-newsletter"])
     class EmailCampaignsResolver {
         constructor(
             private readonly campaignsService: EmailCampaignsService,

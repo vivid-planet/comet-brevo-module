@@ -8,7 +8,7 @@ import { LinkInput } from "./dto/link.input";
 import { Link } from "./entities/link.entity";
 
 @Resolver(() => Link)
-@RequiredPermission(["pageTree"])
+@RequiredPermission(["links"])
 export class LinksResolver {
     constructor(@InjectRepository(Link) readonly repository: EntityRepository<Link>, private readonly pageTreeService: PageTreeService) {}
 

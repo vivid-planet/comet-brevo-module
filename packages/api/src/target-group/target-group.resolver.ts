@@ -30,7 +30,7 @@ export function createTargetGroupsResolver({
     class TargetGroupsArgs extends TargetGroupArgsFactory.create({ Scope }) {}
 
     @Resolver(() => TargetGroup)
-    @RequiredPermission(["pageTree"])
+    @RequiredPermission(["brevo-newsletter"])
     class TargetGroupResolver {
         constructor(
             private readonly targetGroupsService: TargetGroupsService,

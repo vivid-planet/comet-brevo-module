@@ -12,7 +12,7 @@ import { Product } from "./entities/product.entity";
 import { ProductsService } from "./products.service";
 
 @Resolver(() => Product)
-@RequiredPermission(["pageTree"])
+@RequiredPermission(["products"])
 export class ProductCrudResolver {
     constructor(
         private readonly productsService: ProductsService,
