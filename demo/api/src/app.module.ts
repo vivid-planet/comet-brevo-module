@@ -7,7 +7,7 @@ import {
     BuildsModule,
     ContentScope,
     ContentScopeModule,
-    CurrentUserInterface,
+    CurrentUser,
     DamModule,
     DependenciesModule,
     FilesService,
@@ -75,7 +75,7 @@ export class AppModule {
                 }),
                 config.auth.useAuthProxy ? AuthModule.forRoot(config) : AuthLocalModule.forRoot(config),
                 ContentScopeModule.forRoot({
-                    canAccessScope(requestScope: ContentScope, user: CurrentUserInterface) {
+                    canAccessScope(requestScope: ContentScope, user: CurrentUser) {
                         if (!user.domains) return true; //all domains
                         return user.domains.includes(requestScope.domain);
                     },

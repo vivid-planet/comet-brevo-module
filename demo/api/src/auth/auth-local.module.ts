@@ -1,9 +1,7 @@
-import { createAuthResolver, createCometAuthGuard, createStaticAuthedUserStrategy } from "@comet/cms-api";
+import { createAuthResolver, createCometAuthGuard, createStaticAuthedUserStrategy, CurrentUser } from "@comet/cms-api";
 import { DynamicModule, Module } from "@nestjs/common";
 import { APP_GUARD } from "@nestjs/core";
 import { Config } from "@src/config/config";
-
-import { CurrentUser } from "./current-user";
 
 @Module({})
 export class AuthLocalModule {

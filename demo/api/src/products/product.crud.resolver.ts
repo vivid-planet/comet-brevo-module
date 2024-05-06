@@ -1,10 +1,9 @@
 // Scaffolded by the CRUD generator on 2023-03-20.
-import {  GetCurrentUser, AffectedEntity, validateNotModified } from "@comet/cms-api";
+import { AffectedEntity, CurrentUser, GetCurrentUser, validateNotModified } from "@comet/cms-api";
 import { FindOptions } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { EntityRepository } from "@mikro-orm/postgresql";
 import { Args, ID, Int, Mutation, Query, ResolveField, Resolver } from "@nestjs/graphql";
-import { CurrentUser } from "@src/auth/current-user";
 
 import { PaginatedProducts } from "./dto/paginated-products";
 import { ProductInput } from "./dto/product.input";

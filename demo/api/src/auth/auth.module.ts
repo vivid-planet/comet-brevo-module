@@ -3,8 +3,6 @@ import { DynamicModule, Module } from "@nestjs/common";
 import { APP_GUARD } from "@nestjs/core";
 import { Config } from "@src/config/config";
 
-import { CurrentUser, CurrentUserLoader } from "./current-user";
-
 @Module({})
 export class AuthModule {
     static forRoot(config: Config): DynamicModule {
@@ -17,10 +15,8 @@ export class AuthModule {
                 }),
                 createAuthProxyJwtStrategy({
                     jwksUri: config.auth.idpJwksUri,
-                    currentUserLoader: new CurrentUserLoader(),
                 }),
                 createAuthResolver({
-                    currentUser: CurrentUser,
                     endSessionEndpoint: config.auth.idpEndSessionEndpoint,
                     postLogoutRedirectUri: config.auth.postLogoutRedirectUri,
                 }),
