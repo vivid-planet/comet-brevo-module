@@ -74,10 +74,15 @@ export class AppModule {
                     }),
                     inject: [BLOCKS_MODULE_TRANSFORMER_DEPENDENCIES],
                 }),
-
+                authModule,
                 UserPermissionsModule.forRootAsync({
                     useFactory: (accessControlService: AccessControlService) => ({
-                        availableContentScopes: [{ domain: "main" }, { domain: "secondary" }],
+                        availableContentScopes: [
+                            { domain: "main", language: "en" },
+                            { domain: "main", language: "de" },
+                            { domain: "secondary", language: "en" },
+                            { domain: "secondary", language: "de" },
+                        ],
                         accessControlService,
                     }),
                     inject: [AccessControlService],

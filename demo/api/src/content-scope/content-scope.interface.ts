@@ -4,5 +4,6 @@ import { ContentScope } from "@comet/cms-api";
 declare module "@comet/cms-api" {
     interface ContentScope {
         domain: "main" | "secondary";
+        language: "en" | "de";
     }
 }
