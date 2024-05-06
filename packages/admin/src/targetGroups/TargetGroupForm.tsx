@@ -1,5 +1,6 @@
 import { DocumentNode, gql, useApolloClient, useQuery } from "@apollo/client";
 import {
+    EditDialogApiContext,
     Field,
     FinalForm,
     FinalFormInput,
@@ -8,13 +9,13 @@ import {
     FormSection,
     Loading,
     MainContent,
+    StackApiContext,
     Toolbar,
     ToolbarActions,
     ToolbarFillSpace,
     ToolbarItem,
     ToolbarTitleItem,
     useFormApiRef,
-    useStackApi,
     useStackSwitchApi,
 } from "@comet/admin";
 import { ArrowLeft } from "@comet/admin-icons";
@@ -48,7 +49,8 @@ interface FormProps {
 }
 
 export function TargetGroupForm({ id, scope, additionalFormFields, input2State, nodeFragment }: FormProps): React.ReactElement {
-    const stackApi = useStackApi();
+    const stackApi = React.useContext(StackApiContext);
+    const editDialog = React.useContext(EditDialogApiContext);
     const client = useApolloClient();
     const mode = id ? "edit" : "add";
     const formApiRef = useFormApiRef<EditTargetGroupFinalFormValues>();
@@ -137,8 +139,9 @@ export function TargetGroupForm({ id, scope, additionalFormFields, input2State, 
             onSubmit={handleSubmit}
             mode={mode}
             initialValues={initialValues}
-            onAfterSubmit={(values, form) => {
-                //don't go back automatically
+            onAfterSubmit={() => {
+                stackApi?.goBack();
+                editDialog?.closeDialog({ delay: true });
             }}
         >
             {({ values }) => (
