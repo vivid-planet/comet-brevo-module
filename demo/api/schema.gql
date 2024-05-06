@@ -501,6 +501,7 @@ input EmailCampaignContentScopeInput {
 }
 
 type Query {
+  currentUser: CurrentUser!
   userPermissionsUserById(id: String!): User!
   userPermissionsUsers(offset: Int! = 0, limit: Int! = 25, search: String, filter: UserFilter, sort: [UserSort!]): PaginatedUserList!
   userPermissionsPermissionList(userId: String!): [UserPermission!]!
@@ -537,7 +538,6 @@ type Query {
   product(id: ID!): Product!
   products(offset: Int! = 0, limit: Int! = 25, search: String, filter: ProductFilter, sort: [ProductSort!]): PaginatedProducts!
   mainMenu(scope: PageTreeNodeScopeInput!): [PageTreeNode!]!
-  currentUser: CurrentUser!
   brevoContact(id: Int!): BrevoContact!
   brevoContacts(targetGroupId: ID, email: String, scope: EmailCampaignContentScopeInput!, offset: Int! = 0, limit: Int! = 25): PaginatedBrevoContacts!
   emailCampaign(id: ID!): EmailCampaign!
@@ -735,6 +735,7 @@ enum TargetGroupSortField {
 }
 
 type Mutation {
+  currentUserSignOut: String!
   userPermissionsCreatePermission(userId: String!, input: UserPermissionInput!): UserPermission!
   userPermissionsUpdatePermission(id: String!, input: UserPermissionInput!): UserPermission!
   userPermissionsDeletePermission(id: ID!): Boolean!
@@ -771,7 +772,6 @@ type Mutation {
   createProduct(input: ProductInput!): Product!
   updateProduct(id: ID!, input: ProductInput!, lastUpdatedAt: DateTime): Product!
   deleteProduct(id: ID!): Boolean!
-  currentUserSignOut: String!
   updateBrevoContact(id: Int!, input: BrevoContactUpdateInput!): BrevoContact!
   deleteBrevoContact(id: Int!): Boolean!
   subscribeBrevoContact(input: SubscribeInput!): SubscribeResponse!
