@@ -1,4 +1,3 @@
-import { Loading } from "@comet/admin";
 import { Domain as DomainIcon, Language as LanguageIcon } from "@comet/admin-icons";
 import {
     ContentScopeConfigProps,
@@ -52,8 +51,6 @@ export const ContentScopeProvider: React.FC<Pick<ContentScopeProviderProps, "chi
     const user = useCurrentUser();
 
     const allowedUserDomains = user.allowedContentScopes.map((contentScope) => contentScope.domain);
-
-    if (!user) return <Loading behavior="fillPageHeight" />;
 
     const allowedSiteConfigs = Object.fromEntries(
         Object.entries(sitesConfig.configs).filter(([siteKey, siteConfig]) => (allowedUserDomains ? allowedUserDomains.includes(siteKey) : true)),
