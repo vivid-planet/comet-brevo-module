@@ -3,6 +3,8 @@ import { DynamicModule, Module } from "@nestjs/common";
 import { APP_GUARD } from "@nestjs/core";
 import { Config } from "@src/config/config";
 
+import { AccessControlService } from "./access-control.service";
+
 @Module({})
 export class AuthModule {
     static forRoot(config: Config): DynamicModule {
@@ -24,7 +26,9 @@ export class AuthModule {
                     provide: APP_GUARD,
                     useClass: createCometAuthGuard(["auth-proxy-jwt", "static-credentials-basic"]),
                 },
+                AccessControlService,
             ],
+            exports: [AccessControlService],
         };
     }
 }
