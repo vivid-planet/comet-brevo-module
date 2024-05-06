@@ -9,7 +9,6 @@ import { PaginatedProducts } from "./dto/paginated-products";
 import { ProductInput } from "./dto/product.input";
 import { ProductsArgs } from "./dto/products.args";
 import { Product } from "./entities/product.entity";
-import { ProductsAclService } from "./products.acl.service";
 import { ProductsService } from "./products.service";
 
 @Resolver(() => Product)
@@ -17,7 +16,6 @@ import { ProductsService } from "./products.service";
 export class ProductCrudResolver {
     constructor(
         private readonly productsService: ProductsService,
-        private readonly productsAclService: ProductsAclService,
         @InjectRepository(Product) private readonly repository: EntityRepository<Product>,
     ) {}
 
@@ -66,9 +64,6 @@ export class ProductCrudResolver {
         @Args("lastUpdatedAt", { type: () => Date, nullable: true }) lastUpdatedAt?: Date,
     ): Promise<Product> {
         const product = await this.repository.findOneOrFail(id);
-        if (!this.productsAclService.isEditingAllowed(product, user)) {
-            throw new Error("Editing Product not allowed");
-        }
         if (lastUpdatedAt) {
             validateNotModified(product, lastUpdatedAt);
         }
@@ -85,9 +80,7 @@ export class ProductCrudResolver {
     @AffectedEntity(Product)
     async deleteProduct(@GetCurrentUser() user: CurrentUser, @Args("id", { type: () => ID }) id: string): Promise<boolean> {
         const product = await this.repository.findOneOrFail(id);
-        if (!this.productsAclService.isEditingAllowed(product, user)) {
-            throw new Error("Deleting Product not allowed");
-        }
+
         await this.repository.removeAndFlush(product);
 
         return true;
