@@ -6,6 +6,7 @@ import { Controller, Get } from "@nestjs/common";
 @PublicApi()
 export class StatusController {
     constructor(private readonly entityManager: EntityManager) {}
+
     @Get("liveness")
     liveness(): string {
         // If this controller returns a non 2xx status code, the pod is restarted by kubernetes

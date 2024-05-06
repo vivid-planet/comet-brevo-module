@@ -5,7 +5,7 @@ import { PageTreeNode } from "@src/page-tree/entities/page-tree-node.entity";
 import { PageTreeNodeCategory } from "@src/page-tree/page-tree-node-category";
 
 @Resolver()
-@RequiredPermission(["menus"])
+@RequiredPermission(["pageTree"])
 export class MenusResolver {
     constructor(private readonly pageTreeService: PageTreeService) {}
 

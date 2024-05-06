@@ -1,5 +1,5 @@
 import { useApolloClient } from "@apollo/client";
-import { EditDialogApiContext, Field, FinalForm, FinalFormInput, SaveButton, StackApiContext } from "@comet/admin";
+import { Field, FinalForm, FinalFormInput, SaveButton } from "@comet/admin";
 import { Newsletter } from "@comet/admin-icons";
 import { AdminComponentPaper, AdminComponentSectionGroup } from "@comet/blocks-admin";
 import { Card, FormHelperText, Typography } from "@mui/material";
@@ -20,8 +20,6 @@ interface TestEmailCampaignFormProps {
 
 export const TestEmailCampaignForm = ({ id, isSendable = false }: TestEmailCampaignFormProps) => {
     const client = useApolloClient();
-    const stackApi = React.useContext(StackApiContext);
-    const editDialog = React.useContext(EditDialogApiContext);
 
     async function submitTestEmails({ testEmails }: FormProps) {
         const emailsArray = testEmails.trim().split("\n");
@@ -43,14 +41,7 @@ export const TestEmailCampaignForm = ({ id, isSendable = false }: TestEmailCampa
                         <FormattedMessage id="cometBrevoModule.emailCampaigns.testEmailCampaign.title" defaultMessage="Send test email campaign" />
                     }
                 >
-                    <FinalForm<FormProps>
-                        mode="edit"
-                        onSubmit={submitTestEmails}
-                        onAfterSubmit={() => {
-                            stackApi?.goBack();
-                            editDialog?.closeDialog({ delay: true });
-                        }}
-                    >
+                    <FinalForm<FormProps> mode="edit" onSubmit={submitTestEmails}>
                         {({ handleSubmit, submitting, values }) => {
                             return (
                                 <>
