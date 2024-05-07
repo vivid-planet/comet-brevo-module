@@ -172,6 +172,7 @@ export function createEmailCampaignsResolver({
         }
 
         @Mutation(() => Boolean)
+        @AffectedEntity(EmailCampaign)
         async sendEmailCampaignNow(@Args("id", { type: () => ID }) id: string): Promise<boolean> {
             const campaignSent = await this.campaignsService.sendEmailCampaignNow(id);
 
@@ -191,6 +192,7 @@ export function createEmailCampaignsResolver({
         }
 
         @Mutation(() => Boolean)
+        @AffectedEntity(EmailCampaign)
         async sendEmailCampaignToTestEmails(
             @Args("id", { type: () => ID }) id: string,
             @Args("data", { type: () => SendTestEmailCampaignArgs }) data: SendTestEmailCampaignArgs,
@@ -208,6 +210,7 @@ export function createEmailCampaignsResolver({
         }
 
         @Query(() => BrevoApiCampaignStatistics, { nullable: true })
+        @AffectedEntity(EmailCampaign)
         async emailCampaignStatistics(@Args("id", { type: () => ID }) id: string): Promise<BrevoApiCampaignStatistics | null> {
             const campaign = await this.repository.findOneOrFail(id);
 

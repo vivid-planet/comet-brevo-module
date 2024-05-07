@@ -1,4 +1,4 @@
-import { PaginatedResponseFactory, RequiredPermission } from "@comet/cms-api";
+import { AffectedEntity, PaginatedResponseFactory, RequiredPermission } from "@comet/cms-api";
 import { FilterQuery } from "@mikro-orm/core";
 import { Inject, Type } from "@nestjs/common";
 import { Args, ArgsType, Int, Mutation, ObjectType, Query, Resolver } from "@nestjs/graphql";
@@ -44,6 +44,7 @@ export function createBrevoContactResolver({
         ) {}
 
         @Query(() => BrevoContact)
+        @AffectedEntity(BrevoContact)
         async brevoContact(@Args("id", { type: () => Int }) id: number): Promise<BrevoContactInterface> {
             return this.brevoContactsApiService.findContact(id);
         }
@@ -83,6 +84,7 @@ export function createBrevoContactResolver({
         }
 
         @Mutation(() => BrevoContact)
+        @AffectedEntity(BrevoContact)
         async updateBrevoContact(
             @Args("id", { type: () => Int }) id: number,
             @Args("input", { type: () => BrevoContactUpdateInput }) input: BrevoContactUpdateInput,
@@ -91,6 +93,7 @@ export function createBrevoContactResolver({
         }
 
         @Mutation(() => Boolean)
+        @AffectedEntity(BrevoContact)
         async deleteBrevoContact(@Args("id", { type: () => Int }) id: number): Promise<boolean> {
             return this.brevoContactsApiService.deleteContact(id);
         }

@@ -287,11 +287,6 @@ input DependentFilter {
   rootColumnName: String
 }
 
-type PaginatedPages {
-  nodes: [Page!]!
-  totalCount: Int!
-}
-
 type PaginatedProducts {
   nodes: [Product!]!
   totalCount: Int!
@@ -512,9 +507,8 @@ type Query {
   buildTemplates: [BuildTemplate!]!
   builds(limit: Float): [Build!]!
   autoBuildStatus: AutoBuildStatus!
-  link(linkId: ID!): Link
-  page(pageId: ID!): Page
-  pages(offset: Int! = 0, limit: Int! = 25, sortColumnName: String, sortDirection: SortDirection! = ASC): PaginatedPages!
+  link(id: ID!): Link
+  page(id: ID!): Page
   pageTreeNode(id: ID!): PageTreeNode
   pageTreeNodeByPath(path: String!, scope: PageTreeNodeScopeInput!): PageTreeNode
   pageTreeNodeList(scope: PageTreeNodeScopeInput!, category: String): [PageTreeNode!]!
