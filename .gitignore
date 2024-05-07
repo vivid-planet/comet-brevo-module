@@ -10,3 +10,4 @@ comet-lang
 /api/uploads
 lang
 .env.local
+demo/api/uploads
