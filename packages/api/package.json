@@ -69,8 +69,8 @@
         "uuid": "^8.3.2"
     },
     "peerDependencies": {
-        "@comet/blocks-api": "^6.8.0",
-        "@comet/cms-api": "^6.8.0",
+        "@comet/blocks-api": "^6.0.0",
+        "@comet/cms-api": "^6.0.0",
         "@mikro-orm/cli": "^5.7.1",
         "@mikro-orm/core": "^5.0.5",
         "@mikro-orm/migrations": "^5.7.1",
