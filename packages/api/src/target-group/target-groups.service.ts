@@ -5,7 +5,6 @@ import { Injectable } from "@nestjs/common";
 
 import { BrevoApiContactsService } from "../brevo-api/brevo-api-contact.service";
 import { BrevoContactInterface } from "../brevo-contact/dto/brevo-contact.factory";
-import { SubscribeInputInterface } from "../brevo-contact/dto/subscribe-input.factory";
 import { BrevoContactAttributesInterface, BrevoContactFilterAttributesInterface, EmailCampaignScopeInterface } from "../types";
 import { TargetGroupFilter } from "./dto/target-group.filter";
 import { TargetGroupInterface } from "./entity/target-group-entity.factory";
@@ -95,10 +94,10 @@ export class TargetGroupsService {
         return true;
     }
 
-    async findNonMainTargetGroups(data: SubscribeInputInterface, offset: number, limit: number): Promise<[TargetGroupInterface[], number]> {
+    async findNonMainTargetGroups(scope: EmailCampaignScopeInterface, offset: number, limit: number): Promise<[TargetGroupInterface[], number]> {
         const [targetGroups, totalContactLists] = await this.repository.findAndCount(
             {
-                scope: data.scope,
+                scope,
                 isMainList: false,
             },
             { limit, offset },

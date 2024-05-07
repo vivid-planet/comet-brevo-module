@@ -9,6 +9,7 @@ import { BREVO_MODULE_CONFIG } from "../config/brevo-module.constants";
 import { TargetGroupInterface } from "../target-group/entity/target-group-entity.factory";
 import { TargetGroupsService } from "../target-group/target-groups.service";
 import { EmailCampaignScopeInterface } from "../types";
+import { DynamicDtoValidationPipe } from "../validation/dynamic-dto-validation.pipe";
 import { BrevoContactsService } from "./brevo-contacts.service";
 import { BrevoContactInterface } from "./dto/brevo-contact.factory";
 import { BrevoContactUpdateInput } from "./dto/brevo-contact.input";
@@ -101,12 +102,14 @@ export function createBrevoContactResolver({
         @Mutation(() => SubscribeResponse)
         async subscribeBrevoContact(
             @Args("input", { type: () => BrevoContactSubscribeInput }) data: SubscribeInputInterface,
+            @Args("scope", { type: () => Scope }, new DynamicDtoValidationPipe(Scope))
+            scope: typeof Scope,
         ): Promise<SubscribeResponse> {
             if ((await this.ecgRtrListService.getContainedEcgRtrListEmails([data.email])).length > 0) {
                 return SubscribeResponse.ERROR_CONTAINED_IN_ECG_RTR_LIST;
             }
 
-            const created = await this.brevoContactsService.createDoubleOptInContact(data, this.config.brevo.doubleOptInTemplateId);
+            const created = await this.brevoContactsService.createDoubleOptInContact(data, scope, this.config.brevo.doubleOptInTemplateId);
 
             if (created) {
                 return SubscribeResponse.SUCCESSFUL;
