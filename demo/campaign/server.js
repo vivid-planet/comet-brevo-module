@@ -5,7 +5,7 @@ const fs = require("fs");
 
 const dev = process.env.NODE_ENV !== "production";
 const hostname = "localhost";
-const port = process.env.APP_PORT ?? 3000;
+const port = process.env.CAMPAIGN_PORT ?? 3001;
 const cdnEnabled = process.env.CDN_ENABLED === "true";
 const cdnOriginHeader = process.env.CDN_ORIGIN_HEADER;
 

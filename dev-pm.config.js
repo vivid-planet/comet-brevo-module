@@ -79,5 +79,18 @@ module.exports = {
             group: ["demo-site", "demo"],
             waitOn: ["tcp:$API_PORT"],
         },
+        // group demo campaign frontend
+        {
+            name: "demo-campaign",
+            script: "pnpm --filter comet-brevo-module-demo-campaign run dev",
+            group: ["demo-campaign", "demo"],
+            waitOn: ["tcp:$API_PORT"],
+        },
+        {
+            name: "demo-campaign-block-codegen",
+            script: "pnpm --filter comet-brevo-module-demo-campaign run generate-block-types:watch",
+            group: ["demo-campaign", "demo"],
+            waitOn: ["tcp:$API_PORT"],
+        },
     ],
 };

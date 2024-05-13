@@ -24,7 +24,7 @@ export function createConfig() {
         buildDate: environmentVariables.BUILD_DATE,
         buildNumber: environmentVariables.BUILD_NUMBER,
         commitSha: environmentVariables.COMMIT_SHA,
-        campaignsFrontendUrl: environmentVariables.CAMPAIGNS_FRONTEND_URL,
+        campaignUrl: environmentVariables.CAMPAIGN_URL,
     };
 }
 

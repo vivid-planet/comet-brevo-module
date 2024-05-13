@@ -64,11 +64,11 @@ export function createConfig(processEnv: NodeJS.ProcessEnv) {
                 email: envVars.BREVO_SENDER_EMAIL,
             },
         },
-        campaignsFrontend: {
-            url: envVars.CAMPAIGNS_FRONTEND_URL,
+        campaign: {
+            url: envVars.CAMPAIGN_URL,
             basicAuth: {
-                username: envVars.CAMPAIGNS_FRONTEND_BASIC_AUTH_USERNAME,
-                password: envVars.CAMPAIGNS_FRONTEND_BASIC_AUTH_PASSWORD,
+                username: envVars.CAMPAIGN_BASIC_AUTH_USERNAME,
+                password: envVars.CAMPAIGN_BASIC_AUTH_PASSWORD,
             },
         },
         ecgRtrList: {

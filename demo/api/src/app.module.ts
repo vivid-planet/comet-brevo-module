@@ -155,10 +155,10 @@ export class AppModule {
                         EmailCampaignContentBlock,
                         Scope: EmailCampaignContentScope,
                         frontend: {
-                            url: config.campaignsFrontend.url,
+                            url: config.campaign.url,
                             basicAuth: {
-                                username: config.campaignsFrontend.basicAuth.username,
-                                password: config.campaignsFrontend.basicAuth.password,
+                                username: config.campaign.basicAuth.username,
+                                password: config.campaign.basicAuth.password,
                             },
                         },
                     },

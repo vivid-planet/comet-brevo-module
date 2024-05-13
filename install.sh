@@ -38,8 +38,17 @@ ln -sf ../api/schema.gql ./demo/site/
 ln -sf ../api/block-meta.json ./demo/site/
 ln -sf ../api/src/comet-config.json ./demo/site/
 
+# create demo campaign symlinks
+ln -sf ../../.env ./demo/campaign/.env
+ln -sf ../../.env.local ./campaign/
+ln -sf ../api/schema.gql ./demo/campaign/
+ln -sf ../api/block-meta.json ./demo/campaign/
+ln -sf ../api/src/comet-config.json ./demo/campaign/
+
 # Lang install
 sh ./demo/admin/intl-update.sh
+sh ./demo/site/intl-update.sh
+sh ./demo/campaign/intl-update.sh
 
 mkdir -p ./demo/api/uploads
 

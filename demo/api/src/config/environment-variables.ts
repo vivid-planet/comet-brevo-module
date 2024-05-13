@@ -132,11 +132,11 @@ export class EnvironmentVariables {
     ECG_RTR_LIST_API_KEY: string;
 
     @IsString()
-    CAMPAIGNS_FRONTEND_URL: string;
+    CAMPAIGN_URL: string;
 
     @IsString()
-    CAMPAIGNS_FRONTEND_BASIC_AUTH_USERNAME: string;
+    CAMPAIGN_BASIC_AUTH_USERNAME: string;
 
     @IsString()
-    CAMPAIGNS_FRONTEND_BASIC_AUTH_PASSWORD: string;
+    CAMPAIGN_BASIC_AUTH_PASSWORD: string;
 }
