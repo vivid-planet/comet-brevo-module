@@ -40,7 +40,7 @@ ln -sf ../api/src/comet-config.json ./demo/site/
 
 # create demo campaign symlinks
 ln -sf ../../.env ./demo/campaign/.env
-ln -sf ../../.env.local ./campaign/
+ln -sf ../../.env.local ./demo/campaign/.env.local
 ln -sf ../api/schema.gql ./demo/campaign/
 ln -sf ../api/block-meta.json ./demo/campaign/
 ln -sf ../api/src/comet-config.json ./demo/campaign/
