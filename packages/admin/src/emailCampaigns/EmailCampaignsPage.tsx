@@ -31,6 +31,18 @@ export function createEmailCampaignsPage({ scopeParts, EmailCampaignContentBlock
                         <EmailCampaignsGrid scope={scope} EmailCampaignContentBlock={EmailCampaignContentBlock} />
                     </StackPage>
                     <StackPage name="statistics">{(selectedId) => <EmailCampaignStatistics id={selectedId} />}</StackPage>
+                    <StackPage name="view">
+                        {(selectedId) => (
+                            <EmailCampaignForm
+                                id={selectedId}
+                                previewUrl={previewUrl}
+                                EmailCampaignContentBlock={EmailCampaignContentBlock}
+                                scope={scope}
+                                isViewOnly
+                            />
+                        )}
+                    </StackPage>
+
                     <StackPage
                         name="edit"
                         title={intl.formatMessage({ id: "cometBrevoModule.emailCampaigns.editEmailCampaign", defaultMessage: "Edit email campaign" })}
