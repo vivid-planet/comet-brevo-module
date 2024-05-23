@@ -588,8 +588,8 @@ importers:
         specifier: ^6.8.0
         version: 6.9.0
       '@comet/eslint-config':
-        specifier: ^5.3.0
-        version: 5.8.3(eslint@8.56.0)(next@12.3.4)(prettier@2.8.8)(typescript@4.9.5)
+        specifier: ^6.8.0
+        version: 6.8.0(eslint@8.56.0)(next@12.3.4)(prettier@2.8.8)(typescript@4.9.5)
       '@formatjs/cli':
         specifier: ^4.2.33
         version: 4.8.4
@@ -4097,42 +4097,6 @@ packages:
       - debug
     dev: true
 
-  /@comet/eslint-config@5.8.3(eslint@8.56.0)(next@12.3.4)(prettier@2.8.8)(typescript@4.9.5):
-    resolution: {integrity: sha512-moR9rfTIYrutbDfjegnjUelrlMEnMS3nlR4IGByqXTz3NyTlDmQhWByPGWsFqM2C1tkcj1m51jAkF+X/ccYIhQ==}
-    peerDependencies:
-      eslint: '>= 8'
-      next: '*'
-      prettier: '>= 2'
-    peerDependenciesMeta:
-      next:
-        optional: true
-    dependencies:
-      '@calm/eslint-plugin-react-intl': 1.4.1
-      '@comet/eslint-plugin': 5.8.3(eslint@8.56.0)
-      '@next/eslint-plugin-next': 12.3.4
-      '@typescript-eslint/eslint-plugin': 5.62.0(@typescript-eslint/parser@5.62.0)(eslint@8.56.0)(typescript@4.9.5)
-      '@typescript-eslint/parser': 5.62.0(eslint@8.56.0)(typescript@4.9.5)
-      eslint: 8.56.0
-      eslint-config-next: 13.5.6(eslint@8.56.0)(typescript@4.9.5)
-      eslint-config-prettier: 8.10.0(eslint@8.56.0)
-      eslint-plugin-formatjs: 4.12.1(eslint@8.56.0)(ts-jest@29.1.1)
-      eslint-plugin-import: 2.29.1(@typescript-eslint/parser@5.62.0)(eslint-import-resolver-typescript@3.6.1)(eslint@8.56.0)
-      eslint-plugin-json-files: 2.2.0(eslint@8.56.0)
-      eslint-plugin-prettier: 4.2.1(eslint-config-prettier@8.10.0)(eslint@8.56.0)(prettier@2.8.8)
-      eslint-plugin-react: 7.33.2(eslint@8.56.0)
-      eslint-plugin-react-hooks: 4.6.0(eslint@8.56.0)
-      eslint-plugin-simple-import-sort: 9.0.0(eslint@8.56.0)
-      eslint-plugin-unused-imports: 2.0.0(@typescript-eslint/eslint-plugin@5.62.0)(eslint@8.56.0)
-      next: 12.3.4(@babel/core@7.23.7)(react-dom@17.0.2)(react@17.0.2)
-      prettier: 2.8.8
-    transitivePeerDependencies:
-      - eslint-import-resolver-typescript
-      - eslint-import-resolver-webpack
-      - supports-color
-      - ts-jest
-      - typescript
-    dev: true
-
   /@comet/eslint-config@6.8.0(eslint@8.56.0)(next@12.3.4)(prettier@2.8.8)(typescript@4.9.5):
     resolution: {integrity: sha512-Spr1+2qp/EzDGrrjGlI3hXrdeqr9lXU02TTIzqkcK+CR/AhR3SDA5cCVLdJiYt8BxR1G5Y0M/wAZYePgje8TcA==}
     peerDependencies:
@@ -4237,14 +4201,6 @@ packages:
       - supports-color
       - ts-jest
       - typescript
-    dev: true
-
-  /@comet/eslint-plugin@5.8.3(eslint@8.56.0):
-    resolution: {integrity: sha512-R0P8EU2euo01YXrF4TgCTdS9XNwcj6HmdeSflG/FKkBmmpCiRRQhzFuuSWR1LwNKFDfRWBoHYQaU08U0KrVP3w==}
-    peerDependencies:
-      eslint: '8'
-    dependencies:
-      eslint: 8.56.0
     dev: true
 
   /@comet/eslint-plugin@6.8.0(eslint@8.56.0):
