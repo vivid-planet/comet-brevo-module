@@ -14,7 +14,7 @@ export const SvgUse: React.FunctionComponent<SvgUseProps> = ({ href, ...props })
 };
 
 function createAssetUrl(url: string): string {
-    if (process.env.NEXT_PUBLIC_SITE_IS_PREVIEW !== "true") {
+    if (process.env.NEXT_PUBLIC_CAMPAIGN_IS_PREVIEW !== "true") {
         return url;
     } else {
         return `/site${url}`;

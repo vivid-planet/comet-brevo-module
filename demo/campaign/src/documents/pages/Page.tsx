@@ -34,7 +34,7 @@ export function Page(props: PropsWithLayout<GQLPageQuery>): JSX.Element {
                 <SeoBlock
                     data={document.seo}
                     title={props.pageContent?.name ?? ""}
-                    canonicalUrl={`${process.env.NEXT_PUBLIC_SITE_URL}${props.pageContent?.path}`}
+                    canonicalUrl={`${process.env.NEXT_PUBLIC_CAMPAIGN_URL}${props.pageContent?.path}`}
                 />
             )}
             {document && document.__typename === "Page" ? (
