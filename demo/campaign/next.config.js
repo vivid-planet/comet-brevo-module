@@ -35,11 +35,6 @@ const nextConfig = {
     pageExtensions: ["page.ts", "page.tsx"],
     cleanDistDir: process.env.NODE_ENV !== "production", // sitemap and robots.txt are pre-existing
     basePath: process.env.NEXT_PUBLIC_SITE_IS_PREVIEW === "true" ? "/site" : "",
-    redirects: async () => {
-        if (process.env.NEXT_PUBLIC_SITE_IS_PREVIEW === "true") return [];
-        var redirects = await require("./preBuild/build/preBuild/src/createRedirects").createRedirects();
-        return redirects;
-    },
     images: {
         deviceSizes: cometConfig.dam.allowedImageSizes,
     },
