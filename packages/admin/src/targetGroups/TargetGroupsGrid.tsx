@@ -15,10 +15,12 @@ import {
     useDataGridRemote,
     usePersistentColumnState,
 } from "@comet/admin";
-import { Add as AddIcon, Edit } from "@comet/admin-icons";
+import { Add as AddIcon, Download, Edit } from "@comet/admin-icons";
 import { ContentScopeInterface } from "@comet/cms-admin";
 import { Button, IconButton } from "@mui/material";
 import { DataGrid, GridColDef, GridToolbarQuickFilter } from "@mui/x-data-grid";
+import saveAs from "file-saver";
+import { DocumentNode } from "graphql";
 import * as React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
@@ -27,10 +29,17 @@ import {
     GQLCreateTargetGroupMutationVariables,
     GQLDeleteTargetGroupMutation,
     GQLDeleteTargetGroupMutationVariables,
+    GQLTargetGroupContactItemFragment,
+    GQLTargetGroupContactsQuery,
+    GQLTargetGroupContactsQueryVariables,
     GQLTargetGroupsGridQuery,
     GQLTargetGroupsGridQueryVariables,
     GQLTargetGroupsListFragment,
 } from "./TargetGroupsGrid.generated";
+
+export type AdditionalContactAttributesType = Record<string, unknown>;
+
+type ContactWithAdditionalAttributes = GQLTargetGroupContactItemFragment & AdditionalContactAttributesType;
 
 const targetGroupsFragment = gql`
     fragment TargetGroupsList on TargetGroup {
@@ -39,6 +48,15 @@ const targetGroupsFragment = gql`
         totalSubscribers
         totalContactsBlocked
         isMainList
+    }
+`;
+
+const targetGroupContactItemFragment = gql`
+    fragment TargetGroupContactItem on BrevoContact {
+        id
+        email
+        emailBlacklisted
+        smsBlacklisted
     }
 `;
 
@@ -95,10 +113,85 @@ function TargetGroupsGridToolbar() {
     );
 }
 
-export function TargetGroupsGrid({ scope }: { scope: ContentScopeInterface }): React.ReactElement {
+export function TargetGroupsGrid({
+    scope,
+    exportTargetGroupOptions,
+}: {
+    scope: ContentScopeInterface;
+    exportTargetGroupOptions?: {
+        additionalAttributesFragment: { name: string; fragment: DocumentNode };
+        exportFields: { renderValue: (row: AdditionalContactAttributesType) => string; headerName: string }[];
+    };
+}): React.ReactElement {
     const client = useApolloClient();
     const intl = useIntl();
     const dataGridProps = { ...useDataGridRemote(), ...usePersistentColumnState("TargetGroupsGrid") };
+
+    const targetGroupContactsQuery = gql`
+        query TargetGroupContacts($targetGroupId: ID, $offset: Int, $limit: Int, $scope: EmailCampaignContentScopeInput!) {
+            brevoContacts(targetGroupId: $targetGroupId, offset: $offset, limit: $limit, scope: $scope) {
+                nodes {
+                    ...TargetGroupContactItem
+                    ${
+                        exportTargetGroupOptions?.additionalAttributesFragment
+                            ? "...".concat(exportTargetGroupOptions.additionalAttributesFragment?.name)
+                            : ""
+                    }
+                }
+                totalCount
+            }
+        }
+        ${targetGroupContactItemFragment}
+        ${exportTargetGroupOptions?.additionalAttributesFragment?.fragment ?? ""}
+    `;
+
+    const convertToCsv = (data: ContactWithAdditionalAttributes[]) => {
+        const header = [
+            intl.formatMessage({ id: "cometBrevoModule.targetGroup.export.brevoId", defaultMessage: "Brevo ID" }),
+            intl.formatMessage({ id: "cometBrevoModule.targetGroup.export.email", defaultMessage: "Email" }),
+            intl.formatMessage({ id: "cometBrevoModule.targetGroup.export.emailBlacklisted", defaultMessage: "Email blacklisted" }),
+            intl.formatMessage({ id: "cometBrevoModule.targetGroup.export.smsBlacklisted", defaultMessage: "Sms blacklisted" }),
+        ].concat(exportTargetGroupOptions?.exportFields.map((field) => field?.headerName ?? "") ?? []);
+
+        const csvData = data.map((contact) => [
+            `="${contact.id}"`,
+            contact.email,
+            contact.emailBlacklisted,
+            contact.smsBlacklisted,
+            exportTargetGroupOptions?.exportFields.map((field) => field.renderValue(contact)),
+        ]);
+
+        csvData.unshift(header);
+
+        return csvData.map((row) => row.join(",")).join("\n");
+    };
+
+    async function downloadTargetGroupContactsExportFile({ id, title }: { id: string; title: string }) {
+        let offset = 0;
+        let shouldContinue = true;
+        let allContacts: ContactWithAdditionalAttributes[] = [];
+
+        while (shouldContinue) {
+            const { data: newContactsData } = await client.query<GQLTargetGroupContactsQuery, GQLTargetGroupContactsQueryVariables>({
+                query: targetGroupContactsQuery,
+                variables: {
+                    targetGroupId: id,
+                    scope: scope,
+                    offset: offset,
+                    limit: 100,
+                },
+            });
+
+            allContacts = allContacts.concat(newContactsData.brevoContacts.nodes as ContactWithAdditionalAttributes[]);
+            shouldContinue = allContacts.length < newContactsData.brevoContacts.totalCount;
+            offset += 100;
+        }
+
+        const csvData = convertToCsv(allContacts);
+
+        const blob = new Blob([csvData], { type: "text/csv;charset=utf-8;" });
+        saveAs(blob, `${title}.csv`);
+    }
 
     const columns: GridColDef<GQLTargetGroupsListFragment>[] = [
         { field: "title", headerName: intl.formatMessage({ id: "cometBrevoModule.targetGroup.title", defaultMessage: "Title" }), flex: 1 },
@@ -130,6 +223,9 @@ export function TargetGroupsGrid({ scope }: { scope: ContentScopeInterface }): R
                     <>
                         <IconButton component={StackLink} pageName="edit" payload={row.id}>
                             <Edit color="primary" />
+                        </IconButton>
+                        <IconButton onClick={() => downloadTargetGroupContactsExportFile({ id: row.id, title: row.title })}>
+                            <Download color="primary" />
                         </IconButton>
                         <CrudContextMenu
                             copyData={() => {

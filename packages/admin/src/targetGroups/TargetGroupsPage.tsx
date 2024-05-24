@@ -5,17 +5,27 @@ import * as React from "react";
 import { useIntl } from "react-intl";
 
 import { EditTargetGroupFinalFormValues, TargetGroupForm } from "./TargetGroupForm";
-import { TargetGroupsGrid } from "./TargetGroupsGrid";
+import { AdditionalContactAttributesType, TargetGroupsGrid } from "./TargetGroupsGrid";
 
 interface CreateContactsPageOptions {
     scopeParts: string[];
     additionalFormFields?: React.ReactNode;
+    exportTargetGroupOptions?: {
+        additionalAttributesFragment: { name: string; fragment: DocumentNode };
+        exportFields: { renderValue: (row: AdditionalContactAttributesType) => string; headerName: string }[];
+    };
     nodeFragment?: { name: string; fragment: DocumentNode };
     input2State?: (values?: EditTargetGroupFinalFormValues) => EditTargetGroupFinalFormValues;
     valuesToOutput?: (values: EditTargetGroupFinalFormValues) => EditTargetGroupFinalFormValues;
 }
 
-export function createTargetGroupsPage({ scopeParts, additionalFormFields, nodeFragment, input2State }: CreateContactsPageOptions) {
+export function createTargetGroupsPage({
+    scopeParts,
+    additionalFormFields,
+    nodeFragment,
+    input2State,
+    exportTargetGroupOptions,
+}: CreateContactsPageOptions) {
     function TargetGroupsPage(): JSX.Element {
         const { scope: completeScope } = useContentScope();
         const intl = useIntl();
@@ -29,7 +39,7 @@ export function createTargetGroupsPage({ scopeParts, additionalFormFields, nodeF
             <Stack topLevelTitle={intl.formatMessage({ id: "cometBrevoModule.targetGroups.targetGroups", defaultMessage: "Target groups" })}>
                 <StackSwitch>
                     <StackPage name="grid">
-                        <TargetGroupsGrid scope={scope} />
+                        <TargetGroupsGrid scope={scope} exportTargetGroupOptions={exportTargetGroupOptions} />
                     </StackPage>
                     <StackPage
                         name="edit"

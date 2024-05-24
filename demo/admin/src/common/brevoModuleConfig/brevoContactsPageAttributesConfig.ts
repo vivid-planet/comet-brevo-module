@@ -22,6 +22,10 @@ export const getBrevoContactConfig = (
         fragment: DocumentNode;
         name: string;
     };
+    exportFields: {
+        renderValue: (row: GQLBrevoContactAttributesFragmentFragment) => string;
+        headerName: string;
+    }[];
 } => {
     return {
         additionalGridFields: [
@@ -46,5 +50,15 @@ export const getBrevoContactConfig = (
             fragment: attributesFragment,
             name: "BrevoContactAttributesFragment",
         },
+        exportFields: [
+            {
+                renderValue: (row: GQLBrevoContactAttributesFragmentFragment) => row.attributes?.FIRSTNAME,
+                headerName: intl.formatMessage({ id: "brevoContact.firstName", defaultMessage: "First name" }),
+            },
+            {
+                renderValue: (row: GQLBrevoContactAttributesFragmentFragment) => row.attributes?.LASTNAME,
+                headerName: intl.formatMessage({ id: "brevoContact.lastName", defaultMessage: "Last name" }),
+            },
+        ],
     };
 };
