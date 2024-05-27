@@ -143,10 +143,6 @@ export class AppModule {
                         BrevoContactFilterAttributes,
                         doubleOptInTemplateId: config.brevo.doubleOptInTemplateId,
                         allowedRedirectUrl: config.brevo.allowedRedirectUrl,
-                        sender: {
-                            name: config.brevo.sender.name,
-                            email: config.brevo.sender.email,
-                        },
                     },
                     ecgRtrList: {
                         apiKey: config.ecgRtrList.apiKey,
