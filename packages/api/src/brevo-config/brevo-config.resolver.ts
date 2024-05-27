@@ -17,7 +17,7 @@ export function createBrevoConfigResolver({
     BrevoConfig: Type<BrevoConfigInterface>;
 }): Type<unknown> {
     @Resolver(() => BrevoConfig)
-    @RequiredPermission(["brevo-newsletter"])
+    @RequiredPermission(["brevo-newsletter-config"])
     class BrevoConfigResolver {
         constructor(
             private readonly entityManager: EntityManager,
