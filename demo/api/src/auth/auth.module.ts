@@ -3,7 +3,7 @@ import { DynamicModule, Module } from "@nestjs/common";
 import { APP_GUARD } from "@nestjs/core";
 import { Config } from "@src/config/config";
 
-import { CurrentUser, CurrentUserLoader } from "./current-user";
+import { AccessControlService } from "./access-control.service";
 
 @Module({})
 export class AuthModule {
@@ -17,10 +17,8 @@ export class AuthModule {
                 }),
                 createAuthProxyJwtStrategy({
                     jwksUri: config.auth.idpJwksUri,
-                    currentUserLoader: new CurrentUserLoader(),
                 }),
                 createAuthResolver({
-                    currentUser: CurrentUser,
                     endSessionEndpoint: config.auth.idpEndSessionEndpoint,
                     postLogoutRedirectUri: config.auth.postLogoutRedirectUri,
                 }),
@@ -28,7 +26,9 @@ export class AuthModule {
                     provide: APP_GUARD,
                     useClass: createCometAuthGuard(["auth-proxy-jwt", "static-credentials-basic"]),
                 },
+                AccessControlService,
             ],
+            exports: [AccessControlService],
         };
     }
 }

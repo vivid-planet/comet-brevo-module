@@ -1,4 +1,4 @@
-import { PaginatedResponseFactory, SubjectEntity, validateNotModified } from "@comet/cms-api";
+import { AffectedEntity, PaginatedResponseFactory, RequiredPermission, validateNotModified } from "@comet/cms-api";
 import { EntityManager, EntityRepository, FindOptions, wrap } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Type } from "@nestjs/common";
@@ -30,6 +30,7 @@ export function createTargetGroupsResolver({
     class TargetGroupsArgs extends TargetGroupArgsFactory.create({ Scope }) {}
 
     @Resolver(() => TargetGroup)
+    @RequiredPermission(["brevo-newsletter"])
     class TargetGroupResolver {
         constructor(
             private readonly targetGroupsService: TargetGroupsService,
@@ -39,7 +40,7 @@ export function createTargetGroupsResolver({
         ) {}
 
         @Query(() => TargetGroup)
-        @SubjectEntity(TargetGroup)
+        @AffectedEntity(TargetGroup)
         async targetGroup(@Args("id", { type: () => ID }) id: string): Promise<TargetGroupInterface> {
             const targetGroup = await this.repository.findOneOrFail(id);
             return targetGroup;
@@ -99,7 +100,7 @@ export function createTargetGroupsResolver({
         }
 
         @Mutation(() => TargetGroup)
-        @SubjectEntity(TargetGroup)
+        @AffectedEntity(TargetGroup)
         async updateTargetGroup(
             @Args("id", { type: () => ID }) id: string,
             @Args("input", { type: () => TargetGroupUpdateInput }, new DynamicDtoValidationPipe(TargetGroupUpdateInput))
@@ -135,7 +136,7 @@ export function createTargetGroupsResolver({
         }
 
         @Mutation(() => Boolean)
-        @SubjectEntity(TargetGroup)
+        @AffectedEntity(TargetGroup)
         async deleteTargetGroup(@Args("id", { type: () => ID }) id: string): Promise<boolean> {
             const targetGroup = await this.repository.findOneOrFail(id);
 

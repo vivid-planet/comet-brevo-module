@@ -132,15 +132,7 @@ export function TargetGroupForm({ id, scope, additionalFormFields, input2State, 
     }
 
     return (
-        <FinalForm<EditTargetGroupFinalFormValues>
-            apiRef={formApiRef}
-            onSubmit={handleSubmit}
-            mode={mode}
-            initialValues={initialValues}
-            onAfterSubmit={(values, form) => {
-                //don't go back automatically
-            }}
-        >
+        <FinalForm<EditTargetGroupFinalFormValues> apiRef={formApiRef} onSubmit={handleSubmit} mode={mode} initialValues={initialValues}>
             {({ values }) => (
                 <EditPageLayout>
                     {saveConflict.dialogs}

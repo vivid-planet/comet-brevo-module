@@ -5,9 +5,6 @@ import {
     BlocksModule,
     BlocksTransformerMiddlewareFactory,
     BuildsModule,
-    ContentScope,
-    ContentScopeModule,
-    CurrentUserInterface,
     DamModule,
     DependenciesModule,
     FilesService,
@@ -16,6 +13,7 @@ import {
     PageTreeModule,
     PageTreeService,
     RedirectsModule,
+    UserPermissionsModule,
 } from "@comet/cms-api";
 import { ApolloDriver } from "@nestjs/apollo";
 import { DynamicModule, Module } from "@nestjs/common";
@@ -30,6 +28,7 @@ import { PageTreeNode } from "@src/page-tree/entities/page-tree-node.entity";
 import { ProductsModule } from "@src/products/products.module";
 import { Request } from "express";
 
+import { AccessControlService } from "./auth/access-control.service";
 import { AuthModule } from "./auth/auth.module";
 import { AuthLocalModule } from "./auth/auth-local.module";
 import { BrevoContactAttributes, BrevoContactFilterAttributes } from "./brevo-contact/dto/brevo-contact-attributes";
@@ -45,6 +44,8 @@ import { StatusModule } from "./status/status.module";
 @Module({})
 export class AppModule {
     static forRoot(config: Config): DynamicModule {
+        const authModule = config.auth.useAuthProxy ? AuthModule.forRoot(config) : AuthLocalModule.forRoot(config);
+
         return {
             module: AppModule,
             imports: [
@@ -73,12 +74,19 @@ export class AppModule {
                     }),
                     inject: [BLOCKS_MODULE_TRANSFORMER_DEPENDENCIES],
                 }),
-                config.auth.useAuthProxy ? AuthModule.forRoot(config) : AuthLocalModule.forRoot(config),
-                ContentScopeModule.forRoot({
-                    canAccessScope(requestScope: ContentScope, user: CurrentUserInterface) {
-                        if (!user.domains) return true; //all domains
-                        return user.domains.includes(requestScope.domain);
-                    },
+                authModule,
+                UserPermissionsModule.forRootAsync({
+                    useFactory: (accessControlService: AccessControlService) => ({
+                        availableContentScopes: [
+                            { domain: "main", language: "en" },
+                            { domain: "main", language: "de" },
+                            { domain: "secondary", language: "en" },
+                            { domain: "secondary", language: "de" },
+                        ],
+                        accessControlService,
+                    }),
+                    inject: [AccessControlService],
+                    imports: [authModule],
                 }),
                 BlocksModule.forRoot({
                     imports: [PageTreeModule, DamModule],

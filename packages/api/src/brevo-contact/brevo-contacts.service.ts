@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 
 import { BrevoApiContactsService } from "../brevo-api/brevo-api-contact.service";
 import { TargetGroupsService } from "../target-group/target-groups.service";
+import { EmailCampaignScopeInterface } from "../types";
 import { SubscribeInputInterface } from "./dto/subscribe-input.factory";
 import { SubscribeResponse } from "./dto/subscribe-response.enum";
 
@@ -9,8 +10,12 @@ import { SubscribeResponse } from "./dto/subscribe-response.enum";
 export class BrevoContactsService {
     constructor(private readonly brevoContactsApiService: BrevoApiContactsService, private readonly targetGroupService: TargetGroupsService) {}
 
-    public async createDoubleOptInContact(data: SubscribeInputInterface, templateId: number): Promise<SubscribeResponse> {
-        const mainTargetGroupForScope = await this.targetGroupService.createIfNotExistMainTargetGroupForScope(data.scope);
+    public async createDoubleOptInContact(
+        data: SubscribeInputInterface,
+        scope: EmailCampaignScopeInterface,
+        templateId: number,
+    ): Promise<SubscribeResponse> {
+        const mainTargetGroupForScope = await this.targetGroupService.createIfNotExistMainTargetGroupForScope(scope);
 
         let offset = 0;
         let totalCount = 0;
@@ -18,7 +23,7 @@ export class BrevoContactsService {
         const limit = 50;
 
         do {
-            const [targetGroups, totalContactLists] = await this.targetGroupService.findNonMainTargetGroups(data, offset, limit);
+            const [targetGroups, totalContactLists] = await this.targetGroupService.findNonMainTargetGroups(scope, offset, limit);
             totalCount = totalContactLists;
             offset += targetGroups.length;
 
