@@ -801,6 +801,9 @@ importers:
 
   packages/admin:
     dependencies:
+      file-saver:
+        specifier: ^2.0.5
+        version: 2.0.5
       lodash.isequal:
         specifier: ^4.0.0
         version: 4.5.0
@@ -859,6 +862,9 @@ importers:
       '@mui/x-data-grid':
         specifier: ^5.17.26
         version: 5.17.26(@mui/material@5.15.5)(@mui/system@5.15.5)(@types/react@17.0.75)(react-dom@17.0.2)(react@17.0.2)
+      '@types/file-saver':
+        specifier: ^2.0.7
+        version: 2.0.7
       '@types/lodash.isequal':
         specifier: ^4.0.0
         version: 4.5.8
@@ -8704,6 +8710,10 @@ packages:
       '@types/express-serve-static-core': 4.17.41
       '@types/qs': 6.9.11
       '@types/serve-static': 1.15.5
+
+  /@types/file-saver@2.0.7:
+    resolution: {integrity: sha512-dNKVfHd/jk0SkR/exKGj2ggkB45MAkzvWCaqLUUgkyjITkGNzH8H+yUwr+BLJUBjZOe9w8X3wgmXhZDRg1ED6A==}
+    dev: true
 
   /@types/fs-extra@9.0.13:
     resolution: {integrity: sha512-nEnwB++1u5lVDM2UI4c1+5R+FYaKfaAzS4OococimjVm3nQw3TuzH5UNsocrcTBbhnerblyHj4A49qXbIiZdpA==}

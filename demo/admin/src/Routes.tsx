@@ -36,6 +36,10 @@ export const Routes: React.FC = () => {
     const TargetGroupsPage = createTargetGroupsPage({
         scopeParts: ["domain", "language"],
         additionalFormFields: additionalFormConfig.additionalFormFields,
+        exportTargetGroupOptions: {
+            additionalAttributesFragment: brevoContactConfig.additionalAttributesFragment,
+            exportFields: brevoContactConfig.exportFields,
+        },
         nodeFragment: additionalFormConfig.nodeFragment,
         input2State: additionalFormConfig.input2State,
     });
