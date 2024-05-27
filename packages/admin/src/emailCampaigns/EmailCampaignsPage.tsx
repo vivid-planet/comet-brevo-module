@@ -7,6 +7,7 @@ import { useIntl } from "react-intl";
 import { EmailCampaignsGrid } from "./EmailCampaignsGrid";
 import { EmailCampaignForm } from "./form/EmailCampaignForm";
 import { EmailCampaignStatistics } from "./statistics/EmailCampaignStatistics";
+import { EmailCampaignView } from "./view/EmailCampaignView";
 
 interface CreateEmailCampaignsPageOptions {
     scopeParts: string[];
@@ -33,13 +34,7 @@ export function createEmailCampaignsPage({ scopeParts, EmailCampaignContentBlock
                     <StackPage name="statistics">{(selectedId) => <EmailCampaignStatistics id={selectedId} />}</StackPage>
                     <StackPage name="view">
                         {(selectedId) => (
-                            <EmailCampaignForm
-                                id={selectedId}
-                                previewUrl={previewUrl}
-                                EmailCampaignContentBlock={EmailCampaignContentBlock}
-                                scope={scope}
-                                isViewOnly
-                            />
+                            <EmailCampaignView id={selectedId} previewUrl={previewUrl} EmailCampaignContentBlock={EmailCampaignContentBlock} />
                         )}
                     </StackPage>
 

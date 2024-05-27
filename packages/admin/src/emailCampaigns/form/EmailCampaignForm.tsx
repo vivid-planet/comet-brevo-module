@@ -20,11 +20,9 @@ import {
     BlocksFinalForm,
     BlockState,
     createFinalFormBlock,
-    IFrameBridgeProvider,
     parallelAsyncEvery,
 } from "@comet/blocks-admin";
 import {
-    BlockPreview,
     BlockPreviewWithTabs,
     ContentScopeInterface,
     EditPageLayout,
@@ -61,10 +59,9 @@ interface FormProps {
     EmailCampaignContentBlock: BlockInterface;
     scope: ContentScopeInterface;
     previewUrl: string;
-    isViewOnly?: boolean;
 }
 
-export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope, previewUrl, isViewOnly = false }: FormProps): React.ReactElement {
+export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope, previewUrl }: FormProps): React.ReactElement {
     const rootBlocks = {
         content: EmailCampaignContentBlock,
     };
@@ -230,85 +227,77 @@ export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope, previe
                     <FormattedMessage id="cometBrevoModule.emailCampaigns.EmailCampaign" defaultMessage="Email Campaign" />
                 </ToolbarTitleItem>
                 <ToolbarFillSpace />
-                {!isViewOnly && <ToolbarActions>{saveButton}</ToolbarActions>}
+                <ToolbarActions>{saveButton}</ToolbarActions>
             </Toolbar>
             <MainContent disablePaddingBottom>
-                {isViewOnly ? (
-                    <IFrameBridgeProvider key={previewUrl}>
-                        <BlockPreview url={previewUrl} previewState={previewState} previewApi={previewApi} />
-                    </IFrameBridgeProvider>
-                ) : (
-                    <BlockPreviewWithTabs previewUrl={previewUrl} previewState={previewState} previewApi={previewApi}>
-                        {[
-                            {
-                                key: "config",
-                                label: (
-                                    <AdminTabLabel>
-                                        <FormattedMessage id="cometBrevoModule.emailCampaigns.config" defaultMessage="Config" />
-                                    </AdminTabLabel>
-                                ),
-                                content: (
-                                    <BlocksFinalForm
-                                        onSubmit={(values) => setState({ ...state, ...values })}
-                                        initialValues={{
-                                            title: state.title,
-                                            subject: state.subject,
-                                        }}
-                                    >
-                                        <ConfigFields />
-                                    </BlocksFinalForm>
-                                ),
-                            },
-                            {
-                                key: "blocks",
-                                label: (
-                                    <AdminTabLabel>
-                                        <FormattedMessage id="cometBrevoModule.emailCampaigns.blocks" defaultMessage="Blocks" />
-                                    </AdminTabLabel>
-                                ),
-                                content: (
-                                    <BlocksFinalForm
-                                        onSubmit={(values) => setState({ ...state, ...values })}
-                                        initialValues={{
-                                            content: state?.content,
-                                        }}
-                                    >
-                                        <AdminComponentRoot>
-                                            <Field name="content" fullWidth required component={FinalFormEmailCampaignContentBlock} />
-                                        </AdminComponentRoot>
-                                    </BlocksFinalForm>
-                                ),
-                            },
-                            {
-                                key: "send-manager",
-                                label: (
-                                    <AdminTabLabel>
-                                        <FormattedMessage id="cometBrevoModule.emailCampaigns.sendManager" defaultMessage="Send manager" />
-                                    </AdminTabLabel>
-                                ),
-                                content: (
-                                    <BlocksFinalForm
-                                        onSubmit={(values) =>
-                                            setState({ ...state, scheduledAt: values.scheduledAt, targetGroup: values.targetGroup })
-                                        }
-                                        initialValues={{
-                                            targetGroup: state.targetGroup,
-                                            scheduledAt: state.scheduledAt,
-                                        }}
-                                    >
-                                        <SendManagerFields
-                                            scope={scope}
-                                            disableScheduling={isScheduleDateDisabled}
-                                            isSendable={!hasChanges && state.targetGroup != undefined}
-                                            id={id}
-                                        />
-                                        <TestEmailCampaignForm id={id} isSendable={!hasChanges && state.targetGroup != undefined} />
-                                    </BlocksFinalForm>
-                                ),
-                            },
-                        ]}
-                    </BlockPreviewWithTabs>
-                )}
+                <BlockPreviewWithTabs previewUrl={previewUrl} previewState={previewState} previewApi={previewApi}>
+                    {[
+                        {
+                            key: "config",
+                            label: (
+                                <AdminTabLabel>
+                                    <FormattedMessage id="cometBrevoModule.emailCampaigns.config" defaultMessage="Config" />
+                                </AdminTabLabel>
+                            ),
+                            content: (
+                                <BlocksFinalForm
+                                    onSubmit={(values) => setState({ ...state, ...values })}
+                                    initialValues={{
+                                        title: state.title,
+                                        subject: state.subject,
+                                    }}
+                                >
+                                    <ConfigFields />
+                                </BlocksFinalForm>
+                            ),
+                        },
+                        {
+                            key: "blocks",
+                            label: (
+                                <AdminTabLabel>
+                                    <FormattedMessage id="cometBrevoModule.emailCampaigns.blocks" defaultMessage="Blocks" />
+                                </AdminTabLabel>
+                            ),
+                            content: (
+                                <BlocksFinalForm
+                                    onSubmit={(values) => setState({ ...state, ...values })}
+                                    initialValues={{
+                                        content: state?.content,
+                                    }}
+                                >
+                                    <AdminComponentRoot>
+                                        <Field name="content" fullWidth required component={FinalFormEmailCampaignContentBlock} />
+                                    </AdminComponentRoot>
+                                </BlocksFinalForm>
+                            ),
+                        },
+                        {
+                            key: "send-manager",
+                            label: (
+                                <AdminTabLabel>
+                                    <FormattedMessage id="cometBrevoModule.emailCampaigns.sendManager" defaultMessage="Send manager" />
+                                </AdminTabLabel>
+                            ),
+                            content: (
+                                <BlocksFinalForm
+                                    onSubmit={(values) => setState({ ...state, scheduledAt: values.scheduledAt, targetGroup: values.targetGroup })}
+                                    initialValues={{
+                                        targetGroup: state.targetGroup,
+                                        scheduledAt: state.scheduledAt,
+                                    }}
+                                >
+                                    <SendManagerFields
+                                        scope={scope}
+                                        disableScheduling={isScheduleDateDisabled}
+                                        isSendable={!hasChanges && state.targetGroup != undefined}
+                                        id={id}
+                                    />
+                                    <TestEmailCampaignForm id={id} isSendable={!hasChanges && state.targetGroup != undefined} />
+                                </BlocksFinalForm>
+                            ),
+                        },
+                    ]}
+                </BlockPreviewWithTabs>
             </MainContent>
         </EditPageLayout>
     );
