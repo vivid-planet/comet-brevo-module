@@ -11,10 +11,6 @@ export interface BrevoModuleConfig {
         BrevoContactFilterAttributes?: Type<BrevoContactFilterAttributesInterface>;
         doubleOptInTemplateId: number;
         allowedRedirectUrl: string;
-        sender: {
-            name: string;
-            email: string;
-        };
     };
     ecgRtrList: {
         apiKey: string;

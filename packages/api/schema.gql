@@ -159,6 +159,15 @@ type PaginatedEmailCampaigns {
   totalCount: Int!
 }
 
+type BrevoConfig implements DocumentInterface {
+  id: ID!
+  updatedAt: DateTime!
+  senderMail: String!
+  senderName: String!
+  createdAt: DateTime!
+  scope: EmailCampaignContentScope!
+}
+
 input EmailCampaignContentScopeInput {
   thisScopeHasNoFields____: String
 }
@@ -171,6 +180,7 @@ type Query {
   emailCampaign(id: ID!): EmailCampaign!
   emailCampaigns(scope: EmailCampaignContentScopeInput!, search: String, filter: EmailCampaignFilter, sort: [EmailCampaignSort!], offset: Int! = 0, limit: Int! = 25): PaginatedEmailCampaigns!
   emailCampaignStatistics(id: ID!): BrevoApiCampaignStatistics
+  brevoConfig(scope: EmailCampaignContentScopeInput!): BrevoConfig
 }
 
 input TargetGroupFilter {
@@ -249,6 +259,8 @@ type Mutation {
   deleteEmailCampaign(id: ID!): Boolean!
   sendEmailCampaignNow(id: ID!): Boolean!
   sendEmailCampaignToTestEmails(id: ID!, data: SendTestEmailCampaignArgs!): Boolean!
+  createBrevoConfig(scope: EmailCampaignContentScopeInput!, input: BrevoConfigInput!): BrevoConfig!
+  updateBrevoConfig(id: ID!, input: BrevoConfigUpdateInput!, lastUpdatedAt: DateTime): BrevoConfig!
 }
 
 input BrevoContactUpdateInput {
@@ -301,4 +313,14 @@ input EmailCampaignUpdateInput {
 
 input SendTestEmailCampaignArgs {
   emails: [String!]!
+}
+
+input BrevoConfigInput {
+  senderMail: String!
+  senderName: String!
+}
+
+input BrevoConfigUpdateInput {
+  senderMail: String
+  senderName: String
 }
