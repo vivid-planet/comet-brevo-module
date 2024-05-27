@@ -47,3 +47,13 @@ export const updateBrevoConfigMutation = gql`
     }
     ${brevoConfigFormFragment}
 `;
+
+export const sendersSelectQuery = gql`
+    query SendersSelect {
+        senders {
+            id
+            name
+            email
+        }
+    }
+`;

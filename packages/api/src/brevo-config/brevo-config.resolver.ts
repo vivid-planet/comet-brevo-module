@@ -4,6 +4,8 @@ import { InjectRepository } from "@mikro-orm/nestjs";
 import { Type } from "@nestjs/common";
 import { Args, ID, Mutation, Query, Resolver } from "@nestjs/graphql";
 
+import { BrevoApiSenderService } from "../brevo-api/brevo-api-sender.service";
+import { BrevoApiSender } from "../brevo-api/dto/brevo-api-sender";
 import { EmailCampaignScopeInterface } from "../types";
 import { DynamicDtoValidationPipe } from "../validation/dynamic-dto-validation.pipe";
 import { BrevoConfigInput, BrevoConfigUpdateInput } from "./dto/brevo-config.input";
@@ -21,8 +23,16 @@ export function createBrevoConfigResolver({
     class BrevoConfigResolver {
         constructor(
             private readonly entityManager: EntityManager,
+            private readonly brevoSenderApiService: BrevoApiSenderService,
             @InjectRepository(BrevoConfig) private readonly repository: EntityRepository<BrevoConfigInterface>,
         ) {}
+
+        @RequiredPermission(["brevo-newsletter-config"], { skipScopeCheck: true })
+        @Query(() => [BrevoApiSender], { nullable: true })
+        async senders(): Promise<Array<BrevoApiSender> | undefined> {
+            const senders = await this.brevoSenderApiService.getSenders();
+            return senders;
+        }
 
         @Query(() => BrevoConfig, { nullable: true })
         async brevoConfig(

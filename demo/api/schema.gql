@@ -163,6 +163,13 @@ type PaginatedUserList {
   totalCount: Int!
 }
 
+type BrevoApiSender {
+  id: ID!
+  name: String!
+  email: String!
+  active: Boolean!
+}
+
 type BrevoApiCampaignStatistics {
   """Number of unique clicks for the campaign"""
   uniqueClicks: Int!
@@ -548,6 +555,7 @@ type Query {
   emailCampaignStatistics(id: ID!): BrevoApiCampaignStatistics
   targetGroup(id: ID!): TargetGroup!
   targetGroups(scope: EmailCampaignContentScopeInput!, search: String, filter: TargetGroupFilter, sort: [TargetGroupSort!], offset: Int! = 0, limit: Int! = 25): PaginatedTargetGroups!
+  senders: [BrevoApiSender!]
   brevoConfig(scope: EmailCampaignContentScopeInput!): BrevoConfig
 }
 
