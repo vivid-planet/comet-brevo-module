@@ -43,7 +43,7 @@ export const Routes: React.FC = () => {
     const EmailCampaignsPage = createEmailCampaignsPage({
         scopeParts: ["domain", "language"],
         EmailCampaignContentBlock: EmailCampaignContentBlock,
-        previewUrl: `${config.campaignsFrontendUrl}/preview`,
+        previewUrl: `${config.campaignUrl}/preview`,
     });
 
     return (
