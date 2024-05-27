@@ -12,7 +12,6 @@
         "lint": "run-p gql:types generate-block-types && run-p lint:eslint lint:tsc",
         "lint:eslint": "eslint --max-warnings 0 --config ./.eslintrc.cli.js --ext .ts,.tsx,.js,.jsx,.json,.md src/ package.json",
         "lint:tsc": "tsc --project .",
-        "lint:tscPreBuild": "tsc --project tsconfig.preBuild.json",
         "generate-block-types": "comet generate-block-types",
         "generate-block-types:watch": "chokidar -s \"**/block-meta.json\" -c \"npm run generate-block-types\"",
         "copy-schema-files": "node copy-schema-files.js"
