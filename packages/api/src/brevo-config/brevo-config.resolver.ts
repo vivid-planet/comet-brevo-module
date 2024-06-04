@@ -27,6 +27,16 @@ export function createBrevoConfigResolver({
             @InjectRepository(BrevoConfig) private readonly repository: EntityRepository<BrevoConfigInterface>,
         ) {}
 
+        private async validateSender({ email, name }: { email: string; name: string }): Promise<boolean> {
+            const senders = await this.brevoSenderApiService.getSenders();
+
+            if (!senders || !senders.some((sender) => sender.email === email && sender.name === name)) {
+                return false;
+            }
+
+            return true;
+        }
+
         @RequiredPermission(["brevo-newsletter-config"], { skipScopeCheck: true })
         @Query(() => [BrevoApiSender], { nullable: true })
         async senders(): Promise<Array<BrevoApiSender> | undefined> {
@@ -43,14 +53,16 @@ export function createBrevoConfigResolver({
             return brevoConfig;
         }
 
-        // TODO: add validation if the input contains a valid sender
-
         @Mutation(() => BrevoConfig)
         async createBrevoConfig(
             @Args("scope", { type: () => Scope }, new DynamicDtoValidationPipe(Scope))
             scope: typeof Scope,
             @Args("input", { type: () => BrevoConfigInput }) input: BrevoConfigInput,
         ): Promise<BrevoConfigInterface> {
+            if (!(await this.validateSender({ email: input.senderMail, name: input.senderName }))) {
+                throw new Error("Sender not found");
+            }
+
             const brevoConfig = this.repository.create({
                 ...input,
                 scope,
@@ -71,6 +83,10 @@ export function createBrevoConfigResolver({
             const brevoConfig = await this.repository.findOneOrFail(id);
             if (lastUpdatedAt) {
                 validateNotModified(brevoConfig, lastUpdatedAt);
+            }
+
+            if (!(await this.validateSender({ email: input.senderMail, name: input.senderName }))) {
+                throw new Error("Sender not found");
             }
 
             wrap(brevoConfig).assign({

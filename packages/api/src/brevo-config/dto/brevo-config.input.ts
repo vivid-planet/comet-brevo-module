@@ -1,4 +1,3 @@
-import { PartialType } from "@comet/cms-api";
 import { Field, InputType } from "@nestjs/graphql";
 import { IsEmail, IsNotEmpty, IsString } from "class-validator";
 
@@ -17,4 +16,4 @@ export class BrevoConfigInput {
 }
 
 @InputType()
-export class BrevoConfigUpdateInput extends PartialType(BrevoConfigInput) {}
+export class BrevoConfigUpdateInput extends BrevoConfigInput {}
