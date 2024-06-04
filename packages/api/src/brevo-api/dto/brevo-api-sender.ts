@@ -1,4 +1,4 @@
-import { Field, ID, ObjectType } from "@nestjs/graphql";
+import { Field, ID, Int, ObjectType } from "@nestjs/graphql";
 
 @ObjectType()
 export class BrevoApiSender {
@@ -14,5 +14,18 @@ export class BrevoApiSender {
     @Field(() => Boolean)
     active: boolean;
 
-    // TODO: add ips
+    @Field(() => Array(BrevoIp), { nullable: true })
+    ips?: Array<BrevoIp>;
+}
+
+@ObjectType()
+class BrevoIp {
+    @Field(() => String)
+    ip: string;
+
+    @Field(() => String)
+    domain: string;
+
+    @Field(() => Int)
+    weight: number;
 }
