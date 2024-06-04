@@ -33,7 +33,7 @@ The following variables must be set manually
 -   `CAMPAIGN_BASIC_AUTH_USERNAME`
 -   `CAMPAIGN_BASIC_AUTH_PASSWORD`
 
-### Configure brevo sender in the demo admin
+### Configure brevo sender in the demo admin brevo config page
 
 -   Brevo sender name
 -   Brevo sender mail
