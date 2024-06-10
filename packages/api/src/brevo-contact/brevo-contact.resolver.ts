@@ -96,7 +96,7 @@ export function createBrevoContactResolver({
             @Args("id", { type: () => Int }) id: number,
             @Args("input", { type: () => BrevoContactUpdateInput }) input: BrevoContactInputInterface,
         ): Promise<BrevoContactInterface> {
-            // Update attributes of contact before (un)assigning to target groups because they cannot be correctly validated for completeness
+            // update attributes of contact before (un)assigning to target groups because they cannot be correctly validated for completeness
             const contact = await this.brevoContactsApiService.updateContact(id, {
                 blocked: input.blocked,
                 attributes: input.attributes,
