@@ -238,7 +238,7 @@ enum EmailCampaignSortField {
 }
 
 type Mutation {
-  updateBrevoContact(id: Int!, scope: EmailCampaignContentScopeInput!, input: BrevoContactUpdateInput!): BrevoContact!
+  updateBrevoContact(id: Int!, input: BrevoContactUpdateInput!): BrevoContact!
   createBrevoContact(scope: EmailCampaignContentScopeInput!, input: BrevoContactUpdateInput!): BrevoContact
   deleteBrevoContact(id: Int!): Boolean!
   subscribeBrevoContact(input: SubscribeInput!, scope: EmailCampaignContentScopeInput!): SubscribeResponse!

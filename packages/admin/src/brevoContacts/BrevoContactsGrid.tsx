@@ -48,8 +48,8 @@ const deleteBrevoContactMutation = gql`
 `;
 
 const updateBrevoContactMutation = gql`
-    mutation UpdateBrevoContact($id: Int!, $input: BrevoContactUpdateInput!, $scope: EmailCampaignContentScopeInput!) {
-        updateBrevoContact(id: $id, input: $input, scope: $scope) {
+    mutation UpdateBrevoContact($id: Int!, $input: BrevoContactUpdateInput!) {
+        updateBrevoContact(id: $id, input: $input) {
             id
         }
     }
@@ -149,7 +149,7 @@ export function BrevoContactsGrid({
                                     onClick={async () => {
                                         await client.mutate<GQLUpdateBrevoContactMutation, GQLUpdateBrevoContactMutationVariables>({
                                             mutation: updateBrevoContactMutation,
-                                            variables: { id: params.row.id, input: { blocked: !params.row.emailBlacklisted }, scope: scope },
+                                            variables: { id: params.row.id, input: { blocked: !params.row.emailBlacklisted } },
                                             refetchQueries: [brevoContactsQuery],
                                         });
                                     }}

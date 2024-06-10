@@ -1,5 +1,6 @@
 import { DocumentNode, gql, useApolloClient, useQuery } from "@apollo/client";
 import {
+    Alert,
     FinalForm,
     FinalFormSaveSplitButton,
     FinalFormSubmitEvent,
@@ -19,6 +20,7 @@ import {
 import { ArrowLeft } from "@comet/admin-icons";
 import { ContentScopeInterface, EditPageLayout, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
 import { Card, IconButton } from "@mui/material";
+import { Box } from "@mui/system";
 import { FormApi } from "final-form";
 import React from "react";
 import { FormattedMessage } from "react-intl";
@@ -126,7 +128,7 @@ export function BrevoContactForm({ id, scope, input2State, additionalFormFields,
             }
             await client.mutate<GQLUpdateBrevoContactMutation, GQLUpdateBrevoContactMutationVariables>({
                 mutation: updateBrevoContactMutation(brevoContactFormFragment),
-                variables: { id, input: output, scope },
+                variables: { id, input: output },
             });
         } else {
             const { data: mutationResponse } = await client.mutate<GQLCreateBrevoContactMutation, GQLCreateBrevoContactMutationVariables>({
@@ -170,6 +172,14 @@ export function BrevoContactForm({ id, scope, input2State, additionalFormFields,
                         </ToolbarActions>
                     </Toolbar>
                     <MainContent>
+                        <Box sx={{ marginBottom: 4 }}>
+                            <Alert severity="warning">
+                                <FormattedMessage
+                                    id="cometBrevoModule.brevoContact.contactEditAlert"
+                                    defaultMessage="Editing a contact will affect all scopes and the target groups within those scopes."
+                                />
+                            </Alert>
+                        </Box>
                         <TextField
                             required
                             fullWidth

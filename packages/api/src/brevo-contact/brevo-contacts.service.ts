@@ -16,7 +16,7 @@ export class BrevoContactsService {
         templateId: number,
     ): Promise<SubscribeResponse> {
         const mainTargetGroupForScope = await this.targetGroupService.createIfNotExistMainTargetGroupForScope(scope);
-        const targetGroupIds = await this.getTargetGroupIdsForContact(scope, data.attributes);
+        const targetGroupIds = await this.getTargetGroupIdsForContact({ scope, contactAttributes: data.attributes });
 
         const created = await this.brevoContactsApiService.createDoubleOptInBrevoContact(
             data,
@@ -29,17 +29,20 @@ export class BrevoContactsService {
         return SubscribeResponse.ERROR_UNKNOWN;
     }
 
-    public async getTargetGroupIdsForContact(
-        scope: EmailCampaignScopeInterface,
-        contactAttributes?: BrevoContactAttributesInterface,
-    ): Promise<number[]> {
+    public async getTargetGroupIdsForContact({
+        contactAttributes,
+        scope,
+    }: {
+        contactAttributes?: BrevoContactAttributesInterface;
+        scope?: EmailCampaignScopeInterface;
+    }): Promise<number[]> {
         let offset = 0;
         let totalCount = 0;
         const targetGroupIds: number[] = [];
         const limit = 50;
 
         do {
-            const [targetGroups, totalContactLists] = await this.targetGroupService.findNonMainTargetGroups(scope, offset, limit);
+            const [targetGroups, totalContactLists] = await this.targetGroupService.findNonMainTargetGroups({ scope, offset, limit });
             totalCount = totalContactLists;
             offset += targetGroups.length;
 

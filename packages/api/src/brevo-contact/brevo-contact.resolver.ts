@@ -94,7 +94,6 @@ export function createBrevoContactResolver({
         @AffectedEntity(BrevoContact)
         async updateBrevoContact(
             @Args("id", { type: () => Int }) id: number,
-            @Args("scope", { type: () => Scope }, new DynamicDtoValidationPipe(Scope)) scope: typeof Scope,
             @Args("input", { type: () => BrevoContactUpdateInput }) input: BrevoContactInputInterface,
         ): Promise<BrevoContactInterface> {
             // Update attributes of contact before (un)assigning to target groups because they cannot be correctly validated for completeness
@@ -105,9 +104,12 @@ export function createBrevoContactResolver({
 
             const assignedListIds = contact.listIds;
             const mainListIds = (await this.targetGroupRepository.find({ brevoId: { $in: assignedListIds }, isMainList: true })).map(
-                (list) => list.brevoId,
+                (targetGroup) => targetGroup.brevoId,
             );
-            const updatedNonMainListIds = await this.brevoContactsService.getTargetGroupIdsForContact(scope, input.attributes ?? contact.attributes);
+
+            const updatedNonMainListIds = await this.brevoContactsService.getTargetGroupIdsForContact({
+                contactAttributes: input.attributes ?? contact.attributes,
+            });
 
             // update contact again with updated list ids depending on new attributes
             const contactWithUpdatedLists = await this.brevoContactsApiService.updateContact(id, {
