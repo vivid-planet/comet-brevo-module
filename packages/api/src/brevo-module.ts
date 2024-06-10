@@ -23,8 +23,8 @@ export class BrevoModule {
                 BrevoApiModule,
                 BrevoContactModule.register({
                     BrevoContactAttributes: config.brevo.BrevoContactAttributes,
-                    BrevoFilterAttributes: config.brevo.BrevoContactFilterAttributes,
                     Scope: config.emailCampaigns.Scope,
+                    TargetGroup,
                 }),
                 EmailCampaignModule.register({
                     EmailCampaignContentBlock: config.emailCampaigns.EmailCampaignContentBlock,

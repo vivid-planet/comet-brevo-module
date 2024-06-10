@@ -1,5 +1,6 @@
 import { AffectedEntity, PaginatedResponseFactory, RequiredPermission } from "@comet/cms-api";
-import { FilterQuery } from "@mikro-orm/core";
+import { EntityRepository, FilterQuery } from "@mikro-orm/core";
+import { InjectRepository } from "@mikro-orm/nestjs";
 import { Inject, Type } from "@nestjs/common";
 import { Args, ArgsType, Int, Mutation, ObjectType, Query, Resolver } from "@nestjs/graphql";
 
@@ -12,7 +13,7 @@ import { EmailCampaignScopeInterface } from "../types";
 import { DynamicDtoValidationPipe } from "../validation/dynamic-dto-validation.pipe";
 import { BrevoContactsService } from "./brevo-contacts.service";
 import { BrevoContactInterface } from "./dto/brevo-contact.factory";
-import { BrevoContactUpdateInput } from "./dto/brevo-contact.input";
+import { BrevoContactInputInterface } from "./dto/brevo-contact-input.factory";
 import { BrevoContactsArgsFactory } from "./dto/brevo-contacts.args";
 import { SubscribeInputInterface } from "./dto/subscribe-input.factory";
 import { SubscribeResponse } from "./dto/subscribe-response.enum";
@@ -22,9 +23,13 @@ export function createBrevoContactResolver({
     BrevoContact,
     BrevoContactSubscribeInput,
     Scope,
+    BrevoContactInput,
+    BrevoContactUpdateInput,
 }: {
     BrevoContact: Type<BrevoContactInterface>;
     BrevoContactSubscribeInput: Type<SubscribeInputInterface>;
+    BrevoContactInput: Type<BrevoContactInputInterface>;
+    BrevoContactUpdateInput: Type<Partial<BrevoContactInputInterface>>;
     Scope: Type<EmailCampaignScopeInterface>;
 }): Type<unknown> {
     @ObjectType()
@@ -34,7 +39,7 @@ export function createBrevoContactResolver({
     class BrevoContactsArgs extends BrevoContactsArgsFactory.create({ Scope }) {}
 
     @Resolver(() => BrevoContact)
-    @RequiredPermission(["brevo-newsletter"])
+    @RequiredPermission(["brevo-newsletter"], { skipScopeCheck: true })
     class BrevoContactResolver {
         constructor(
             @Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig,
@@ -42,6 +47,7 @@ export function createBrevoContactResolver({
             private readonly brevoContactsService: BrevoContactsService,
             private readonly ecgRtrListService: EcgRtrListService,
             private readonly targetGroupService: TargetGroupsService,
+            @InjectRepository("TargetGroup") private readonly targetGroupRepository: EntityRepository<TargetGroupInterface>,
         ) {}
 
         @Query(() => BrevoContact)
@@ -88,9 +94,39 @@ export function createBrevoContactResolver({
         @AffectedEntity(BrevoContact)
         async updateBrevoContact(
             @Args("id", { type: () => Int }) id: number,
-            @Args("input", { type: () => BrevoContactUpdateInput }) input: BrevoContactUpdateInput,
+            @Args("scope", { type: () => Scope }, new DynamicDtoValidationPipe(Scope)) scope: typeof Scope,
+            @Args("input", { type: () => BrevoContactUpdateInput }) input: BrevoContactInputInterface,
         ): Promise<BrevoContactInterface> {
-            return this.brevoContactsApiService.updateContact(id, input);
+            // Update attributes of contact before (un)assigning to target groups because they cannot be correctly validated for completeness
+            const contact = await this.brevoContactsApiService.updateContact(id, {
+                blocked: input.blocked,
+                attributes: input.attributes,
+            });
+
+            const assignedListIds = contact.listIds;
+            const mainListIds = (await this.targetGroupRepository.find({ brevoId: { $in: assignedListIds }, isMainList: true })).map(
+                (list) => list.brevoId,
+            );
+            const updatedNonMainListIds = await this.brevoContactsService.getTargetGroupIdsForContact(scope, input.attributes ?? contact.attributes);
+
+            // update contact again with updated list ids depending on new attributes
+            const contactWithUpdatedLists = await this.brevoContactsApiService.updateContact(id, {
+                listIds: updatedNonMainListIds.filter((listId) => !assignedListIds.includes(listId)),
+                unlinkListIds: assignedListIds.filter((listId) => !updatedNonMainListIds.includes(listId) && !mainListIds.includes(listId)),
+            });
+
+            return contactWithUpdatedLists;
+        }
+
+        @Mutation(() => BrevoContact, { nullable: true })
+        @RequiredPermission(["brevo-newsletter"], { skipScopeCheck: true })
+        async createBrevoContact(
+            @Args("scope", { type: () => Scope }, new DynamicDtoValidationPipe(Scope)) scope: typeof Scope,
+            @Args("input", { type: () => BrevoContactUpdateInput })
+            input: BrevoContactInputInterface,
+        ): Promise<BrevoContactInterface | undefined> {
+            // TODO: add create brevo contact logic
+            return undefined;
         }
 
         @Mutation(() => Boolean)

@@ -3,7 +3,6 @@ import * as SibApiV3Sdk from "@sendinblue/client";
 import { BrevoContactAttributesInterface } from "src/types";
 
 import { BrevoContactInterface } from "../brevo-contact/dto/brevo-contact.factory";
-import { BrevoContactUpdateInput } from "../brevo-contact/dto/brevo-contact.input";
 import { BrevoModuleConfig } from "../config/brevo-module.config";
 import { BREVO_MODULE_CONFIG } from "../config/brevo-module.constants";
 import { TargetGroupInputInterface } from "../target-group/dto/target-group-input.factory";
@@ -42,9 +41,17 @@ export class BrevoApiContactsService {
         return response.statusCode === 204 || response.statusCode === 201;
     }
 
-    public async updateContact(id: number, { blocked }: BrevoContactUpdateInput): Promise<BrevoContactInterface> {
+    public async updateContact(
+        id: number,
+        {
+            blocked,
+            attributes,
+            listIds,
+            unlinkListIds,
+        }: { blocked?: boolean; attributes?: BrevoContactAttributesInterface; listIds?: number[]; unlinkListIds?: number[] },
+    ): Promise<BrevoContactInterface> {
         const idAsString = id.toString(); // brevo expects a string, because it can be an email or the id, so we have to transform the id to string
-        await this.contactsApi.updateContact(idAsString, { emailBlacklisted: blocked });
+        await this.contactsApi.updateContact(idAsString, { emailBlacklisted: blocked, attributes, listIds, unlinkListIds });
         return this.findContact(id);
     }
 

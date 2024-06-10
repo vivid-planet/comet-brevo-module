@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 
 import { BrevoApiContactsService } from "../brevo-api/brevo-api-contact.service";
 import { TargetGroupsService } from "../target-group/target-groups.service";
-import { EmailCampaignScopeInterface } from "../types";
+import { BrevoContactAttributesInterface, EmailCampaignScopeInterface } from "../types";
 import { SubscribeInputInterface } from "./dto/subscribe-input.factory";
 import { SubscribeResponse } from "./dto/subscribe-response.enum";
 
@@ -16,7 +16,23 @@ export class BrevoContactsService {
         templateId: number,
     ): Promise<SubscribeResponse> {
         const mainTargetGroupForScope = await this.targetGroupService.createIfNotExistMainTargetGroupForScope(scope);
+        const targetGroupIds = await this.getTargetGroupIdsForContact(scope, data.attributes);
 
+        const created = await this.brevoContactsApiService.createDoubleOptInBrevoContact(
+            data,
+            [mainTargetGroupForScope.brevoId, ...targetGroupIds],
+            templateId,
+        );
+        if (created) {
+            return SubscribeResponse.SUCCESSFUL;
+        }
+        return SubscribeResponse.ERROR_UNKNOWN;
+    }
+
+    public async getTargetGroupIdsForContact(
+        scope: EmailCampaignScopeInterface,
+        contactAttributes?: BrevoContactAttributesInterface,
+    ): Promise<number[]> {
         let offset = 0;
         let totalCount = 0;
         const targetGroupIds: number[] = [];
@@ -28,7 +44,7 @@ export class BrevoContactsService {
             offset += targetGroups.length;
 
             for (const targetGroup of targetGroups) {
-                const contactIsInTargetGroup = this.targetGroupService.checkIfContactIsInTargetGroup(data, targetGroup.filters);
+                const contactIsInTargetGroup = this.targetGroupService.checkIfContactIsInTargetGroup(contactAttributes, targetGroup.filters);
 
                 if (contactIsInTargetGroup) {
                     targetGroupIds.push(targetGroup.brevoId);
@@ -36,10 +52,6 @@ export class BrevoContactsService {
             }
         } while (offset < totalCount);
 
-        const created = await this.brevoContactsApiService.createDoubleOptInBrevoContact(data, [mainTargetGroupForScope.brevoId], templateId);
-        if (created) {
-            return SubscribeResponse.SUCCESSFUL;
-        }
-        return SubscribeResponse.ERROR_UNKNOWN;
+        return targetGroupIds;
     }
 }
