@@ -27,7 +27,7 @@ export function createBrevoConfigResolver({
             @InjectRepository(BrevoConfig) private readonly repository: EntityRepository<BrevoConfigInterface>,
         ) {}
 
-        private async validateSender({ email, name }: { email: string; name: string }): Promise<boolean> {
+        private async isValidSender({ email, name }: { email: string; name: string }): Promise<boolean> {
             const senders = await this.brevoSenderApiService.getSenders();
 
             if (senders && senders.some((sender) => sender.email === email && sender.name === name)) {
@@ -59,7 +59,7 @@ export function createBrevoConfigResolver({
             scope: typeof Scope,
             @Args("input", { type: () => BrevoConfigInput }) input: BrevoConfigInput,
         ): Promise<BrevoConfigInterface> {
-            if (!(await this.validateSender({ email: input.senderMail, name: input.senderName }))) {
+            if (!(await this.isValidSender({ email: input.senderMail, name: input.senderName }))) {
                 throw new Error("Sender not found");
             }
 
@@ -85,7 +85,7 @@ export function createBrevoConfigResolver({
                 validateNotModified(brevoConfig, lastUpdatedAt);
             }
 
-            if (!(await this.validateSender({ email: input.senderMail, name: input.senderName }))) {
+            if (!(await this.isValidSender({ email: input.senderMail, name: input.senderName }))) {
                 throw new Error("Sender not found");
             }
 
