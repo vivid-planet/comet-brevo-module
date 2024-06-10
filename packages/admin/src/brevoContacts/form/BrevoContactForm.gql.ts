@@ -1,0 +1,42 @@
+import { DocumentNode, gql } from "@apollo/client";
+
+export const brevoContactFormQuery = (brevoContactFormFragment: DocumentNode) => gql`
+    query BrevoContactForm($id: Int!) {
+        brevoContact(id: $id) {
+            id
+            modifiedAt
+            ...BrevoContactForm
+        }
+    }
+    ${brevoContactFormFragment}
+`;
+
+export const brevoContactFormCheckForChangesQuery = gql`
+    query BrevoContactFormCheckForChanges($id: Int!) {
+        brevoContact(id: $id) {
+            modifiedAt
+        }
+    }
+`;
+
+export const createBrevoContactMutation = (brevoContactFormFragment: DocumentNode) => gql`
+    mutation CreateBrevoContact($scope: EmailCampaignContentScopeInput!, $input: BrevoContactUpdateInput!) {
+        createBrevoContact(scope: $scope, input: $input) {
+            id
+            modifiedAt
+            ...BrevoContactForm
+        }
+    }
+    ${brevoContactFormFragment}
+`;
+
+export const updateBrevoContactMutation = (brevoContactFormFragment: DocumentNode) => gql`
+    mutation UpdateBrevoContact($id: Int!, $input: BrevoContactUpdateInput!, $scope: EmailCampaignContentScopeInput!) {
+        updateBrevoContact(id: $id, input: $input, scope: $scope) {
+            id
+            modifiedAt
+            ...BrevoContactForm
+        }
+    }
+    ${brevoContactFormFragment}
+`;

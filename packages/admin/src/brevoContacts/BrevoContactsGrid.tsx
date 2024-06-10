@@ -4,6 +4,7 @@ import {
     messages,
     RowActionsItem,
     RowActionsMenu,
+    StackLink,
     Toolbar,
     ToolbarFillSpace,
     ToolbarItem,
@@ -12,8 +13,9 @@ import {
     useDataGridRemote,
     usePersistentColumnState,
 } from "@comet/admin";
-import { Block, Check, Delete } from "@comet/admin-icons";
+import { Block, Check, Delete, Edit } from "@comet/admin-icons";
 import { ContentScopeInterface } from "@comet/cms-admin";
+import { IconButton } from "@mui/material";
 import { DataGrid, GridColDef, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import * as React from "react";
 import { FormattedMessage, IntlShape, useIntl } from "react-intl";
@@ -46,8 +48,8 @@ const deleteBrevoContactMutation = gql`
 `;
 
 const updateBrevoContactMutation = gql`
-    mutation UpdateBrevoContact($id: Int!, $input: BrevoContactUpdateInput!) {
-        updateBrevoContact(id: $id, input: $input) {
+    mutation UpdateBrevoContact($id: Int!, $input: BrevoContactUpdateInput!, $scope: EmailCampaignContentScopeInput!) {
+        updateBrevoContact(id: $id, input: $input, scope: $scope) {
             id
         }
     }
@@ -137,39 +139,44 @@ export function BrevoContactsGrid({
             type: "actions",
             renderCell: (params) => {
                 return (
-                    <RowActionsMenu>
+                    <>
+                        <IconButton component={StackLink} pageName="edit" payload={params.row.id.toString()}>
+                            <Edit color="primary" />
+                        </IconButton>
                         <RowActionsMenu>
-                            <RowActionsItem
-                                onClick={async () => {
-                                    await client.mutate<GQLUpdateBrevoContactMutation, GQLUpdateBrevoContactMutationVariables>({
-                                        mutation: updateBrevoContactMutation,
-                                        variables: { id: params.row.id, input: { blocked: !params.row.emailBlacklisted } },
-                                        refetchQueries: [brevoContactsQuery],
-                                    });
-                                }}
-                                icon={params.row.emailBlacklisted ? <Check /> : <Block />}
-                            >
-                                {params.row.emailBlacklisted ? (
-                                    <FormattedMessage id="cometBrevoModule.brevoContact.actions.unblock" defaultMessage="Unblock" />
-                                ) : (
-                                    <FormattedMessage id="cometBrevoModule.brevoContact.actions.block" defaultMessage="Block" />
-                                )}
-                            </RowActionsItem>
+                            <RowActionsMenu>
+                                <RowActionsItem
+                                    onClick={async () => {
+                                        await client.mutate<GQLUpdateBrevoContactMutation, GQLUpdateBrevoContactMutationVariables>({
+                                            mutation: updateBrevoContactMutation,
+                                            variables: { id: params.row.id, input: { blocked: !params.row.emailBlacklisted }, scope: scope },
+                                            refetchQueries: [brevoContactsQuery],
+                                        });
+                                    }}
+                                    icon={params.row.emailBlacklisted ? <Check /> : <Block />}
+                                >
+                                    {params.row.emailBlacklisted ? (
+                                        <FormattedMessage id="cometBrevoModule.brevoContact.actions.unblock" defaultMessage="Unblock" />
+                                    ) : (
+                                        <FormattedMessage id="cometBrevoModule.brevoContact.actions.block" defaultMessage="Block" />
+                                    )}
+                                </RowActionsItem>
 
-                            <RowActionsItem
-                                onClick={async () => {
-                                    await client.mutate<GQLDeleteBrevoContactMutation, GQLDeleteBrevoContactMutationVariables>({
-                                        mutation: deleteBrevoContactMutation,
-                                        variables: { id: params.row.id },
-                                        refetchQueries: [brevoContactsQuery],
-                                    });
-                                }}
-                                icon={<Delete />}
-                            >
-                                <FormattedMessage {...messages.delete} />
-                            </RowActionsItem>
+                                <RowActionsItem
+                                    onClick={async () => {
+                                        await client.mutate<GQLDeleteBrevoContactMutation, GQLDeleteBrevoContactMutationVariables>({
+                                            mutation: deleteBrevoContactMutation,
+                                            variables: { id: params.row.id },
+                                            refetchQueries: [brevoContactsQuery],
+                                        });
+                                    }}
+                                    icon={<Delete />}
+                                >
+                                    <FormattedMessage {...messages.delete} />
+                                </RowActionsItem>
+                            </RowActionsMenu>
                         </RowActionsMenu>
-                    </RowActionsMenu>
+                    </>
                 );
             },
         },
