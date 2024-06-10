@@ -30,11 +30,11 @@ export function createBrevoConfigResolver({
         private async validateSender({ email, name }: { email: string; name: string }): Promise<boolean> {
             const senders = await this.brevoSenderApiService.getSenders();
 
-            if (!senders || !senders.some((sender) => sender.email === email && sender.name === name)) {
-                return false;
+            if (senders && senders.some((sender) => sender.email === email && sender.name === name)) {
+                return true;
             }
 
-            return true;
+            return false;
         }
 
         @RequiredPermission(["brevo-newsletter-config"], { skipScopeCheck: true })
