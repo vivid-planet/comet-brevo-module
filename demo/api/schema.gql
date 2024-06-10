@@ -168,6 +168,13 @@ type BrevoApiSender {
   name: String!
   email: String!
   active: Boolean!
+  ips: [BrevoIp!]
+}
+
+type BrevoIp {
+  ip: String!
+  domain: String!
+  weight: Int!
 }
 
 type BrevoApiCampaignStatistics {
