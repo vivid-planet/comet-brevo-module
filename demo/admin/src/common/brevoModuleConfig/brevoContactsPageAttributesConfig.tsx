@@ -2,7 +2,7 @@ import { Field, FinalFormSelect, TextField } from "@comet/admin";
 import { EditBrevoContactFormValues } from "@comet/brevo-admin";
 import { MenuItem } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
-import { additionalPageTreeNodeFieldsFragment } from "@src/common/brevoModuleConfig/targetGroupFormConfig";
+import { additionalPageTreeNodeFieldsFragment } from "@src/common/brevoModuleConfig/brevoContactFormConfig";
 import { GQLBrevoContactSalutation } from "@src/graphql.generated";
 import { DocumentNode } from "graphql";
 import gql from "graphql-tag";
@@ -23,11 +23,11 @@ const attributesFragment = gql`
 
 const salutationOptions: Array<{ label: React.ReactNode; value: GQLBrevoContactSalutation }> = [
     {
-        label: <FormattedMessage id="targetGroup.filters.salutation.male." defaultMessage="Male" />,
+        label: <FormattedMessage id="brevoContact.filters.salutation.male" defaultMessage="Male" />,
         value: "MALE",
     },
     {
-        label: <FormattedMessage id="targetGroup.filters.salutation.female." defaultMessage="Female" />,
+        label: <FormattedMessage id="brevoContact.filters.salutation.female" defaultMessage="Female" />,
         value: "FEMALE",
     },
 ];
