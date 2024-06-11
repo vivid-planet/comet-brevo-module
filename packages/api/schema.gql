@@ -264,7 +264,7 @@ enum EmailCampaignSortField {
 
 type Mutation {
   updateBrevoContact(id: Int!, input: BrevoContactUpdateInput!): BrevoContact!
-  createBrevoContact(scope: EmailCampaignContentScopeInput!, input: BrevoContactUpdateInput!): BrevoContact
+  createBrevoContact(scope: EmailCampaignContentScopeInput!, input: BrevoContactInput!): SubscribeResponse!
   deleteBrevoContact(id: Int!): Boolean!
   subscribeBrevoContact(input: SubscribeInput!, scope: EmailCampaignContentScopeInput!): SubscribeResponse!
   createTargetGroup(scope: EmailCampaignContentScopeInput!, input: TargetGroupInput!): TargetGroup!
@@ -280,14 +280,19 @@ type Mutation {
 }
 
 input BrevoContactUpdateInput {
-  email: String
-  blocked: Boolean
+  blocked: Boolean!
 }
 
 enum SubscribeResponse {
   SUCCESSFUL
   ERROR_UNKNOWN
   ERROR_CONTAINED_IN_ECG_RTR_LIST
+}
+
+input BrevoContactInput {
+  email: String!
+  blocked: Boolean!
+  redirectionUrl: String!
 }
 
 input SubscribeInput {

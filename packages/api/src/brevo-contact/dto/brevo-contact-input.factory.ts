@@ -1,13 +1,20 @@
-import { IsUndefinable, PartialType } from "@comet/cms-api";
+import { IsUndefinable } from "@comet/cms-api";
 import { Type } from "@nestjs/common";
 import { Field, InputType } from "@nestjs/graphql";
 import { Type as TypeTransformer } from "class-transformer";
-import { IsBoolean, IsNotEmpty, IsOptional, IsString, ValidateNested } from "class-validator";
+import { IsBoolean, IsNotEmpty, IsOptional, IsString, IsUrl, Validate, ValidateNested } from "class-validator";
 
 import { BrevoContactAttributesInterface } from "../../types";
+import { IsValidRedirectURLConstraint } from "../validator/redirect-url.validator";
 
 export interface BrevoContactInputInterface {
     email: string;
+    blocked?: boolean;
+    attributes?: BrevoContactAttributesInterface;
+    redirectionUrl: string;
+}
+
+export interface BrevoContactUpdateInputInterface {
     blocked?: boolean;
     attributes?: BrevoContactAttributesInterface;
 }
@@ -17,7 +24,7 @@ export class BrevoContactInputFactory {
         BrevoContactAttributes,
     }: {
         BrevoContactAttributes?: Type<BrevoContactAttributesInterface>;
-    }): [Type<BrevoContactInputInterface>, Type<Partial<BrevoContactInputInterface>>] {
+    }): [Type<BrevoContactInputInterface>, Type<Partial<BrevoContactUpdateInputInterface>>] {
         @InputType({
             isAbstract: true,
         })
@@ -27,6 +34,21 @@ export class BrevoContactInputFactory {
             @Field()
             email: string;
 
+            @IsBoolean()
+            @Field()
+            @IsOptional()
+            blocked?: boolean;
+
+            @Field()
+            @IsUrl({ require_tld: process.env.NODE_ENV === "production" })
+            @Validate(IsValidRedirectURLConstraint)
+            redirectionUrl: string;
+        }
+
+        @InputType({
+            isAbstract: true,
+        })
+        class BrevoContactUpdateInputBase implements BrevoContactUpdateInputInterface {
             @IsBoolean()
             @Field()
             @IsOptional()
@@ -42,8 +64,15 @@ export class BrevoContactInputFactory {
                 @IsUndefinable()
                 attributes?: BrevoContactAttributesInterface;
             }
+
             @InputType()
-            class BrevoContactUpdateInput extends PartialType(BrevoContactInput) {}
+            class BrevoContactUpdateInput extends BrevoContactUpdateInputBase {
+                @Field(() => BrevoContactAttributes, { nullable: true })
+                @TypeTransformer(() => BrevoContactAttributes)
+                @ValidateNested()
+                @IsUndefinable()
+                attributes?: BrevoContactAttributesInterface;
+            }
 
             return [BrevoContactInput, BrevoContactUpdateInput];
         }
@@ -52,7 +81,7 @@ export class BrevoContactInputFactory {
         class BrevoContactInput extends BrevoContactInputBase {}
 
         @InputType()
-        class BrevoContactUpdateInput extends PartialType(BrevoContactInput) {}
+        class BrevoContactUpdateInput extends BrevoContactUpdateInputBase {}
 
         return [BrevoContactInput, BrevoContactUpdateInput];
     }
