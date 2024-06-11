@@ -1,3 +1,4 @@
+export { createBrevoConfigPage } from "./brevoConfiguration/BrevoConfigPage";
 export { createBrevoContactsPage } from "./brevoContacts/BrevoContactsPage";
 export { createEmailCampaignsPage } from "./emailCampaigns/EmailCampaignsPage";
 export { EditTargetGroupFinalFormValues } from "./targetGroups/TargetGroupForm";

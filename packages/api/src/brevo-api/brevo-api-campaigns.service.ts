@@ -27,13 +27,23 @@ export class BrevoApiCampaignsService {
         return SendingState.DRAFT;
     }
 
-    public async createBrevoCampaign(campaign: EmailCampaignInterface, htmlContent: string, scheduledAt?: Date): Promise<number> {
+    public async createBrevoCampaign({
+        campaign,
+        htmlContent,
+        sender,
+        scheduledAt,
+    }: {
+        campaign: EmailCampaignInterface;
+        htmlContent: string;
+        sender: { name: string; mail: string };
+        scheduledAt?: Date;
+    }): Promise<number> {
         const targetGroup = await campaign.targetGroup?.load();
 
         const emailCampaign = {
             name: campaign.title,
             subject: campaign.subject,
-            sender: { name: this.config.brevo.sender.name, email: this.config.brevo.sender.email },
+            sender: { name: sender.name, email: sender.mail },
             recipients: { listIds: targetGroup ? [targetGroup?.brevoId] : [] },
             htmlContent,
             scheduledAt: scheduledAt?.toISOString(),
@@ -43,13 +53,25 @@ export class BrevoApiCampaignsService {
         return data.body.id;
     }
 
-    public async updateBrevoCampaign(id: number, campaign: EmailCampaignInterface, htmlContent: string, scheduledAt?: Date): Promise<boolean> {
+    public async updateBrevoCampaign({
+        id,
+        campaign,
+        htmlContent,
+        scheduledAt,
+        sender,
+    }: {
+        id: number;
+        campaign: EmailCampaignInterface;
+        htmlContent: string;
+        sender: { name: string; mail: string };
+        scheduledAt?: Date;
+    }): Promise<boolean> {
         const targetGroup = await campaign.targetGroup?.load();
 
         const emailCampaign = {
             name: campaign.title,
             subject: campaign.subject,
-            sender: { name: this.config.brevo.sender.name, email: this.config.brevo.sender.email },
+            sender: { name: sender.name, mail: sender.mail },
             recipients: { listIds: targetGroup ? [targetGroup?.brevoId] : [] },
             htmlContent,
             scheduledAt: scheduledAt?.toISOString(),

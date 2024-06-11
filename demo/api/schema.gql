@@ -163,6 +163,20 @@ type PaginatedUserList {
   totalCount: Int!
 }
 
+type BrevoApiSender {
+  id: ID!
+  name: String!
+  email: String!
+  active: Boolean!
+  ips: [BrevoIp!]
+}
+
+type BrevoIp {
+  ip: String!
+  domain: String!
+  weight: Int!
+}
+
 type BrevoApiCampaignStatistics {
   """Number of unique clicks for the campaign"""
   uniqueClicks: Int!
@@ -425,6 +439,15 @@ type TargetGroup implements DocumentInterface {
   filters: BrevoContactFilterAttributes
 }
 
+type BrevoConfig implements DocumentInterface {
+  id: ID!
+  updatedAt: DateTime!
+  senderMail: String!
+  senderName: String!
+  createdAt: DateTime!
+  scope: EmailCampaignContentScope!
+}
+
 type BrevoContact {
   id: Int!
   createdAt: String!
@@ -539,6 +562,8 @@ type Query {
   emailCampaignStatistics(id: ID!): BrevoApiCampaignStatistics
   targetGroup(id: ID!): TargetGroup!
   targetGroups(scope: EmailCampaignContentScopeInput!, search: String, filter: TargetGroupFilter, sort: [TargetGroupSort!], offset: Int! = 0, limit: Int! = 25): PaginatedTargetGroups!
+  senders: [BrevoApiSender!]
+  brevoConfig(scope: EmailCampaignContentScopeInput!): BrevoConfig
 }
 
 input UserFilter {
@@ -777,6 +802,8 @@ type Mutation {
   createTargetGroup(scope: EmailCampaignContentScopeInput!, input: TargetGroupInput!): TargetGroup!
   updateTargetGroup(id: ID!, input: TargetGroupUpdateInput!, lastUpdatedAt: DateTime): TargetGroup!
   deleteTargetGroup(id: ID!): Boolean!
+  createBrevoConfig(scope: EmailCampaignContentScopeInput!, input: BrevoConfigInput!): BrevoConfig!
+  updateBrevoConfig(id: ID!, input: BrevoConfigUpdateInput!, lastUpdatedAt: DateTime): BrevoConfig!
 }
 
 input UserPermissionInput {
@@ -956,4 +983,14 @@ input TargetGroupInput {
 input TargetGroupUpdateInput {
   title: String
   filters: BrevoContactFilterAttributesInput
+}
+
+input BrevoConfigInput {
+  senderMail: String!
+  senderName: String!
+}
+
+input BrevoConfigUpdateInput {
+  senderMail: String!
+  senderName: String!
 }

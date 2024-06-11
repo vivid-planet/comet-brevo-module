@@ -7,6 +7,7 @@ import { UpdateCampaignStatus } from "@sendinblue/client";
 
 import { BrevoApiCampaignsService } from "../brevo-api/brevo-api-campaigns.service";
 import { BrevoApiContactsService } from "../brevo-api/brevo-api-contact.service";
+import { BrevoConfigInterface } from "../brevo-config/entities/brevo-config-entity.factory";
 import { EcgRtrListService } from "../brevo-contact/ecg-rtr-list/ecg-rtr-list.service";
 import { BrevoModuleConfig } from "../config/brevo-module.config";
 import { BREVO_MODULE_CONFIG } from "../config/brevo-module.constants";
@@ -18,6 +19,7 @@ export class EmailCampaignsService {
     constructor(
         @Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig,
         @InjectRepository("EmailCampaign") private readonly repository: EntityRepository<EmailCampaignInterface>,
+        @InjectRepository("BrevoConfig") private readonly brevoConfigRepository: EntityRepository<BrevoConfigInterface>,
         private readonly httpService: HttpService,
         private readonly brevoApiCampaignService: BrevoApiCampaignsService,
         private readonly brevoApiContactsService: BrevoApiContactsService,
@@ -42,6 +44,7 @@ export class EmailCampaignsService {
 
     async saveEmailCampaignInBrevo(id: string, scheduledAt?: Date): Promise<EmailCampaignInterface> {
         const campaign = await this.repository.findOneOrFail(id);
+        const brevoConfig = await this.brevoConfigRepository.findOneOrFail({ scope: campaign.scope });
 
         const content = await this.blockTransformerService.transformToPlain(campaign.content);
 
@@ -63,13 +66,24 @@ export class EmailCampaignsService {
 
         let brevoId = campaign.brevoId;
         if (!brevoId) {
-            brevoId = await this.brevoApiCampaignService.createBrevoCampaign(campaign, htmlContent, scheduledAt);
+            brevoId = await this.brevoApiCampaignService.createBrevoCampaign({
+                campaign,
+                htmlContent,
+                scheduledAt,
+                sender: { name: brevoConfig.senderName, mail: brevoConfig.senderMail },
+            });
 
             wrap(campaign).assign({ brevoId });
 
             await this.entityManager.flush();
         } else {
-            await this.brevoApiCampaignService.updateBrevoCampaign(brevoId, campaign, htmlContent, scheduledAt);
+            await this.brevoApiCampaignService.updateBrevoCampaign({
+                id: brevoId,
+                campaign,
+                htmlContent,
+                scheduledAt,
+                sender: { name: brevoConfig.senderName, mail: brevoConfig.senderMail },
+            });
         }
 
         return campaign;
