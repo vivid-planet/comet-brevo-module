@@ -2,7 +2,6 @@ import { Field, FinalFormSelect, TextField } from "@comet/admin";
 import { EditBrevoContactFormValues } from "@comet/brevo-admin";
 import { MenuItem } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
-import { additionalPageTreeNodeFieldsFragment } from "@src/common/brevoModuleConfig/brevoContactFormConfig";
 import { GQLBrevoContactSalutation } from "@src/graphql.generated";
 import { DocumentNode } from "graphql";
 import gql from "graphql-tag";
@@ -41,7 +40,7 @@ interface AdditionalFormConfigInputProps extends EditBrevoContactFormValues {
 }
 
 export const additionalFormConfig = {
-    nodeFragment: additionalPageTreeNodeFieldsFragment,
+    nodeFragment: attributesFragment,
 };
 
 export const getBrevoContactConfig = (
