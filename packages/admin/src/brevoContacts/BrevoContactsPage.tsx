@@ -56,6 +56,17 @@ function createBrevoContactsPage({
                             />
                         )}
                     </StackPage>
+                    <StackPage
+                        name="add"
+                        title={intl.formatMessage({ id: "cometBrevoModule.brevoContacts.addBrevoContact", defaultMessage: "Add contact" })}
+                    >
+                        <BrevoContactForm
+                            additionalFormFields={additionalFormFields}
+                            additionalAttributesFragment={additionalAttributesFragment}
+                            input2State={input2State}
+                            scope={scope}
+                        />
+                    </StackPage>
                 </StackSwitch>
             </Stack>
         );

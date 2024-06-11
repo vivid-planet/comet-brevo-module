@@ -792,7 +792,7 @@ type Mutation {
   updateProduct(id: ID!, input: ProductInput!, lastUpdatedAt: DateTime): Product!
   deleteProduct(id: ID!): Boolean!
   updateBrevoContact(id: Int!, input: BrevoContactUpdateInput!): BrevoContact!
-  createBrevoContact(scope: EmailCampaignContentScopeInput!, input: BrevoContactUpdateInput!): BrevoContact
+  createBrevoContact(scope: EmailCampaignContentScopeInput!, input: BrevoContactInput!): SubscribeResponse!
   deleteBrevoContact(id: Int!): Boolean!
   subscribeBrevoContact(input: SubscribeInput!, scope: EmailCampaignContentScopeInput!): SubscribeResponse!
   createEmailCampaign(scope: EmailCampaignContentScopeInput!, input: EmailCampaignInput!): EmailCampaign!
@@ -938,8 +938,7 @@ input ProductInput {
 }
 
 input BrevoContactUpdateInput {
-  email: String
-  blocked: Boolean
+  blocked: Boolean!
   attributes: BrevoContactAttributesInput
 }
 
@@ -947,6 +946,13 @@ enum SubscribeResponse {
   SUCCESSFUL
   ERROR_UNKNOWN
   ERROR_CONTAINED_IN_ECG_RTR_LIST
+}
+
+input BrevoContactInput {
+  email: String!
+  blocked: Boolean!
+  redirectionUrl: String!
+  attributes: BrevoContactAttributesInput
 }
 
 input SubscribeInput {

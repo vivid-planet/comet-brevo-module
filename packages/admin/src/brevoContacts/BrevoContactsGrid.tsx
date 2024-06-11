@@ -6,6 +6,7 @@ import {
     RowActionsMenu,
     StackLink,
     Toolbar,
+    ToolbarActions,
     ToolbarFillSpace,
     ToolbarItem,
     ToolbarTitleItem,
@@ -13,9 +14,9 @@ import {
     useDataGridRemote,
     usePersistentColumnState,
 } from "@comet/admin";
-import { Block, Check, Delete, Edit } from "@comet/admin-icons";
+import { Add, Block, Check, Delete, Edit } from "@comet/admin-icons";
 import { ContentScopeInterface } from "@comet/cms-admin";
-import { IconButton } from "@mui/material";
+import { Button, IconButton } from "@mui/material";
 import { DataGrid, GridColDef, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import * as React from "react";
 import { FormattedMessage, IntlShape, useIntl } from "react-intl";
@@ -67,6 +68,11 @@ function BrevoContactsGridToolbar({ intl }: { intl: IntlShape }) {
                 />
             </ToolbarItem>
             <ToolbarFillSpace />
+            <ToolbarActions>
+                <Button startIcon={<Add />} component={StackLink} pageName="add" payload="add" variant="contained" color="primary">
+                    <FormattedMessage id="cometBrevoModule.brevoContact.newContact" defaultMessage="New contact" />
+                </Button>
+            </ToolbarActions>
         </Toolbar>
     );
 }

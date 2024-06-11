@@ -19,15 +19,10 @@ export const brevoContactFormCheckForChangesQuery = gql`
     }
 `;
 
-export const createBrevoContactMutation = (brevoContactFormFragment: DocumentNode) => gql`
-    mutation CreateBrevoContact($scope: EmailCampaignContentScopeInput!, $input: BrevoContactUpdateInput!) {
-        createBrevoContact(scope: $scope, input: $input) {
-            id
-            modifiedAt
-            ...BrevoContactForm
-        }
+export const createBrevoContactMutation = gql`
+    mutation CreateBrevoContact($scope: EmailCampaignContentScopeInput!, $input: BrevoContactInput!) {
+        createBrevoContact(scope: $scope, input: $input)
     }
-    ${brevoContactFormFragment}
 `;
 
 export const updateBrevoContactMutation = (brevoContactFormFragment: DocumentNode) => gql`
