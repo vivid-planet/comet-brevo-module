@@ -792,6 +792,7 @@ type Mutation {
   updateProduct(id: ID!, input: ProductInput!, lastUpdatedAt: DateTime): Product!
   deleteProduct(id: ID!): Boolean!
   updateBrevoContact(id: Int!, input: BrevoContactUpdateInput!): BrevoContact!
+  createBrevoContact(scope: EmailCampaignContentScopeInput!, input: BrevoContactUpdateInput!): BrevoContact
   deleteBrevoContact(id: Int!): Boolean!
   subscribeBrevoContact(input: SubscribeInput!, scope: EmailCampaignContentScopeInput!): SubscribeResponse!
   createEmailCampaign(scope: EmailCampaignContentScopeInput!, input: EmailCampaignInput!): EmailCampaign!
@@ -937,7 +938,9 @@ input ProductInput {
 }
 
 input BrevoContactUpdateInput {
-  blocked: Boolean!
+  email: String
+  blocked: Boolean
+  attributes: BrevoContactAttributesInput
 }
 
 enum SubscribeResponse {

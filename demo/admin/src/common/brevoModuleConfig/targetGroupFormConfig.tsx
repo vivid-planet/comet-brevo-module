@@ -8,11 +8,11 @@ import { FormattedMessage } from "react-intl";
 
 const salutationOptions: Array<{ label: React.ReactNode; value: GQLBrevoContactSalutation }> = [
     {
-        label: <FormattedMessage id="targetGroup.filters.salutation.male." defaultMessage="Male" />,
+        label: <FormattedMessage id="targetGroup.filters.salutation.male" defaultMessage="Male" />,
         value: "MALE",
     },
     {
-        label: <FormattedMessage id="targetGroup.filters.salutation.female." defaultMessage="Female" />,
+        label: <FormattedMessage id="targetGroup.filters.salutation.female" defaultMessage="Female" />,
         value: "FEMALE",
     },
 ];

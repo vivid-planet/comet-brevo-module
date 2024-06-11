@@ -10,6 +10,7 @@ import { createBrevoConfigResolver } from "./src/brevo-config/brevo-config.resol
 import { BrevoConfigEntityFactory } from "./src/brevo-config/entities/brevo-config-entity.factory";
 import { createBrevoContactResolver } from "./src/brevo-contact/brevo-contact.resolver";
 import { BrevoContactFactory } from "./src/brevo-contact/dto/brevo-contact.factory";
+import { BrevoContactInputFactory } from "./src/brevo-contact/dto/brevo-contact-input.factory";
 import { SubscribeInputFactory } from "./src/brevo-contact/dto/subscribe-input.factory";
 import { EmailCampaignInputFactory } from "./src/email-campaign/dto/email-campaign-input.factory";
 import { createEmailCampaignsResolver } from "./src/email-campaign/email-campaign.resolver";
@@ -61,8 +62,15 @@ async function generateSchema(): Promise<void> {
     const gqlSchemaFactory = app.get(GraphQLSchemaFactory);
 
     const BrevoContact = BrevoContactFactory.create({});
+    const [BrevoContactInput, BrevoContactUpdateInput] = BrevoContactInputFactory.create({});
     const BrevoContactSubscribeInput = SubscribeInputFactory.create({ Scope: EmailCampaignScope });
-    const BrevoContactResolver = createBrevoContactResolver({ BrevoContact, BrevoContactSubscribeInput, Scope: EmailCampaignScope });
+    const BrevoContactResolver = createBrevoContactResolver({
+        BrevoContact,
+        BrevoContactSubscribeInput,
+        Scope: EmailCampaignScope,
+        BrevoContactInput,
+        BrevoContactUpdateInput,
+    });
 
     const TargetGroup = TargetGroupEntityFactory.create({ Scope: EmailCampaignScope });
     const [TargetGroupInput, TargetGroupUpdateInput] = TargetGroupInputFactory.create({ BrevoFilterAttributes: BrevoContactFilterAttributes });
