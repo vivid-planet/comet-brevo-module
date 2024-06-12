@@ -214,7 +214,7 @@ export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope, previe
         content: EmailCampaignContentBlock.createPreviewState(state.content, previewContext),
     };
 
-    const isScheduledDateInPast = state.scheduledAt !== undefined && isBefore(new Date(state.scheduledAt), new Date());
+    const isScheduledDateInPast = state.scheduledAt != undefined && isBefore(new Date(state.scheduledAt), new Date());
     const isSchedulingDisabled = state.sendingState === "SENT" || mode === "add" || !state.targetGroup || isScheduledDateInPast;
 
     return (

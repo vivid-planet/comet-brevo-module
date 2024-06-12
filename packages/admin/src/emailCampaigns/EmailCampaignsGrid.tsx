@@ -170,7 +170,7 @@ export function EmailCampaignsGrid({
             align: "right",
             type: "actions",
             renderCell: ({ row }) => {
-                const isScheduledDateInPast = row.scheduledAt !== undefined && isBefore(new Date(row.scheduledAt), new Date());
+                const isScheduledDateInPast = row.scheduledAt != undefined && isBefore(new Date(row.scheduledAt), new Date());
 
                 return (
                     <>
