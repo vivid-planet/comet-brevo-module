@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@apollo/client";
-import { Field, FinalFormSelect, SaveButton } from "@comet/admin";
+import { Field, FinalFormSelect, SaveButton, useStackSwitchApi } from "@comet/admin";
 import { FinalFormDateTimePicker } from "@comet/admin-date-time";
 import { Newsletter } from "@comet/admin-icons";
 import { AdminComponentPaper, AdminComponentSectionGroup } from "@comet/blocks-admin";
@@ -18,10 +18,10 @@ import {
 } from "./SendManagerFields.gql.generated";
 
 interface SendManagerFieldsProps {
-    disableScheduling?: boolean;
     scope: ContentScopeInterface;
     id?: string;
     isSendable: boolean;
+    isSchedulingDisabled?: boolean;
 }
 
 const validateScheduledAt = (value: Date, now: Date) => {
@@ -37,7 +37,9 @@ const validateScheduledAt = (value: Date, now: Date) => {
     }
 };
 
-export const SendManagerFields = ({ disableScheduling, scope, id, isSendable }: SendManagerFieldsProps) => {
+export const SendManagerFields = ({ isSchedulingDisabled, scope, id, isSendable }: SendManagerFieldsProps) => {
+    const stackSwitchApi = useStackSwitchApi();
+
     const [isSendEmailCampaignNowDialogOpen, setIsSendEmailCampaignNowDialogOpen] = React.useState(false);
 
     const { data: targetGroups } = useQuery<GQLTargetGroupsSelectQuery, GQLTargetGroupsSelectQueryVariables>(targetGroupsSelectQuery, {
@@ -59,12 +61,12 @@ export const SendManagerFields = ({ disableScheduling, scope, id, isSendable }: 
                 >
                     <Field
                         name="scheduledAt"
-                        disabled={disableScheduling}
+                        disabled={isSchedulingDisabled}
                         fullWidth
                         clearable
                         label={<FormattedMessage id="cometBrevoModule.emailCampaigns.scheduledAt" defaultMessage="Schedule date and time" />}
                         component={FinalFormDateTimePicker}
-                        validate={(value) => validateScheduledAt(value, now)}
+                        validate={(value) => (isSchedulingDisabled ? undefined : validateScheduledAt(value, now))}
                         componentsProps={{ datePicker: { placeholder: "DD.MM.YYYY", minDate: now }, timePicker: { placeholder: "HH:mm" } }}
                     />
                     <Field
@@ -85,7 +87,7 @@ export const SendManagerFields = ({ disableScheduling, scope, id, isSendable }: 
 
                     <SaveButton
                         variant="contained"
-                        disabled={!isSendable && id == undefined && disableScheduling}
+                        disabled={!isSendable || isSchedulingDisabled}
                         saveIcon={<Newsletter />}
                         saving={sendEmailCampaignNowLoading}
                         hasErrors={!!sendEmailCampaignNowError}
@@ -111,6 +113,7 @@ export const SendManagerFields = ({ disableScheduling, scope, id, isSendable }: 
                             if (id) {
                                 await sendEmailCampaignNow({ variables: { id } });
                                 setIsSendEmailCampaignNowDialogOpen(false);
+                                stackSwitchApi.activatePage(`grid`, "");
                             }
                         }}
                     />
