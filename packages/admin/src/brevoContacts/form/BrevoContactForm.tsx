@@ -15,7 +15,6 @@ import {
     ToolbarTitleItem,
     useFormApiRef,
     useStackApi,
-    useStackSwitchApi,
 } from "@comet/admin";
 import { ArrowLeft } from "@comet/admin-icons";
 import { ContentScopeInterface, EditPageLayout, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
@@ -43,6 +42,7 @@ import {
 
 export type EditBrevoContactFormValues = {
     email: string;
+    redirectionUrl: string;
     [key: string]: unknown;
 };
 
@@ -59,7 +59,6 @@ export function BrevoContactForm({ id, scope, input2State, additionalFormFields,
     const client = useApolloClient();
     const mode = id ? "edit" : "add";
     const formApiRef = useFormApiRef<EditBrevoContactFormValues>();
-    const stackSwitchApi = useStackSwitchApi();
 
     const brevoContactFormFragment = gql`
         fragment BrevoContactForm on BrevoContact {
@@ -80,7 +79,7 @@ export function BrevoContactForm({ id, scope, input2State, additionalFormFields,
         let additionalInitialValues = {};
 
         if (input2State) {
-            additionalInitialValues = input2State(data?.brevoContact);
+            additionalInitialValues = input2State({ email: "", redirectionUrl: "", ...data?.brevoContact });
         }
         return data?.brevoContact
             ? {
@@ -126,21 +125,27 @@ export function BrevoContactForm({ id, scope, input2State, additionalFormFields,
             if (!id) {
                 throw new Error("Missing id in edit mode");
             }
+            const { email, redirectionUrl, ...rest } = output;
             await client.mutate<GQLUpdateBrevoContactMutation, GQLUpdateBrevoContactMutationVariables>({
                 mutation: updateBrevoContactMutation(brevoContactFormFragment),
-                variables: { id, input: output },
+                variables: { id, input: rest },
             });
         } else {
             const { data: mutationResponse } = await client.mutate<GQLCreateBrevoContactMutation, GQLCreateBrevoContactMutationVariables>({
-                mutation: createBrevoContactMutation(brevoContactFormFragment),
+                mutation: createBrevoContactMutation,
                 variables: { scope, input: output },
             });
             if (!event.navigatingBack) {
-                const id = mutationResponse?.createBrevoContact?.id;
-                if (id) {
+                const response = mutationResponse?.createBrevoContact;
+
+                if (response === "SUCCESSFUL") {
                     setTimeout(() => {
-                        stackSwitchApi.activatePage("edit", id.toString());
+                        stackApi?.goBack();
                     });
+                } else if (response === "ERROR_CONTAINED_IN_ECG_RTR_LIST") {
+                    throw new Error("Contact contained in ECG RTR list, cannot create contact");
+                } else {
+                    throw new Error("Error creating contact");
                 }
             }
         }
@@ -174,10 +179,17 @@ export function BrevoContactForm({ id, scope, input2State, additionalFormFields,
                     <MainContent>
                         <Box sx={{ marginBottom: 4 }}>
                             <Alert severity="warning">
-                                <FormattedMessage
-                                    id="cometBrevoModule.brevoContact.contactEditAlert"
-                                    defaultMessage="Editing a contact will affect all scopes and the target groups within those scopes."
-                                />
+                                {mode === "edit" ? (
+                                    <FormattedMessage
+                                        id="cometBrevoModule.brevoContact.contactEditAlert"
+                                        defaultMessage="Editing a contact will affect all scopes and the target groups within those scopes."
+                                    />
+                                ) : (
+                                    <FormattedMessage
+                                        id="cometBrevoModule.brevoContact.contactAddAlert"
+                                        defaultMessage="The contact will get a double opt-in email to confirm the subscription. After the contact's confirmation, the contact will be added to the corresponding target groups in this scope depending on the contact's attributes. Before the confirmation the contact will not be shown on the contacts page."
+                                    />
+                                )}
                             </Alert>
                         </Box>
                         <TextField
@@ -187,7 +199,19 @@ export function BrevoContactForm({ id, scope, input2State, additionalFormFields,
                             label={<FormattedMessage id="cometBrevoModule.brevoContact.email" defaultMessage="Email" />}
                             disabled={mode === "edit"}
                         />
-
+                        {mode === "add" && (
+                            <TextField
+                                required
+                                fullWidth
+                                name="redirectionUrl"
+                                label={
+                                    <FormattedMessage
+                                        id="cometBrevoModule.brevoContact.redirectionUrl"
+                                        defaultMessage="Redirection Url (Contact will be redirected to this page after the confirmation in the double opt-in email)"
+                                    />
+                                }
+                            />
+                        )}
                         {additionalFormFields && (
                             <Card sx={{ padding: 4 }}>
                                 <FormSection title={<FormattedMessage id="cometBrevoModule.brevoContact.attributes" defaultMessage="Attributes" />}>

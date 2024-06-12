@@ -3,30 +3,33 @@ import { Injectable } from "@nestjs/common";
 import { BrevoApiContactsService } from "../brevo-api/brevo-api-contact.service";
 import { TargetGroupsService } from "../target-group/target-groups.service";
 import { BrevoContactAttributesInterface, EmailCampaignScopeInterface } from "../types";
-import { SubscribeInputInterface } from "./dto/subscribe-input.factory";
-import { SubscribeResponse } from "./dto/subscribe-response.enum";
 
 @Injectable()
 export class BrevoContactsService {
     constructor(private readonly brevoContactsApiService: BrevoApiContactsService, private readonly targetGroupService: TargetGroupsService) {}
 
-    public async createDoubleOptInContact(
-        data: SubscribeInputInterface,
-        scope: EmailCampaignScopeInterface,
-        templateId: number,
-    ): Promise<SubscribeResponse> {
+    public async createDoubleOptInContact({
+        email,
+        attributes,
+        redirectionUrl,
+        scope,
+        templateId,
+    }: {
+        email: string;
+        attributes?: BrevoContactAttributesInterface;
+        redirectionUrl: string;
+        scope: EmailCampaignScopeInterface;
+        templateId: number;
+    }): Promise<boolean> {
         const mainTargetGroupForScope = await this.targetGroupService.createIfNotExistMainTargetGroupForScope(scope);
-        const targetGroupIds = await this.getTargetGroupIdsForContact({ scope, contactAttributes: data.attributes });
+        const targetGroupIds = await this.getTargetGroupIdsForContact({ scope, contactAttributes: attributes });
 
         const created = await this.brevoContactsApiService.createDoubleOptInBrevoContact(
-            data,
+            { email, redirectionUrl, attributes },
             [mainTargetGroupForScope.brevoId, ...targetGroupIds],
             templateId,
         );
-        if (created) {
-            return SubscribeResponse.SUCCESSFUL;
-        }
-        return SubscribeResponse.ERROR_UNKNOWN;
+        return created;
     }
 
     public async getTargetGroupIdsForContact({

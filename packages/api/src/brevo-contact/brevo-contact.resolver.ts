@@ -13,7 +13,7 @@ import { EmailCampaignScopeInterface } from "../types";
 import { DynamicDtoValidationPipe } from "../validation/dynamic-dto-validation.pipe";
 import { BrevoContactsService } from "./brevo-contacts.service";
 import { BrevoContactInterface } from "./dto/brevo-contact.factory";
-import { BrevoContactInputInterface } from "./dto/brevo-contact-input.factory";
+import { BrevoContactInputInterface, BrevoContactUpdateInputInterface } from "./dto/brevo-contact-input.factory";
 import { BrevoContactsArgsFactory } from "./dto/brevo-contacts.args";
 import { SubscribeInputInterface } from "./dto/subscribe-input.factory";
 import { SubscribeResponse } from "./dto/subscribe-response.enum";
@@ -94,7 +94,7 @@ export function createBrevoContactResolver({
         @AffectedEntity(BrevoContact)
         async updateBrevoContact(
             @Args("id", { type: () => Int }) id: number,
-            @Args("input", { type: () => BrevoContactUpdateInput }) input: BrevoContactInputInterface,
+            @Args("input", { type: () => BrevoContactUpdateInput }) input: BrevoContactUpdateInputInterface,
         ): Promise<BrevoContactInterface> {
             // update attributes of contact before (un)assigning to target groups because they cannot be correctly validated for completeness
             const contact = await this.brevoContactsApiService.updateContact(id, {
@@ -120,15 +120,30 @@ export function createBrevoContactResolver({
             return contactWithUpdatedLists;
         }
 
-        @Mutation(() => BrevoContact, { nullable: true })
+        @Mutation(() => SubscribeResponse)
         @RequiredPermission(["brevo-newsletter"], { skipScopeCheck: true })
         async createBrevoContact(
             @Args("scope", { type: () => Scope }, new DynamicDtoValidationPipe(Scope)) scope: typeof Scope,
-            @Args("input", { type: () => BrevoContactUpdateInput })
+            @Args("input", { type: () => BrevoContactInput })
             input: BrevoContactInputInterface,
-        ): Promise<BrevoContactInterface | undefined> {
-            // TODO: add create brevo contact logic
-            return undefined;
+        ): Promise<SubscribeResponse> {
+            if ((await this.ecgRtrListService.getContainedEcgRtrListEmails([input.email])).length > 0) {
+                return SubscribeResponse.ERROR_CONTAINED_IN_ECG_RTR_LIST;
+            }
+
+            const created = await this.brevoContactsService.createDoubleOptInContact({
+                email: input.email,
+                attributes: input.attributes,
+                redirectionUrl: input.redirectionUrl,
+                scope,
+                templateId: this.config.brevo.doubleOptInTemplateId,
+            });
+
+            if (created) {
+                return SubscribeResponse.SUCCESSFUL;
+            }
+
+            return SubscribeResponse.ERROR_UNKNOWN;
         }
 
         @Mutation(() => Boolean)
@@ -147,7 +162,11 @@ export function createBrevoContactResolver({
                 return SubscribeResponse.ERROR_CONTAINED_IN_ECG_RTR_LIST;
             }
 
-            const created = await this.brevoContactsService.createDoubleOptInContact(data, scope, this.config.brevo.doubleOptInTemplateId);
+            const created = await this.brevoContactsService.createDoubleOptInContact({
+                ...data,
+                scope,
+                templateId: this.config.brevo.doubleOptInTemplateId,
+            });
 
             if (created) {
                 return SubscribeResponse.SUCCESSFUL;
