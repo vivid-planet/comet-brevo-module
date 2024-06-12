@@ -187,7 +187,7 @@ export function BrevoContactForm({ id, scope, input2State, additionalFormFields,
                                 ) : (
                                     <FormattedMessage
                                         id="cometBrevoModule.brevoContact.contactAddAlert"
-                                        defaultMessage="The contact will get a DOI email to confirm the subscription. After the contact's confirmation, the contact will be added to the corresponding target groups in this scope depending on the contact's attributes. Before the confirmation the contact will not be shown on the contacts page."
+                                        defaultMessage="The contact will get a double opt-in email to confirm the subscription. After the contact's confirmation, the contact will be added to the corresponding target groups in this scope depending on the contact's attributes. Before the confirmation the contact will not be shown on the contacts page."
                                     />
                                 )}
                             </Alert>
@@ -207,7 +207,7 @@ export function BrevoContactForm({ id, scope, input2State, additionalFormFields,
                                 label={
                                     <FormattedMessage
                                         id="cometBrevoModule.brevoContact.redirectionUrl"
-                                        defaultMessage="Redirection Url (Contact will be redirected to this page after the confirmation in the DOI email)"
+                                        defaultMessage="Redirection Url (Contact will be redirected to this page after the confirmation in the double opt-in email)"
                                     />
                                 }
                             />
