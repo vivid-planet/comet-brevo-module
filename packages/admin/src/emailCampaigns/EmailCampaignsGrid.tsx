@@ -20,6 +20,7 @@ import { BlockInterface } from "@comet/blocks-admin";
 import { ContentScopeInterface } from "@comet/cms-admin";
 import { Button, IconButton } from "@mui/material";
 import { DataGrid, GridColDef, GridToolbarQuickFilter } from "@mui/x-data-grid";
+import { isBefore } from "date-fns";
 import * as React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
@@ -169,22 +170,24 @@ export function EmailCampaignsGrid({
             align: "right",
             type: "actions",
             renderCell: ({ row }) => {
+                const isScheduledDateInPast = row.scheduledAt !== undefined && isBefore(new Date(row.scheduledAt), new Date());
+
                 return (
                     <>
-                        {!(row.sendingState === "SENT" || (row.scheduledAt && row.scheduledAt < new Date())) && (
+                        {row.sendingState !== "SENT" && !isScheduledDateInPast && (
                             <IconButton component={StackLink} pageName="edit" payload={row.id}>
                                 <Edit color="primary" />
                             </IconButton>
                         )}
                         {row.sendingState === "SENT" && (
-                            <>
-                                <IconButton component={StackLink} pageName="statistics" payload={row.id}>
-                                    <Statistics color="primary" />
-                                </IconButton>
-                                <IconButton component={StackLink} pageName="view" payload={row.id}>
-                                    <Visible color="primary" />
-                                </IconButton>
-                            </>
+                            <IconButton component={StackLink} pageName="statistics" payload={row.id}>
+                                <Statistics color="primary" />
+                            </IconButton>
+                        )}
+                        {(row.sendingState === "SENT" || (row.sendingState == "SCHEDULED" && isScheduledDateInPast)) && (
+                            <IconButton component={StackLink} pageName="view" payload={row.id}>
+                                <Visible color="primary" />
+                            </IconButton>
                         )}
                         <CrudContextMenu
                             copyData={() => {

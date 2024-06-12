@@ -27,6 +27,7 @@
         "start:types": "tsc --project ./tsconfig.json --emitDeclarationOnly --watch --preserveWatchOutput"
     },
     "dependencies": {
+        "date-fns": "^2.28.0",
         "file-saver": "^2.0.5",
         "lodash.isequal": "^4.0.0"
     },
