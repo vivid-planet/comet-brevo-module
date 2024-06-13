@@ -35,6 +35,7 @@ import {
     useSaveState,
 } from "@comet/cms-admin";
 import { IconButton } from "@mui/material";
+import { isBefore } from "date-fns";
 import React, { useMemo } from "react";
 import { FormattedMessage } from "react-intl";
 import { useRouteMatch } from "react-router";
@@ -213,7 +214,8 @@ export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope, previe
         content: EmailCampaignContentBlock.createPreviewState(state.content, previewContext),
     };
 
-    const isScheduleDateDisabled = state.sendingState === "SENT" || mode === "add" || !state.targetGroup;
+    const isScheduledDateInPast = state.scheduledAt != undefined && isBefore(new Date(state.scheduledAt), new Date());
+    const isSchedulingDisabled = state.sendingState === "SENT" || mode === "add" || !state.targetGroup || isScheduledDateInPast;
 
     return (
         <EditPageLayout>
@@ -290,7 +292,7 @@ export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope, previe
                                     <SendManagerWrapper scope={scope}>
                                         <SendManagerFields
                                             scope={scope}
-                                            disableScheduling={isScheduleDateDisabled}
+                                            isSchedulingDisabled={isSchedulingDisabled}
                                             isSendable={!hasChanges && state.targetGroup != undefined}
                                             id={id}
                                         />
