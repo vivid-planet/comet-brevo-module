@@ -64,6 +64,10 @@ export class EmailCampaignsService {
             throw new Error("Could not generate campaign content");
         }
 
+        if (!brevoConfig.senderMail || !brevoConfig.senderName) {
+            throw new Error("Brevo config is not complete");
+        }
+
         let brevoId = campaign.brevoId;
         if (!brevoId) {
             brevoId = await this.brevoApiCampaignService.createBrevoCampaign({
