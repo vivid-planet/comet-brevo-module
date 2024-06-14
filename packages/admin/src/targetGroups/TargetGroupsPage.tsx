@@ -4,6 +4,7 @@ import { DocumentNode } from "graphql";
 import * as React from "react";
 import { useIntl } from "react-intl";
 
+import { ConfigVerification } from "../common/configVerification/ConfigVerification";
 import { EditTargetGroupFinalFormValues, TargetGroupForm } from "./TargetGroupForm";
 import { AdditionalContactAttributesType, TargetGroupsGrid } from "./TargetGroupsGrid";
 
@@ -36,38 +37,40 @@ export function createTargetGroupsPage({
         }, {} as { [key: string]: unknown });
 
         return (
-            <Stack topLevelTitle={intl.formatMessage({ id: "cometBrevoModule.targetGroups.targetGroups", defaultMessage: "Target groups" })}>
-                <StackSwitch>
-                    <StackPage name="grid">
-                        <TargetGroupsGrid scope={scope} exportTargetGroupOptions={exportTargetGroupOptions} />
-                    </StackPage>
-                    <StackPage
-                        name="edit"
-                        title={intl.formatMessage({ id: "cometBrevoModule.targetGroups.editTargetGroup", defaultMessage: "Edit target group" })}
-                    >
-                        {(selectedId) => (
+            <ConfigVerification scope={scope}>
+                <Stack topLevelTitle={intl.formatMessage({ id: "cometBrevoModule.targetGroups.targetGroups", defaultMessage: "Target groups" })}>
+                    <StackSwitch>
+                        <StackPage name="grid">
+                            <TargetGroupsGrid scope={scope} exportTargetGroupOptions={exportTargetGroupOptions} />
+                        </StackPage>
+                        <StackPage
+                            name="edit"
+                            title={intl.formatMessage({ id: "cometBrevoModule.targetGroups.editTargetGroup", defaultMessage: "Edit target group" })}
+                        >
+                            {(selectedId) => (
+                                <TargetGroupForm
+                                    id={selectedId}
+                                    scope={scope}
+                                    additionalFormFields={additionalFormFields}
+                                    nodeFragment={nodeFragment}
+                                    input2State={input2State}
+                                />
+                            )}
+                        </StackPage>
+                        <StackPage
+                            name="add"
+                            title={intl.formatMessage({ id: "cometBrevoModule.targetGroups.addTargetGroup", defaultMessage: "Add target group" })}
+                        >
                             <TargetGroupForm
-                                id={selectedId}
                                 scope={scope}
                                 additionalFormFields={additionalFormFields}
                                 nodeFragment={nodeFragment}
                                 input2State={input2State}
                             />
-                        )}
-                    </StackPage>
-                    <StackPage
-                        name="add"
-                        title={intl.formatMessage({ id: "cometBrevoModule.targetGroups.addTargetGroup", defaultMessage: "Add target group" })}
-                    >
-                        <TargetGroupForm
-                            scope={scope}
-                            additionalFormFields={additionalFormFields}
-                            nodeFragment={nodeFragment}
-                            input2State={input2State}
-                        />
-                    </StackPage>
-                </StackSwitch>
-            </Stack>
+                        </StackPage>
+                    </StackSwitch>
+                </Stack>
+            </ConfigVerification>
         );
     }
 
