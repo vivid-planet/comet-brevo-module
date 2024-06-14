@@ -4,6 +4,8 @@ export const brevoConfigFormFragment = gql`
     fragment BrevoConfigForm on BrevoConfig {
         senderMail
         senderName
+        isApiKeySet
+        doiTemplateId
     }
 `;
 
@@ -54,6 +56,15 @@ export const sendersSelectQuery = gql`
             id
             name
             email
+        }
+    }
+`;
+
+export const doiTemplatesSelectQuery = gql`
+    query DoiTemplatesSelect {
+        doiTemplates {
+            id
+            name
         }
     }
 `;

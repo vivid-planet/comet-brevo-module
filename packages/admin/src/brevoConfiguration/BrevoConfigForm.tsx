@@ -3,6 +3,7 @@ import {
     Field,
     FinalForm,
     FinalFormAutocomplete,
+    FinalFormInput,
     FinalFormSaveSplitButton,
     FinalFormSubmitEvent,
     Loading,
@@ -19,12 +20,20 @@ import { FormApi } from "final-form";
 import React from "react";
 import { FormattedMessage } from "react-intl";
 
-import { brevoConfigFormQuery, createBrevoConfigMutation, sendersSelectQuery, updateBrevoConfigMutation } from "./BrevoConfigForm.gql";
+import {
+    brevoConfigFormQuery,
+    createBrevoConfigMutation,
+    doiTemplatesSelectQuery,
+    sendersSelectQuery,
+    updateBrevoConfigMutation,
+} from "./BrevoConfigForm.gql";
 import {
     GQLBrevoConfigFormQuery,
     GQLBrevoConfigFormQueryVariables,
     GQLCreateBrevoConfigMutation,
     GQLCreateBrevoConfigMutationVariables,
+    GQLDoiTemplatesSelectQuery,
+    GQLDoiTemplatesSelectQueryVariables,
     GQLSendersSelectQuery,
     GQLSendersSelectQueryVariables,
     GQLUpdateBrevoConfigMutation,
@@ -36,7 +45,9 @@ interface Option {
     label: string;
 }
 type FormValues = {
-    sender: Option;
+    sender?: Option;
+    apiKey?: string;
+    doiTemplate?: Option;
 };
 
 interface FormProps {
@@ -52,31 +63,64 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
         variables: { scope },
     });
 
+    const mode = data?.brevoConfig?.id ? "edit" : "add";
+
     const {
         data: sendersData,
         error: senderError,
         loading: senderLoading,
-    } = useQuery<GQLSendersSelectQuery, GQLSendersSelectQueryVariables>(sendersSelectQuery);
+    } = useQuery<GQLSendersSelectQuery, GQLSendersSelectQueryVariables>(sendersSelectQuery, {
+        skip: mode === "add" || !data?.brevoConfig?.isApiKeySet,
+    });
+
+    const {
+        data: doiTemplatesData,
+        error: doiTemplatesError,
+        loading: doiTemplatesLoading,
+    } = useQuery<GQLDoiTemplatesSelectQuery, GQLDoiTemplatesSelectQueryVariables>(doiTemplatesSelectQuery, {
+        skip: mode === "add" || !data?.brevoConfig?.isApiKeySet,
+    });
 
     const senderOptions =
         sendersData?.senders?.map((sender) => ({
-            value: sender.email,
+            value: sender.id,
             label: `${sender.name} (${sender.email})`,
         })) ?? [];
 
-    const mode = data?.brevoConfig?.id ? "edit" : "add";
+    const doiTemplateOptions =
+        doiTemplatesData?.doiTemplates?.map((doiTemplate) => ({
+            value: doiTemplate.id,
+            label: `${doiTemplate.id}: ${doiTemplate.name}`,
+        })) ?? [];
 
     const initialValues = React.useMemo<Partial<FormValues>>(() => {
-        const sender = sendersData?.senders?.find((s) => s.email === data?.brevoConfig?.senderMail && s.name === data?.brevoConfig?.senderName);
-        return sender
-            ? {
-                  sender: {
+        const sender = sendersData?.senders?.find(
+            (sender) => sender.email === data?.brevoConfig?.senderMail && sender.name === data?.brevoConfig?.senderName,
+        );
+        const doiTemplate = doiTemplatesData?.doiTemplates?.find((template) => template.id === data?.brevoConfig?.doiTemplateId?.toString());
+
+        return {
+            sender: sender
+                ? {
                       value: sender.id,
                       label: `${sender.name} (${sender.email})`,
-                  },
-              }
-            : {};
-    }, [data?.brevoConfig?.senderMail, data?.brevoConfig?.senderName, sendersData?.senders]);
+                  }
+                : undefined,
+
+            doiTemplate: doiTemplate
+                ? {
+                      value: doiTemplate?.id,
+                      label: `${doiTemplate?.id}: ${doiTemplate?.name}`,
+                  }
+                : undefined,
+        };
+    }, [
+        data?.brevoConfig?.doiTemplateId,
+        data?.brevoConfig?.senderMail,
+        data?.brevoConfig?.senderName,
+        doiTemplatesData?.doiTemplates,
+        sendersData?.senders,
+    ]);
 
     const saveConflict = useFormSaveConflict({
         checkConflict: async () => {
@@ -106,29 +150,47 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
             throw new Error("Conflicts detected");
         }
 
-        const sender = sendersData?.senders?.find((s) => s.email === state.sender.value);
-
-        if (!sender) {
-            throw new Error("No sender selected");
-        }
-
-        const output = {
-            senderName: sender?.name,
-            senderMail: sender?.email,
-        };
-
         if (mode === "edit") {
             if (!data?.brevoConfig?.id) {
                 throw new Error("Missing id in edit mode");
             }
+
+            if (!data?.brevoConfig?.isApiKeySet) {
+                if (!state.apiKey) {
+                    throw new Error("Api key is required");
+                }
+
+                await client.mutate<GQLUpdateBrevoConfigMutation, GQLUpdateBrevoConfigMutationVariables>({
+                    mutation: updateBrevoConfigMutation,
+                    variables: { id: data?.brevoConfig?.id, input: { apiKey: state.apiKey }, lastUpdatedAt: data?.brevoConfig?.updatedAt },
+                });
+
+                return;
+            }
+
+            const sender = sendersData?.senders?.find((sender) => sender.id === state?.sender?.value);
+
+            if (!sender || !state.doiTemplate) {
+                throw new Error("Not all required fields are set");
+            }
+
+            const output = {
+                senderName: sender.name,
+                senderMail: sender.email,
+                doiTemplateId: Number(state.doiTemplate.value),
+            };
+
             await client.mutate<GQLUpdateBrevoConfigMutation, GQLUpdateBrevoConfigMutationVariables>({
                 mutation: updateBrevoConfigMutation,
                 variables: { id: data?.brevoConfig?.id, input: output, lastUpdatedAt: data?.brevoConfig?.updatedAt },
             });
         } else {
+            if (!state.apiKey) {
+                throw new Error("Api key is required");
+            }
             const { data: mutationResponse } = await client.mutate<GQLCreateBrevoConfigMutation, GQLCreateBrevoConfigMutationVariables>({
                 mutation: createBrevoConfigMutation,
-                variables: { scope, input: output },
+                variables: { scope, input: { apiKey: state.apiKey } },
             });
             if (!event.navigatingBack) {
                 const id = mutationResponse?.createBrevoConfig.id;
@@ -141,11 +203,13 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
         }
     };
 
-    if (error || senderError) throw error ?? senderError;
+    if (error || senderError || doiTemplatesError) throw error ?? senderError ?? doiTemplatesError;
 
-    if (loading || senderLoading) {
+    if (loading || senderLoading || doiTemplatesLoading) {
         return <Loading behavior="fillPageHeight" />;
     }
+
+    const allowAllFields = mode !== "add" && data?.brevoConfig?.isApiKeySet;
 
     return (
         <FinalForm<FormValues> apiRef={formApiRef} onSubmit={handleSubmit} mode={mode} initialValues={initialValues}>
@@ -163,16 +227,53 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
                             </ToolbarActions>
                         </Toolbar>
                         <MainContent>
-                            <Field
-                                component={FinalFormAutocomplete}
-                                getOptionLabel={(option: Option) => option.label}
-                                isOptionEqualToValue={(option: Option, value: Option) => option.value === value.value}
-                                options={senderOptions}
-                                name="sender"
-                                label={<FormattedMessage id="cometBrevoModule.brevoConfig.sender" defaultMessage="Sender" />}
-                                fullWidth
-                                required
-                            />
+                            {!data?.brevoConfig?.isApiKeySet && (
+                                <Field
+                                    type="password"
+                                    name="apiKey"
+                                    label={
+                                        <FormattedMessage
+                                            id="cometBrevoModule.brevoConfig.apiKey"
+                                            defaultMessage="Api key (cannot be changed afterwards)"
+                                        />
+                                    }
+                                    component={FinalFormInput}
+                                    fullWidth
+                                    required
+                                />
+                            )}
+                            {data?.brevoConfig?.isApiKeySet && (
+                                <>
+                                    <Field
+                                        component={FinalFormAutocomplete}
+                                        getOptionLabel={(option: Option) => option.label}
+                                        isOptionEqualToValue={(option: Option, value: Option) => option.value === value.value}
+                                        options={senderOptions}
+                                        name="sender"
+                                        disabled={!allowAllFields}
+                                        label={<FormattedMessage id="cometBrevoModule.brevoConfig.sender" defaultMessage="Sender" />}
+                                        fullWidth
+                                        required={allowAllFields}
+                                    />
+
+                                    <Field
+                                        component={FinalFormAutocomplete}
+                                        getOptionLabel={(option: Option) => option.label}
+                                        isOptionEqualToValue={(option: Option, value: Option) => option.value === value.value}
+                                        options={doiTemplateOptions}
+                                        disabled={!allowAllFields}
+                                        name="doiTemplate"
+                                        label={
+                                            <FormattedMessage
+                                                id="cometBrevoModule.brevoConfig.doiTemplate"
+                                                defaultMessage="Double opt-in template id"
+                                            />
+                                        }
+                                        fullWidth
+                                        required={allowAllFields}
+                                    />
+                                </>
+                            )}
                         </MainContent>
                     </EditPageLayout>
                 );
