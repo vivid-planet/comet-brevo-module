@@ -2,9 +2,12 @@ import { AffectedEntity, RequiredPermission, validateNotModified } from "@comet/
 import { EntityManager, EntityRepository, wrap } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Type } from "@nestjs/common";
-import { Args, ID, Mutation, Query, Resolver } from "@nestjs/graphql";
+import { Args, ID, Mutation, Parent, Query, ResolveField, Resolver } from "@nestjs/graphql";
 
+import { BrevoApiAccountService } from "../brevo-api/brevo-api-account.service";
 import { BrevoApiSenderService } from "../brevo-api/brevo-api-sender.service";
+import { BrevoApiTransactionalEmailsApiService } from "../brevo-api/brevo-api-transactional-emails.service";
+import { BrevoApiEmailTemplate } from "../brevo-api/dto/brevo-api-email-templates-list";
 import { BrevoApiSender } from "../brevo-api/dto/brevo-api-sender";
 import { EmailCampaignScopeInterface } from "../types";
 import { DynamicDtoValidationPipe } from "../validation/dynamic-dto-validation.pipe";
@@ -24,6 +27,9 @@ export function createBrevoConfigResolver({
         constructor(
             private readonly entityManager: EntityManager,
             private readonly brevoSenderApiService: BrevoApiSenderService,
+            private readonly brevoTransactionalEmailsApiService: BrevoApiTransactionalEmailsApiService,
+            private readonly brevoApiAccountService: BrevoApiAccountService,
+
             @InjectRepository(BrevoConfig) private readonly repository: EntityRepository<BrevoConfigInterface>,
         ) {}
 
@@ -37,11 +43,39 @@ export function createBrevoConfigResolver({
             return false;
         }
 
+        private async isValidTemplateId({ templateId }: { templateId: number }): Promise<boolean> {
+            const { templates } = await this.brevoTransactionalEmailsApiService.getEmailTemplates();
+
+            if (templates && templates.some((template) => template.id === templateId)) {
+                return true;
+            }
+
+            return false;
+        }
+
+        private async isValidApiKey({ apiKey }: { apiKey: string }): Promise<boolean> {
+            const account = await this.brevoApiAccountService.getAccountInformation({ apiKey });
+
+            if (account !== undefined) {
+                return true;
+            }
+
+            return false;
+        }
+
         @RequiredPermission(["brevo-newsletter-config"], { skipScopeCheck: true })
         @Query(() => [BrevoApiSender], { nullable: true })
         async senders(): Promise<Array<BrevoApiSender> | undefined> {
             const senders = await this.brevoSenderApiService.getSenders();
             return senders;
+        }
+
+        @RequiredPermission(["brevo-newsletter-config"], { skipScopeCheck: true })
+        @Query(() => [BrevoApiEmailTemplate], { nullable: true })
+        async doiTemplates(): Promise<Array<BrevoApiEmailTemplate> | undefined> {
+            const { templates } = await this.brevoTransactionalEmailsApiService.getEmailTemplates();
+            const doiTemplates = templates?.filter((template) => template.tag === "optin" && template.isActive);
+            return doiTemplates;
         }
 
         @Query(() => BrevoConfig, { nullable: true })
@@ -59,8 +93,8 @@ export function createBrevoConfigResolver({
             scope: typeof Scope,
             @Args("input", { type: () => BrevoConfigInput }) input: BrevoConfigInput,
         ): Promise<BrevoConfigInterface> {
-            if (!(await this.isValidSender({ email: input.senderMail, name: input.senderName }))) {
-                throw new Error("Sender not found");
+            if (!(await this.isValidApiKey({ apiKey: input.apiKey }))) {
+                throw new Error("Api key is not valid");
             }
 
             const brevoConfig = this.repository.create({
@@ -85,17 +119,52 @@ export function createBrevoConfigResolver({
                 validateNotModified(brevoConfig, lastUpdatedAt);
             }
 
+            if ((await this.isApiKeySet(brevoConfig)) && input.apiKey) {
+                throw new Error("Api key cannot be changed");
+            }
+
+            if (input.apiKey) {
+                if (!(await this.isValidApiKey({ apiKey: input.apiKey }))) {
+                    throw new Error("Api key is not valid");
+                }
+
+                wrap(brevoConfig).assign({
+                    apiKey: input.apiKey,
+                });
+
+                await this.entityManager.flush();
+                return brevoConfig;
+            }
+
+            if (!(await this.isApiKeySet(brevoConfig)) && !input.apiKey) {
+                throw new Error("Api key is required before other fields can be updated");
+            }
+
+            if (!input.senderMail || !input.senderName || !input.doiTemplateId) {
+                throw new Error("Sender mail, sender name and doi template id are required");
+            }
+
             if (!(await this.isValidSender({ email: input.senderMail, name: input.senderName }))) {
                 throw new Error("Sender not found");
             }
 
+            if (!(await this.isValidTemplateId({ templateId: input.doiTemplateId }))) {
+                throw new Error("Template not found");
+            }
+
             wrap(brevoConfig).assign({
-                ...input,
+                senderMail: input.senderMail,
+                senderName: input.senderName,
+                doiTemplateId: input.doiTemplateId,
             });
 
             await this.entityManager.flush();
-
             return brevoConfig;
+        }
+
+        @ResolveField()
+        async isApiKeySet(@Parent() brevoConfig: BrevoConfigInterface): Promise<boolean> {
+            return brevoConfig.apiKey != undefined;
         }
     }
 
