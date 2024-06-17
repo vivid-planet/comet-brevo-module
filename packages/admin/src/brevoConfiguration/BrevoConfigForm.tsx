@@ -70,6 +70,7 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
         error: senderError,
         loading: senderLoading,
     } = useQuery<GQLSendersSelectQuery, GQLSendersSelectQueryVariables>(sendersSelectQuery, {
+        variables: { scope },
         skip: mode === "add" || !data?.brevoConfig?.isApiKeySet,
     });
 
@@ -78,6 +79,7 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
         error: doiTemplatesError,
         loading: doiTemplatesLoading,
     } = useQuery<GQLDoiTemplatesSelectQuery, GQLDoiTemplatesSelectQueryVariables>(doiTemplatesSelectQuery, {
+        variables: { scope },
         skip: mode === "add" || !data?.brevoConfig?.isApiKeySet,
     });
 

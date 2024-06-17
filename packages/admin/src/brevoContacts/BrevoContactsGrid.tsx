@@ -43,14 +43,14 @@ const brevoContactsFragment = gql`
 `;
 
 const deleteBrevoContactMutation = gql`
-    mutation DeleteBrevoContact($id: Int!) {
-        deleteBrevoContact(id: $id)
+    mutation DeleteBrevoContact($id: Int!, $scope: EmailCampaignContentScopeInput!) {
+        deleteBrevoContact(id: $id, scope: $scope)
     }
 `;
 
 const updateBrevoContactMutation = gql`
-    mutation UpdateBrevoContact($id: Int!, $input: BrevoContactUpdateInput!) {
-        updateBrevoContact(id: $id, input: $input) {
+    mutation UpdateBrevoContact($id: Int!, $input: BrevoContactUpdateInput!, $scope: EmailCampaignContentScopeInput!) {
+        updateBrevoContact(id: $id, input: $input, scope: $scope) {
             id
         }
     }
@@ -155,7 +155,7 @@ export function BrevoContactsGrid({
                                     onClick={async () => {
                                         await client.mutate<GQLUpdateBrevoContactMutation, GQLUpdateBrevoContactMutationVariables>({
                                             mutation: updateBrevoContactMutation,
-                                            variables: { id: params.row.id, input: { blocked: !params.row.emailBlacklisted } },
+                                            variables: { id: params.row.id, input: { blocked: !params.row.emailBlacklisted }, scope },
                                             refetchQueries: [brevoContactsQuery],
                                         });
                                     }}
@@ -172,7 +172,7 @@ export function BrevoContactsGrid({
                                     onClick={async () => {
                                         await client.mutate<GQLDeleteBrevoContactMutation, GQLDeleteBrevoContactMutationVariables>({
                                             mutation: deleteBrevoContactMutation,
-                                            variables: { id: params.row.id },
+                                            variables: { id: params.row.id, scope },
                                             refetchQueries: [brevoContactsQuery],
                                         });
                                     }}
