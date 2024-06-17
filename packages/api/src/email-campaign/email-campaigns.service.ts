@@ -4,6 +4,7 @@ import { InjectRepository } from "@mikro-orm/nestjs";
 import { HttpService } from "@nestjs/axios";
 import { Inject, Injectable } from "@nestjs/common";
 import { UpdateCampaignStatus } from "@sendinblue/client";
+import { EmailCampaignScopeInterface } from "src/types";
 
 import { BrevoApiCampaignsService } from "../brevo-api/brevo-api-campaigns.service";
 import { BrevoApiContactsService } from "../brevo-api/brevo-api-contact.service";
@@ -42,8 +43,7 @@ export class EmailCampaignsService {
         return andFilters.length > 0 ? { $and: andFilters } : {};
     }
 
-    async saveEmailCampaignInBrevo(id: string, scheduledAt?: Date): Promise<EmailCampaignInterface> {
-        const campaign = await this.repository.findOneOrFail(id);
+    async saveEmailCampaignInBrevo(campaign: EmailCampaignInterface, scheduledAt?: Date): Promise<EmailCampaignInterface> {
         const brevoConfig = await this.brevoConfigRepository.findOneOrFail({ scope: campaign.scope });
 
         const content = await this.blockTransformerService.transformToPlain(campaign.content);
@@ -93,15 +93,18 @@ export class EmailCampaignsService {
         return campaign;
     }
 
-    async suspendEmailCampaign(brevoId: number): Promise<boolean> {
-        return this.brevoApiCampaignService.updateBrevoCampaignStatus(brevoId, UpdateCampaignStatus.StatusEnum.Suspended);
+    async suspendEmailCampaign(campaign: EmailCampaignInterface): Promise<boolean> {
+        return this.brevoApiCampaignService.updateBrevoCampaignStatus({ campaign, updatedStatus: UpdateCampaignStatus.StatusEnum.Suspended });
     }
 
-    public async loadEmailCampaignSendingStatesForEmailCampaigns(campaigns: EmailCampaignInterface[]): Promise<EmailCampaignInterface[]> {
+    public async loadEmailCampaignSendingStatesForEmailCampaigns(
+        campaigns: EmailCampaignInterface[],
+        scope: EmailCampaignScopeInterface,
+    ): Promise<EmailCampaignInterface[]> {
         const brevoIds = campaigns.map((campaign) => campaign.brevoId).filter((campaign) => campaign) as number[];
 
         if (brevoIds.length > 0) {
-            const brevoCampaigns = await this.brevoApiCampaignService.loadBrevoCampaignsByIds(brevoIds);
+            const brevoCampaigns = await this.brevoApiCampaignService.loadBrevoCampaignsByIds(brevoIds, scope);
 
             for (const brevoCampaign of brevoCampaigns) {
                 const sendingState = this.brevoApiCampaignService.getSendingInformationFromBrevoCampaign(brevoCampaign);
@@ -116,8 +119,8 @@ export class EmailCampaignsService {
         return campaigns;
     }
 
-    public async sendEmailCampaignNow(id: string): Promise<boolean> {
-        const campaign = await this.saveEmailCampaignInBrevo(id);
+    public async sendEmailCampaignNow(campaign: EmailCampaignInterface): Promise<boolean> {
+        const brevoCampaign = await this.saveEmailCampaignInBrevo(campaign);
 
         const targetGroup = await campaign.targetGroup?.load();
 
@@ -126,12 +129,17 @@ export class EmailCampaignsService {
             let totalContacts = 0;
             const limit = 50;
             do {
-                const [contacts, total] = await this.brevoApiContactsService.findContactsByListId(targetGroup.brevoId, limit, currentOffset);
+                const [contacts, total] = await this.brevoApiContactsService.findContactsByListId({
+                    id: targetGroup.brevoId,
+                    limit,
+                    offset: currentOffset,
+                    scope: campaign.scope,
+                });
                 const emails = contacts.map((contact) => contact.email);
                 const containedEmails = await this.ecgRtrListService.getContainedEcgRtrListEmails(emails);
 
                 if (containedEmails.length > 0) {
-                    await this.brevoApiContactsService.blacklistMultipleContacts(containedEmails);
+                    await this.brevoApiContactsService.blacklistMultipleContacts({ emails: containedEmails, scope: campaign.scope });
                 }
 
                 currentOffset += limit;
@@ -139,7 +147,7 @@ export class EmailCampaignsService {
             } while (currentOffset < totalContacts);
 
             if (campaign.brevoId) {
-                return this.brevoApiCampaignService.sendBrevoCampaign(campaign.brevoId);
+                return this.brevoApiCampaignService.sendBrevoCampaign({ id: campaign.brevoId, scope: brevoCampaign.scope });
             }
         }
 

@@ -83,7 +83,7 @@ export function createEmailCampaignsResolver({
 
             const [entities, totalCount] = await this.repository.findAndCount(where, options);
 
-            const emailCampaigns = this.campaignsService.loadEmailCampaignSendingStatesForEmailCampaigns(entities);
+            const emailCampaigns = this.campaignsService.loadEmailCampaignSendingStatesForEmailCampaigns(entities, scope);
 
             return new PaginatedEmailCampaigns(emailCampaigns, totalCount);
         }
@@ -107,7 +107,7 @@ export function createEmailCampaignsResolver({
             await this.entityManager.flush();
 
             if (input.scheduledAt) {
-                await this.campaignsService.saveEmailCampaignInBrevo(campaign.id, input.scheduledAt);
+                await this.campaignsService.saveEmailCampaignInBrevo(campaign, input.scheduledAt);
             }
 
             return campaign;
@@ -137,7 +137,7 @@ export function createEmailCampaignsResolver({
             let hasScheduleRemoved = false;
 
             if (campaign.brevoId) {
-                const brevoEmailCampaign = await this.brevoApiCampaignsService.loadBrevoCampaignById(campaign.brevoId);
+                const brevoEmailCampaign = await this.brevoApiCampaignsService.loadBrevoCampaign(campaign);
                 const sendingState = this.brevoApiCampaignsService.getSendingInformationFromBrevoCampaign(brevoEmailCampaign);
 
                 if (sendingState === SendingState.SENT) {
@@ -146,12 +146,12 @@ export function createEmailCampaignsResolver({
 
                 hasScheduleRemoved = input.scheduledAt === null && brevoEmailCampaign.scheduledAt !== null;
                 if (hasScheduleRemoved && !(sendingState === SendingState.DRAFT)) {
-                    await this.campaignsService.suspendEmailCampaign(campaign.brevoId);
+                    await this.campaignsService.suspendEmailCampaign(campaign);
                 }
             }
 
             if (!hasScheduleRemoved && input.scheduledAt) {
-                await this.campaignsService.saveEmailCampaignInBrevo(campaign.id, input.scheduledAt);
+                await this.campaignsService.saveEmailCampaignInBrevo(campaign, input.scheduledAt);
             }
 
             return campaign;
@@ -174,7 +174,9 @@ export function createEmailCampaignsResolver({
         @Mutation(() => Boolean)
         @AffectedEntity(EmailCampaign)
         async sendEmailCampaignNow(@Args("id", { type: () => ID }) id: string): Promise<boolean> {
-            const campaignSent = await this.campaignsService.sendEmailCampaignNow(id);
+            const campaign = await this.repository.findOneOrFail(id);
+
+            const campaignSent = await this.campaignsService.sendEmailCampaignNow(campaign);
 
             if (campaignSent) {
                 const campaign = await this.repository.findOneOrFail(id);
@@ -197,13 +199,15 @@ export function createEmailCampaignsResolver({
             @Args("id", { type: () => ID }) id: string,
             @Args("data", { type: () => SendTestEmailCampaignArgs }) data: SendTestEmailCampaignArgs,
         ): Promise<boolean> {
-            const campaign = await this.campaignsService.saveEmailCampaignInBrevo(id);
+            const campaign = await this.repository.findOneOrFail(id);
+
+            const brevoCampaign = await this.campaignsService.saveEmailCampaignInBrevo(campaign);
 
             const containedEcgRtrListEmails = await this.ecgRtrListService.getContainedEcgRtrListEmails(data.emails);
             const emailsNotInEcgRtrList = data.emails.filter((email) => !containedEcgRtrListEmails.includes(email));
 
-            if (campaign.brevoId) {
-                return this.brevoApiCampaignsService.sendTestEmail(campaign.brevoId, emailsNotInEcgRtrList);
+            if (brevoCampaign.brevoId) {
+                return this.brevoApiCampaignsService.sendTestEmail(brevoCampaign, emailsNotInEcgRtrList);
             }
 
             return false;
@@ -214,7 +218,7 @@ export function createEmailCampaignsResolver({
         async emailCampaignStatistics(@Args("id", { type: () => ID }) id: string): Promise<BrevoApiCampaignStatistics | null> {
             const campaign = await this.repository.findOneOrFail(id);
 
-            return campaign.brevoId ? this.brevoApiCampaignsService.loadBrevoCampaignStatisticsById(campaign.brevoId) : null;
+            return campaign.brevoId ? this.brevoApiCampaignsService.loadBrevoCampaignStatistics(campaign) : null;
         }
 
         @ResolveField(() => SendingState)
@@ -224,7 +228,7 @@ export function createEmailCampaignsResolver({
             }
 
             if (campaign.brevoId) {
-                const brevoCampaign = await this.brevoApiCampaignsService.loadBrevoCampaignById(campaign.brevoId);
+                const brevoCampaign = await this.brevoApiCampaignsService.loadBrevoCampaign(campaign);
                 return this.brevoApiCampaignsService.getSendingInformationFromBrevoCampaign(brevoCampaign);
             }
 

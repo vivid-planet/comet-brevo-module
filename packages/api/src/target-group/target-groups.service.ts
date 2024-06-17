@@ -62,7 +62,12 @@ export class TargetGroupsService {
         let offset = 0;
         let totalCount = 0;
         do {
-            const [contacts, totalContacts] = await this.brevoApiContactsService.findContactsByListId(mainScopeTargetGroupList.brevoId, 50, offset);
+            const [contacts, totalContacts] = await this.brevoApiContactsService.findContactsByListId({
+                id: mainScopeTargetGroupList.brevoId,
+                limit: 50,
+                offset,
+                scope,
+            });
             totalCount = totalContacts;
             offset += contacts.length;
 
@@ -80,14 +85,16 @@ export class TargetGroupsService {
             }
 
             if (contactsInContactList.length > 0) {
-                await this.brevoApiContactsService.updateMultipleContacts(
-                    contactsInContactList.map((contact) => ({ id: contact.id, listIds: [brevoId] })),
-                );
+                await this.brevoApiContactsService.updateMultipleContacts({
+                    contacts: contactsInContactList.map((contact) => ({ id: contact.id, listIds: [brevoId] })),
+                    scope,
+                });
             }
             if (contactsNotInContactList.length > 0) {
-                await this.brevoApiContactsService.updateMultipleContacts(
-                    contactsNotInContactList.map((contact) => ({ id: contact.id, unlinkListIds: [brevoId] })),
-                );
+                await this.brevoApiContactsService.updateMultipleContacts({
+                    contacts: contactsNotInContactList.map((contact) => ({ id: contact.id, unlinkListIds: [brevoId] })),
+                    scope,
+                });
             }
         } while (offset < totalCount);
 
@@ -127,7 +134,7 @@ export class TargetGroupsService {
         }
 
         const title = "Main list for current scope";
-        const brevoId = await this.brevoApiContactsService.createBrevoContactList({ title });
+        const brevoId = await this.brevoApiContactsService.createBrevoContactList({ input: { title }, scope });
 
         if (brevoId) {
             const mainTargetGroupForScope = this.repository.create({ title, brevoId, scope, isMainList: true });
