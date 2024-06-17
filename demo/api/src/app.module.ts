@@ -140,7 +140,6 @@ export class AppModule {
                     brevo: {
                         BrevoContactAttributes,
                         BrevoContactFilterAttributes,
-                        doubleOptInTemplateId: config.brevo.doubleOptInTemplateId,
                         allowedRedirectUrl: config.brevo.allowedRedirectUrl,
                     },
                     ecgRtrList: {

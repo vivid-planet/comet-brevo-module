@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { BlobStorageConfig } from "@comet/cms-api";
 import { Transform, Type } from "class-transformer";
-import { IsBase64, IsBoolean, IsInt, IsNumber, IsOptional, IsString, MinLength, ValidateIf } from "class-validator";
+import { IsBase64, IsBoolean, IsInt, IsOptional, IsString, MinLength, ValidateIf } from "class-validator";
 
 export class EnvironmentVariables {
     @IsString()
@@ -111,10 +111,6 @@ export class EnvironmentVariables {
     @ValidateIf((v) => v.DAM_STORAGE_DRIVER === "s3")
     @IsString()
     S3_SECRET_ACCESS_KEY: string;
-
-    @IsNumber()
-    @Type(() => Number)
-    BREVO_DOUBLE_OPT_IN_TEMPLATE_ID: number;
 
     @IsString()
     BREVO_ALLOWED_REDIRECT_URL: string;
