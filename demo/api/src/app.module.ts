@@ -138,7 +138,6 @@ export class AppModule {
                 DependenciesModule,
                 BrevoModule.register({
                     brevo: {
-                        apiKey: config.brevo.apiKey,
                         BrevoContactAttributes,
                         BrevoContactFilterAttributes,
                         doubleOptInTemplateId: config.brevo.doubleOptInTemplateId,

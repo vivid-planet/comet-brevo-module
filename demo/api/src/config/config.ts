@@ -56,7 +56,6 @@ export function createConfig(processEnv: NodeJS.ProcessEnv) {
             storageDirectoryPrefix: envVars.BLOB_STORAGE_DIRECTORY_PREFIX,
         },
         brevo: {
-            apiKey: envVars.BREVO_API_KEY,
             doubleOptInTemplateId: envVars.BREVO_DOUBLE_OPT_IN_TEMPLATE_ID,
             allowedRedirectUrl: envVars.BREVO_ALLOWED_REDIRECT_URL,
         },

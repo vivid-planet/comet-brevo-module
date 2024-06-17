@@ -112,9 +112,6 @@ export class EnvironmentVariables {
     @IsString()
     S3_SECRET_ACCESS_KEY: string;
 
-    @IsString()
-    BREVO_API_KEY: string;
-
     @IsNumber()
     @Type(() => Number)
     BREVO_DOUBLE_OPT_IN_TEMPLATE_ID: number;
