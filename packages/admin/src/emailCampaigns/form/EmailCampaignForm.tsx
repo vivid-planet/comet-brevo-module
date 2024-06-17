@@ -211,6 +211,7 @@ export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope, previe
 
     const previewState = {
         emailCampaignId: id,
+        scope,
         content: EmailCampaignContentBlock.createPreviewState(state.content, previewContext),
     };
 
