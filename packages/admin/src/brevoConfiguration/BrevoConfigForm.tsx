@@ -69,19 +69,27 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
         data: sendersData,
         error: senderError,
         loading: senderLoading,
-    } = useQuery<GQLSendersSelectQuery, GQLSendersSelectQueryVariables>(sendersSelectQuery, {
-        variables: { scope },
-        skip: mode === "add" || !data?.brevoConfig?.isApiKeySet,
-    });
+    } = useQuery<GQLSendersSelectQuery, GQLSendersSelectQueryVariables>(
+        sendersSelectQuery,
+        mode !== "add" && data?.brevoConfig?.isApiKeySet
+            ? {
+                  variables: { scope },
+              }
+            : { skip: true },
+    );
 
     const {
         data: doiTemplatesData,
         error: doiTemplatesError,
         loading: doiTemplatesLoading,
-    } = useQuery<GQLDoiTemplatesSelectQuery, GQLDoiTemplatesSelectQueryVariables>(doiTemplatesSelectQuery, {
-        variables: { scope },
-        skip: mode === "add" || !data?.brevoConfig?.isApiKeySet,
-    });
+    } = useQuery<GQLDoiTemplatesSelectQuery, GQLDoiTemplatesSelectQueryVariables>(
+        doiTemplatesSelectQuery,
+        mode !== "add" && data?.brevoConfig?.isApiKeySet
+            ? {
+                  variables: { scope },
+              }
+            : { skip: true },
+    );
 
     const senderOptions =
         sendersData?.senders?.map((sender) => ({

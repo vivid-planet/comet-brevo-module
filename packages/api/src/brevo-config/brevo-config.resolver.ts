@@ -62,23 +62,21 @@ export function createBrevoConfigResolver({
             return false;
         }
 
-        @RequiredPermission(["brevo-newsletter-config"], { skipScopeCheck: true })
         @Query(() => [BrevoApiSender], { nullable: true })
         async senders(
             @Args("scope", { type: () => Scope }, new DynamicDtoValidationPipe(Scope))
             scope: typeof Scope,
         ): Promise<Array<BrevoApiSender> | undefined> {
-            const senders = await this.brevoSenderApiService.getSenders({ scope });
+            const senders = await this.brevoSenderApiService.getSenders(scope);
             return senders;
         }
 
-        @RequiredPermission(["brevo-newsletter-config"], { skipScopeCheck: true })
         @Query(() => [BrevoApiEmailTemplate], { nullable: true })
         async doiTemplates(
             @Args("scope", { type: () => Scope }, new DynamicDtoValidationPipe(Scope))
             scope: typeof Scope,
         ): Promise<Array<BrevoApiEmailTemplate> | undefined> {
-            const { templates } = await this.brevoTransactionalEmailsApiService.getEmailTemplates({ scope });
+            const { templates } = await this.brevoTransactionalEmailsApiService.getEmailTemplates(scope);
             const doiTemplates = templates?.filter((template) => template.tag === "optin" && template.isActive);
             return doiTemplates;
         }
