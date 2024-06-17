@@ -35,7 +35,7 @@ export class BrevoApiSenderService {
         this.senderApi.setApiKey(SibApiV3Sdk.SendersApiApiKeys.apiKey, apiKey);
     }
 
-    public async getSenders(scope: EmailCampaignScopeInterface): Promise<Array<SibApiV3Sdk.GetSendersListSenders> | undefined> {
+    public async getSenders(scope: EmailCampaignScopeInterface): Promise<Array<BrevoApiSender> | undefined> {
         await this.setApiKey({ scope });
 
         const { response, body } = await this.senderApi.getSenders();
