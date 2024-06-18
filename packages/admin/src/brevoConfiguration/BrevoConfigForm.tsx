@@ -13,7 +13,6 @@ import {
     ToolbarFillSpace,
     ToolbarTitleItem,
     useFormApiRef,
-    useStackSwitchApi,
 } from "@comet/admin";
 import { ContentScopeInterface, EditPageLayout, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
 import { FormApi } from "final-form";
@@ -38,6 +37,7 @@ import {
     GQLSendersSelectQueryVariables,
     GQLUpdateBrevoConfigMutation,
     GQLUpdateBrevoConfigMutationVariables,
+    namedOperations,
 } from "./BrevoConfigForm.gql.generated";
 
 interface Option {
@@ -57,7 +57,6 @@ interface FormProps {
 export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
     const client = useApolloClient();
     const formApiRef = useFormApiRef<FormValues>();
-    const stackSwitchApi = useStackSwitchApi();
 
     const { data, error, loading, refetch } = useQuery<GQLBrevoConfigFormQuery, GQLBrevoConfigFormQueryVariables>(brevoConfigFormQuery, {
         variables: { scope },
@@ -206,7 +205,7 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
                 const id = mutationResponse?.createBrevoConfig.id;
                 if (id) {
                     setTimeout(() => {
-                        stackSwitchApi.activatePage("edit", id);
+                        client.refetchQueries({ include: [namedOperations.Query.BrevoConfigForm] });
                     });
                 }
             }
