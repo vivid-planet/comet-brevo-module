@@ -31,10 +31,11 @@ The following variables must be set manually
 -   `CAMPAIGN_BASIC_AUTH_USERNAME`
 -   `CAMPAIGN_BASIC_AUTH_PASSWORD`
 
-### Configure brevo sender in the demo admin brevo config page
+### Configure brevo using the demo admin brevo config page
 
--   Brevo sender name
--   Brevo sender mail
+-   Brevo api key
+-   Brevo sender
+-   Brevo double opt-in template
 
 ### Start development processes
 
