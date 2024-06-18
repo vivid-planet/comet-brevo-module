@@ -218,7 +218,7 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
         return <Loading behavior="fillPageHeight" />;
     }
 
-    const allowAllFields = mode !== "add" && data?.brevoConfig?.isApiKeySet;
+    const isApiKeySet = mode !== "add" && data?.brevoConfig?.isApiKeySet;
 
     return (
         <FinalForm<FormValues> apiRef={formApiRef} onSubmit={handleSubmit} mode={mode} initialValues={initialValues}>
@@ -236,7 +236,7 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
                             </ToolbarActions>
                         </Toolbar>
                         <MainContent>
-                            {!data?.brevoConfig?.isApiKeySet && (
+                            {!isApiKeySet && (
                                 <Field
                                     type="password"
                                     name="apiKey"
@@ -251,7 +251,7 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
                                     required
                                 />
                             )}
-                            {data?.brevoConfig?.isApiKeySet && (
+                            {isApiKeySet && (
                                 <>
                                     <Field
                                         component={FinalFormAutocomplete}
@@ -259,10 +259,9 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
                                         isOptionEqualToValue={(option: Option, value: Option) => option.value === value.value}
                                         options={senderOptions}
                                         name="sender"
-                                        disabled={!allowAllFields}
                                         label={<FormattedMessage id="cometBrevoModule.brevoConfig.sender" defaultMessage="Sender" />}
                                         fullWidth
-                                        required={allowAllFields}
+                                        required
                                     />
 
                                     <Field
@@ -270,7 +269,6 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
                                         getOptionLabel={(option: Option) => option.label}
                                         isOptionEqualToValue={(option: Option, value: Option) => option.value === value.value}
                                         options={doiTemplateOptions}
-                                        disabled={!allowAllFields}
                                         name="doiTemplate"
                                         label={
                                             <FormattedMessage
@@ -279,7 +277,7 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
                                             />
                                         }
                                         fullWidth
-                                        required={allowAllFields}
+                                        required
                                     />
                                 </>
                             )}
