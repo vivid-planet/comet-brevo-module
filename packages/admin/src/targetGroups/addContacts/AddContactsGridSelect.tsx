@@ -246,14 +246,7 @@ export function AddContactsGridSelect({ id, scope, assignedContactsTargetGroupId
                 }}
             />
 
-            <FinalForm<FormProps>
-                mode="edit"
-                onSubmit={submit}
-                onAfterSubmit={() => {
-                    // override default onAfterSubmit because default is stackApi.goBack()
-                    // https://github.com/vivid-planet/comet/blob/d0a1282615a88f534d26344152528cb0dd2cbc95/packages/admin/admin/src/FinalForm.tsx#L47C2-L47C2
-                }}
-            >
+            <FinalForm<FormProps> mode="edit" onSubmit={submit}>
                 {({ handleSubmit, submitting }) => {
                     return (
                         <MemoryRouter>
