@@ -63,7 +63,10 @@ export function createTargetGroupsResolver({
 
             const [entities, totalCount] = await this.repository.findAndCount(where, options);
 
-            const brevoContactLists = await this.brevoApiContactsService.findBrevoContactListsByIds(entities.map((list) => list.brevoId));
+            const brevoContactLists = await this.brevoApiContactsService.findBrevoContactListsByIds(
+                entities.map((list) => list.brevoId),
+                scope,
+            );
 
             for (const contactList of entities) {
                 const brevoContactList = brevoContactLists.find((item) => item.id === contactList.brevoId);
@@ -84,7 +87,7 @@ export function createTargetGroupsResolver({
             scope: typeof Scope,
             @Args("input", { type: () => TargetGroupInput }, new DynamicDtoValidationPipe(TargetGroupInput)) input: TargetGroupInputInterface,
         ): Promise<TargetGroupInterface> {
-            const brevoId = await this.brevoApiContactsService.createBrevoContactList(input);
+            const brevoId = await this.brevoApiContactsService.createBrevoContactList(input.title, scope);
 
             if (brevoId) {
                 const targetGroup = this.repository.create({ ...input, brevoId, scope, isMainList: false });
@@ -120,7 +123,11 @@ export function createTargetGroupsResolver({
             await this.targetGroupsService.assignContactsToContactList(input.filters, targetGroup.brevoId, targetGroup.scope);
 
             if (input.title && input.title !== targetGroup.title) {
-                const successfullyUpdatedContactList = await this.brevoApiContactsService.updateBrevoContactList(targetGroup.brevoId, input.title);
+                const successfullyUpdatedContactList = await this.brevoApiContactsService.updateBrevoContactList(
+                    targetGroup.brevoId,
+                    input.title,
+                    targetGroup.scope,
+                );
                 if (!successfullyUpdatedContactList) {
                     throw Error("Brevo Error: Could not update contact list");
                 }
@@ -144,7 +151,7 @@ export function createTargetGroupsResolver({
                 throw new Error("Cannot delete a main target group");
             }
 
-            const isDeletedInBrevo = await this.brevoApiContactsService.deleteBrevoContactList(targetGroup.brevoId);
+            const isDeletedInBrevo = await this.brevoApiContactsService.deleteBrevoContactList(targetGroup.brevoId, targetGroup.scope);
 
             if (!isDeletedInBrevo) {
                 return false;
@@ -160,7 +167,7 @@ export function createTargetGroupsResolver({
         async totalSubscribers(@Parent() targetGroup: TargetGroupInterface): Promise<number> {
             if (targetGroup.totalSubscribers !== undefined) return targetGroup.totalSubscribers;
 
-            const { uniqueSubscribers } = await this.brevoApiContactsService.findBrevoContactListById(targetGroup.brevoId);
+            const { uniqueSubscribers } = await this.brevoApiContactsService.findBrevoContactListById(targetGroup.brevoId, targetGroup.scope);
 
             return uniqueSubscribers;
         }
@@ -169,7 +176,7 @@ export function createTargetGroupsResolver({
         async totalContactsBlocked(@Parent() targetGroup: TargetGroupInterface): Promise<number> {
             if (targetGroup.totalContactsBlocked !== undefined) return targetGroup.totalContactsBlocked;
 
-            const { totalBlacklisted } = await this.brevoApiContactsService.findBrevoContactListById(targetGroup.brevoId);
+            const { totalBlacklisted } = await this.brevoApiContactsService.findBrevoContactListById(targetGroup.brevoId, targetGroup.scope);
 
             return totalBlacklisted;
         }

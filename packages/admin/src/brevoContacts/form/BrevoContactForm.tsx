@@ -24,7 +24,6 @@ import { FormApi } from "final-form";
 import React from "react";
 import { FormattedMessage } from "react-intl";
 
-import { GQLUpdateBrevoContactMutation, GQLUpdateBrevoContactMutationVariables } from "../BrevoContactsGrid.generated";
 import {
     brevoContactFormCheckForChangesQuery,
     brevoContactFormQuery,
@@ -38,6 +37,8 @@ import {
     GQLBrevoContactFormQueryVariables,
     GQLCreateBrevoContactMutation,
     GQLCreateBrevoContactMutationVariables,
+    GQLUpdateBrevoContactMutation,
+    GQLUpdateBrevoContactMutationVariables,
 } from "./BrevoContactForm.gql.generated";
 
 export type EditBrevoContactFormValues = {
@@ -72,7 +73,7 @@ export function BrevoContactForm({ id, scope, input2State, additionalFormFields,
 `;
     const { data, error, loading, refetch } = useQuery<GQLBrevoContactFormQuery, GQLBrevoContactFormQueryVariables>(
         brevoContactFormQuery(brevoContactFormFragment),
-        id ? { variables: { id } } : { skip: true },
+        id ? { variables: { id, scope } } : { skip: true },
     );
 
     const initialValues = React.useMemo<Partial<EditBrevoContactFormValues>>(() => {
@@ -99,7 +100,7 @@ export function BrevoContactForm({ id, scope, input2State, additionalFormFields,
                 GQLBrevoContactFormCheckForChangesQueryVariables
             >({
                 query: brevoContactFormCheckForChangesQuery,
-                variables: { id },
+                variables: { id, scope },
                 fetchPolicy: "no-cache",
             });
 
@@ -128,7 +129,7 @@ export function BrevoContactForm({ id, scope, input2State, additionalFormFields,
             const { email, redirectionUrl, ...rest } = output;
             await client.mutate<GQLUpdateBrevoContactMutation, GQLUpdateBrevoContactMutationVariables>({
                 mutation: updateBrevoContactMutation(brevoContactFormFragment),
-                variables: { id, input: rest },
+                variables: { id, input: rest, scope },
             });
         } else {
             const { data: mutationResponse } = await client.mutate<GQLCreateBrevoContactMutation, GQLCreateBrevoContactMutationVariables>({

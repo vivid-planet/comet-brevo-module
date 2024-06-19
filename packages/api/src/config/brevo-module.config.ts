@@ -6,10 +6,16 @@ import { BrevoContactFilterAttributesInterface } from "../types";
 
 export interface BrevoModuleConfig {
     brevo: {
-        apiKey: string;
+        getBrevoConfig: (scope: EmailCampaignScopeInterface) => {
+            apiKey: string;
+            doubleOptInTemplateId: number;
+            sender: {
+                name: string;
+                email: string;
+            };
+        };
         BrevoContactAttributes?: Type<BrevoContactAttributesInterface>;
         BrevoContactFilterAttributes?: Type<BrevoContactFilterAttributesInterface>;
-        doubleOptInTemplateId: number;
         allowedRedirectUrl: string;
     };
     ecgRtrList: {
