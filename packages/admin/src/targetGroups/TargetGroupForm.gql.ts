@@ -6,10 +6,8 @@ export const targetGroupFormQuery = (targetGroupFormFragment: DocumentNode) => g
             id
             title
             updatedAt
+            assignedContactsTargetGroupBrevoId
             ...TargetGroupForm
-            assignedContactsTargetGroup {
-                id
-            }
         }
     }
     ${targetGroupFormFragment}

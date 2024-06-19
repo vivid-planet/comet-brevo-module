@@ -183,7 +183,7 @@ export function TargetGroupForm({ id, scope, additionalFormFields, input2State, 
                                 disablePadding
                             >
                                 <AddContactsGridSelect
-                                    assignedContactsTargetGroupId={data?.targetGroup.assignedContactsTargetGroup?.id}
+                                    assignedContactsTargetGroupBrevoId={data?.targetGroup.assignedContactsTargetGroupBrevoId ?? undefined}
                                     id={id}
                                     scope={scope}
                                 />

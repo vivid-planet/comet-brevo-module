@@ -111,10 +111,10 @@ const useSubmitMutation = (id: string) => {
 interface AddContactsGridSelectProps {
     scope: ContentScopeInterface;
     id: string;
-    assignedContactsTargetGroupId?: string;
+    assignedContactsTargetGroupBrevoId?: number;
 }
 
-export function AddContactsGridSelect({ id, scope, assignedContactsTargetGroupId }: AddContactsGridSelectProps): React.ReactElement {
+export function AddContactsGridSelect({ id, scope, assignedContactsTargetGroupBrevoId }: AddContactsGridSelectProps): React.ReactElement {
     const intl = useIntl();
     const submit = useSubmitMutation(id);
     const theme = useTheme();
@@ -147,6 +147,7 @@ export function AddContactsGridSelect({ id, scope, assignedContactsTargetGroupId
             email: dataGridAssignableContactsProps.filterModel?.quickFilterValues
                 ? dataGridAssignableContactsProps.filterModel?.quickFilterValues[0]
                 : undefined,
+            onlyShowAssignedContactsOfTargetGroup: false,
             scope,
         },
     });
@@ -163,9 +164,10 @@ export function AddContactsGridSelect({ id, scope, assignedContactsTargetGroupId
                 ? dataGridAssignedContactsProps.filterModel?.quickFilterValues[0]
                 : undefined,
             scope,
-            targetGroupId: assignedContactsTargetGroupId,
+            targetGroupId: id,
+            onlyShowAssignedContactsOfTargetGroup: true,
         },
-        skip: !assignedContactsTargetGroupId,
+        skip: !assignedContactsTargetGroupBrevoId,
     });
 
     const assignableContactsColumns: GridColDef<GQLTargetGroupBrevoContactsListFragment>[] = [

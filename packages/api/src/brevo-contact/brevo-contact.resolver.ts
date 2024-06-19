@@ -57,7 +57,9 @@ export function createBrevoContactResolver({
         }
 
         @Query(() => PaginatedBrevoContacts)
-        async brevoContacts(@Args() { offset, limit, email, scope, targetGroupId }: BrevoContactsArgs): Promise<PaginatedBrevoContacts> {
+        async brevoContacts(
+            @Args() { offset, limit, email, scope, targetGroupId, onlyShowAssignedContactsOfTargetGroup }: BrevoContactsArgs,
+        ): Promise<PaginatedBrevoContacts> {
             const where: FilterQuery<TargetGroupInterface> = { scope, isMainList: true };
 
             if (targetGroupId) {
@@ -85,7 +87,21 @@ export function createBrevoContactResolver({
                 return new PaginatedBrevoContacts([], 0, { offset, limit });
             }
 
-            const [contacts, count] = await this.brevoContactsApiService.findContactsByListId(targetGroup?.brevoId, limit, offset);
+            if (targetGroupId && onlyShowAssignedContactsOfTargetGroup) {
+                if (!targetGroup.assignedContactsTargetGroupBrevoId) {
+                    return new PaginatedBrevoContacts([], 0, { offset, limit });
+                }
+
+                const [contacts, count] = await this.brevoContactsApiService.findContactsByListId(
+                    targetGroup.assignedContactsTargetGroupBrevoId,
+                    limit,
+                    offset,
+                );
+
+                return new PaginatedBrevoContacts(contacts, count, { offset, limit });
+            }
+
+            const [contacts, count] = await this.brevoContactsApiService.findContactsByListId(targetGroup.brevoId, limit, offset);
 
             return new PaginatedBrevoContacts(contacts, count, { offset, limit });
         }

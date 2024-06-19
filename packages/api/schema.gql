@@ -128,8 +128,7 @@ type TargetGroup implements DocumentInterface {
   totalSubscribers: Int!
   totalContactsBlocked: Int!
   scope: EmailCampaignContentScope!
-  assignedContactsTargetGroup: TargetGroup
-  associatedTargetGroup: TargetGroup
+  assignedContactsTargetGroupBrevoId: Int
 }
 
 interface DocumentInterface {
@@ -190,7 +189,7 @@ input EmailCampaignContentScopeInput {
 
 type Query {
   brevoContact(id: Int!): BrevoContact!
-  brevoContacts(targetGroupId: ID, email: String, scope: EmailCampaignContentScopeInput!, offset: Int! = 0, limit: Int! = 25): PaginatedBrevoContacts!
+  brevoContacts(targetGroupId: ID, onlyShowAssignedContactsOfTargetGroup: Boolean, email: String, scope: EmailCampaignContentScopeInput!, offset: Int! = 0, limit: Int! = 25): PaginatedBrevoContacts!
   targetGroup(id: ID!): TargetGroup!
   targetGroups(scope: EmailCampaignContentScopeInput!, search: String, filter: TargetGroupFilter, sort: [TargetGroupSort!], offset: Int! = 0, limit: Int! = 25): PaginatedTargetGroups!
   emailCampaign(id: ID!): EmailCampaign!

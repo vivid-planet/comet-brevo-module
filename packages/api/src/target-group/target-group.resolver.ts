@@ -52,7 +52,6 @@ export function createTargetGroupsResolver({
         async targetGroups(@Args() { search, filter, sort, offset, limit, scope }: TargetGroupsArgs): Promise<PaginatedTargetGroups> {
             const where = this.targetGroupsService.getFindCondition({ search, filter });
             where.scope = scope;
-            where.associatedTargetGroup = null; // exclude target groups that are used as relation for manually assigned contacts
 
             const options: FindOptions<TargetGroupInterface> = { offset, limit };
 
@@ -109,13 +108,13 @@ export function createTargetGroupsResolver({
             @Args("input", { type: () => AddBrevoContactsInput }) input: AddBrevoContactsInput,
         ): Promise<boolean> {
             const targetGroup = await this.repository.findOneOrFail(id);
-            const assignedContactsTargetGroup = await targetGroup.assignedContactsTargetGroup?.load();
+            const assignedContactsTargetGroupBrevoId = targetGroup.assignedContactsTargetGroupBrevoId;
 
-            if (assignedContactsTargetGroup) {
+            if (assignedContactsTargetGroupBrevoId) {
                 return this.brevoApiContactsService.updateMultipleContacts(
                     input.brevoContactIds.map((brevoContactId) => ({
                         id: brevoContactId,
-                        listIds: [targetGroup.brevoId, assignedContactsTargetGroup.brevoId],
+                        listIds: [targetGroup.brevoId, assignedContactsTargetGroupBrevoId],
                     })),
                 );
             } else {
@@ -127,15 +126,8 @@ export function createTargetGroupsResolver({
                     throw new Error("Brevo Error: Could not create target group in brevo");
                 }
 
-                const newTargetGroup = this.repository.create({
-                    title: `Manually assigned contacts for target group ${targetGroup.brevoId}`,
-                    brevoId,
-                    scope: targetGroup.scope,
-                    isMainList: false,
-                });
-
                 wrap(targetGroup).assign({
-                    assignedContactsTargetGroup: wrap(newTargetGroup).toReference(),
+                    assignedContactsTargetGroupBrevoId: brevoId,
                 });
 
                 await this.entityManager.flush();
@@ -153,23 +145,22 @@ export function createTargetGroupsResolver({
             @Args("input", { type: () => RemoveBrevoContactInput }) input: RemoveBrevoContactInput,
         ): Promise<boolean> {
             const targetGroup = await this.repository.findOneOrFail(id);
-            const assignedContactsTargetGroup = await targetGroup.assignedContactsTargetGroup?.load();
-
+            const assignedContactsTargetGroupBrevoId = targetGroup.assignedContactsTargetGroupBrevoId;
             const brevoContact = await this.brevoApiContactsService.findContact(input.brevoContactId);
 
-            if (!assignedContactsTargetGroup) {
+            if (!assignedContactsTargetGroupBrevoId) {
                 throw new Error("No assigned contacts target group found");
             }
 
-            const contactIsInAssociatedTargetGroupByAttributes = this.targetGroupsService.checkIfContactIsInTargetGroup(
+            const contactIsInTargetGroupByAttributes = this.targetGroupsService.checkIfContactIsInTargetGroup(
                 brevoContact.attributes,
                 targetGroup.filters,
             );
 
             const updatedBrevoContact = await this.brevoApiContactsService.updateContact(input.brevoContactId, {
-                unlinkListIds: contactIsInAssociatedTargetGroupByAttributes
-                    ? [assignedContactsTargetGroup.brevoId]
-                    : [targetGroup.brevoId, assignedContactsTargetGroup.brevoId],
+                unlinkListIds: contactIsInTargetGroupByAttributes
+                    ? [assignedContactsTargetGroupBrevoId]
+                    : [targetGroup.brevoId, assignedContactsTargetGroupBrevoId],
             });
 
             return updatedBrevoContact ? true : false;
@@ -239,11 +230,6 @@ export function createTargetGroupsResolver({
             const { uniqueSubscribers } = await this.brevoApiContactsService.findBrevoContactListById(targetGroup.brevoId);
 
             return uniqueSubscribers;
-        }
-
-        @ResolveField()
-        async assignedContactsTargetGroup(@Parent() targetGroup: TargetGroupInterface): Promise<TargetGroupInterface | undefined> {
-            return targetGroup.assignedContactsTargetGroup?.load();
         }
 
         @ResolveField()

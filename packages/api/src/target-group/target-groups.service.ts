@@ -72,9 +72,9 @@ export class TargetGroupsService {
             for (const contact of contacts) {
                 const contactIsInTargetGroupByFilters = this.checkIfContactIsInTargetGroup(contact.attributes, filters);
 
-                const manuallyAssignedTargetGroup = await targetGroup.assignedContactsTargetGroup?.load();
-                const contactIsManuallyAssignedToTargetGroup = manuallyAssignedTargetGroup?.brevoId
-                    ? contact.listIds.includes(manuallyAssignedTargetGroup?.brevoId)
+                const manuallyAssignedTargetGroup = targetGroup.assignedContactsTargetGroupBrevoId;
+                const contactIsManuallyAssignedToTargetGroup = manuallyAssignedTargetGroup
+                    ? contact.listIds.includes(manuallyAssignedTargetGroup)
                     : false;
 
                 if (contactIsInTargetGroupByFilters || contactIsManuallyAssignedToTargetGroup) {
@@ -110,7 +110,6 @@ export class TargetGroupsService {
     }): Promise<[TargetGroupInterface[], number]> {
         const [targetGroups, totalContactLists] = await this.repository.findAndCount(
             {
-                associatedTargetGroup: null, // exclude target groups that are used as relation for manually assigned contacts
                 isMainList: false,
                 ...(scope ? { scope } : {}),
             },

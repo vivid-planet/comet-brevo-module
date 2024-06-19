@@ -436,8 +436,7 @@ type TargetGroup implements DocumentInterface {
   totalSubscribers: Int!
   totalContactsBlocked: Int!
   scope: EmailCampaignContentScope!
-  assignedContactsTargetGroup: TargetGroup
-  associatedTargetGroup: TargetGroup
+  assignedContactsTargetGroupBrevoId: Int
   filters: BrevoContactFilterAttributes
 }
 
@@ -558,7 +557,7 @@ type Query {
   products(offset: Int! = 0, limit: Int! = 25, search: String, filter: ProductFilter, sort: [ProductSort!]): PaginatedProducts!
   mainMenu(scope: PageTreeNodeScopeInput!): [PageTreeNode!]!
   brevoContact(id: Int!): BrevoContact!
-  brevoContacts(targetGroupId: ID, email: String, scope: EmailCampaignContentScopeInput!, offset: Int! = 0, limit: Int! = 25): PaginatedBrevoContacts!
+  brevoContacts(targetGroupId: ID, onlyShowAssignedContactsOfTargetGroup: Boolean, email: String, scope: EmailCampaignContentScopeInput!, offset: Int! = 0, limit: Int! = 25): PaginatedBrevoContacts!
   emailCampaign(id: ID!): EmailCampaign!
   emailCampaigns(scope: EmailCampaignContentScopeInput!, search: String, filter: EmailCampaignFilter, sort: [EmailCampaignSort!], offset: Int! = 0, limit: Int! = 25): PaginatedEmailCampaigns!
   emailCampaignStatistics(id: ID!): BrevoApiCampaignStatistics
