@@ -1,5 +1,5 @@
 import { DocumentInterface } from "@comet/cms-api";
-import { Embedded, Entity, OptionalProps, PrimaryKey, Property } from "@mikro-orm/core";
+import { Embedded, Entity, OneToOne, OptionalProps, PrimaryKey, Property, Ref } from "@mikro-orm/core";
 import { Type } from "@nestjs/common";
 import { Field, ID, Int, ObjectType } from "@nestjs/graphql";
 import { v4 } from "uuid";
@@ -18,6 +18,8 @@ export interface TargetGroupInterface {
     totalContactsBlocked: number;
     scope: EmailCampaignScopeInterface;
     filters?: BrevoContactFilterAttributesInterface;
+    assignedContactsTargetGroup?: Ref<TargetGroupInterface>;
+    associatedTargetGroup?: Ref<TargetGroupInterface>;
 }
 
 export class TargetGroupEntityFactory {
@@ -76,6 +78,23 @@ export class TargetGroupEntityFactory {
                 implements: () => [DocumentInterface],
             })
             class TargetGroup extends TargetGroupBase {
+                @Field(() => TargetGroup, { nullable: true })
+                @OneToOne(() => TargetGroup, (targetGroup) => targetGroup.associatedTargetGroup, {
+                    onDelete: "cascade",
+                    ref: true,
+                    nullable: true,
+                })
+                assignedContactsTargetGroup?: Ref<TargetGroupInterface>;
+
+                @Field(() => TargetGroup, { nullable: true })
+                @OneToOne(() => TargetGroup, (targetGroup) => targetGroup.assignedContactsTargetGroup, {
+                    onDelete: "cascade",
+                    ref: true,
+                    nullable: true,
+                    owner: true,
+                })
+                associatedTargetGroup?: Ref<TargetGroupInterface>;
+
                 @Embedded(() => BrevoFilterAttributes, { nullable: true })
                 @Field(() => BrevoFilterAttributes, { nullable: true })
                 filters?: BrevoContactFilterAttributesInterface;
@@ -88,7 +107,23 @@ export class TargetGroupEntityFactory {
         @ObjectType({
             implements: () => [DocumentInterface],
         })
-        class TargetGroup extends TargetGroupBase {}
+        class TargetGroup extends TargetGroupBase {
+            @Field(() => TargetGroup, { nullable: true })
+            @OneToOne(() => TargetGroup, (targetGroup) => targetGroup.associatedTargetGroup, {
+                onDelete: "cascade",
+                ref: true,
+                nullable: true,
+            })
+            assignedContactsTargetGroup?: Ref<TargetGroupInterface>;
+
+            @Field(() => TargetGroup, { nullable: true })
+            @OneToOne(() => TargetGroup, (targetGroup) => targetGroup.assignedContactsTargetGroup, {
+                onDelete: "cascade",
+                ref: true,
+                nullable: true,
+            })
+            associatedTargetGroup?: Ref<TargetGroupInterface>;
+        }
 
         return TargetGroup;
     }

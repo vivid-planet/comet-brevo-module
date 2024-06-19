@@ -54,7 +54,7 @@ export class TargetGroupsService {
 
     public async assignContactsToContactList(
         filters: BrevoContactFilterAttributesInterface = {},
-        brevoId: number,
+        targetGroup: TargetGroupInterface,
         scope: EmailCampaignScopeInterface,
     ): Promise<true> {
         const mainScopeTargetGroupList = await this.repository.findOneOrFail({ scope, isMainList: true });
@@ -70,9 +70,14 @@ export class TargetGroupsService {
             const contactsNotInContactList: BrevoContactInterface[] = [];
 
             for (const contact of contacts) {
-                const contactIsInTargetGroup = this.checkIfContactIsInTargetGroup(contact.attributes, filters);
+                const contactIsInTargetGroupByFilters = this.checkIfContactIsInTargetGroup(contact.attributes, filters);
 
-                if (contactIsInTargetGroup) {
+                const manuallyAssignedTargetGroup = await targetGroup.assignedContactsTargetGroup?.load();
+                const contactIsManuallyAssignedToTargetGroup = manuallyAssignedTargetGroup?.brevoId
+                    ? contact.listIds.includes(manuallyAssignedTargetGroup?.brevoId)
+                    : false;
+
+                if (contactIsInTargetGroupByFilters || contactIsManuallyAssignedToTargetGroup) {
                     contactsInContactList.push(contact);
                 } else {
                     contactsNotInContactList.push(contact);
@@ -81,12 +86,12 @@ export class TargetGroupsService {
 
             if (contactsInContactList.length > 0) {
                 await this.brevoApiContactsService.updateMultipleContacts(
-                    contactsInContactList.map((contact) => ({ id: contact.id, listIds: [brevoId] })),
+                    contactsInContactList.map((contact) => ({ id: contact.id, listIds: [targetGroup.brevoId] })),
                 );
             }
             if (contactsNotInContactList.length > 0) {
                 await this.brevoApiContactsService.updateMultipleContacts(
-                    contactsNotInContactList.map((contact) => ({ id: contact.id, unlinkListIds: [brevoId] })),
+                    contactsNotInContactList.map((contact) => ({ id: contact.id, unlinkListIds: [targetGroup.brevoId] })),
                 );
             }
         } while (offset < totalCount);
@@ -105,6 +110,7 @@ export class TargetGroupsService {
     }): Promise<[TargetGroupInterface[], number]> {
         const [targetGroups, totalContactLists] = await this.repository.findAndCount(
             {
+                associatedTargetGroup: null, // exclude target groups that are used as relation for manually assigned contacts
                 isMainList: false,
                 ...(scope ? { scope } : {}),
             },

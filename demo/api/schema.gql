@@ -436,6 +436,8 @@ type TargetGroup implements DocumentInterface {
   totalSubscribers: Int!
   totalContactsBlocked: Int!
   scope: EmailCampaignContentScope!
+  assignedContactsTargetGroup: TargetGroup
+  associatedTargetGroup: TargetGroup
   filters: BrevoContactFilterAttributes
 }
 
@@ -801,6 +803,8 @@ type Mutation {
   sendEmailCampaignNow(id: ID!): Boolean!
   sendEmailCampaignToTestEmails(id: ID!, data: SendTestEmailCampaignArgs!): Boolean!
   createTargetGroup(scope: EmailCampaignContentScopeInput!, input: TargetGroupInput!): TargetGroup!
+  addBrevoContactsToTargetGroup(id: ID!, input: AddBrevoContactsInput!): Boolean!
+  removeBrevoContactFromTargetGroup(id: ID!, input: RemoveBrevoContactInput!): Boolean!
   updateTargetGroup(id: ID!, input: TargetGroupUpdateInput!, lastUpdatedAt: DateTime): TargetGroup!
   deleteTargetGroup(id: ID!): Boolean!
   createBrevoConfig(scope: EmailCampaignContentScopeInput!, input: BrevoConfigInput!): BrevoConfig!
@@ -987,6 +991,14 @@ input SendTestEmailCampaignArgs {
 input TargetGroupInput {
   title: String!
   filters: BrevoContactFilterAttributesInput
+}
+
+input AddBrevoContactsInput {
+  brevoContactIds: [Int!]!
+}
+
+input RemoveBrevoContactInput {
+  brevoContactId: Int!
 }
 
 input TargetGroupUpdateInput {
