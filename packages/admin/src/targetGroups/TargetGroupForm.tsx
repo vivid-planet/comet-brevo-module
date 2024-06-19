@@ -1,11 +1,11 @@
 import { DocumentNode, gql, useApolloClient, useQuery } from "@apollo/client";
 import {
     Field,
+    FieldSet,
     FinalForm,
     FinalFormInput,
     FinalFormSaveSplitButton,
     FinalFormSubmitEvent,
-    FormSection,
     Loading,
     MainContent,
     Toolbar,
@@ -19,11 +19,14 @@ import {
 } from "@comet/admin";
 import { ArrowLeft } from "@comet/admin-icons";
 import { ContentScopeInterface, EditPageLayout, queryUpdatedAt, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
-import { Card, IconButton } from "@mui/material";
+import { IconButton } from "@mui/material";
 import { FormApi } from "final-form";
 import React from "react";
 import { FormattedMessage } from "react-intl";
 
+export { namedOperations as targetGroupFormNamedOperations } from "./TargetGroupForm.gql.generated";
+
+import { AddContactsGridSelect } from "./addContacts/AddContactsGridSelect";
 import { createTargetGroupMutation, targetGroupFormQuery, updateTargetGroupMutation } from "./TargetGroupForm.gql";
 import {
     GQLCreateTargetGroupMutation,
@@ -56,7 +59,6 @@ export function TargetGroupForm({ id, scope, additionalFormFields, input2State, 
 
     const targetGroupFormFragment = gql`
         fragment TargetGroupForm on TargetGroup {
-            title
             ${nodeFragment ? "...".concat(nodeFragment?.name) : ""}
         }
         ${nodeFragment?.fragment ?? ""}
@@ -159,11 +161,33 @@ export function TargetGroupForm({ id, scope, additionalFormFields, input2State, 
                             label={<FormattedMessage id="cometBrevoModule.targetGroup.title" defaultMessage="Title" />}
                         />
                         {additionalFormFields && (
-                            <Card sx={{ padding: 4 }}>
-                                <FormSection title={<FormattedMessage id="cometBrevoModule.targetGroup.filters" defaultMessage="Filters" />}>
-                                    {additionalFormFields}
-                                </FormSection>
-                            </Card>
+                            <FieldSet
+                                title={<FormattedMessage id="cometBrevoModule.targetGroup.filters" defaultMessage="Filters" />}
+                                supportText={
+                                    <FormattedMessage
+                                        id="cometBrevoModule.targetGroup.filters.explainText"
+                                        defaultMessage="Contacts will get assigned automatically to this target group depending on their attributes"
+                                    />
+                                }
+                                initiallyExpanded
+                            >
+                                {additionalFormFields}
+                            </FieldSet>
+                        )}
+                        {id && (
+                            <FieldSet
+                                title={
+                                    <FormattedMessage id="cometBrevoModule.targetGroup.manuallyAddContacts" defaultMessage="Manually add contacts" />
+                                }
+                                initiallyExpanded
+                                disablePadding
+                            >
+                                <AddContactsGridSelect
+                                    assignedContactsTargetGroupId={data?.targetGroup.assignedContactsTargetGroup?.id}
+                                    id={id}
+                                    scope={scope}
+                                />
+                            </FieldSet>
                         )}
                     </MainContent>
                 </EditPageLayout>
