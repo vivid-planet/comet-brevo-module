@@ -123,8 +123,8 @@ export function createBrevoContactResolver({
                 (targetGroup) => targetGroup.brevoId,
             );
 
-            const updatedNonMainListIds = await this.brevoContactsService.getTargetGroupIdsForContact({
-                contactAttributes: input.attributes ?? contact.attributes,
+            const updatedNonMainListIds = await this.brevoContactsService.getTargetGroupIdsForExistingContact({
+                contact,
             });
 
             // update contact again with updated list ids depending on new attributes
