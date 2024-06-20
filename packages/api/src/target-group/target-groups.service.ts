@@ -1,5 +1,5 @@
 import { filtersToMikroOrmQuery, searchToMikroOrmQuery } from "@comet/cms-api";
-import { EntityManager, EntityRepository, FilterQuery, ObjectQuery } from "@mikro-orm/core";
+import { EntityManager, EntityRepository, ObjectQuery } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable } from "@nestjs/common";
 
@@ -117,11 +117,6 @@ export class TargetGroupsService {
         );
 
         return [targetGroups, totalContactLists];
-    }
-
-    async findOneTargetGroup(where: FilterQuery<TargetGroupInterface>): Promise<TargetGroupInterface | null> {
-        const targetGroup = await this.repository.findOne(where);
-        return targetGroup;
     }
 
     public async createIfNotExistMainTargetGroupForScope(scope: EmailCampaignScopeInterface): Promise<TargetGroupInterface> {
