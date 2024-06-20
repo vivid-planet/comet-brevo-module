@@ -25,7 +25,6 @@ import { Page } from "@src/documents/pages/entities/page.entity";
 import { PagesModule } from "@src/documents/pages/pages.module";
 import { PageTreeNodeScope } from "@src/page-tree/dto/page-tree-node-scope";
 import { PageTreeNode } from "@src/page-tree/entities/page-tree-node.entity";
-import { ProductsModule } from "@src/products/products.module";
 import { Request } from "express";
 
 import { AccessControlService } from "./auth/access-control.service";
@@ -133,7 +132,6 @@ export class AppModule {
                     imgproxyConfig: config.imgproxy,
                 }),
                 StatusModule,
-                ProductsModule,
                 MenusModule,
                 DependenciesModule,
                 BrevoModule.register({
