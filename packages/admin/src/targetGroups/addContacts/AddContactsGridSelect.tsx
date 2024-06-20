@@ -18,7 +18,7 @@ import { Button, Dialog, DialogActions, DialogTitle, IconButton, useTheme } from
 import { Box } from "@mui/system";
 import { DataGrid, GridColDef, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import * as React from "react";
-import { FormattedMessage, IntlShape, useIntl } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import { MemoryRouter } from "react-router";
 
 import { targetGroupFormNamedOperations } from "../TargetGroupForm";
@@ -40,10 +40,11 @@ import {
 
 interface OpenSelectDialogToolbarProps {
     onOpenDialog: () => void;
-    intl: IntlShape;
 }
 
-const AssignedContactsGridToolbar = ({ onOpenDialog, intl }: OpenSelectDialogToolbarProps) => {
+const AssignedContactsGridToolbar = ({ onOpenDialog }: OpenSelectDialogToolbarProps) => {
+    const intl = useIntl();
+
     return (
         <Toolbar>
             <ToolbarTitleItem>
@@ -67,7 +68,9 @@ const AssignedContactsGridToolbar = ({ onOpenDialog, intl }: OpenSelectDialogToo
     );
 };
 
-const AssignableContactsGridToolbar = ({ intl }: OpenSelectDialogToolbarProps) => {
+const AssignableContactsGridToolbar = () => {
+    const intl = useIntl();
+
     return (
         <Toolbar>
             <ToolbarTitleItem>
@@ -242,7 +245,6 @@ export function AddContactsGridSelect({ id, scope, assignedContactsTargetGroupBr
                 }}
                 componentsProps={{
                     toolbar: {
-                        intl,
                         onOpenDialog: () => setIsDialogOpen(true),
                     },
                 }}
@@ -271,11 +273,6 @@ export function AddContactsGridSelect({ id, scope, assignedContactsTargetGroupBr
                                                 loading={assignableContactsLoading || submitting}
                                                 components={{
                                                     Toolbar: AssignableContactsGridToolbar,
-                                                }}
-                                                componentsProps={{
-                                                    toolbar: {
-                                                        intl,
-                                                    },
                                                 }}
                                                 selectionModel={props.value}
                                                 onSelectionModelChange={(newSelectionModel) => {
