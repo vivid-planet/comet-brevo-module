@@ -39,11 +39,11 @@ import {
 } from "./AddContactsGridSelect.gql.generated";
 
 interface OpenSelectDialogToolbarProps {
-    openDialog: () => void;
+    onOpenDialog: () => void;
     intl: IntlShape;
 }
 
-const AssignedContactsGridToolbar = ({ openDialog, intl }: OpenSelectDialogToolbarProps) => {
+const AssignedContactsGridToolbar = ({ onOpenDialog, intl }: OpenSelectDialogToolbarProps) => {
     return (
         <Toolbar>
             <ToolbarTitleItem>
@@ -59,7 +59,7 @@ const AssignedContactsGridToolbar = ({ openDialog, intl }: OpenSelectDialogToolb
             </ToolbarItem>
             <ToolbarFillSpace />
             <ToolbarActions>
-                <Button startIcon={<Add />} variant="contained" color="primary" onClick={openDialog}>
+                <Button startIcon={<Add />} variant="contained" color="primary" onClick={onOpenDialog}>
                     <FormattedMessage id="cometBrevoModule.targetGroup.assignedContacts.addContact" defaultMessage="Add contacts" />
                 </Button>
             </ToolbarActions>
@@ -243,7 +243,7 @@ export function AddContactsGridSelect({ id, scope, assignedContactsTargetGroupBr
                 componentsProps={{
                     toolbar: {
                         intl,
-                        openDialog: () => setIsDialogOpen(true),
+                        onOpenDialog: () => setIsDialogOpen(true),
                     },
                 }}
             />
