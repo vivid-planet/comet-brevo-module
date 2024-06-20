@@ -38,11 +38,7 @@ import {
     namedOperations,
 } from "./AddContactsGridSelect.gql.generated";
 
-interface OpenSelectDialogToolbarProps {
-    onOpenDialog: () => void;
-}
-
-const AssignedContactsGridToolbar = ({ onOpenDialog }: OpenSelectDialogToolbarProps) => {
+const AssignedContactsGridToolbar = ({ onOpenDialog }: { onOpenDialog: () => void }) => {
     const intl = useIntl();
 
     return (
