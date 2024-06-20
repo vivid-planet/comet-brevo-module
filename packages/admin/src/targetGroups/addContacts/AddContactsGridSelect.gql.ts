@@ -12,22 +12,26 @@ const targetGroupBrevoContactsFragment = gql`
 `;
 
 export const assignedBrevoContactsQuery = gql`
-    query BrevoContactsGrid(
-        $offset: Int
-        $limit: Int
-        $email: String
-        $scope: EmailCampaignContentScopeInput!
-        $targetGroupId: ID
-        $onlyShowAssignedContactsOfTargetGroup: Boolean
-    ) {
-        brevoContacts(
+    query AssignedBrevoContactsGrid($offset: Int, $limit: Int, $email: String, $targetGroupId: ID!, $onlyShowManuallyAssignedContacts: Boolean) {
+        brevoContactsInTargetGroup(
             offset: $offset
             limit: $limit
             email: $email
-            scope: $scope
             targetGroupId: $targetGroupId
-            onlyShowAssignedContactsOfTargetGroup: $onlyShowAssignedContactsOfTargetGroup
+            onlyShowManuallyAssignedContacts: $onlyShowManuallyAssignedContacts
         ) {
+            nodes {
+                ...TargetGroupBrevoContactsList
+            }
+            totalCount
+        }
+    }
+    ${targetGroupBrevoContactsFragment}
+`;
+
+export const allBrevoContactsQuery = gql`
+    query AllBrevoContactsGrid($offset: Int, $limit: Int, $email: String, $scope: EmailCampaignContentScopeInput!) {
+        brevoContacts(offset: $offset, limit: $limit, email: $email, scope: $scope) {
             nodes {
                 ...TargetGroupBrevoContactsList
             }

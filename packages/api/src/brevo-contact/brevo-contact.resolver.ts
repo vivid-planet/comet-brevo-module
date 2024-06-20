@@ -1,5 +1,5 @@
 import { AffectedEntity, PaginatedResponseFactory, RequiredPermission } from "@comet/cms-api";
-import { EntityRepository, FilterQuery } from "@mikro-orm/core";
+import { EntityRepository } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Inject, Type } from "@nestjs/common";
 import { Args, ArgsType, Int, Mutation, ObjectType, Query, Resolver } from "@nestjs/graphql";
@@ -15,6 +15,7 @@ import { BrevoContactsService } from "./brevo-contacts.service";
 import { BrevoContactInterface } from "./dto/brevo-contact.factory";
 import { BrevoContactInputInterface, BrevoContactUpdateInputInterface } from "./dto/brevo-contact-input.factory";
 import { BrevoContactsArgsFactory } from "./dto/brevo-contacts.args";
+import { BrevoContactsInTargetGroupArgs } from "./dto/brevo-contacts-in-target-group.args";
 import { SubscribeInputInterface } from "./dto/subscribe-input.factory";
 import { SubscribeResponse } from "./dto/subscribe-response.enum";
 import { EcgRtrListService } from "./ecg-rtr-list/ecg-rtr-list.service";
@@ -57,37 +58,42 @@ export function createBrevoContactResolver({
         }
 
         @Query(() => PaginatedBrevoContacts)
-        async brevoContacts(
-            @Args() { offset, limit, email, scope, targetGroupId, onlyShowAssignedContactsOfTargetGroup }: BrevoContactsArgs,
-        ): Promise<PaginatedBrevoContacts> {
-            const where: FilterQuery<TargetGroupInterface> = { scope, isMainList: true };
-
-            if (targetGroupId) {
-                where.id = targetGroupId;
-                where.isMainList = false;
-            }
-
-            let targetGroup = await this.targetGroupService.findOneTargetGroup(where);
+        async brevoContacts(@Args() { offset, limit, email, scope }: BrevoContactsArgs): Promise<PaginatedBrevoContacts> {
+            let targetGroup = await this.targetGroupRepository.findOne({ scope, isMainList: true });
 
             if (!targetGroup) {
-                // filtering for a specific target group, but it does not exist
-                if (targetGroupId) {
-                    return new PaginatedBrevoContacts([], 0, { offset, limit });
-                }
-
                 // when there is no main target group for the scope, create one
                 targetGroup = await this.targetGroupService.createIfNotExistMainTargetGroupForScope(scope);
             }
 
             if (email) {
                 const contact = await this.brevoContactsApiService.getContactInfoByEmail(email);
-                if (contact) {
+                if (contact && contact.listIds.includes(targetGroup.brevoId)) {
                     return new PaginatedBrevoContacts([contact], 1, { offset, limit });
                 }
                 return new PaginatedBrevoContacts([], 0, { offset, limit });
             }
 
-            if (targetGroupId && onlyShowAssignedContactsOfTargetGroup) {
+            const [contacts, count] = await this.brevoContactsApiService.findContactsByListId(targetGroup.brevoId, limit, offset);
+
+            return new PaginatedBrevoContacts(contacts, count, { offset, limit });
+        }
+
+        @Query(() => PaginatedBrevoContacts)
+        async brevoContactsInTargetGroup(
+            @Args() { offset, limit, email, targetGroupId, onlyShowManuallyAssignedContacts }: BrevoContactsInTargetGroupArgs,
+        ): Promise<PaginatedBrevoContacts> {
+            const targetGroup = await this.targetGroupRepository.findOneOrFail({ id: targetGroupId });
+
+            if (email) {
+                const contact = await this.brevoContactsApiService.getContactInfoByEmail(email);
+                if (contact && contact.listIds.includes(targetGroup.brevoId)) {
+                    return new PaginatedBrevoContacts([contact], 1, { offset, limit });
+                }
+                return new PaginatedBrevoContacts([], 0, { offset, limit });
+            }
+
+            if (onlyShowManuallyAssignedContacts) {
                 if (!targetGroup.assignedContactsTargetGroupBrevoId) {
                     return new PaginatedBrevoContacts([], 0, { offset, limit });
                 }

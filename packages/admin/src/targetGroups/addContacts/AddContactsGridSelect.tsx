@@ -24,14 +24,17 @@ import { MemoryRouter } from "react-router";
 import { targetGroupFormNamedOperations } from "../TargetGroupForm";
 import {
     addBrevoContactsToTargetGroupMutation,
+    allBrevoContactsQuery,
     assignedBrevoContactsQuery,
     removeBrevoContactFromTargetGroupMutation,
 } from "./AddContactsGridSelect.gql";
 import {
     GQLAddBrevoContactsToTargetGroupMutation,
     GQLAddBrevoContactsToTargetGroupMutationVariables,
-    GQLBrevoContactsGridQuery,
-    GQLBrevoContactsGridQueryVariables,
+    GQLAllBrevoContactsGridQuery,
+    GQLAllBrevoContactsGridQueryVariables,
+    GQLAssignedBrevoContactsGridQuery,
+    GQLAssignedBrevoContactsGridQueryVariables,
     GQLRemoveBrevoContactFromTargetGroupMutation,
     GQLRemoveBrevoContactFromTargetGroupMutationVariables,
     GQLTargetGroupBrevoContactsListFragment,
@@ -92,7 +95,7 @@ const useSubmitMutation = (id: string) => {
     const [addContactsToTargetGroup] = useMutation<GQLAddBrevoContactsToTargetGroupMutation, GQLAddBrevoContactsToTargetGroupMutationVariables>(
         addBrevoContactsToTargetGroupMutation,
         {
-            refetchQueries: [namedOperations.Query.BrevoContactsGrid, targetGroupFormNamedOperations.Query.TargetGroupForm],
+            refetchQueries: [namedOperations.Query.AssignedBrevoContactsGrid, targetGroupFormNamedOperations.Query.TargetGroupForm],
         },
     );
     return ({ brevoContactIds }: FormProps) => {
@@ -126,7 +129,7 @@ export function AddContactsGridSelect({ id, scope, assignedContactsTargetGroupBr
         GQLRemoveBrevoContactFromTargetGroupMutation,
         GQLRemoveBrevoContactFromTargetGroupMutationVariables
     >(removeBrevoContactFromTargetGroupMutation, {
-        refetchQueries: [namedOperations.Query.BrevoContactsGrid],
+        refetchQueries: [namedOperations.Query.AssignedBrevoContactsGrid],
         awaitRefetchQueries: true,
     });
 
@@ -139,14 +142,13 @@ export function AddContactsGridSelect({ id, scope, assignedContactsTargetGroupBr
         data: assignableContactsData,
         loading: assignableContactsLoading,
         error: assignableContactsError,
-    } = useQuery<GQLBrevoContactsGridQuery, GQLBrevoContactsGridQueryVariables>(assignedBrevoContactsQuery, {
+    } = useQuery<GQLAllBrevoContactsGridQuery, GQLAllBrevoContactsGridQueryVariables>(allBrevoContactsQuery, {
         variables: {
             offset: dataGridAssignableContactsProps.page * dataGridAssignableContactsProps.pageSize,
             limit: dataGridAssignableContactsProps.pageSize,
             email: dataGridAssignableContactsProps.filterModel?.quickFilterValues
                 ? dataGridAssignableContactsProps.filterModel?.quickFilterValues[0]
                 : undefined,
-            onlyShowAssignedContactsOfTargetGroup: false,
             scope,
         },
     });
@@ -155,16 +157,15 @@ export function AddContactsGridSelect({ id, scope, assignedContactsTargetGroupBr
         data: assignedContactsData,
         loading: assignedContactsLoading,
         error: assignedContactsError,
-    } = useQuery<GQLBrevoContactsGridQuery, GQLBrevoContactsGridQueryVariables>(assignedBrevoContactsQuery, {
+    } = useQuery<GQLAssignedBrevoContactsGridQuery, GQLAssignedBrevoContactsGridQueryVariables>(assignedBrevoContactsQuery, {
         variables: {
             offset: dataGridAssignedContactsProps.page * dataGridAssignedContactsProps.pageSize,
             limit: dataGridAssignedContactsProps.pageSize,
             email: dataGridAssignedContactsProps.filterModel?.quickFilterValues
                 ? dataGridAssignedContactsProps.filterModel?.quickFilterValues[0]
                 : undefined,
-            scope,
             targetGroupId: id,
-            onlyShowAssignedContactsOfTargetGroup: true,
+            onlyShowManuallyAssignedContacts: true,
         },
         skip: !assignedContactsTargetGroupBrevoId,
     });
@@ -221,7 +222,7 @@ export function AddContactsGridSelect({ id, scope, assignedContactsTargetGroupBr
         },
     ]);
 
-    const assignedContactsRowCount = useBufferedRowCount(assignedContactsData?.brevoContacts.totalCount);
+    const assignedContactsRowCount = useBufferedRowCount(assignedContactsData?.brevoContactsInTargetGroup.totalCount);
     const assignableContactsRowCount = useBufferedRowCount(assignableContactsData?.brevoContacts.totalCount);
 
     if (assignedContactsError || assignableContactsError) throw assignedContactsError ?? assignableContactsError;
@@ -231,7 +232,7 @@ export function AddContactsGridSelect({ id, scope, assignedContactsTargetGroupBr
             <DataGrid
                 {...dataGridAssignedContactsProps}
                 disableSelectionOnClick
-                rows={assignedContactsData?.brevoContacts.nodes ?? []}
+                rows={assignedContactsData?.brevoContactsInTargetGroup.nodes ?? []}
                 rowCount={assignedContactsRowCount}
                 columns={assignedContactsColumns}
                 autoHeight
