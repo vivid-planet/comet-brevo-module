@@ -91,9 +91,18 @@ export class EmailCampaignsService {
         campaigns: EmailCampaignInterface[],
         scope: EmailCampaignScopeInterface,
     ): Promise<EmailCampaignInterface[]> {
-        const brevoIds = campaigns.map((campaign) => campaign.brevoId).filter((campaign) => campaign) as number[];
+        // TODO: sending state only needs to be fetched for campaigns that are scheduled with scheduledDate in the past && SENDING && undefined status
+        const campaignsToFetchSendingState = campaigns.filter(
+            (campaign) =>
+                !campaign.sendingState ||
+                campaign.sendingState === "SENDING" ||
+                (campaign.sendingState === "SCHEDULED" && campaign.scheduledAt && campaign.scheduledAt < new Date()),
+        );
+
+        const brevoIds = campaignsToFetchSendingState.map((campaign) => campaign.brevoId).filter((campaign) => campaign) as number[];
 
         if (brevoIds.length > 0) {
+            // TODO: filter loadBrevoCampaignsByIds by status so not all campaigns need to be loaded and fewer requests will be made
             const brevoCampaigns = await this.brevoApiCampaignService.loadBrevoCampaignsByIds(brevoIds, scope);
 
             for (const brevoCampaign of brevoCampaigns) {
@@ -101,9 +110,10 @@ export class EmailCampaignsService {
 
                 const campaign = campaigns.find((campaign) => campaign.brevoId === brevoCampaign.id);
                 if (campaign) {
-                    campaign.sendingState = sendingState;
+                    wrap(campaign).assign({ sendingState });
                 }
             }
+            this.entityManager.flush();
         }
 
         return campaigns;

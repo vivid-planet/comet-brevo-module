@@ -102,13 +102,14 @@ export function createEmailCampaignsResolver({
                 targetGroup: targetGroupInput ? Reference.create(await this.targetGroupRepository.findOneOrFail(targetGroupInput)) : undefined,
                 content: input.content.transformToBlockData(),
                 scheduledAt: input.scheduledAt ?? undefined,
+                sendingState: input.scheduledAt ? SendingState.SCHEDULED : SendingState.DRAFT,
             });
-
-            await this.entityManager.flush();
 
             if (input.scheduledAt) {
                 await this.campaignsService.saveEmailCampaignInBrevo(campaign, input.scheduledAt);
             }
+
+            await this.entityManager.flush();
 
             return campaign;
         }
@@ -137,22 +138,27 @@ export function createEmailCampaignsResolver({
             let hasScheduleRemoved = false;
 
             if (campaign.brevoId) {
-                const brevoEmailCampaign = await this.brevoApiCampaignsService.loadBrevoCampaignById(campaign);
-                const sendingState = this.brevoApiCampaignsService.getSendingInformationFromBrevoCampaign(brevoEmailCampaign);
-
-                if (sendingState === SendingState.SENT) {
+                if (
+                    campaign.sendingState === SendingState.SENT ||
+                    campaign.sendingState === SendingState.SENDING ||
+                    (campaign.sendingState === SendingState.SCHEDULED && campaign.scheduledAt && campaign.scheduledAt < new Date())
+                ) {
                     throw new Error("Cannot update email campaign that has already been sent.");
                 }
 
-                hasScheduleRemoved = input.scheduledAt === null && brevoEmailCampaign.scheduledAt !== null;
-                if (hasScheduleRemoved && !(sendingState === SendingState.DRAFT)) {
+                hasScheduleRemoved = input.scheduledAt === null && campaign.scheduledAt !== null;
+                if (hasScheduleRemoved && !(campaign.sendingState === SendingState.DRAFT)) {
+                    wrap(campaign).assign({ sendingState: SendingState.DRAFT });
                     await this.campaignsService.suspendEmailCampaign(campaign);
                 }
             }
 
             if (!hasScheduleRemoved && input.scheduledAt) {
+                wrap(campaign).assign({ sendingState: SendingState.SCHEDULED });
                 await this.campaignsService.saveEmailCampaignInBrevo(campaign, input.scheduledAt);
             }
+
+            await this.entityManager.flush();
 
             return campaign;
         }
@@ -175,7 +181,6 @@ export function createEmailCampaignsResolver({
         @AffectedEntity(EmailCampaign)
         async sendEmailCampaignNow(@Args("id", { type: () => ID }) id: string): Promise<boolean> {
             const campaign = await this.repository.findOneOrFail(id);
-
             const campaignSent = await this.campaignsService.sendEmailCampaignNow(campaign);
 
             if (campaignSent) {
@@ -183,6 +188,7 @@ export function createEmailCampaignsResolver({
 
                 wrap(campaign).assign({
                     scheduledAt: new Date(),
+                    sendingState: SendingState.SENDING,
                 });
 
                 await this.entityManager.flush();
@@ -222,16 +228,22 @@ export function createEmailCampaignsResolver({
 
         @ResolveField(() => SendingState)
         async sendingState(@Parent() campaign: EmailCampaignInterface): Promise<SendingState> {
-            if (campaign.sendingState) {
-                return campaign.sendingState;
-            }
-
-            if (campaign.brevoId) {
+            if (
+                (campaign.sendingState === SendingState.SCHEDULED && campaign.scheduledAt && campaign.scheduledAt < new Date()) ||
+                campaign.sendingState === SendingState.SENDING
+            ) {
                 const brevoCampaign = await this.brevoApiCampaignsService.loadBrevoCampaignById(campaign);
-                return this.brevoApiCampaignsService.getSendingInformationFromBrevoCampaign(brevoCampaign);
+
+                const state = this.brevoApiCampaignsService.getSendingInformationFromBrevoCampaign(brevoCampaign);
+
+                wrap(campaign).assign({ sendingState: state });
+                await this.entityManager.flush();
+            } else if (!campaign.sendingState) {
+                wrap(campaign).assign({ sendingState: SendingState.DRAFT });
+                await this.entityManager.flush();
             }
 
-            return SendingState.DRAFT;
+            return campaign.sendingState;
         }
 
         @ResolveField(() => TargetGroup, { nullable: true })

@@ -459,6 +459,7 @@ type EmailCampaign implements DocumentInterface {
 enum SendingState {
   DRAFT
   SENT
+  SENDING
   SCHEDULED
 }
 

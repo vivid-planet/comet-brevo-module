@@ -34,7 +34,9 @@ export class BrevoApiCampaignsService {
     public getSendingInformationFromBrevoCampaign(campaign: BrevoApiCampaign): SendingState {
         if (campaign.status === "sent") {
             return SendingState.SENT;
-        } else if (campaign.status === "queued" || campaign.status === "in_process") {
+        } else if (campaign.status === "in_process") {
+            return SendingState.SENDING;
+        } else if (campaign.status === "queued") {
             return SendingState.SCHEDULED;
         }
 
