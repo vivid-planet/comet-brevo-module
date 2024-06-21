@@ -11,12 +11,23 @@ import { BrevoApiCampaignStatistics } from "./dto/brevo-api-campaign-statistics"
 
 @Injectable()
 export class BrevoApiCampaignsService {
+    private readonly campaignsApis = new Map<string, SibApiV3Sdk.EmailCampaignsApi>();
+
     constructor(@Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig) {}
 
     private getCampaignsApi(scope: EmailCampaignScopeInterface): SibApiV3Sdk.EmailCampaignsApi {
+        const existingCampaignsApiForScope = this.campaignsApis.get(JSON.stringify(scope));
+
+        if (existingCampaignsApiForScope) {
+            return existingCampaignsApiForScope;
+        }
+
         const { apiKey } = this.config.brevo.resolveConfig(scope);
         const campaignsApi = new SibApiV3Sdk.EmailCampaignsApi();
         campaignsApi.setApiKey(SibApiV3Sdk.EmailCampaignsApiApiKeys.apiKey, apiKey);
+
+        this.campaignsApis.set(JSON.stringify(scope), campaignsApi);
+
         return campaignsApi;
     }
 

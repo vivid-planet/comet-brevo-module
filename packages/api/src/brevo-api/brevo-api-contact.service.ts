@@ -16,12 +16,23 @@ export interface CreateDoubleOptInContactData {
 
 @Injectable()
 export class BrevoApiContactsService {
+    private readonly contactsApis = new Map<string, SibApiV3Sdk.ContactsApi>();
+
     constructor(@Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig) {}
 
     private getContactsApi(scope: EmailCampaignScopeInterface): SibApiV3Sdk.ContactsApi {
+        const existingContactsApiForScope = this.contactsApis.get(JSON.stringify(scope));
+
+        if (existingContactsApiForScope) {
+            return existingContactsApiForScope;
+        }
+
         const { apiKey } = this.config.brevo.resolveConfig(scope);
         const contactsApi = new SibApiV3Sdk.ContactsApi();
         contactsApi.setApiKey(SibApiV3Sdk.ContactsApiApiKeys.apiKey, apiKey);
+
+        this.contactsApis.set(JSON.stringify(scope), contactsApi);
+
         return contactsApi;
     }
 
