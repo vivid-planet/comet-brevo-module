@@ -6,8 +6,6 @@ import { Field, GraphQLSchemaBuilderModule, GraphQLSchemaFactory, InputType, Obj
 import { writeFile } from "fs/promises";
 import { printSchema } from "graphql";
 
-import { createBrevoConfigResolver } from "./src/brevo-config/brevo-config.resolver";
-import { BrevoConfigEntityFactory } from "./src/brevo-config/entities/brevo-config-entity.factory";
 import { createBrevoContactResolver } from "./src/brevo-contact/brevo-contact.resolver";
 import { BrevoContactFactory } from "./src/brevo-contact/dto/brevo-contact.factory";
 import { BrevoContactInputFactory } from "./src/brevo-contact/dto/brevo-contact-input.factory";
@@ -86,13 +84,7 @@ async function generateSchema(): Promise<void> {
         Scope: EmailCampaignScope,
     });
 
-    const BrevoConfig = BrevoConfigEntityFactory.create({ Scope: EmailCampaignScope });
-    const BrevoConfigResolver = createBrevoConfigResolver({
-        BrevoConfig,
-        Scope: EmailCampaignScope,
-    });
-
-    const schema = await gqlSchemaFactory.create([BrevoContactResolver, TargetGroupResolver, EmailCampaignResolver, BrevoConfigResolver]);
+    const schema = await gqlSchemaFactory.create([BrevoContactResolver, TargetGroupResolver, EmailCampaignResolver]);
 
     await writeFile("schema.gql", printSchema(schema));
 

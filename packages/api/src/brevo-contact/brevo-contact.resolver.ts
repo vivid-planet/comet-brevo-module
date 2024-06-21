@@ -52,8 +52,11 @@ export function createBrevoContactResolver({
 
         @Query(() => BrevoContact)
         @AffectedEntity(BrevoContact)
-        async brevoContact(@Args("id", { type: () => Int }) id: number): Promise<BrevoContactInterface> {
-            return this.brevoContactsApiService.findContact(id);
+        async brevoContact(
+            @Args("id", { type: () => Int }) id: number,
+            @Args("scope", { type: () => Scope }, new DynamicDtoValidationPipe(Scope)) scope: typeof Scope,
+        ): Promise<BrevoContactInterface> {
+            return this.brevoContactsApiService.findContact(id, scope);
         }
 
         @Query(() => PaginatedBrevoContacts)
@@ -78,14 +81,14 @@ export function createBrevoContactResolver({
             }
 
             if (email) {
-                const contact = await this.brevoContactsApiService.getContactInfoByEmail(email);
+                const contact = await this.brevoContactsApiService.getContactInfoByEmail(email, scope);
                 if (contact) {
                     return new PaginatedBrevoContacts([contact], 1, { offset, limit });
                 }
                 return new PaginatedBrevoContacts([], 0, { offset, limit });
             }
 
-            const [contacts, count] = await this.brevoContactsApiService.findContactsByListId(targetGroup?.brevoId, limit, offset);
+            const [contacts, count] = await this.brevoContactsApiService.findContactsByListId(targetGroup?.brevoId, limit, offset, scope);
 
             return new PaginatedBrevoContacts(contacts, count, { offset, limit });
         }
@@ -94,13 +97,18 @@ export function createBrevoContactResolver({
         @AffectedEntity(BrevoContact)
         async updateBrevoContact(
             @Args("id", { type: () => Int }) id: number,
+            @Args("scope", { type: () => Scope }, new DynamicDtoValidationPipe(Scope)) scope: typeof Scope,
             @Args("input", { type: () => BrevoContactUpdateInput }) input: BrevoContactUpdateInputInterface,
         ): Promise<BrevoContactInterface> {
             // update attributes of contact before (un)assigning to target groups because they cannot be correctly validated for completeness
-            const contact = await this.brevoContactsApiService.updateContact(id, {
-                blocked: input.blocked,
-                attributes: input.attributes,
-            });
+            const contact = await this.brevoContactsApiService.updateContact(
+                id,
+                {
+                    blocked: input.blocked,
+                    attributes: input.attributes,
+                },
+                scope,
+            );
 
             const assignedListIds = contact.listIds;
             const mainListIds = (await this.targetGroupRepository.find({ brevoId: { $in: assignedListIds }, isMainList: true })).map(
@@ -112,10 +120,14 @@ export function createBrevoContactResolver({
             });
 
             // update contact again with updated list ids depending on new attributes
-            const contactWithUpdatedLists = await this.brevoContactsApiService.updateContact(id, {
-                listIds: updatedNonMainListIds.filter((listId) => !assignedListIds.includes(listId)),
-                unlinkListIds: assignedListIds.filter((listId) => !updatedNonMainListIds.includes(listId) && !mainListIds.includes(listId)),
-            });
+            const contactWithUpdatedLists = await this.brevoContactsApiService.updateContact(
+                id,
+                {
+                    listIds: updatedNonMainListIds.filter((listId) => !assignedListIds.includes(listId)),
+                    unlinkListIds: assignedListIds.filter((listId) => !updatedNonMainListIds.includes(listId) && !mainListIds.includes(listId)),
+                },
+                scope,
+            );
 
             return contactWithUpdatedLists;
         }
@@ -136,7 +148,7 @@ export function createBrevoContactResolver({
                 attributes: input.attributes,
                 redirectionUrl: input.redirectionUrl,
                 scope,
-                templateId: this.config.brevo.doubleOptInTemplateId,
+                templateId: this.config.brevo.resolveConfig(scope).doubleOptInTemplateId,
             });
 
             if (created) {
@@ -148,8 +160,11 @@ export function createBrevoContactResolver({
 
         @Mutation(() => Boolean)
         @AffectedEntity(BrevoContact)
-        async deleteBrevoContact(@Args("id", { type: () => Int }) id: number): Promise<boolean> {
-            return this.brevoContactsApiService.deleteContact(id);
+        async deleteBrevoContact(
+            @Args("id", { type: () => Int }) id: number,
+            @Args("scope", { type: () => Scope }, new DynamicDtoValidationPipe(Scope)) scope: typeof Scope,
+        ): Promise<boolean> {
+            return this.brevoContactsApiService.deleteContact(id, scope);
         }
 
         @Mutation(() => SubscribeResponse)
@@ -165,7 +180,7 @@ export function createBrevoContactResolver({
             const created = await this.brevoContactsService.createDoubleOptInContact({
                 ...data,
                 scope,
-                templateId: this.config.brevo.doubleOptInTemplateId,
+                templateId: this.config.brevo.resolveConfig(scope).doubleOptInTemplateId,
             });
 
             if (created) {

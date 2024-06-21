@@ -28,6 +28,7 @@ export class BrevoContactsService {
             { email, redirectionUrl, attributes },
             [mainTargetGroupForScope.brevoId, ...targetGroupIds],
             templateId,
+            scope,
         );
         return created;
     }

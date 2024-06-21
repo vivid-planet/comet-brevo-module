@@ -1,5 +1,6 @@
 import { Inject, Injectable } from "@nestjs/common";
 import * as SibApiV3Sdk from "@sendinblue/client";
+import { EmailCampaignScopeInterface } from "src/types";
 
 import { BrevoModuleConfig } from "../config/brevo-module.config";
 import { BREVO_MODULE_CONFIG } from "../config/brevo-module.constants";
@@ -10,11 +11,24 @@ import { BrevoApiCampaignStatistics } from "./dto/brevo-api-campaign-statistics"
 
 @Injectable()
 export class BrevoApiCampaignsService {
-    private readonly campaignsApi: SibApiV3Sdk.EmailCampaignsApi;
+    private readonly campaignsApis = new Map<string, SibApiV3Sdk.EmailCampaignsApi>();
 
-    constructor(@Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig) {
-        this.campaignsApi = new SibApiV3Sdk.EmailCampaignsApi();
-        this.campaignsApi.setApiKey(SibApiV3Sdk.EmailCampaignsApiApiKeys.apiKey, config.brevo.apiKey);
+    constructor(@Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig) {}
+
+    private getCampaignsApi(scope: EmailCampaignScopeInterface): SibApiV3Sdk.EmailCampaignsApi {
+        const existingCampaignsApiForScope = this.campaignsApis.get(JSON.stringify(scope));
+
+        if (existingCampaignsApiForScope) {
+            return existingCampaignsApiForScope;
+        }
+
+        const { apiKey } = this.config.brevo.resolveConfig(scope);
+        const campaignsApi = new SibApiV3Sdk.EmailCampaignsApi();
+        campaignsApi.setApiKey(SibApiV3Sdk.EmailCampaignsApiApiKeys.apiKey, apiKey);
+
+        this.campaignsApis.set(JSON.stringify(scope), campaignsApi);
+
+        return campaignsApi;
     }
 
     public getSendingInformationFromBrevoCampaign(campaign: BrevoApiCampaign): SendingState {
@@ -30,26 +44,25 @@ export class BrevoApiCampaignsService {
     public async createBrevoCampaign({
         campaign,
         htmlContent,
-        sender,
         scheduledAt,
     }: {
         campaign: EmailCampaignInterface;
         htmlContent: string;
-        sender: { name: string; mail: string };
         scheduledAt?: Date;
     }): Promise<number> {
         const targetGroup = await campaign.targetGroup?.load();
+        const { sender } = this.config.brevo.resolveConfig(campaign.scope);
 
         const emailCampaign = {
             name: campaign.title,
             subject: campaign.subject,
-            sender: { name: sender.name, email: sender.mail },
+            sender: { name: sender.name, email: sender.email },
             recipients: { listIds: targetGroup ? [targetGroup?.brevoId] : [] },
             htmlContent,
             scheduledAt: scheduledAt?.toISOString(),
         };
 
-        const data = await this.campaignsApi.createEmailCampaign(emailCampaign);
+        const data = await this.getCampaignsApi(campaign.scope).createEmailCampaign(emailCampaign);
         return data.body.id;
     }
 
@@ -58,77 +71,107 @@ export class BrevoApiCampaignsService {
         campaign,
         htmlContent,
         scheduledAt,
-        sender,
     }: {
         id: number;
         campaign: EmailCampaignInterface;
         htmlContent: string;
-        sender: { name: string; mail: string };
         scheduledAt?: Date;
     }): Promise<boolean> {
         const targetGroup = await campaign.targetGroup?.load();
+        const { sender } = this.config.brevo.resolveConfig(campaign.scope);
 
         const emailCampaign = {
             name: campaign.title,
             subject: campaign.subject,
-            sender: { name: sender.name, mail: sender.mail },
+            sender: { name: sender.name, mail: sender.email },
             recipients: { listIds: targetGroup ? [targetGroup?.brevoId] : [] },
             htmlContent,
             scheduledAt: scheduledAt?.toISOString(),
         };
 
-        const result = await this.campaignsApi.updateEmailCampaign(id, emailCampaign);
+        const result = await this.getCampaignsApi(campaign.scope).updateEmailCampaign(id, emailCampaign);
         return result.response.statusCode === 204;
     }
 
-    public async sendBrevoCampaign(id: number): Promise<boolean> {
-        const result = await this.campaignsApi.sendEmailCampaignNow(id);
+    public async sendBrevoCampaign(campaign: EmailCampaignInterface): Promise<boolean> {
+        if (!campaign.brevoId) {
+            throw new Error("Campaign has no brevoId");
+        }
+
+        const result = await this.getCampaignsApi(campaign.scope).sendEmailCampaignNow(campaign.brevoId);
         return result.response.statusCode === 204;
     }
 
-    public async updateBrevoCampaignStatus(id: number, updated_status: SibApiV3Sdk.UpdateCampaignStatus.StatusEnum): Promise<boolean> {
+    public async updateBrevoCampaignStatus(
+        campaign: EmailCampaignInterface,
+        updatedStatus: SibApiV3Sdk.UpdateCampaignStatus.StatusEnum,
+    ): Promise<boolean> {
+        if (!campaign.brevoId) {
+            throw new Error("Campaign has no brevoId");
+        }
+
         const status = new SibApiV3Sdk.UpdateCampaignStatus();
-        status.status = updated_status;
-        const result = await this.campaignsApi.updateCampaignStatus(id, status);
+        status.status = updatedStatus;
+        const result = await this.getCampaignsApi(campaign.scope).updateCampaignStatus(campaign.brevoId, status);
         return result.response.statusCode === 204;
     }
 
-    public async sendTestEmail(id: number, emails: string[]): Promise<boolean> {
-        const result = await this.campaignsApi.sendTestEmail(id, { emailTo: emails });
+    public async sendTestEmail(campaign: EmailCampaignInterface, emails: string[]): Promise<boolean> {
+        if (!campaign.brevoId) {
+            throw new Error("Campaign has no brevoId");
+        }
+
+        const result = await this.getCampaignsApi(campaign.scope).sendTestEmail(campaign.brevoId, { emailTo: emails });
         return result.response.statusCode === 204;
     }
 
-    public async loadBrevoCampaignsByIds(ids: number[]): Promise<BrevoApiCampaign[]> {
+    public async loadBrevoCampaignsByIds(ids: number[], scope: EmailCampaignScopeInterface): Promise<BrevoApiCampaign[]> {
         const campaigns = [];
-        for await (const campaign of await this.getCampaignsResponse(ids)) {
+        for await (const campaign of await this.getCampaignsResponse(ids, scope)) {
             campaigns.push(campaign);
         }
 
         return campaigns;
     }
 
-    public async loadBrevoCampaignById(id: number): Promise<BrevoApiCampaign> {
-        const response = await this.campaignsApi.getEmailCampaign(id);
+    public async loadBrevoCampaignById(campaign: EmailCampaignInterface): Promise<BrevoApiCampaign> {
+        if (!campaign.brevoId) {
+            throw new Error("Campaign has no brevoId");
+        }
+        const response = await this.getCampaignsApi(campaign.scope).getEmailCampaign(campaign.brevoId);
 
         // wrong type in brevo library -> needs to be cast to unknown first
         return response.body as unknown as BrevoApiCampaign;
     }
 
-    public async loadBrevoCampaignStatisticsById(id: number): Promise<BrevoApiCampaignStatistics> {
-        const campaign = await this.campaignsApi.getEmailCampaign(id);
+    public async loadBrevoCampaignStatisticsById(campaign: EmailCampaignInterface): Promise<BrevoApiCampaignStatistics> {
+        if (!campaign.brevoId) {
+            throw new Error("Campaign has no brevoId");
+        }
 
-        return campaign.body.statistics.campaignStats[0];
+        const brevoCampaign = await this.getCampaignsApi(campaign.scope).getEmailCampaign(campaign.brevoId);
+
+        return brevoCampaign.body.statistics.campaignStats[0];
     }
 
     private async *getCampaignsResponse(
         ids: number[],
+        scope: EmailCampaignScopeInterface,
         status?: "suspended" | "archive" | "sent" | "queued" | "draft" | "inProcess",
     ): AsyncGenerator<BrevoApiCampaign, void, undefined> {
         let offset = 0;
         const limit = 100;
 
         while (true) {
-            const campaignsResponse = await this.campaignsApi.getEmailCampaigns(undefined, status, undefined, undefined, undefined, limit, offset);
+            const campaignsResponse = await this.getCampaignsApi(scope).getEmailCampaigns(
+                undefined,
+                status,
+                undefined,
+                undefined,
+                undefined,
+                limit,
+                offset,
+            );
             const campaignArray = (campaignsResponse.body.campaigns ?? []).filter((item) => ids.includes(item.id));
 
             if (campaignArray.length === 0) {
