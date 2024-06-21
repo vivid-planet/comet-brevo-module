@@ -18,7 +18,7 @@ export class BrevoApiCampaignsService {
     }
 
     private setApiKey(scope: EmailCampaignScopeInterface): void {
-        const { apiKey } = this.config.brevo.getBrevoConfig(scope);
+        const { apiKey } = this.config.brevo.resolveConfig(scope);
         this.campaignsApi.setApiKey(SibApiV3Sdk.EmailCampaignsApiApiKeys.apiKey, apiKey);
     }
 
@@ -44,7 +44,7 @@ export class BrevoApiCampaignsService {
         this.setApiKey(campaign.scope);
 
         const targetGroup = await campaign.targetGroup?.load();
-        const { sender } = this.config.brevo.getBrevoConfig(campaign.scope);
+        const { sender } = this.config.brevo.resolveConfig(campaign.scope);
 
         const emailCampaign = {
             name: campaign.title,
@@ -73,7 +73,7 @@ export class BrevoApiCampaignsService {
         this.setApiKey(campaign.scope);
 
         const targetGroup = await campaign.targetGroup?.load();
-        const { sender } = this.config.brevo.getBrevoConfig(campaign.scope);
+        const { sender } = this.config.brevo.resolveConfig(campaign.scope);
 
         const emailCampaign = {
             name: campaign.title,

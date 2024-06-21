@@ -17,7 +17,7 @@ Scope argument was added to resolver and service functions to ensure the correct
 ```diff
     BrevoModule.register({
         brevo: {
-+           getBrevoConfig: (scope: EmailCampaignContentScope) => {
++           resolveConfig: (scope: EmailCampaignContentScope) => {
 +               if (scope.domain === "main") {
 +                   return {
 +                       apiKey: config.brevo.apiKey,

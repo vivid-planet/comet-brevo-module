@@ -23,7 +23,7 @@ export class BrevoApiContactsService {
     }
 
     private setApiKey(scope: EmailCampaignScopeInterface): void {
-        const { apiKey } = this.config.brevo.getBrevoConfig(scope);
+        const { apiKey } = this.config.brevo.resolveConfig(scope);
         this.contactsApi.setApiKey(SibApiV3Sdk.ContactsApiApiKeys.apiKey, apiKey);
     }
 

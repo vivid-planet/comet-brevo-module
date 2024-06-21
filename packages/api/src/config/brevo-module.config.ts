@@ -6,7 +6,7 @@ import { BrevoContactFilterAttributesInterface } from "../types";
 
 export interface BrevoModuleConfig {
     brevo: {
-        getBrevoConfig: (scope: EmailCampaignScopeInterface) => {
+        resolveConfig: (scope: EmailCampaignScopeInterface) => {
             apiKey: string;
             doubleOptInTemplateId: number;
             sender: {

@@ -148,7 +148,7 @@ export function createBrevoContactResolver({
                 attributes: input.attributes,
                 redirectionUrl: input.redirectionUrl,
                 scope,
-                templateId: this.config.brevo.getBrevoConfig(scope).doubleOptInTemplateId,
+                templateId: this.config.brevo.resolveConfig(scope).doubleOptInTemplateId,
             });
 
             if (created) {
@@ -180,7 +180,7 @@ export function createBrevoContactResolver({
             const created = await this.brevoContactsService.createDoubleOptInContact({
                 ...data,
                 scope,
-                templateId: this.config.brevo.getBrevoConfig(scope).doubleOptInTemplateId,
+                templateId: this.config.brevo.resolveConfig(scope).doubleOptInTemplateId,
             });
 
             if (created) {

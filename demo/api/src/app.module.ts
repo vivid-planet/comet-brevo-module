@@ -138,7 +138,7 @@ export class AppModule {
                 DependenciesModule,
                 BrevoModule.register({
                     brevo: {
-                        getBrevoConfig: (scope: EmailCampaignContentScope) => {
+                        resolveConfig: (scope: EmailCampaignContentScope) => {
                             // change config based on scope - for example different sender email
                             // this is just to show you can use the scope to change the config but it has no real use in this example
                             if (scope.domain === "main") {
