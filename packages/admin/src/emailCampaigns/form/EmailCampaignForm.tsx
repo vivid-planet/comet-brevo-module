@@ -53,7 +53,6 @@ import {
     GQLUpdateEmailCampaignMutationVariables,
 } from "./EmailCampaignForm.gql.generated";
 import { SendManagerFields } from "./SendManagerFields";
-import { SendManagerWrapper } from "./SendManagerWrapper";
 import { TestEmailCampaignForm } from "./TestEmailCampaignForm";
 
 interface FormProps {
@@ -290,15 +289,13 @@ export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope, previe
                                         scheduledAt: state.scheduledAt,
                                     }}
                                 >
-                                    <SendManagerWrapper scope={scope}>
-                                        <SendManagerFields
-                                            scope={scope}
-                                            isSchedulingDisabled={isSchedulingDisabled}
-                                            isSendable={!hasChanges && state.targetGroup != undefined}
-                                            id={id}
-                                        />
-                                        <TestEmailCampaignForm id={id} isSendable={!hasChanges && state.targetGroup != undefined} />
-                                    </SendManagerWrapper>
+                                    <SendManagerFields
+                                        scope={scope}
+                                        isSchedulingDisabled={isSchedulingDisabled}
+                                        isSendable={!hasChanges && state.targetGroup != undefined}
+                                        id={id}
+                                    />
+                                    <TestEmailCampaignForm id={id} isSendable={!hasChanges && state.targetGroup != undefined} />
                                 </BlocksFinalForm>
                             ),
                         },
