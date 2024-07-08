@@ -128,9 +128,9 @@ export function TargetGroupsGrid({
     const dataGridProps = { ...useDataGridRemote(), ...usePersistentColumnState("TargetGroupsGrid") };
 
     const targetGroupContactsQuery = gql`
-        query TargetGroupContacts($targetGroupId: ID!, $offset: Int, $limit: Int, ) {
-            brevoContactsInTargetGroup(targetGroupId: $targetGroupId, offset: $offset, limit: $limit) {
-                nodes {
+        query TargetGroupContacts($targetGroupId: ID!, $offset: Int, $limit: Int, $scope: EmailCampaignContentScopeInput!) {
+            brevoContacts(targetGroupId: $targetGroupId, offset: $offset, limit: $limit, scope: $scope) {               
+                 nodes {
                     ...TargetGroupContactItem
                     ${
                         exportTargetGroupOptions?.additionalAttributesFragment
@@ -178,11 +178,12 @@ export function TargetGroupsGrid({
                     targetGroupId: id,
                     offset: offset,
                     limit: 100,
+                    scope,
                 },
             });
 
-            allContacts = allContacts.concat(newContactsData.brevoContactsInTargetGroup.nodes as ContactWithAdditionalAttributes[]);
-            shouldContinue = allContacts.length < newContactsData.brevoContactsInTargetGroup.totalCount;
+            allContacts = allContacts.concat(newContactsData.brevoContacts.nodes as ContactWithAdditionalAttributes[]);
+            shouldContinue = allContacts.length < newContactsData.brevoContacts.totalCount;
             offset += 100;
         }
 
