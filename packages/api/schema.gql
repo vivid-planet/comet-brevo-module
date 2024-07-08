@@ -44,20 +44,6 @@ type User {
   language: String!
 }
 
-type BrevoApiSender {
-  id: ID!
-  name: String!
-  email: String!
-  active: Boolean!
-  ips: [BrevoIp!]
-}
-
-type BrevoIp {
-  ip: String!
-  domain: String!
-  weight: Int!
-}
-
 type BrevoApiCampaignStatistics {
   """Number of unique clicks for the campaign"""
   uniqueClicks: Int!
@@ -174,21 +160,12 @@ type PaginatedEmailCampaigns {
   totalCount: Int!
 }
 
-type BrevoConfig implements DocumentInterface {
-  id: ID!
-  updatedAt: DateTime!
-  senderMail: String!
-  senderName: String!
-  createdAt: DateTime!
-  scope: EmailCampaignContentScope!
-}
-
 input EmailCampaignContentScopeInput {
   thisScopeHasNoFields____: String
 }
 
 type Query {
-  brevoContact(id: Int!): BrevoContact!
+  brevoContact(id: Int!, scope: EmailCampaignContentScopeInput!): BrevoContact!
   brevoContacts(targetGroupId: ID, email: String, scope: EmailCampaignContentScopeInput!, offset: Int! = 0, limit: Int! = 25): PaginatedBrevoContacts!
   manuallyAssignedBrevoContacts(offset: Int! = 0, limit: Int! = 25, targetGroupId: ID!, email: String): PaginatedBrevoContacts!
   targetGroup(id: ID!): TargetGroup!
@@ -196,8 +173,6 @@ type Query {
   emailCampaign(id: ID!): EmailCampaign!
   emailCampaigns(scope: EmailCampaignContentScopeInput!, search: String, filter: EmailCampaignFilter, sort: [EmailCampaignSort!], offset: Int! = 0, limit: Int! = 25): PaginatedEmailCampaigns!
   emailCampaignStatistics(id: ID!): BrevoApiCampaignStatistics
-  senders: [BrevoApiSender!]
-  brevoConfig(scope: EmailCampaignContentScopeInput!): BrevoConfig
 }
 
 input TargetGroupFilter {
@@ -265,9 +240,9 @@ enum EmailCampaignSortField {
 }
 
 type Mutation {
-  updateBrevoContact(id: Int!, input: BrevoContactUpdateInput!): BrevoContact!
+  updateBrevoContact(id: Int!, scope: EmailCampaignContentScopeInput!, input: BrevoContactUpdateInput!): BrevoContact!
   createBrevoContact(scope: EmailCampaignContentScopeInput!, input: BrevoContactInput!): SubscribeResponse!
-  deleteBrevoContact(id: Int!): Boolean!
+  deleteBrevoContact(id: Int!, scope: EmailCampaignContentScopeInput!): Boolean!
   subscribeBrevoContact(input: SubscribeInput!, scope: EmailCampaignContentScopeInput!): SubscribeResponse!
   createTargetGroup(scope: EmailCampaignContentScopeInput!, input: TargetGroupInput!): TargetGroup!
   addBrevoContactsToTargetGroup(id: ID!, input: AddBrevoContactsInput!): Boolean!
@@ -279,8 +254,6 @@ type Mutation {
   deleteEmailCampaign(id: ID!): Boolean!
   sendEmailCampaignNow(id: ID!): Boolean!
   sendEmailCampaignToTestEmails(id: ID!, data: SendTestEmailCampaignArgs!): Boolean!
-  createBrevoConfig(scope: EmailCampaignContentScopeInput!, input: BrevoConfigInput!): BrevoConfig!
-  updateBrevoConfig(id: ID!, input: BrevoConfigUpdateInput!, lastUpdatedAt: DateTime): BrevoConfig!
 }
 
 input BrevoContactUpdateInput {
@@ -347,14 +320,4 @@ input EmailCampaignUpdateInput {
 
 input SendTestEmailCampaignArgs {
   emails: [String!]!
-}
-
-input BrevoConfigInput {
-  senderMail: String!
-  senderName: String!
-}
-
-input BrevoConfigUpdateInput {
-  senderMail: String!
-  senderName: String!
 }

@@ -4,10 +4,10 @@ import { InjectRepository } from "@mikro-orm/nestjs";
 import { HttpService } from "@nestjs/axios";
 import { Inject, Injectable } from "@nestjs/common";
 import { UpdateCampaignStatus } from "@sendinblue/client";
+import { EmailCampaignScopeInterface } from "src/types";
 
 import { BrevoApiCampaignsService } from "../brevo-api/brevo-api-campaigns.service";
 import { BrevoApiContactsService } from "../brevo-api/brevo-api-contact.service";
-import { BrevoConfigInterface } from "../brevo-config/entities/brevo-config-entity.factory";
 import { EcgRtrListService } from "../brevo-contact/ecg-rtr-list/ecg-rtr-list.service";
 import { BrevoModuleConfig } from "../config/brevo-module.config";
 import { BREVO_MODULE_CONFIG } from "../config/brevo-module.constants";
@@ -19,7 +19,6 @@ export class EmailCampaignsService {
     constructor(
         @Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig,
         @InjectRepository("EmailCampaign") private readonly repository: EntityRepository<EmailCampaignInterface>,
-        @InjectRepository("BrevoConfig") private readonly brevoConfigRepository: EntityRepository<BrevoConfigInterface>,
         private readonly httpService: HttpService,
         private readonly brevoApiCampaignService: BrevoApiCampaignsService,
         private readonly brevoApiContactsService: BrevoApiContactsService,
@@ -42,10 +41,7 @@ export class EmailCampaignsService {
         return andFilters.length > 0 ? { $and: andFilters } : {};
     }
 
-    async saveEmailCampaignInBrevo(id: string, scheduledAt?: Date): Promise<EmailCampaignInterface> {
-        const campaign = await this.repository.findOneOrFail(id);
-        const brevoConfig = await this.brevoConfigRepository.findOneOrFail({ scope: campaign.scope });
-
+    async saveEmailCampaignInBrevo(campaign: EmailCampaignInterface, scheduledAt?: Date): Promise<EmailCampaignInterface> {
         const content = await this.blockTransformerService.transformToPlain(campaign.content);
 
         const { data: htmlContent, status } = await this.httpService.axiosRef.post(
@@ -70,7 +66,6 @@ export class EmailCampaignsService {
                 campaign,
                 htmlContent,
                 scheduledAt,
-                sender: { name: brevoConfig.senderName, mail: brevoConfig.senderMail },
             });
 
             wrap(campaign).assign({ brevoId });
@@ -82,22 +77,24 @@ export class EmailCampaignsService {
                 campaign,
                 htmlContent,
                 scheduledAt,
-                sender: { name: brevoConfig.senderName, mail: brevoConfig.senderMail },
             });
         }
 
         return campaign;
     }
 
-    async suspendEmailCampaign(brevoId: number): Promise<boolean> {
-        return this.brevoApiCampaignService.updateBrevoCampaignStatus(brevoId, UpdateCampaignStatus.StatusEnum.Suspended);
+    async suspendEmailCampaign(campaign: EmailCampaignInterface): Promise<boolean> {
+        return this.brevoApiCampaignService.updateBrevoCampaignStatus(campaign, UpdateCampaignStatus.StatusEnum.Suspended);
     }
 
-    public async loadEmailCampaignSendingStatesForEmailCampaigns(campaigns: EmailCampaignInterface[]): Promise<EmailCampaignInterface[]> {
+    public async loadEmailCampaignSendingStatesForEmailCampaigns(
+        campaigns: EmailCampaignInterface[],
+        scope: EmailCampaignScopeInterface,
+    ): Promise<EmailCampaignInterface[]> {
         const brevoIds = campaigns.map((campaign) => campaign.brevoId).filter((campaign) => campaign) as number[];
 
         if (brevoIds.length > 0) {
-            const brevoCampaigns = await this.brevoApiCampaignService.loadBrevoCampaignsByIds(brevoIds);
+            const brevoCampaigns = await this.brevoApiCampaignService.loadBrevoCampaignsByIds(brevoIds, scope);
 
             for (const brevoCampaign of brevoCampaigns) {
                 const sendingState = this.brevoApiCampaignService.getSendingInformationFromBrevoCampaign(brevoCampaign);
@@ -112,30 +109,35 @@ export class EmailCampaignsService {
         return campaigns;
     }
 
-    public async sendEmailCampaignNow(id: string): Promise<boolean> {
-        const campaign = await this.saveEmailCampaignInBrevo(id);
+    public async sendEmailCampaignNow(campaign: EmailCampaignInterface): Promise<boolean> {
+        const brevoCampaign = await this.saveEmailCampaignInBrevo(campaign);
 
-        const targetGroup = await campaign.targetGroup?.load();
+        const targetGroup = await brevoCampaign.targetGroup?.load();
 
         if (targetGroup?.brevoId) {
             let currentOffset = 0;
             let totalContacts = 0;
             const limit = 50;
             do {
-                const [contacts, total] = await this.brevoApiContactsService.findContactsByListId(targetGroup.brevoId, limit, currentOffset);
+                const [contacts, total] = await this.brevoApiContactsService.findContactsByListId(
+                    targetGroup.brevoId,
+                    limit,
+                    currentOffset,
+                    campaign.scope,
+                );
                 const emails = contacts.map((contact) => contact.email);
                 const containedEmails = await this.ecgRtrListService.getContainedEcgRtrListEmails(emails);
 
                 if (containedEmails.length > 0) {
-                    await this.brevoApiContactsService.blacklistMultipleContacts(containedEmails);
+                    await this.brevoApiContactsService.blacklistMultipleContacts(containedEmails, campaign.scope);
                 }
 
                 currentOffset += limit;
                 totalContacts = total;
             } while (currentOffset < totalContacts);
 
-            if (campaign.brevoId) {
-                return this.brevoApiCampaignService.sendBrevoCampaign(campaign.brevoId);
+            if (brevoCampaign.brevoId) {
+                return this.brevoApiCampaignService.sendBrevoCampaign(brevoCampaign);
             }
         }
 
