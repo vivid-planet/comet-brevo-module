@@ -173,6 +173,7 @@ export class AppModule {
                             },
                         },
                     },
+                    enablePublicApiSubscriptionRoute: true,
                 }),
             ],
         };

@@ -25,6 +25,7 @@ export class BrevoModule {
                     BrevoContactAttributes: config.brevo.BrevoContactAttributes,
                     Scope: config.emailCampaigns.Scope,
                     TargetGroup,
+                    enablePublicApiSubscriptionRoute: config.enablePublicApiSubscriptionRoute,
                 }),
                 EmailCampaignModule.register({
                     EmailCampaignContentBlock: config.emailCampaigns.EmailCampaignContentBlock,

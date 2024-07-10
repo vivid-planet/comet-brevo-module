@@ -173,21 +173,7 @@ export function createBrevoContactResolver({
             @Args("scope", { type: () => Scope }, new DynamicDtoValidationPipe(Scope))
             scope: typeof Scope,
         ): Promise<SubscribeResponse> {
-            if ((await this.ecgRtrListService.getContainedEcgRtrListEmails([data.email])).length > 0) {
-                return SubscribeResponse.ERROR_CONTAINED_IN_ECG_RTR_LIST;
-            }
-
-            const created = await this.brevoContactsService.createDoubleOptInContact({
-                ...data,
-                scope,
-                templateId: this.config.brevo.resolveConfig(scope).doubleOptInTemplateId,
-            });
-
-            if (created) {
-                return SubscribeResponse.SUCCESSFUL;
-            }
-
-            return SubscribeResponse.ERROR_UNKNOWN;
+            return this.brevoContactsService.subscribeBrevoContact(data, scope);
         }
     }
 
