@@ -27,7 +27,7 @@ export const createBrevoContactMutation = gql`
 
 export const updateBrevoContactMutation = (brevoContactFormFragment: DocumentNode) => gql`
     mutation UpdateBrevoContact($id: Int!, $input: BrevoContactUpdateInput!, $scope: EmailCampaignContentScopeInput!) {
-        updateBrevoContact(id: $id, input: $input, scope: $scope) {
+         updateBrevoContact(id: $id, input: $input, scope: $scope) {
             id
             modifiedAt
             ...BrevoContactForm
