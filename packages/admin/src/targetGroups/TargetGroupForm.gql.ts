@@ -4,7 +4,9 @@ export const targetGroupFormQuery = (targetGroupFormFragment: DocumentNode) => g
     query TargetGroupForm($id: ID!) {
         targetGroup(id: $id) {
             id
+            title
             updatedAt
+            assignedContactsTargetGroupBrevoId
             ...TargetGroupForm
         }
     }

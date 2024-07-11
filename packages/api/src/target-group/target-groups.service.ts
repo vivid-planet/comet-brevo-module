@@ -1,5 +1,5 @@
 import { filtersToMikroOrmQuery, searchToMikroOrmQuery } from "@comet/cms-api";
-import { EntityManager, EntityRepository, FilterQuery, ObjectQuery } from "@mikro-orm/core";
+import { EntityManager, EntityRepository, ObjectQuery } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable } from "@nestjs/common";
 
@@ -54,7 +54,7 @@ export class TargetGroupsService {
 
     public async assignContactsToContactList(
         filters: BrevoContactFilterAttributesInterface = {},
-        brevoId: number,
+        targetGroup: TargetGroupInterface,
         scope: EmailCampaignScopeInterface,
     ): Promise<true> {
         const mainScopeTargetGroupList = await this.repository.findOneOrFail({ scope, isMainList: true });
@@ -75,9 +75,14 @@ export class TargetGroupsService {
             const contactsNotInContactList: BrevoContactInterface[] = [];
 
             for (const contact of contacts) {
-                const contactIsInTargetGroup = this.checkIfContactIsInTargetGroup(contact.attributes, filters);
+                const contactIsInTargetGroupByFilters = this.checkIfContactIsInTargetGroup(contact.attributes, filters);
 
-                if (contactIsInTargetGroup) {
+                const manuallyAssignedTargetGroup = targetGroup.assignedContactsTargetGroupBrevoId;
+                const contactIsManuallyAssignedToTargetGroup = manuallyAssignedTargetGroup
+                    ? contact.listIds.includes(manuallyAssignedTargetGroup)
+                    : false;
+
+                if (contactIsInTargetGroupByFilters || contactIsManuallyAssignedToTargetGroup) {
                     contactsInContactList.push(contact);
                 } else {
                     contactsNotInContactList.push(contact);
@@ -86,13 +91,13 @@ export class TargetGroupsService {
 
             if (contactsInContactList.length > 0) {
                 await this.brevoApiContactsService.updateMultipleContacts(
-                    contactsInContactList.map((contact) => ({ id: contact.id, listIds: [brevoId] })),
+                    contactsInContactList.map((contact) => ({ id: contact.id, listIds: [targetGroup.brevoId] })),
                     scope,
                 );
             }
             if (contactsNotInContactList.length > 0) {
                 await this.brevoApiContactsService.updateMultipleContacts(
-                    contactsNotInContactList.map((contact) => ({ id: contact.id, unlinkListIds: [brevoId] })),
+                    contactsNotInContactList.map((contact) => ({ id: contact.id, unlinkListIds: [targetGroup.brevoId] })),
                     scope,
                 );
             }
@@ -119,11 +124,6 @@ export class TargetGroupsService {
         );
 
         return [targetGroups, totalContactLists];
-    }
-
-    async findOneTargetGroup(where: FilterQuery<TargetGroupInterface>): Promise<TargetGroupInterface | null> {
-        const targetGroup = await this.repository.findOne(where);
-        return targetGroup;
     }
 
     public async createIfNotExistMainTargetGroupForScope(scope: EmailCampaignScopeInterface): Promise<TargetGroupInterface> {

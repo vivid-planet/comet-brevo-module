@@ -18,6 +18,7 @@ export interface TargetGroupInterface {
     totalContactsBlocked: number;
     scope: EmailCampaignScopeInterface;
     filters?: BrevoContactFilterAttributesInterface;
+    assignedContactsTargetGroupBrevoId?: number;
 }
 
 export class TargetGroupEntityFactory {
@@ -69,6 +70,10 @@ export class TargetGroupEntityFactory {
             @Embedded(() => Scope)
             @Field(() => Scope)
             scope: typeof Scope;
+
+            @Property({ columnType: "int", nullable: true })
+            @Field(() => Int, { nullable: true })
+            assignedContactsTargetGroupBrevoId?: number;
         }
         if (BrevoFilterAttributes) {
             @Entity()
