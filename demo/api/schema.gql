@@ -203,16 +203,6 @@ type BrevoApiCampaignStatistics {
   viewed: Int!
 }
 
-type Product {
-  id: ID!
-  creatorId: String!
-  name: String!
-  description: String!
-  createdAt: DateTime!
-  updatedAt: DateTime
-  sales: Int!
-}
-
 type Link implements DocumentInterface {
   id: ID!
   updatedAt: DateTime!
@@ -285,11 +275,6 @@ input DependentFilter {
   rootGraphqlObjectType: String
   rootId: String
   rootColumnName: String
-}
-
-type PaginatedProducts {
-  nodes: [Product!]!
-  totalCount: Int!
 }
 
 type BrevoContactAttributes {
@@ -530,8 +515,6 @@ type Query {
   damFoldersList(offset: Int! = 0, limit: Int! = 25, sortColumnName: String, sortDirection: SortDirection! = ASC, scope: DamScopeInput! = {}, parentId: ID, includeArchived: Boolean, filter: FolderFilterInput): PaginatedDamFolders!
   damFolder(id: ID!): DamFolder!
   damFolderByNameAndParentId(scope: DamScopeInput! = {}, name: String!, parentId: ID): DamFolder
-  product(id: ID!): Product!
-  products(offset: Int! = 0, limit: Int! = 25, search: String, filter: ProductFilter, sort: [ProductSort!]): PaginatedProducts!
   mainMenu(scope: PageTreeNodeScopeInput!): [PageTreeNode!]!
   brevoContact(id: Int!, scope: EmailCampaignContentScopeInput!): BrevoContact!
   brevoContacts(targetGroupId: ID, email: String, scope: EmailCampaignContentScopeInput!, offset: Int! = 0, limit: Int! = 25): PaginatedBrevoContacts!
@@ -667,27 +650,6 @@ input FolderFilterInput {
   searchText: String
 }
 
-input ProductFilter {
-  creatorId: StringFilter
-  name: StringFilter
-  description: StringFilter
-  createdAt: DateFilter
-  updatedAt: DateFilter
-  and: [ProductFilter!]
-  or: [ProductFilter!]
-}
-
-input ProductSort {
-  field: ProductSortField!
-  direction: SortDirection! = ASC
-}
-
-enum ProductSortField {
-  name
-  createdAt
-  updatedAt
-}
-
 input EmailCampaignFilter {
   createdAt: DateFilter
   updatedAt: DateFilter
@@ -765,9 +727,6 @@ type Mutation {
   updateDamFolder(id: ID!, input: UpdateDamFolderInput!): DamFolder!
   moveDamFolders(folderIds: [ID!]!, targetFolderId: ID, scope: DamScopeInput! = {}): [DamFolder!]!
   deleteDamFolder(id: ID!): Boolean!
-  createProduct(input: ProductInput!): Product!
-  updateProduct(id: ID!, input: ProductInput!, lastUpdatedAt: DateTime): Product!
-  deleteProduct(id: ID!): Boolean!
   updateBrevoContact(id: Int!, scope: EmailCampaignContentScopeInput!, input: BrevoContactUpdateInput!): BrevoContact!
   createBrevoContact(scope: EmailCampaignContentScopeInput!, input: BrevoContactInput!): SubscribeResponse!
   deleteBrevoContact(id: Int!, scope: EmailCampaignContentScopeInput!): Boolean!
@@ -907,11 +866,6 @@ input UpdateDamFolderInput {
   name: String
   parentId: ID
   archived: Boolean
-}
-
-input ProductInput {
-  name: String!
-  description: String!
 }
 
 input BrevoContactUpdateInput {
