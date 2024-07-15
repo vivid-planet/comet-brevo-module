@@ -136,10 +136,25 @@ export class AppModule {
                 DependenciesModule,
                 BrevoModule.register({
                     brevo: {
-                        apiKey: config.brevo.apiKey,
+                        resolveConfig: (scope: EmailCampaignContentScope) => {
+                            // change config based on scope - for example different sender email
+                            // this is just to show you can use the scope to change the config but it has no real use in this example
+                            if (scope.domain === "main") {
+                                return {
+                                    apiKey: config.brevo.apiKey,
+                                    doubleOptInTemplateId: config.brevo.doubleOptInTemplateId,
+                                    sender: { name: config.brevo.sender.name, email: config.brevo.sender.email },
+                                };
+                            } else {
+                                return {
+                                    apiKey: config.brevo.apiKey,
+                                    doubleOptInTemplateId: config.brevo.doubleOptInTemplateId,
+                                    sender: { name: config.brevo.sender.name, email: config.brevo.sender.email },
+                                };
+                            }
+                        },
                         BrevoContactAttributes,
                         BrevoContactFilterAttributes,
-                        doubleOptInTemplateId: config.brevo.doubleOptInTemplateId,
                         allowedRedirectUrl: config.brevo.allowedRedirectUrl,
                     },
                     ecgRtrList: {
