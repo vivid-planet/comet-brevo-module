@@ -1,12 +1,11 @@
 import { GetEmailCampaignsCampaignsInner } from "@getbrevo/brevo";
 
-
 export interface BrevoApiCampaign {
     id: number;
     name: string;
     subject?: string;
     type: GetEmailCampaignsCampaignsInner.TypeEnum;
-    status:  GetEmailCampaignsCampaignsInner.StatusEnum;
+    status: GetEmailCampaignsCampaignsInner.StatusEnum;
     statistics: {
         globalStats: {
             uniqueClicks: number;

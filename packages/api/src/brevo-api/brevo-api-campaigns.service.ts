@@ -32,9 +32,12 @@ export class BrevoApiCampaignsService {
     }
 
     public getSendingInformationFromBrevoCampaign(campaign: BrevoApiCampaign): SendingState {
-        if (campaign.status ===  Brevo.GetEmailCampaignsCampaignsInner.StatusEnum.Sent) {
+        if (campaign.status === Brevo.GetEmailCampaignsCampaignsInner.StatusEnum.Sent) {
             return SendingState.SENT;
-        } else if (campaign.status ===  Brevo.GetEmailCampaignsCampaignsInner.StatusEnum.Queued || campaign.status === Brevo.GetEmailCampaignsCampaignsInner.StatusEnum.InProcess) {
+        } else if (
+            campaign.status === Brevo.GetEmailCampaignsCampaignsInner.StatusEnum.Queued ||
+            campaign.status === Brevo.GetEmailCampaignsCampaignsInner.StatusEnum.InProcess
+        ) {
             return SendingState.SCHEDULED;
         }
 
@@ -102,10 +105,7 @@ export class BrevoApiCampaignsService {
         return result.response.statusCode === 204;
     }
 
-    public async updateBrevoCampaignStatus(
-        campaign: EmailCampaignInterface,
-        updatedStatus: Brevo.UpdateCampaignStatus.StatusEnum,
-    ): Promise<boolean> {
+    public async updateBrevoCampaignStatus(campaign: EmailCampaignInterface, updatedStatus: Brevo.UpdateCampaignStatus.StatusEnum): Promise<boolean> {
         if (!campaign.brevoId) {
             throw new Error("Campaign has no brevoId");
         }

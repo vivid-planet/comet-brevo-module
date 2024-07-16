@@ -127,11 +127,11 @@ export class EmailCampaignsService {
                 );
                 const emails = contacts.map((contact) => contact.email).filter((email): email is string => email !== undefined);
                 const containedEmails = await this.ecgRtrListService.getContainedEcgRtrListEmails(emails);
-        
+
                 if (containedEmails.length > 0) {
                     await this.brevoApiContactsService.blacklistMultipleContacts(containedEmails, campaign.scope);
                 }
-        
+
                 currentOffset += limit;
                 totalContacts = total;
             } while (currentOffset < totalContacts);
