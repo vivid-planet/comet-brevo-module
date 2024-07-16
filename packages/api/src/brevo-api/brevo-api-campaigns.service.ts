@@ -1,5 +1,5 @@
+import * as Brevo from "@getbrevo/brevo";
 import { Inject, Injectable } from "@nestjs/common";
-import * as SibApiV3Sdk from "@sendinblue/client";
 import { EmailCampaignScopeInterface } from "src/types";
 
 import { BrevoModuleConfig } from "../config/brevo-module.config";
@@ -11,11 +11,11 @@ import { BrevoApiCampaignStatistics } from "./dto/brevo-api-campaign-statistics"
 
 @Injectable()
 export class BrevoApiCampaignsService {
-    private readonly campaignsApis = new Map<string, SibApiV3Sdk.EmailCampaignsApi>();
+    private readonly campaignsApis = new Map<string, Brevo.EmailCampaignsApi>();
 
     constructor(@Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig) {}
 
-    private getCampaignsApi(scope: EmailCampaignScopeInterface): SibApiV3Sdk.EmailCampaignsApi {
+    private getCampaignsApi(scope: EmailCampaignScopeInterface): Brevo.EmailCampaignsApi {
         const existingCampaignsApiForScope = this.campaignsApis.get(JSON.stringify(scope));
 
         if (existingCampaignsApiForScope) {
@@ -23,8 +23,8 @@ export class BrevoApiCampaignsService {
         }
 
         const { apiKey } = this.config.brevo.resolveConfig(scope);
-        const campaignsApi = new SibApiV3Sdk.EmailCampaignsApi();
-        campaignsApi.setApiKey(SibApiV3Sdk.EmailCampaignsApiApiKeys.apiKey, apiKey);
+        const campaignsApi = new Brevo.EmailCampaignsApi();
+        campaignsApi.setApiKey(Brevo.EmailCampaignsApiApiKeys.apiKey, apiKey);
 
         this.campaignsApis.set(JSON.stringify(scope), campaignsApi);
 
@@ -32,9 +32,9 @@ export class BrevoApiCampaignsService {
     }
 
     public getSendingInformationFromBrevoCampaign(campaign: BrevoApiCampaign): SendingState {
-        if (campaign.status === "sent") {
+        if (campaign.status ===  Brevo.GetEmailCampaignsCampaignsInner.StatusEnum.Sent) {
             return SendingState.SENT;
-        } else if (campaign.status === "queued" || campaign.status === "in_process") {
+        } else if (campaign.status ===  Brevo.GetEmailCampaignsCampaignsInner.StatusEnum.Queued || campaign.status === Brevo.GetEmailCampaignsCampaignsInner.StatusEnum.InProcess) {
             return SendingState.SCHEDULED;
         }
 
@@ -104,13 +104,13 @@ export class BrevoApiCampaignsService {
 
     public async updateBrevoCampaignStatus(
         campaign: EmailCampaignInterface,
-        updatedStatus: SibApiV3Sdk.UpdateCampaignStatus.StatusEnum,
+        updatedStatus: Brevo.UpdateCampaignStatus.StatusEnum,
     ): Promise<boolean> {
         if (!campaign.brevoId) {
             throw new Error("Campaign has no brevoId");
         }
 
-        const status = new SibApiV3Sdk.UpdateCampaignStatus();
+        const status = new Brevo.UpdateCampaignStatus();
         status.status = updatedStatus;
         const result = await this.getCampaignsApi(campaign.scope).updateCampaignStatus(campaign.brevoId, status);
         return result.response.statusCode === 204;

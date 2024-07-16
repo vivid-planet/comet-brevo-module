@@ -32,7 +32,7 @@ export class BrevoApiCampaignStatistics {
     @Field(() => Int, {
         description: "Rate of recipients without any privacy protection option enabled in their email client, applied to all delivered emails",
     })
-    estimatedViews: number;
+    estimatedViews?: number;
 
     @Field(() => Int, { description: "Number of unsubscription for the campaign" })
     unsubscriptions: number;

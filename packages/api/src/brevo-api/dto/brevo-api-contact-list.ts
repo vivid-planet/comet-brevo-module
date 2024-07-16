@@ -6,7 +6,7 @@ export class BrevoApiContactList {
     id: number;
 
     @Field(() => String)
-    createdAt: string;
+    createdAt?: string;
 
     @Field(() => String)
     name: string;

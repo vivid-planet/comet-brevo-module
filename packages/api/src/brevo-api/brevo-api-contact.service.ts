@@ -1,5 +1,5 @@
+import * as Brevo from "@getbrevo/brevo";
 import { Inject, Injectable } from "@nestjs/common";
-import * as SibApiV3Sdk from "@sendinblue/client";
 import { BrevoContactAttributesInterface, EmailCampaignScopeInterface } from "src/types";
 
 import { BrevoContactInterface } from "../brevo-contact/dto/brevo-contact.factory";
@@ -16,11 +16,11 @@ export interface CreateDoubleOptInContactData {
 
 @Injectable()
 export class BrevoApiContactsService {
-    private readonly contactsApis = new Map<string, SibApiV3Sdk.ContactsApi>();
+    private readonly contactsApis = new Map<string, Brevo.ContactsApi>();
 
     constructor(@Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig) {}
 
-    private getContactsApi(scope: EmailCampaignScopeInterface): SibApiV3Sdk.ContactsApi {
+    private getContactsApi(scope: EmailCampaignScopeInterface): Brevo.ContactsApi {
         const existingContactsApiForScope = this.contactsApis.get(JSON.stringify(scope));
 
         if (existingContactsApiForScope) {
@@ -28,8 +28,8 @@ export class BrevoApiContactsService {
         }
 
         const { apiKey } = this.config.brevo.resolveConfig(scope);
-        const contactsApi = new SibApiV3Sdk.ContactsApi();
-        contactsApi.setApiKey(SibApiV3Sdk.ContactsApiApiKeys.apiKey, apiKey);
+        const contactsApi = new Brevo.ContactsApi();
+        contactsApi.setApiKey(Brevo.ContactsApiApiKeys.apiKey, apiKey);
 
         this.contactsApis.set(JSON.stringify(scope), contactsApi);
 
@@ -65,11 +65,11 @@ export class BrevoApiContactsService {
         scope: EmailCampaignScopeInterface,
     ): Promise<BrevoContactInterface> {
         const idAsString = id.toString(); // brevo expects a string, because it can be an email or the id, so we have to transform the id to string
-        await this.getContactsApi(scope).updateContact(idAsString, { emailBlacklisted: blocked, attributes, listIds, unlinkListIds }, scope);
+        await this.getContactsApi(scope).updateContact(idAsString, { emailBlacklisted: blocked, attributes, listIds, unlinkListIds });
         return this.findContact(id, scope);
     }
 
-    public async updateMultipleContacts(contacts: SibApiV3Sdk.UpdateBatchContactsContacts[], scope: EmailCampaignScopeInterface): Promise<boolean> {
+    public async updateMultipleContacts(contacts: Brevo.UpdateBatchContactsContactsInner[], scope: EmailCampaignScopeInterface): Promise<boolean> {
         const { response } = await this.getContactsApi(scope).updateBatchContacts({ contacts });
         return response.statusCode === 204;
     }
