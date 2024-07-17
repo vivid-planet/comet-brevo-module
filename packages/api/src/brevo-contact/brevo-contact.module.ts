@@ -5,7 +5,6 @@ import { BrevoApiModule } from "../brevo-api/brevo-api.module";
 import { ConfigModule } from "../config/config.module";
 import { TargetGroupInterface } from "../target-group/entity/target-group-entity.factory";
 import { BrevoContactAttributesInterface, EmailCampaignScopeInterface } from "../types";
-import { createBrevoContactController } from "./brevo-contact.controller";
 import { createBrevoContactResolver } from "./brevo-contact.resolver";
 import { BrevoContactsService } from "./brevo-contacts.service";
 import { BrevoContactFactory } from "./dto/brevo-contact.factory";
@@ -35,17 +34,10 @@ export class BrevoContactModule {
             BrevoContactUpdateInput,
         });
 
-        const controllers = [];
-        if (enablePublicApiSubscriptionRoute) {
-            const BrevoContactController = createBrevoContactController({ BrevoContactAttributes, Scope });
-            controllers.push(BrevoContactController);
-        }
-
         return {
             module: BrevoContactModule,
             imports: [BrevoApiModule, ConfigModule, MikroOrmModule.forFeature([TargetGroup])],
             providers: [BrevoContactsService, BrevoContactResolver, EcgRtrListService, IsValidRedirectURLConstraint],
-            controllers,
             exports: [BrevoContactsService],
         };
     }

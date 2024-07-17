@@ -31,6 +31,7 @@ import { Request } from "express";
 import { AccessControlService } from "./auth/access-control.service";
 import { AuthModule } from "./auth/auth.module";
 import { AuthLocalModule } from "./auth/auth-local.module";
+import { BrevoContactSubscribeModule } from "./brevo-contact/brevo-contact-subscribe.module";
 import { BrevoContactAttributes, BrevoContactFilterAttributes } from "./brevo-contact/dto/brevo-contact-attributes";
 import { Config } from "./config/config";
 import { ConfigModule } from "./config/config.module";
@@ -175,6 +176,7 @@ export class AppModule {
                     },
                     enablePublicApiSubscriptionRoute: true,
                 }),
+                BrevoContactSubscribeModule,
             ],
         };
     }
