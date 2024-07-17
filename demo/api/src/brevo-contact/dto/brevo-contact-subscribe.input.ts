@@ -1,6 +1,6 @@
-import { IsValidRedirectURLConstraint } from "@comet/brevo-api";
+import { IsValidRedirectURL } from "@comet/brevo-api";
 import { Type } from "class-transformer";
-import { IsEmail, IsNotEmpty, IsUrl, Validate, ValidateNested } from "class-validator";
+import { IsEmail, IsNotEmpty, IsUrl, ValidateNested } from "class-validator";
 
 import { BrevoContactAttributes } from "./brevo-contact-attributes";
 import { EmailContactSubscribeScope } from "./brevo-contact-subscribe.scope";
@@ -10,7 +10,7 @@ export class BrevoContactSubscribeInput {
     email: string;
 
     @IsUrl({ require_tld: process.env.NODE_ENV === "production" })
-    @Validate(IsValidRedirectURLConstraint)
+    @IsValidRedirectURL()
     redirectionUrl: string;
 
     @ValidateNested()
