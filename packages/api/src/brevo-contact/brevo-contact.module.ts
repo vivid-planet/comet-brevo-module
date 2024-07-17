@@ -17,12 +17,11 @@ interface BrevoContactModuleConfig {
     BrevoContactAttributes?: Type<BrevoContactAttributesInterface>;
     Scope: Type<EmailCampaignScopeInterface>;
     TargetGroup: Type<TargetGroupInterface>;
-    enablePublicApiSubscriptionRoute?: boolean;
 }
 
 @Module({})
 export class BrevoContactModule {
-    static register({ BrevoContactAttributes, Scope, TargetGroup, enablePublicApiSubscriptionRoute }: BrevoContactModuleConfig): DynamicModule {
+    static register({ BrevoContactAttributes, Scope, TargetGroup }: BrevoContactModuleConfig): DynamicModule {
         const BrevoContact = BrevoContactFactory.create({ BrevoContactAttributes });
         const BrevoContactSubscribeInput = SubscribeInputFactory.create({ BrevoContactAttributes, Scope });
         const [BrevoContactInput, BrevoContactUpdateInput] = BrevoContactInputFactory.create({ BrevoContactAttributes });

@@ -174,7 +174,6 @@ export class AppModule {
                             },
                         },
                     },
-                    enablePublicApiSubscriptionRoute: true,
                 }),
                 BrevoContactSubscribeModule,
             ],

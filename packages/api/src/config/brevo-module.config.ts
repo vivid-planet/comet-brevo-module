@@ -32,5 +32,4 @@ export interface BrevoModuleConfig {
             };
         };
     };
-    enablePublicApiSubscriptionRoute?: boolean;
 }
