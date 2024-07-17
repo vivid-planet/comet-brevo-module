@@ -114,6 +114,7 @@ type TargetGroup implements DocumentInterface {
   totalSubscribers: Int!
   totalContactsBlocked: Int!
   scope: EmailCampaignContentScope!
+  assignedContactsTargetGroupBrevoId: Int
 }
 
 interface DocumentInterface {
@@ -166,6 +167,7 @@ input EmailCampaignContentScopeInput {
 type Query {
   brevoContact(id: Int!, scope: EmailCampaignContentScopeInput!): BrevoContact!
   brevoContacts(targetGroupId: ID, email: String, scope: EmailCampaignContentScopeInput!, offset: Int! = 0, limit: Int! = 25): PaginatedBrevoContacts!
+  manuallyAssignedBrevoContacts(offset: Int! = 0, limit: Int! = 25, targetGroupId: ID!, email: String): PaginatedBrevoContacts!
   targetGroup(id: ID!): TargetGroup!
   targetGroups(scope: EmailCampaignContentScopeInput!, search: String, filter: TargetGroupFilter, sort: [TargetGroupSort!], offset: Int! = 0, limit: Int! = 25): PaginatedTargetGroups!
   emailCampaign(id: ID!): EmailCampaign!
@@ -243,6 +245,8 @@ type Mutation {
   deleteBrevoContact(id: Int!, scope: EmailCampaignContentScopeInput!): Boolean!
   subscribeBrevoContact(input: SubscribeInput!, scope: EmailCampaignContentScopeInput!): SubscribeResponse!
   createTargetGroup(scope: EmailCampaignContentScopeInput!, input: TargetGroupInput!): TargetGroup!
+  addBrevoContactsToTargetGroup(id: ID!, input: AddBrevoContactsInput!): Boolean!
+  removeBrevoContactFromTargetGroup(id: ID!, input: RemoveBrevoContactInput!): Boolean!
   updateTargetGroup(id: ID!, input: TargetGroupUpdateInput!, lastUpdatedAt: DateTime): TargetGroup!
   deleteTargetGroup(id: ID!): Boolean!
   createEmailCampaign(scope: EmailCampaignContentScopeInput!, input: EmailCampaignInput!): EmailCampaign!
@@ -280,6 +284,14 @@ input TargetGroupInput {
 
 input BrevoContactFilterAttributesInput {
   thisFilterHasNoFields____: [String!]
+}
+
+input AddBrevoContactsInput {
+  brevoContactIds: [Int!]!
+}
+
+input RemoveBrevoContactInput {
+  brevoContactId: Int!
 }
 
 input TargetGroupUpdateInput {

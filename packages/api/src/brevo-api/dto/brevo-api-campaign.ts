@@ -1,9 +1,11 @@
+import { GetEmailCampaignsCampaignsInner } from "@getbrevo/brevo";
+
 export interface BrevoApiCampaign {
     id: number;
     name: string;
     subject?: string;
-    type: string;
-    status: "draft" | "sent" | "archive" | "queued" | "suspended" | "in_process";
+    type: GetEmailCampaignsCampaignsInner.TypeEnum;
+    status: GetEmailCampaignsCampaignsInner.StatusEnum;
     statistics: {
         globalStats: {
             uniqueClicks: number;
@@ -15,7 +17,7 @@ export interface BrevoApiCampaign {
             hardBounces: number;
             uniqueViews: number;
             trackableViews: number;
-            estimatedViews: number;
+            estimatedViews?: number;
             unsubscriptions: number;
             viewed: number;
         };

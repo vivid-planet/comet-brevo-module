@@ -19,7 +19,6 @@ import { DashboardPage } from "./dashboard/DashboardPage";
 import { Link } from "./documents/links/Link";
 import { Page } from "./documents/pages/Page";
 import { EmailCampaignContentBlock } from "./emailCampaigns/blocks/EmailCampaignContentBlock";
-import { ProductsPage } from "./products/ProductsPage";
 
 const RedirectsPage = createRedirectsPage();
 
@@ -100,7 +99,6 @@ export const Routes: React.FC = () => {
                                     <RouteWithErrorBoundary path={`${match.path}/newsletter/target-groups`} component={TargetGroupsPage} />
                                     <RouteWithErrorBoundary path={`${match.path}/newsletter/email-campaigns`} component={EmailCampaignsPage} />
 
-                                    <RouteWithErrorBoundary path={`${match.path}/structured-content/products`} component={ProductsPage} />
                                     <RouteWithErrorBoundary path={`${match.path}/assets`} component={DamPage} />
 
                                     <RouteWithErrorBoundary path={`${match.path}/system/publisher`} component={PublisherPage} />
