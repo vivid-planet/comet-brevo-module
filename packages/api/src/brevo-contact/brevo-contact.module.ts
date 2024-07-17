@@ -37,7 +37,13 @@ export class BrevoContactModule {
         return {
             module: BrevoContactModule,
             imports: [BrevoApiModule, ConfigModule, MikroOrmModule.forFeature([TargetGroup])],
-            providers: [BrevoContactsService, BrevoContactResolver, EcgRtrListService, IsValidRedirectURLConstraint, DeleteUnsubscribedContactsConsole],
+            providers: [
+                BrevoContactsService,
+                BrevoContactResolver,
+                EcgRtrListService,
+                IsValidRedirectURLConstraint,
+                DeleteUnsubscribedContactsConsole,
+            ],
         };
     }
 }
