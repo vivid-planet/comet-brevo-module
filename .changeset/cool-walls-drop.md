@@ -2,4 +2,6 @@
 "@comet/brevo-api": minor
 ---
 
-Export BrevoContactService so that it can be used in the application. This allows, for example, adding a custom REST request in the application to subscribe to the newsletter.
+Export `BrevoContactsService` so that it can be used in the application
+
+This allows, for example, adding a custom REST request in the application to subscribe to the newsletter.
