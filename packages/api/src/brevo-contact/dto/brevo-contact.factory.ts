@@ -7,7 +7,7 @@ export interface BrevoContactInterface {
     id: number;
     createdAt: string;
     modifiedAt: string;
-    email: string;
+    email?: string;
     emailBlacklisted: boolean;
     smsBlacklisted: boolean;
     listIds: number[];

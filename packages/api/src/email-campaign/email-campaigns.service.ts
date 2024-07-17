@@ -1,9 +1,9 @@
 import { BlocksTransformerService, filtersToMikroOrmQuery, searchToMikroOrmQuery } from "@comet/cms-api";
+import { UpdateCampaignStatus } from "@getbrevo/brevo";
 import { EntityManager, EntityRepository, ObjectQuery, wrap } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { HttpService } from "@nestjs/axios";
 import { Inject, Injectable } from "@nestjs/common";
-import { UpdateCampaignStatus } from "@sendinblue/client";
 import { EmailCampaignScopeInterface } from "src/types";
 
 import { BrevoApiCampaignsService } from "../brevo-api/brevo-api-campaigns.service";
@@ -125,7 +125,7 @@ export class EmailCampaignsService {
                     currentOffset,
                     campaign.scope,
                 );
-                const emails = contacts.map((contact) => contact.email);
+                const emails = contacts.map((contact) => contact.email).filter((email): email is string => email !== undefined);
                 const containedEmails = await this.ecgRtrListService.getContainedEcgRtrListEmails(emails);
 
                 if (containedEmails.length > 0) {
