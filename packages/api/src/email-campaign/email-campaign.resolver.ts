@@ -1,9 +1,11 @@
 import { AffectedEntity, extractGraphqlFields, PaginatedResponseFactory, RequiredPermission, validateNotModified } from "@comet/cms-api";
 import { EntityManager, EntityRepository, FindOptions, Reference, wrap } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
-import { Type } from "@nestjs/common";
+import { Cache, CACHE_MANAGER } from "@nestjs/cache-manager";
+import { Inject, Type } from "@nestjs/common";
 import { Args, ArgsType, ID, Info, Mutation, ObjectType, Parent, Query, ResolveField, Resolver } from "@nestjs/graphql";
 import { GraphQLResolveInfo } from "graphql";
+import { BrevoApiCampaign } from "src/brevo-api/dto/brevo-api-campaign";
 import { TargetGroupInterface } from "src/target-group/entity/target-group-entity.factory";
 
 import { BrevoApiCampaignsService } from "../brevo-api/brevo-api-campaigns.service";
@@ -45,6 +47,7 @@ export function createEmailCampaignsResolver({
             private readonly brevoApiCampaignsService: BrevoApiCampaignsService,
             private readonly ecgRtrListService: EcgRtrListService,
             private readonly entityManager: EntityManager,
+            @Inject(CACHE_MANAGER) private cacheManager: Cache,
             @InjectRepository("EmailCampaign") private readonly repository: EntityRepository<EmailCampaignInterface>,
             @InjectRepository("TargetGroup") private readonly targetGroupRepository: EntityRepository<TargetGroupInterface>,
         ) {}
@@ -228,10 +231,10 @@ export function createEmailCampaignsResolver({
 
         @ResolveField(() => SendingState)
         async sendingState(@Parent() campaign: EmailCampaignInterface): Promise<SendingState> {
-            // check if scheduled campaign is already sent
             if (campaign.sendingState === SendingState.SCHEDULED && campaign.scheduledAt && campaign.scheduledAt < new Date()) {
-                // TODO: this gets also triggered when the campaign is loaded in list.
-                const brevoCampaign = await this.brevoApiCampaignsService.loadBrevoCampaignById(campaign);
+                const brevoCampaign = await this.cacheManager.wrap<BrevoApiCampaign>(`brevo-campaign-${campaign.brevoId}`, async () => {
+                    return this.brevoApiCampaignsService.loadBrevoCampaignById(campaign);
+                });
 
                 const state = this.brevoApiCampaignsService.getSendingInformationFromBrevoCampaign(brevoCampaign);
 

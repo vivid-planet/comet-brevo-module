@@ -1,6 +1,7 @@
 import { Block } from "@comet/blocks-api";
 import { MikroOrmModule } from "@mikro-orm/nestjs";
 import { HttpModule } from "@nestjs/axios";
+import { CacheModule } from "@nestjs/cache-manager";
 import { DynamicModule, Module, Type } from "@nestjs/common";
 import { TargetGroupInterface } from "src/target-group/entity/target-group-entity.factory";
 
@@ -44,6 +45,7 @@ export class EmailCampaignModule {
                 HttpModule.register({
                     timeout: 5000,
                 }),
+                CacheModule.register({ ttl: 1000 * 60 }),
                 MikroOrmModule.forFeature([EmailCampaign, TargetGroup]),
             ],
             providers: [EmailCampaignsResolver, EmailCampaignsService, EcgRtrListService],
