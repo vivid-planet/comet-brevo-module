@@ -5,6 +5,7 @@ import { BrevoModuleConfig } from "../config/brevo-module.config";
 import { BREVO_MODULE_CONFIG } from "../config/brevo-module.constants";
 import { TargetGroupsService } from "../target-group/target-groups.service";
 import { BrevoContactAttributesInterface, EmailCampaignScopeInterface } from "../types";
+import { BrevoContactInterface } from "./dto/brevo-contact.factory";
 import { SubscribeInputInterface } from "./dto/subscribe-input.factory";
 import { SubscribeResponse } from "./dto/subscribe-response.enum";
 import { EcgRtrListService } from "./ecg-rtr-list/ecg-rtr-list.service";
@@ -32,7 +33,7 @@ export class BrevoContactsService {
         templateId: number;
     }): Promise<boolean> {
         const mainTargetGroupForScope = await this.targetGroupService.createIfNotExistMainTargetGroupForScope(scope);
-        const targetGroupIds = await this.getTargetGroupIdsForContact({ scope, contactAttributes: attributes });
+        const targetGroupIds = await this.getTargetGroupIdsForNewContact({ scope, contactAttributes: attributes });
 
         const created = await this.brevoContactsApiService.createDoubleOptInBrevoContact(
             { email, redirectionUrl, attributes },
@@ -43,7 +44,7 @@ export class BrevoContactsService {
         return created;
     }
 
-    public async getTargetGroupIdsForContact({
+    public async getTargetGroupIdsForNewContact({
         contactAttributes,
         scope,
     }: {
@@ -88,5 +89,41 @@ export class BrevoContactsService {
         }
 
         return SubscribeResponse.ERROR_UNKNOWN;
+    }
+
+    public async getTargetGroupIdsForExistingContact({
+        contact,
+        scope,
+    }: {
+        contact?: BrevoContactInterface;
+        scope?: EmailCampaignScopeInterface;
+    }): Promise<number[]> {
+        let offset = 0;
+        let totalCount = 0;
+        const targetGroupIds: number[] = [];
+        const limit = 50;
+
+        do {
+            const [targetGroups, totalContactLists] = await this.targetGroupService.findNonMainTargetGroups({ scope, offset, limit });
+            totalCount = totalContactLists;
+            offset += targetGroups.length;
+
+            for (const targetGroup of targetGroups) {
+                const contactIsInTargetGroupByAttributes = this.targetGroupService.checkIfContactIsInTargetGroup(
+                    contact?.attributes,
+                    targetGroup.filters,
+                );
+
+                if (contactIsInTargetGroupByAttributes) {
+                    targetGroupIds.push(targetGroup.brevoId);
+                }
+
+                if (targetGroup.assignedContactsTargetGroupBrevoId && contact?.listIds.includes(targetGroup.assignedContactsTargetGroupBrevoId)) {
+                    targetGroupIds.push(targetGroup.brevoId, targetGroup.assignedContactsTargetGroupBrevoId);
+                }
+            }
+        } while (offset < totalCount);
+
+        return targetGroupIds;
     }
 }

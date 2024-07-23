@@ -1,5 +1,5 @@
 import { Menu, MenuCollapsibleItem, MenuContext, MenuItemRouterLink, useWindowSize } from "@comet/admin";
-import { Assets, Dashboard, Data, Mail, PageTree, Wrench } from "@comet/admin-icons";
+import { Assets, Dashboard, Mail, PageTree, Wrench } from "@comet/admin-icons";
 import * as React from "react";
 import { useIntl } from "react-intl";
 import { useRouteMatch } from "react-router";
@@ -47,12 +47,6 @@ export const MasterMenu: React.FC = () => {
                 <MenuItemRouterLink
                     primary={intl.formatMessage({ id: "menu.newsletter.emailCampaigns", defaultMessage: "Email campaigns" })}
                     to={`${match.url}/newsletter/email-campaigns`}
-                />
-            </MenuCollapsibleItem>
-            <MenuCollapsibleItem primary={intl.formatMessage({ id: "menu.structuredContent", defaultMessage: "Structured content" })} icon={<Data />}>
-                <MenuItemRouterLink
-                    primary={intl.formatMessage({ id: "menu.products", defaultMessage: "Products" })}
-                    to={`${match.url}/structured-content/products`}
                 />
             </MenuCollapsibleItem>
             <MenuItemRouterLink
