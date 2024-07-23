@@ -3,9 +3,7 @@ import { UpdateCampaignStatus } from "@getbrevo/brevo";
 import { EntityManager, EntityRepository, ObjectQuery, wrap } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { HttpService } from "@nestjs/axios";
-import { Cache, CACHE_MANAGER } from "@nestjs/cache-manager";
 import { Inject, Injectable } from "@nestjs/common";
-import { BrevoApiCampaign } from "src/brevo-api/dto/brevo-api-campaign";
 import { EmailCampaignScopeInterface } from "src/types";
 
 import { BrevoApiCampaignsService } from "../brevo-api/brevo-api-campaigns.service";
@@ -28,7 +26,6 @@ export class EmailCampaignsService {
         private readonly entityManager: EntityManager,
         private readonly ecgRtrListService: EcgRtrListService,
         private readonly blockTransformerService: BlocksTransformerService,
-        @Inject(CACHE_MANAGER) private cacheManager: Cache,
     ) {}
 
     getFindCondition(options: { search?: string; filter?: EmailCampaignFilter }): ObjectQuery<EmailCampaignInterface> {
@@ -99,32 +96,18 @@ export class EmailCampaignsService {
             (campaign) => campaign.sendingState === SendingState.SCHEDULED && campaign.scheduledAt && campaign.scheduledAt < new Date(),
         );
 
-        const notInCacheCampaigns = (
-            await Promise.all(
-                potentiallySentCampaigns.map(async (campaign) => {
-                    const cacheKey = `brevo-campaign-${campaign.brevoId}`;
-                    const cachedCampaign: BrevoApiCampaign | undefined = await this.cacheManager.get(cacheKey);
-                    return cachedCampaign === undefined ? campaign : undefined;
-                }),
-            )
-        ).filter((campaign) => campaign !== undefined);
-
-        const brevoIds = notInCacheCampaigns.map((campaign) => campaign?.brevoId).filter((campaign) => campaign !== undefined);
+        const brevoIds = potentiallySentCampaigns.map((campaign) => campaign?.brevoId).filter((campaign) => campaign) as number[];
 
         if (brevoIds.length > 0) {
             const brevoCampaigns = await this.brevoApiCampaignService.loadBrevoCampaignsByIds(brevoIds, scope);
 
             for (const brevoCampaign of brevoCampaigns) {
-                const cacheKey = `brevo-campaign-${brevoCampaign.id}`;
-
                 const sendingState = this.brevoApiCampaignService.getSendingInformationFromBrevoCampaign(brevoCampaign);
 
                 const campaign = campaigns.find((campaign) => campaign.brevoId === brevoCampaign.id);
                 if (campaign) {
                     wrap(campaign).assign({ sendingState });
                 }
-
-                await this.cacheManager.set(cacheKey, brevoCampaign);
             }
             this.entityManager.flush();
         }
