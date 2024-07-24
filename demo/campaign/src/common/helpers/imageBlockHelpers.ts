@@ -3,16 +3,14 @@ export const validSizes: number[] = (process.env.DAM_ALLOWED_IMAGE_SIZES as stri
     .map((value) => parseInt(value))
     .sort((a, b) => a - b);
 
-
-
 export const getDamAllowedImageWidth = (minimumWidth: number): number => {
     let width: number | null = null;
     const largestPossibleWidth = validSizes[validSizes.length - 1];
 
     validSizes.forEach((validWidth) => {
         if (minimumWidth === 560) {
-            width = 1020}
-        else if (!width && validWidth >= minimumWidth * 2) {
+            width = 1020;
+        } else if (!width && validWidth >= minimumWidth * 2) {
             width = validWidth;
         }
     });
@@ -23,4 +21,3 @@ export const getDamAllowedImageWidth = (minimumWidth: number): number => {
 
     return width;
 };
-
