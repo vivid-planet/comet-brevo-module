@@ -44,6 +44,7 @@ export class BrevoContactModule {
                 IsValidRedirectURLConstraint,
                 DeleteUnsubscribedContactsConsole,
             ],
+            exports: [BrevoContactsService],
         };
     }
 }
