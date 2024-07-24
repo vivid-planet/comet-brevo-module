@@ -106,22 +106,19 @@ export class TargetGroupsService {
         return true;
     }
 
-    async findNonMainTargetGroups({
+    async findMainTargetGroups({
         scope,
         offset,
         limit,
+        where
     }: {
         scope?: EmailCampaignScopeInterface;
         offset: number;
         limit: number;
+        where: Partial<TargetGroupInterface>,
     }): Promise<[TargetGroupInterface[], number]> {
         const [targetGroups, totalContactLists] = await this.repository.findAndCount(
-            {
-                isMainList: false,
-                ...(scope ? { scope } : {}),
-            },
-            { limit, offset },
-        );
+           where, {offset, limit})
 
         return [targetGroups, totalContactLists];
     }
