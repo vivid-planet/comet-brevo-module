@@ -37,7 +37,7 @@ export const commonImageBlockStyles = (
     `}</MjmlStyle>
 );
 
-export const CommonImageBlock = ({ data, desktopRenderWidth, growToOverflowWidth, ...restProps }: Props) => {
+export const CommonImageBlock = ({ data, desktopRenderWidth, ...restProps }: Props) => {
     const { damFile, cropArea, urlTemplate } = data;
 
     if (!damFile?.image) {
@@ -58,10 +58,6 @@ export const CommonImageBlock = ({ data, desktopRenderWidth, growToOverflowWidth
     const desktopImageHeight = Math.round(desktopRenderWidth / usedAspectRatio);
 
     const imageClassNames = ["image-block"];
-
-    if (growToOverflowWidth) {
-        imageClassNames.push("image-block--grow-to-overflow-width");
-    }
 
     return (
         <MjmlImage
