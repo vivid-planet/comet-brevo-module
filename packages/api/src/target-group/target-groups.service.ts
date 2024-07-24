@@ -110,15 +110,14 @@ export class TargetGroupsService {
         scope,
         offset,
         limit,
-        where
+        where,
     }: {
         scope?: EmailCampaignScopeInterface;
         offset: number;
         limit: number;
-        where: Partial<TargetGroupInterface>,
+        where: Partial<TargetGroupInterface>;
     }): Promise<[TargetGroupInterface[], number]> {
-        const [targetGroups, totalContactLists] = await this.repository.findAndCount(
-           where, {offset, limit})
+        const [targetGroups, totalContactLists] = await this.repository.findAndCount(where, { offset, limit });
 
         return [targetGroups, totalContactLists];
     }
