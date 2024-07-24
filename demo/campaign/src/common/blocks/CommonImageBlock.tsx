@@ -40,12 +40,14 @@ export const commonImageBlockStyles = (
 export const CommonImageBlock = ({ data, desktopRenderWidth, ...restProps }: Props) => {
     const { damFile, cropArea, urlTemplate } = data;
 
+
     if (!damFile?.image) {
         return null;
     }
 
     const usedCropArea = cropArea ?? damFile.image.cropArea;
     const usedAspectRatio = calculateInheritAspectRatio(damFile.image, usedCropArea);
+
 
     const imageUrl: string = generateImageUrl(
         {
