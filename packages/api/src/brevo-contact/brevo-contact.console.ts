@@ -2,33 +2,48 @@ import { Injectable } from "@nestjs/common";
 import { Command, Console } from "nestjs-console";
 
 import { BrevoApiContactsService } from "../brevo-api/brevo-api-contact.service";
+import { TargetGroupsService } from "../target-group/target-groups.service";
 
 @Injectable()
 @Console()
 export class DeleteUnsubscribedContactsConsole {
-    constructor(private readonly brevoApiContactsService: BrevoApiContactsService) {}
+    constructor(private readonly brevoApiContactsService: BrevoApiContactsService, private readonly targetGroupsService: TargetGroupsService
+    ) {}
 
     @Command({
         command: "delete-unsubscribed-contacts",
         description: "deletes unsubscribed contacts",
     })
     async execute(): Promise<void> {
-        let numberOfBlacklistedContacts = false;
-        let offset = 0;
+        const offset = 0;
         const limit = 50;
+        const where = {isMainList: true};
 
-        do {
-            const contacts = await this.brevoApiContactsService.findContacts(limit, offset, { domain: "main", language: "en" });
-            const blacklistedContacts = contacts.filter((contact) => contact.emailBlacklisted === true);
+        const [targetGroups] = await this.targetGroupsService.findMainTargetGroups({ offset, limit, where }); 
+        
+        for (const targetGroup of targetGroups) {
+            let numberOfBlacklistedContacts = false;
+            let offset = 0;
 
-            if (blacklistedContacts.length > 0) {
-                await this.brevoApiContactsService.deleteContacts(blacklistedContacts, { domain: "main", language: "en" });
-            }
+            do {
+                const contacts = await this.brevoApiContactsService.findContacts(limit, offset, {
+                    domain: targetGroup.scope.domain,
+                    language: targetGroup.scope.language
+                });
 
-            numberOfBlacklistedContacts = contacts.length === limit;
-            offset += limit;
-        } while (numberOfBlacklistedContacts);
+                const blacklistedContacts = contacts.filter(contact => contact.emailBlacklisted === true);
+
+                if (blacklistedContacts.length > 0) {
+                    await this.brevoApiContactsService.deleteContacts(blacklistedContacts, {
+                        domain: "main",
+                        language: "en"
+                    });
+                }
+
+                numberOfBlacklistedContacts = contacts.length === limit;
+                offset += limit;
+            } while (numberOfBlacklistedContacts);
+        }
     }
 }
 
-// TODO: scope problem
