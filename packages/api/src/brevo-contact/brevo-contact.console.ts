@@ -7,8 +7,7 @@ import { TargetGroupsService } from "../target-group/target-groups.service";
 @Injectable()
 @Console()
 export class DeleteUnsubscribedContactsConsole {
-    constructor(private readonly brevoApiContactsService: BrevoApiContactsService, private readonly targetGroupsService: TargetGroupsService
-    ) {}
+    constructor(private readonly brevoApiContactsService: BrevoApiContactsService, private readonly targetGroupsService: TargetGroupsService) {}
 
     @Command({
         command: "delete-unsubscribed-contacts",
@@ -17,10 +16,10 @@ export class DeleteUnsubscribedContactsConsole {
     async execute(): Promise<void> {
         const offset = 0;
         const limit = 50;
-        const where = {isMainList: true};
+        const where = { isMainList: true };
 
-        const [targetGroups] = await this.targetGroupsService.findMainTargetGroups({ offset, limit, where }); 
-        
+        const [targetGroups] = await this.targetGroupsService.findMainTargetGroups({ offset, limit, where });
+
         for (const targetGroup of targetGroups) {
             let numberOfBlacklistedContacts = false;
             let offset = 0;
@@ -28,15 +27,15 @@ export class DeleteUnsubscribedContactsConsole {
             do {
                 const contacts = await this.brevoApiContactsService.findContacts(limit, offset, {
                     domain: targetGroup.scope.domain,
-                    language: targetGroup.scope.language
+                    language: targetGroup.scope.language,
                 });
 
-                const blacklistedContacts = contacts.filter(contact => contact.emailBlacklisted === true);
+                const blacklistedContacts = contacts.filter((contact) => contact.emailBlacklisted === true);
 
                 if (blacklistedContacts.length > 0) {
                     await this.brevoApiContactsService.deleteContacts(blacklistedContacts, {
                         domain: "main",
-                        language: "en"
+                        language: "en",
                     });
                 }
 
@@ -46,4 +45,3 @@ export class DeleteUnsubscribedContactsConsole {
         }
     }
 }
-
