@@ -45,9 +45,10 @@ export class BrevoContactsService {
         let totalCount = 0;
         const targetGroupIds: number[] = [];
         const limit = 50;
+        const where = {isMainList: false}
 
         do {
-            const [targetGroups, totalContactLists] = await this.targetGroupService.findNonMainTargetGroups({ scope, offset, limit });
+            const [targetGroups, totalContactLists] = await this.targetGroupService.findMainTargetGroups({ scope, offset, limit, where });
             totalCount = totalContactLists;
             offset += targetGroups.length;
 
@@ -74,9 +75,10 @@ export class BrevoContactsService {
         let totalCount = 0;
         const targetGroupIds: number[] = [];
         const limit = 50;
+        const where = {isMainList: false}
 
         do {
-            const [targetGroups, totalContactLists] = await this.targetGroupService.findNonMainTargetGroups({ scope, offset, limit });
+            const [targetGroups, totalContactLists] = await this.targetGroupService.findMainTargetGroups({ scope, offset, limit, where });
             totalCount = totalContactLists;
             offset += targetGroups.length;
 
