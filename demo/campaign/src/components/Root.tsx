@@ -1,4 +1,5 @@
 import { Mjml, MjmlBody, MjmlHead, MjmlTitle } from "@luma-team/mjml-react";
+import { commonImageBlockStyles } from "@src/common/blocks/CommonImageBlock";
 import { css } from "@src/util/stylesHelper";
 import { theme } from "@src/util/theme";
 import { MjmlConditionalComment } from "mjml-react/extensions";
@@ -33,6 +34,7 @@ export const Root: React.FC<Props> = ({ children, title }) => {
         <Mjml>
             <MjmlHead>
                 {!!title && <MjmlTitle>{title}</MjmlTitle>}
+                {commonImageBlockStyles}
                 <MjmlConditionalComment condition="if mso">{outlookFontFixStyleString}</MjmlConditionalComment>
             </MjmlHead>
             <MjmlBody width={theme.mailSize.contentWidth}>{children}</MjmlBody>
