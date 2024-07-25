@@ -8,13 +8,17 @@ import { TargetGroupsService } from "../target-group/target-groups.service";
 @Injectable()
 @Console()
 export class DeleteUnsubscribedContactsConsole {
-    constructor(private readonly brevoApiContactsService: BrevoApiContactsService, private readonly targetGroupsService: TargetGroupsService, private readonly orm: MikroORM) {}
+    constructor(
+        private readonly brevoApiContactsService: BrevoApiContactsService,
+        private readonly targetGroupsService: TargetGroupsService,
+        private readonly orm: MikroORM,
+    ) {}
 
     @Command({
         command: "delete-unsubscribed-contacts",
         description: "deletes unsubscribed contacts",
     })
-    @CreateRequestContext() 
+    @CreateRequestContext()
     async execute(): Promise<void> {
         const offset = 0;
         const limit = 50;
