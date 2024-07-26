@@ -40,8 +40,8 @@ export class DeleteUnsubscribedContactsConsole {
 
                 if (blacklistedContacts.length > 0) {
                     await this.brevoApiContactsService.deleteContacts(blacklistedContacts, {
-                        domain: "main",
-                        language: "en",
+                        domain: targetGroup.scope.domain,
+                        language: targetGroup.scope.language,
                     });
                 }
 
