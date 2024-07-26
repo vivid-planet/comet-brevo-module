@@ -45,7 +45,7 @@ export class DeleteUnsubscribedContactsConsole {
                     });
                 }
 
-                hasMoreContacts = contacts.length === limit;
+                hasMoreContacts = contacts.length > limit;
                 offset += limit;
             } while (hasMoreContacts);
         }
