@@ -106,7 +106,7 @@ export class TargetGroupsService {
         return true;
     }
 
-    async findMainTargetGroups({
+    async findTargetGroups({
         scope,
         offset,
         limit,

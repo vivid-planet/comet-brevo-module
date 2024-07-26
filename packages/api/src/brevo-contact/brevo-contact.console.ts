@@ -24,7 +24,7 @@ export class DeleteUnsubscribedContactsConsole {
         const limit = 50;
         const where = { isMainList: true };
 
-        const [targetGroups] = await this.targetGroupsService.findMainTargetGroups({ offset, limit, where });
+        const [targetGroups] = await this.targetGroupsService.findTargetGroups({ offset, limit, where });
 
         for (const targetGroup of targetGroups) {
             let hasMoreContacts = false;
