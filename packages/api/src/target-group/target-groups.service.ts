@@ -1,5 +1,5 @@
 import { filtersToMikroOrmQuery, searchToMikroOrmQuery } from "@comet/cms-api";
-import { EntityManager, EntityRepository, ObjectQuery } from "@mikro-orm/core";
+import { EntityManager, EntityRepository, FilterQuery, ObjectQuery } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable } from "@nestjs/common";
 
@@ -115,7 +115,7 @@ export class TargetGroupsService {
         scope?: EmailCampaignScopeInterface;
         offset: number;
         limit: number;
-        where: Partial<TargetGroupInterface>;
+        where: FilterQuery<TargetGroupInterface>;
     }): Promise<[TargetGroupInterface[], number]> {
         const [targetGroups, totalContactLists] = await this.repository.findAndCount(where, { offset, limit });
 
