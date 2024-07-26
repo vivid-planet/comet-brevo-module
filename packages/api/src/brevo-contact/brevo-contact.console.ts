@@ -27,7 +27,7 @@ export class DeleteUnsubscribedContactsConsole {
         const [targetGroups] = await this.targetGroupsService.findMainTargetGroups({ offset, limit, where });
 
         for (const targetGroup of targetGroups) {
-            let numberOfBlacklistedContacts = false;
+            let hasMoreContacts = false;
             let offset = 0;
 
             do {
@@ -45,9 +45,9 @@ export class DeleteUnsubscribedContactsConsole {
                     });
                 }
 
-                numberOfBlacklistedContacts = contacts.length === limit;
+                hasMoreContacts = contacts.length === limit;
                 offset += limit;
-            } while (numberOfBlacklistedContacts);
+            } while (hasMoreContacts);
         }
     }
 }
