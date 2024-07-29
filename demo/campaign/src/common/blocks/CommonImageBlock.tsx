@@ -10,7 +10,6 @@ import { getDamAllowedImageWidth } from "../helpers/imageBlockHelpers";
 interface Props extends React.ComponentProps<typeof MjmlImage> {
     data: PixelImageBlockData;
     desktopRenderWidth: number;
-    growToOverflowWidth?: boolean;
 }
 
 export const commonImageBlockStyles = (
@@ -21,16 +20,6 @@ export const commonImageBlockStyles = (
             }
 
             .image-block img {
-                height: auto !important;
-            }
-        }
-
-        @media (min-width: ${theme.mailSize.contentWidth + 1}px) {
-            .image-block--grow-to-overflow-width > table > tbody > tr > td {
-                width: 100% !important;
-            }
-
-            .image-block--grow-to-overflow-width img {
                 height: auto !important;
             }
         }
