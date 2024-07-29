@@ -46,13 +46,11 @@ export const CommonImageBlock = ({ data, desktopRenderWidth, ...restProps }: Pro
 
     const desktopImageHeight = Math.round(desktopRenderWidth / usedAspectRatio);
 
-    const imageClassNames = ["image-block"];
-
     return (
         <MjmlImage
             src={imageUrl}
             fluidOnMobile="true"
-            cssClass={imageClassNames.join(" ")}
+            cssClass="image-block"
             width={desktopRenderWidth}
             height={desktopImageHeight}
             alt={damFile.altText}
