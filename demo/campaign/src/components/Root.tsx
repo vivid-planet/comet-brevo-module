@@ -6,6 +6,8 @@ import { MjmlConditionalComment } from "mjml-react/extensions";
 import React from "react";
 import { renderToString } from "react-dom/server";
 
+import { indentedSectionGroupStyles } from "./IndentedSectionGroup";
+
 type Props = React.PropsWithChildren<{
     title?: string;
 }>;
@@ -34,6 +36,7 @@ export const Root: React.FC<Props> = ({ children, title }) => {
         <Mjml>
             <MjmlHead>
                 {!!title && <MjmlTitle>{title}</MjmlTitle>}
+                {indentedSectionGroupStyles}
                 {commonImageBlockStyles}
                 <MjmlConditionalComment condition="if mso">{outlookFontFixStyleString}</MjmlConditionalComment>
             </MjmlHead>
