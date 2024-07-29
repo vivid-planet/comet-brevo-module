@@ -38,7 +38,7 @@ export const CommonImageBlock = ({ data, desktopRenderWidth, ...restProps }: Pro
 
     const imageUrl: string = generateImageUrl(
         {
-            width: getDamAllowedImageWidth(desktopRenderWidth),
+            width: getDamAllowedImageWidth(desktopRenderWidth, theme.mailSize.contentWidth),
             src: urlTemplate,
         },
         usedAspectRatio,
