@@ -92,6 +92,35 @@ export function createBrevoContactResolver({
             return new PaginatedBrevoContacts(contacts, count, { offset, limit });
         }
 
+
+        @Query(() => PaginatedBrevoContacts)
+        async allAssignedBrevoContacts(
+            @Args() { offset, limit, email, targetGroupId }: ManuallyAssignedBrevoContactsArgs,
+        ): Promise<PaginatedBrevoContacts> {
+            const targetGroup = await this.targetGroupRepository.findOneOrFail({ id: targetGroupId });
+
+            if (email) {
+                const contact = await this.brevoContactsApiService.getContactInfoByEmail(email, targetGroup.scope);
+                if (contact && contact.listIds.includes(targetGroup.brevoId)) {
+                    return new PaginatedBrevoContacts([contact], 1, { offset, limit });
+                }
+                return new PaginatedBrevoContacts([], 0, { offset, limit });
+            }
+
+            if (!targetGroup.brevoId) {
+                return new PaginatedBrevoContacts([], 0, { offset, limit });
+            }
+
+            const [contacts, count] = await this.brevoContactsApiService.findContactsByListId(
+                targetGroup.brevoId,
+                limit,
+                offset,
+                targetGroup.scope,
+            );
+
+            return new PaginatedBrevoContacts(contacts, count, { offset, limit });
+        }
+
         @Query(() => PaginatedBrevoContacts)
         async manuallyAssignedBrevoContacts(
             @Args() { offset, limit, email, targetGroupId }: ManuallyAssignedBrevoContactsArgs,

@@ -204,7 +204,7 @@ export function TargetGroupForm({ id, scope, additionalFormFields, input2State, 
                                     disablePadding
                                 >
                                     <AllAssignedContactsGrid
-                                        assignedContactsTargetGroupBrevoId={data?.targetGroup.assignedContactsTargetGroupBrevoId ?? undefined}
+                                        brevoId={data?.targetGroup.brevoId ?? undefined}
                                         id={id}
                                         scope={scope}
                                     />
