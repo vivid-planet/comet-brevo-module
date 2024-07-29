@@ -14,7 +14,7 @@ interface Props extends React.ComponentProps<typeof MjmlImage> {
 
 export const commonImageBlockStyles = (
     <MjmlStyle>{css`
-        @media (max-width: ${theme.mailSize.contentWidth - 1}px) {
+        @media (max-width: ${theme.mailSize.mailWidth - 1}px) {
             .image-block > table > tbody > tr > td {
                 width: 100% !important;
             }

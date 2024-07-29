@@ -18,7 +18,7 @@ export const indentedSectionGroupStyles = (
     `}</MjmlStyle>
 );
 
-const CONTENT_WIDTH = theme.mailSize.contentWidth - theme.mailSize.contentSpacing * 2;
+const CONTENT_WIDTH = theme.mailSize.contentWidth;
 
 export const IndentedSectionGroup = ({ children, cssClass, ...restProps }: IndentedSectionGroupProps) => {
     return (

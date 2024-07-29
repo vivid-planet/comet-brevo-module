@@ -9,7 +9,7 @@ export const ImageBlock = ({ data }: PropsWithData<PixelImageBlockData>) => {
     return (
         <IndentedSectionGroup>
             <MjmlColumn>
-                <CommonImageBlock data={data} desktopRenderWidth={theme.mailSize.contentWidth - theme.mailSize.contentSpacing * 2} />
+                <CommonImageBlock data={data} desktopRenderWidth={theme.mailSize.contentWidth} />
             </MjmlColumn>
         </IndentedSectionGroup>
     );
