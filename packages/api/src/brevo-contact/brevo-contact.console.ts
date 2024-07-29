@@ -32,17 +32,14 @@ export class DeleteUnsubscribedContactsConsole {
 
             do {
                 const contacts = await this.brevoApiContactsService.findContacts(limit, offset, {
-                    domain: targetGroup.scope.domain,
-                    language: targetGroup.scope.language,
+                   scope: targetGroup.scope
                 });
 
                 const blacklistedContacts = contacts.filter((contact) => contact.emailBlacklisted === true);
 
                 if (blacklistedContacts.length > 0) {
-                    await this.brevoApiContactsService.deleteContacts(blacklistedContacts, {
-                        domain: targetGroup.scope.domain,
-                        language: targetGroup.scope.language,
-                    });
+                    await this.brevoApiContactsService.deleteContacts(blacklistedContacts, { scope: targetGroup.scope}
+                    );
                 }
 
                 hasMoreContacts = contacts.length > limit;
