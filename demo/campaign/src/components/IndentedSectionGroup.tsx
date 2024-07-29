@@ -1,4 +1,5 @@
 import { MjmlGroup, MjmlSection, MjmlStyle } from "@luma-team/mjml-react";
+import { css } from "@src/util/stylesHelper";
 import { theme } from "@src/util/theme";
 import * as React from "react";
 
@@ -8,13 +9,13 @@ export interface IndentedSectionGroupProps extends React.ComponentProps<typeof M
 }
 
 export const indentedSectionGroupStyles = (
-    <MjmlStyle>{`
-      @media (max-width: 759px) {
-        .indented-section__group {
-          width: 100% !important;
-          max-width: 592px;
+    <MjmlStyle>{css`
+        @media (max-width: 759px) {
+            .indented-section__group {
+                width: 100% !important;
+                max-width: 592px;
+            }
         }
-      }
     `}</MjmlStyle>
 );
 
