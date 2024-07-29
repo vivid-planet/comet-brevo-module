@@ -19,8 +19,6 @@ export const indentedSectionGroupStyles = (
     `}</MjmlStyle>
 );
 
-const CONTENT_WIDTH = theme.mailSize.contentWidth;
-
 export const IndentedSectionGroup = ({ children, cssClass, ...restProps }: IndentedSectionGroupProps) => {
     return (
         <MjmlSection
@@ -30,7 +28,7 @@ export const IndentedSectionGroup = ({ children, cssClass, ...restProps }: Inden
             backgroundColor={theme.colors.background.content}
             {...restProps}
         >
-            <MjmlGroup width={CONTENT_WIDTH} cssClass="indented-section__group">
+            <MjmlGroup width={theme.mailSize.contentWidth} cssClass="indented-section__group">
                 {children}
             </MjmlGroup>
         </MjmlSection>
