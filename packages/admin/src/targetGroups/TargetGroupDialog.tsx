@@ -35,7 +35,7 @@ export function TargetGroupDialog({ scope, open, handleClose }: FormProps): Reac
 
         const { data: mutationResponse } = await client.mutate<GQLCreateTargetGroupMutation, GQLCreateTargetGroupMutationVariables>({
             mutation: createTargetGroupMutation,
-            variables: { scope, input: output },
+            variables: { scope, input: {title: state.title, filters: {SALUTATION: []}}},
         });
         if (!event.navigatingBack) {
             const id = mutationResponse?.createTargetGroup.id;
