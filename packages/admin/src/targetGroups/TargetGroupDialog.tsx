@@ -15,7 +15,6 @@ interface FormProps {
     open: boolean;
     handleClose: () => void;
     scope: ContentScopeInterface;
-
 }
 
 export function TargetGroupDialog({ scope, open, handleClose }: FormProps): React.ReactElement {
@@ -35,7 +34,7 @@ export function TargetGroupDialog({ scope, open, handleClose }: FormProps): Reac
 
         const { data: mutationResponse } = await client.mutate<GQLCreateTargetGroupMutation, GQLCreateTargetGroupMutationVariables>({
             mutation: createTargetGroupMutation,
-            variables: { scope, input: {title: state.title, filters: {SALUTATION: []}}},
+            variables: { scope, input: output },
         });
         if (!event.navigatingBack) {
             const id = mutationResponse?.createTargetGroup.id;

@@ -284,7 +284,7 @@ export function TargetGroupsGrid({
                     Toolbar: TargetGroupsGridToolbar,
                 }}
             />
-            <TargetGroupDialog open={newTargetGroupDialogOpen} handleClose={() => setNewTargetGroupDialogOpen(false)} scope={scope}/>
+            <TargetGroupDialog open={newTargetGroupDialogOpen} handleClose={() => setNewTargetGroupDialogOpen(false)} scope={scope} />
         </MainContent>
     );
 }
