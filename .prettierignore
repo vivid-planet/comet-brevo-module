@@ -1,8 +1,0 @@
-chart/*/templates/*
-admin/
-api/
-site/
-campaign/
-schema.graphql
-lang/
-create-app/
