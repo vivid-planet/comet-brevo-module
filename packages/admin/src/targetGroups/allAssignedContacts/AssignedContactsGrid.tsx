@@ -14,11 +14,9 @@ import { DataGrid, GridColDef, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import * as React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
-import {
-    GQLTargetGroupBrevoContactsListFragment,
-} from "../addContacts/AddContactsGridSelect.gql.generated";
-import { allAssignedBrevoContactsGridQuery } from "./AllAssignedContactsGrid.gql";
-import { GQLallAssignedBrevoContactsGridQuery, GQLallAssignedBrevoContactsGridQueryVariables } from "./AllAssignedContactsGrid.gql.generated";
+import { GQLTargetGroupBrevoContactsListFragment } from "../addContacts/AddContactsGridSelect.gql.generated";
+import { assignedBrevoContactsGridQuery } from "./AssignedContactsGrid.gql";
+import { GQLAssignedBrevoContactsGridQuery, GQLAssignedBrevoContactsGridQueryVariables } from "./AssignedContactsGrid.gql.generated";
 
 const AssignedContactsGridToolbar = ({ onOpenDialog }: { onOpenDialog: () => void }) => {
     const intl = useIntl();
@@ -47,7 +45,7 @@ interface AllAssignedContactsGridProps {
     brevoId?: number;
 }
 
-export function AllAssignedContactsGrid({ id, scope, brevoId }: AllAssignedContactsGridProps): React.ReactElement {
+export function AssignedContactsGrid({ id, scope, brevoId }: AllAssignedContactsGridProps): React.ReactElement {
     const intl = useIntl();
     const dataGridAllAssignedContactsProps = { ...useDataGridRemote(), ...usePersistentColumnState("TargetGroupAssignedBrevoContactsGrid") };
 
@@ -55,20 +53,18 @@ export function AllAssignedContactsGrid({ id, scope, brevoId }: AllAssignedConta
         data: allAssignedContactsData,
         loading: assignedContactsLoading,
         error: allAssignedContactsError,
-    } = useQuery<GQLallAssignedBrevoContactsGridQuery, GQLallAssignedBrevoContactsGridQueryVariables>(
-        allAssignedBrevoContactsGridQuery,
-        {
-            variables: {
-                offset: dataGridAllAssignedContactsProps.page * dataGridAllAssignedContactsProps.pageSize,
-                limit: dataGridAllAssignedContactsProps.pageSize,
-                email: dataGridAllAssignedContactsProps.filterModel?.quickFilterValues
-                    ? dataGridAllAssignedContactsProps.filterModel?.quickFilterValues[0]
-                    : undefined,
-                targetGroupId: id,
-            },
-            skip: !brevoId,
+    } = useQuery<GQLAssignedBrevoContactsGridQuery, GQLAssignedBrevoContactsGridQueryVariables>(assignedBrevoContactsGridQuery, {
+        variables: {
+            offset: dataGridAllAssignedContactsProps.page * dataGridAllAssignedContactsProps.pageSize,
+            limit: dataGridAllAssignedContactsProps.pageSize,
+            email: dataGridAllAssignedContactsProps.filterModel?.quickFilterValues
+                ? dataGridAllAssignedContactsProps.filterModel?.quickFilterValues[0]
+                : undefined,
+            targetGroupId: id,
+            brevoId,
         },
-    );
+        skip: !brevoId,
+    });
 
     const allAssignedContactsColumns: GridColDef<GQLTargetGroupBrevoContactsListFragment>[] = [
         {
@@ -105,7 +101,7 @@ export function AllAssignedContactsGrid({ id, scope, brevoId }: AllAssignedConta
         },
     ];
 
-    const allAssignedContactsRowCount = useBufferedRowCount(allAssignedContactsData?.allAssignedBrevoContacts.totalCount);
+    const allAssignedContactsRowCount = useBufferedRowCount(allAssignedContactsData?.assignedBrevoContacts.totalCount);
 
     if (allAssignedContactsError) throw allAssignedContactsError;
 
@@ -114,7 +110,7 @@ export function AllAssignedContactsGrid({ id, scope, brevoId }: AllAssignedConta
             <DataGrid
                 {...dataGridAllAssignedContactsProps}
                 disableSelectionOnClick
-                rows={allAssignedContactsData?.allAssignedBrevoContacts.nodes ?? []}
+                rows={allAssignedContactsData?.assignedBrevoContacts.nodes ?? []}
                 rowCount={allAssignedContactsRowCount}
                 columns={allAssignedContactsColumns}
                 autoHeight

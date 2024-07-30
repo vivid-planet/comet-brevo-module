@@ -27,7 +27,7 @@ import { FormattedMessage } from "react-intl";
 export { namedOperations as targetGroupFormNamedOperations } from "./TargetGroupForm.gql.generated";
 
 import { AddContactsGridSelect } from "./addContacts/AddContactsGridSelect";
-import { AllAssignedContactsGrid } from "./allAssignedContacts/AllAssignedContactsGrid";
+import { AssignedContactsGrid } from "./allAssignedContacts/AssignedContactsGrid";
 import { createTargetGroupMutation, targetGroupFormQuery, updateTargetGroupMutation } from "./TargetGroupForm.gql";
 import {
     GQLCreateTargetGroupMutation,
@@ -203,11 +203,7 @@ export function TargetGroupForm({ id, scope, additionalFormFields, input2State, 
                                     initiallyExpanded
                                     disablePadding
                                 >
-                                    <AllAssignedContactsGrid
-                                        brevoId={data?.targetGroup.brevoId ?? undefined}
-                                        id={id}
-                                        scope={scope}
-                                    />
+                                    <AssignedContactsGrid brevoId={data?.targetGroup.brevoId ?? undefined} id={id} scope={scope} />
                                 </FieldSet>
                             </>
                         )}
