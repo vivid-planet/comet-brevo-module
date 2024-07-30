@@ -200,8 +200,8 @@ export function TargetGroupForm({ id, scope, additionalFormFields, input2State, 
                                             defaultMessage="All assigned contacts"
                                         />
                                     }
-                                    initiallyExpanded
                                     disablePadding
+                                    initiallyExpanded={false}
                                 >
                                     <AssignedContactsGrid brevoId={data?.targetGroup.brevoId ?? undefined} id={id} scope={scope} />
                                 </FieldSet>

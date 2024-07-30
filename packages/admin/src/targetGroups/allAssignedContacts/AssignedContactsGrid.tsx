@@ -24,7 +24,7 @@ const AssignedContactsGridToolbar = ({ onOpenDialog }: { onOpenDialog: () => voi
     return (
         <Toolbar>
             <ToolbarTitleItem>
-                <FormattedMessage id="cometBrevoModule.targetGroup.assignedContacts.title" defaultMessage="Assigned contacts" />
+                <FormattedMessage id="cometBrevoModule.targetGroup.assignedContacts.title" defaultMessage="All assigned contacts" />
             </ToolbarTitleItem>
             <ToolbarItem>
                 <GridToolbarQuickFilter
