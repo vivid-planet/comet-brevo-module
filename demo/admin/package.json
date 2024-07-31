@@ -9,7 +9,7 @@
         "serve": "cd server && npm run serve",
         "gql:types": "graphql-codegen",
         "gql:watch": "graphql-codegen --watch",
-        "lint": "run-p gql:types generate-block-types && run-p lint:prettier lint:eslint lint:tsc && $npm_execpath lint:generated-files-not-modified",
+        "lint": "run-s intl:compile && run-p gql:types generate-block-types && run-p lint:prettier lint:eslint lint:tsc && $npm_execpath lint:generated-files-not-modified",
         "lint:eslint": "eslint --max-warnings 0 --ext .ts,.tsx,.js,.jsx,.json,.md src/ package.json",
         "lint:tsc": "tsc --project .",
         "lint:prettier": "npx prettier --check './**/*.{js,json,md,yml,yaml}'",
