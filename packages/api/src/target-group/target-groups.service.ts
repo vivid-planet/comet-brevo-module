@@ -107,12 +107,10 @@ export class TargetGroupsService {
     }
 
     async findTargetGroups({
-        scope,
         offset,
         limit,
         where,
     }: {
-        scope?: EmailCampaignScopeInterface;
         offset: number;
         limit: number;
         where: FilterQuery<TargetGroupInterface>;
