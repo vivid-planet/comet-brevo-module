@@ -97,7 +97,7 @@ export function createBrevoContactResolver({
             @Args() { offset, limit, email, targetGroupId, onlyManuallyAssigned }: AssignedBrevoContactsArgs,
         ): Promise<PaginatedBrevoContacts> {
             const targetGroup = await this.targetGroupRepository.findOneOrFail({ id: targetGroupId });
-            const brevoListId = onlyManuallyAssigned ? targetGroup.brevoId : targetGroup.assignedContactsTargetGroupBrevoId;
+            const brevoListId = onlyManuallyAssigned ? targetGroup.assignedContactsTargetGroupBrevoId : targetGroup.brevoId;
 
             if (email) {
                 const contact = await this.brevoContactsApiService.getContactInfoByEmail(email, targetGroup.scope);

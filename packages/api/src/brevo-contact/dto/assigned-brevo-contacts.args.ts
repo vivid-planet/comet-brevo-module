@@ -1,6 +1,6 @@
 import { OffsetBasedPaginationArgs } from "@comet/cms-api";
 import { ArgsType, Field, ID } from "@nestjs/graphql";
-import { IsNumber, IsOptional, IsString } from "class-validator";
+import { IsBoolean, IsOptional, IsString } from "class-validator";
 
 @ArgsType()
 export class AssignedBrevoContactsArgs extends OffsetBasedPaginationArgs {
@@ -13,7 +13,7 @@ export class AssignedBrevoContactsArgs extends OffsetBasedPaginationArgs {
     email?: string;
 
     @Field(() => Boolean, { nullable: true })
-    @IsNumber()
+    @IsBoolean()
     @IsOptional()
     onlyManuallyAssigned?: boolean;
 }
