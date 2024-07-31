@@ -11,13 +11,13 @@ import { createTargetGroupMutation } from "./TargetGroupDialog.gql";
 import { GQLCreateTargetGroupMutation, GQLCreateTargetGroupMutationVariables } from "./TargetGroupDialog.gql.generated";
 import { EditTargetGroupFinalFormValues } from "./TargetGroupForm";
 
-interface FormProps {
+interface TargetGroupDialogProps {
     open: boolean;
     handleClose: () => void;
     scope: ContentScopeInterface;
 }
 
-export function TargetGroupDialog({ scope, open, handleClose }: FormProps): React.ReactElement {
+export function TargetGroupDialog({ scope, open, handleClose }: TargetGroupDialogProps): React.ReactElement {
     const client = useApolloClient();
     const mode = "add";
     const formApiRef = useFormApiRef<EditTargetGroupFinalFormValues>();
