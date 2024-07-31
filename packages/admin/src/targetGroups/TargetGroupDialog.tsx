@@ -48,12 +48,7 @@ export function TargetGroupDialog({ scope, open, handleClose }: FormProps): Reac
     return (
         <Dialog open={open} onClose={handleClose} maxWidth="sm">
             <DialogTitle>
-                <IconButton
-                    color="inherit"
-                    onClick={() => {
-                        handleClose();
-                    }}
-                >
+                <IconButton color="inherit" onClick={handleClose}>
                     <Close />
                 </IconButton>
                 <FormattedMessage id="cometBrevoModule.targetGroup.createNewTargetGroup" defaultMessage="Create new target group" />
