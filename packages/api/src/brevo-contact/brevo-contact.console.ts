@@ -41,7 +41,7 @@ export class DeleteUnsubscribedContactsConsole {
                     await this.brevoApiContactsService.deleteContacts(blacklistedContacts, { scope: targetGroup.scope });
                 }
 
-                hasMoreContacts = contacts.length > limit;
+                hasMoreContacts = !(contacts.length < limit);
                 offset += limit;
             } while (hasMoreContacts);
         }
