@@ -167,7 +167,6 @@ export function AddContactsGridSelect({ id, scope, assignedContactsTargetGroupBr
                     ? dataGridAssignedContactsProps.filterModel?.quickFilterValues[0]
                     : undefined,
                 targetGroupId: id,
-                onlyManuallyAssigned: true,
             },
             skip: !assignedContactsTargetGroupBrevoId,
         },
