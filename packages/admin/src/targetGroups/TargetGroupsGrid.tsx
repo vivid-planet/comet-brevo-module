@@ -1,7 +1,9 @@
 import { gql, useApolloClient, useQuery } from "@apollo/client";
 import {
     CrudContextMenu,
+    EditDialog,
     GridFilterButton,
+    IEditDialogApi,
     MainContent,
     muiGridFilterToGql,
     muiGridSortToGql,
@@ -107,7 +109,6 @@ export function TargetGroupsGrid({
     const client = useApolloClient();
     const intl = useIntl();
     const dataGridProps = { ...useDataGridRemote(), ...usePersistentColumnState("TargetGroupsGrid") };
-    const [newTargetGroupDialogOpen, setNewTargetGroupDialogOpen] = React.useState<boolean>(false);
 
     function TargetGroupsGridToolbar() {
         return (
@@ -121,7 +122,16 @@ export function TargetGroupsGrid({
                 </ToolbarItem>
                 <ToolbarFillSpace />
                 <ToolbarActions>
-                    <Button startIcon={<AddIcon />} onClick={() => setNewTargetGroupDialogOpen(true)} variant="contained" color="primary">
+                    <Button
+                        startIcon={<AddIcon />}
+                        variant="contained"
+                        color="primary"
+                        onClick={() => {
+                            if (editDialogApi && editDialogApi.current) {
+                                editDialogApi.current.openAddDialog();
+                            }
+                        }}
+                    >
                         <FormattedMessage id="cometBrevoModule.targetGroup.newTargetGroup" defaultMessage="New target group" />
                     </Button>
                 </ToolbarActions>
@@ -270,6 +280,7 @@ export function TargetGroupsGrid({
     const rowCount = useBufferedRowCount(data?.targetGroups.totalCount);
     if (error) throw error;
     const rows = data?.targetGroups.nodes ?? [];
+    const editDialogApi = React.useRef<IEditDialogApi>(null);
 
     return (
         <MainContent fullHeight>
@@ -284,7 +295,11 @@ export function TargetGroupsGrid({
                     Toolbar: TargetGroupsGridToolbar,
                 }}
             />
-            <TargetGroupDialog open={newTargetGroupDialogOpen} handleClose={() => setNewTargetGroupDialogOpen(false)} scope={scope} />
+            <EditDialog ref={editDialogApi} componentsProps={{ dialog: { maxWidth: "sm" } }}>
+                {() => {
+                    return <TargetGroupDialog scope={scope} />;
+                }}
+            </EditDialog>
         </MainContent>
     );
 }
