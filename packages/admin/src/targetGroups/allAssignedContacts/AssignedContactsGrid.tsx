@@ -1,4 +1,3 @@
-/* eslint-disable @comet/no-private-sibling-import */
 import { useQuery } from "@apollo/client";
 import {
     Toolbar,
@@ -14,9 +13,12 @@ import { DataGrid, GridColDef, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import * as React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
-import { GQLTargetGroupBrevoContactsListFragment } from "../addContacts/AddContactsGridSelect.gql.generated";
 import { assignedBrevoContactsGridQuery } from "./AssignedContactsGrid.gql";
-import { GQLAssignedBrevoContactsGridQuery, GQLAssignedBrevoContactsGridQueryVariables } from "./AssignedContactsGrid.gql.generated";
+import {
+    GQLAssignedBrevoContactsGridQuery,
+    GQLAssignedBrevoContactsGridQueryVariables,
+    GQLTargetGroupBrevoContactsListFragment,
+} from "./AssignedContactsGrid.gql.generated";
 
 const AssignedContactsGridToolbar = ({ onOpenDialog }: { onOpenDialog: () => void }) => {
     const intl = useIntl();
