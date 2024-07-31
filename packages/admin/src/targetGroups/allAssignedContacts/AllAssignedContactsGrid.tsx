@@ -13,10 +13,10 @@ import { DataGrid, GridColDef, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import * as React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
-import { assignedBrevoContactsGridQuery } from "./AllAssignedContactsGrid.gql";
+import { allAssignedBrevoContactsGridQuery } from "./AllAssignedContactsGrid.gql";
 import {
-    GQLAssignedBrevoContactsGridQuery,
-    GQLAssignedBrevoContactsGridQueryVariables,
+    GQLAllAssignedBrevoContactsGridQuery,
+    GQLAllAssignedBrevoContactsGridQueryVariables,
     GQLTargetGroupBrevoContactsListFragment,
 } from "./AllAssignedContactsGrid.gql.generated";
 
@@ -55,7 +55,7 @@ export function AllAssignedContactsGrid({ id, scope, brevoId }: AllAssignedConta
         data: allAssignedContactsData,
         loading: assignedContactsLoading,
         error: allAssignedContactsError,
-    } = useQuery<GQLAssignedBrevoContactsGridQuery, GQLAssignedBrevoContactsGridQueryVariables>(assignedBrevoContactsGridQuery, {
+    } = useQuery<GQLAllAssignedBrevoContactsGridQuery, GQLAllAssignedBrevoContactsGridQueryVariables>(allAssignedBrevoContactsGridQuery, {
         variables: {
             offset: dataGridAllAssignedContactsProps.page * dataGridAllAssignedContactsProps.pageSize,
             limit: dataGridAllAssignedContactsProps.pageSize,
