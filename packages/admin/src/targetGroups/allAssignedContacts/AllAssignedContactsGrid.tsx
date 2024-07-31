@@ -13,12 +13,12 @@ import { DataGrid, GridColDef, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import * as React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
-import { assignedBrevoContactsGridQuery } from "./AssignedContactsGrid.gql";
+import { assignedBrevoContactsGridQuery } from "./AllAssignedContactsGrid.gql";
 import {
     GQLAssignedBrevoContactsGridQuery,
     GQLAssignedBrevoContactsGridQueryVariables,
     GQLTargetGroupBrevoContactsListFragment,
-} from "./AssignedContactsGrid.gql.generated";
+} from "./AllAssignedContactsGrid.gql.generated";
 
 const AssignedContactsGridToolbar = ({ onOpenDialog }: { onOpenDialog: () => void }) => {
     const intl = useIntl();
@@ -47,7 +47,7 @@ interface AllAssignedContactsGridProps {
     brevoId?: number;
 }
 
-export function AssignedContactsGrid({ id, scope, brevoId }: AllAssignedContactsGridProps): React.ReactElement {
+export function AllAssignedContactsGrid({ id, scope, brevoId }: AllAssignedContactsGridProps): React.ReactElement {
     const intl = useIntl();
     const dataGridAllAssignedContactsProps = { ...useDataGridRemote(), ...usePersistentColumnState("TargetGroupAssignedBrevoContactsGrid") };
 
