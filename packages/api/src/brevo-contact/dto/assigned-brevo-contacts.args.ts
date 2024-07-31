@@ -12,8 +12,8 @@ export class AssignedBrevoContactsArgs extends OffsetBasedPaginationArgs {
     @IsOptional()
     email?: string;
 
-    @Field(() => Number, { nullable: true })
+    @Field(() => Boolean, { nullable: true })
     @IsNumber()
     @IsOptional()
-    brevoId?: number;
+    onlyManuallyAssigned?: boolean;
 }

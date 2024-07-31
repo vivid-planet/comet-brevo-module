@@ -61,7 +61,6 @@ export function AssignedContactsGrid({ id, scope, brevoId }: AllAssignedContacts
                 ? dataGridAllAssignedContactsProps.filterModel?.quickFilterValues[0]
                 : undefined,
             targetGroupId: id,
-            brevoId,
         },
         skip: !brevoId,
     });

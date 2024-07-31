@@ -12,8 +12,8 @@ const targetGroupBrevoContactsFragment = gql`
 `;
 
 export const assignedBrevoContactsGridQuery = gql`
-    query AssignedBrevoContactsGrid($offset: Int, $limit: Int, $email: String, $targetGroupId: ID!, $brevoId: Float) {
-        assignedBrevoContacts(offset: $offset, limit: $limit, email: $email, targetGroupId: $targetGroupId, brevoId: $brevoId) {
+    query AssignedBrevoContactsGrid($offset: Int, $limit: Int, $email: String, $targetGroupId: ID!) {
+        assignedBrevoContacts(offset: $offset, limit: $limit, email: $email, targetGroupId: $targetGroupId) {
             nodes {
                 ...TargetGroupBrevoContactsList
             }
