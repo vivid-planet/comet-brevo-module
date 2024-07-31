@@ -1,9 +1,7 @@
 import { gql, useApolloClient, useQuery } from "@apollo/client";
 import {
     CrudContextMenu,
-    EditDialog,
     GridFilterButton,
-    IEditDialogApi,
     MainContent,
     muiGridFilterToGql,
     muiGridSortToGql,
@@ -15,6 +13,7 @@ import {
     ToolbarItem,
     useBufferedRowCount,
     useDataGridRemote,
+    useEditDialog,
     usePersistentColumnState,
 } from "@comet/admin";
 import { Add as AddIcon, Download, Edit } from "@comet/admin-icons";
@@ -109,6 +108,7 @@ export function TargetGroupsGrid({
     const client = useApolloClient();
     const intl = useIntl();
     const dataGridProps = { ...useDataGridRemote(), ...usePersistentColumnState("TargetGroupsGrid") };
+    const [EditDialog, , editDialogApi] = useEditDialog();
 
     function TargetGroupsGridToolbar() {
         return (
@@ -127,9 +127,7 @@ export function TargetGroupsGrid({
                         variant="contained"
                         color="primary"
                         onClick={() => {
-                            if (editDialogApi && editDialogApi.current) {
-                                editDialogApi.current.openAddDialog();
-                            }
+                            editDialogApi.openAddDialog();
                         }}
                     >
                         <FormattedMessage id="cometBrevoModule.targetGroup.newTargetGroup" defaultMessage="New target group" />
@@ -280,7 +278,6 @@ export function TargetGroupsGrid({
     const rowCount = useBufferedRowCount(data?.targetGroups.totalCount);
     if (error) throw error;
     const rows = data?.targetGroups.nodes ?? [];
-    const editDialogApi = React.useRef<IEditDialogApi>(null);
 
     return (
         <MainContent fullHeight>
@@ -295,10 +292,8 @@ export function TargetGroupsGrid({
                     Toolbar: TargetGroupsGridToolbar,
                 }}
             />
-            <EditDialog ref={editDialogApi} componentsProps={{ dialog: { maxWidth: "sm" } }}>
-                {() => {
-                    return <TargetGroupDialog scope={scope} />;
-                }}
+            <EditDialog disableCloseAfterSave componentsProps={{ dialog: { maxWidth: "sm" } }}>
+                <TargetGroupDialog scope={scope} />
             </EditDialog>
         </MainContent>
     );
