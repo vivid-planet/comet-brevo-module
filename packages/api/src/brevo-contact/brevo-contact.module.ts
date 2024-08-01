@@ -24,7 +24,7 @@ export class BrevoContactModule {
     static register({ BrevoContactAttributes, Scope, TargetGroup }: BrevoContactModuleConfig): DynamicModule {
         const BrevoContact = BrevoContactFactory.create({ BrevoContactAttributes });
         const BrevoContactSubscribeInput = SubscribeInputFactory.create({ BrevoContactAttributes, Scope });
-        const [BrevoContactInput, BrevoContactUpdateInput] = BrevoContactInputFactory.create({ BrevoContactAttributes });
+        const [BrevoContactInput, BrevoContactUpdateInput] = BrevoContactInputFactory.create({ BrevoContactAttributes, Scope });
         const BrevoContactResolver = createBrevoContactResolver({
             BrevoContact,
             BrevoContactSubscribeInput,

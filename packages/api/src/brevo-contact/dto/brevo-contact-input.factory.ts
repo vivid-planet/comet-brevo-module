@@ -4,7 +4,7 @@ import { Field, InputType } from "@nestjs/graphql";
 import { Type as TypeTransformer } from "class-transformer";
 import { IsBoolean, IsNotEmpty, IsOptional, IsString, IsUrl, ValidateNested } from "class-validator";
 
-import { BrevoContactAttributesInterface } from "../../types";
+import { BrevoContactAttributesInterface, EmailCampaignScopeInterface } from "../../types";
 import { IsValidRedirectURL } from "../validator/redirect-url.validator";
 
 export interface BrevoContactInputInterface {
@@ -22,8 +22,10 @@ export interface BrevoContactUpdateInputInterface {
 export class BrevoContactInputFactory {
     static create({
         BrevoContactAttributes,
+        Scope,
     }: {
         BrevoContactAttributes?: Type<BrevoContactAttributesInterface>;
+        Scope: Type<EmailCampaignScopeInterface>;
     }): [Type<BrevoContactInputInterface>, Type<Partial<BrevoContactUpdateInputInterface>>] {
         @InputType({
             isAbstract: true,
@@ -41,7 +43,7 @@ export class BrevoContactInputFactory {
 
             @Field()
             @IsUrl({ require_tld: process.env.NODE_ENV === "production" })
-            @IsValidRedirectURL()
+            @IsValidRedirectURL(Scope)
             redirectionUrl: string;
         }
 
