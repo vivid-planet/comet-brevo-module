@@ -18,10 +18,6 @@ export const commonImageBlockStyles = (
             .image-block > table > tbody > tr > td {
                 width: 100% !important;
             }
-
-            .image-block img {
-                height: auto !important;
-            }
         }
     `}</MjmlStyle>
 );
@@ -44,15 +40,12 @@ export const CommonImageBlock = ({ data, desktopRenderWidth, ...restProps }: Pro
         usedAspectRatio,
     );
 
-    const desktopImageHeight = Math.round(desktopRenderWidth / usedAspectRatio);
-
     return (
         <MjmlImage
             src={imageUrl}
             fluidOnMobile="true"
             cssClass="image-block"
             width={desktopRenderWidth}
-            height={desktopImageHeight}
             alt={damFile.altText}
             title={damFile.title}
             {...restProps}
