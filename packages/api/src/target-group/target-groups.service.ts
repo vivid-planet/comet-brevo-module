@@ -53,9 +53,9 @@ export class TargetGroupsService {
     }
 
     public async assignContactsToContactList(
-        filters: BrevoContactFilterAttributesInterface = {},
         targetGroup: TargetGroupInterface,
         scope: EmailCampaignScopeInterface,
+        filters?: BrevoContactFilterAttributesInterface,
     ): Promise<true> {
         const mainScopeTargetGroupList = await this.repository.findOneOrFail({ scope, isMainList: true });
 

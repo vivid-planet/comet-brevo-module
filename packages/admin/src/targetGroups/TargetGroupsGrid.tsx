@@ -13,6 +13,7 @@ import {
     ToolbarItem,
     useBufferedRowCount,
     useDataGridRemote,
+    useEditDialog,
     usePersistentColumnState,
 } from "@comet/admin";
 import { Add as AddIcon, Download, Edit } from "@comet/admin-icons";
@@ -24,6 +25,7 @@ import { DocumentNode } from "graphql";
 import * as React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
+import { TargetGroupDialog } from "./TargetGroupDialog";
 import {
     GQLCreateTargetGroupMutation,
     GQLCreateTargetGroupMutationVariables,
@@ -93,26 +95,6 @@ const createTargetGroupMutation = gql`
     }
 `;
 
-function TargetGroupsGridToolbar() {
-    return (
-        <Toolbar>
-            <ToolbarAutomaticTitleItem />
-            <ToolbarItem>
-                <GridToolbarQuickFilter />
-            </ToolbarItem>
-            <ToolbarItem>
-                <GridFilterButton />
-            </ToolbarItem>
-            <ToolbarFillSpace />
-            <ToolbarActions>
-                <Button startIcon={<AddIcon />} component={StackLink} pageName="add" payload="add" variant="contained" color="primary">
-                    <FormattedMessage id="cometBrevoModule.targetGroup.newTargetGroup" defaultMessage="New target group" />
-                </Button>
-            </ToolbarActions>
-        </Toolbar>
-    );
-}
-
 export function TargetGroupsGrid({
     scope,
     exportTargetGroupOptions,
@@ -126,6 +108,34 @@ export function TargetGroupsGrid({
     const client = useApolloClient();
     const intl = useIntl();
     const dataGridProps = { ...useDataGridRemote(), ...usePersistentColumnState("TargetGroupsGrid") };
+    const [EditDialog, , editDialogApi] = useEditDialog();
+
+    function TargetGroupsGridToolbar() {
+        return (
+            <Toolbar>
+                <ToolbarAutomaticTitleItem />
+                <ToolbarItem>
+                    <GridToolbarQuickFilter />
+                </ToolbarItem>
+                <ToolbarItem>
+                    <GridFilterButton />
+                </ToolbarItem>
+                <ToolbarFillSpace />
+                <ToolbarActions>
+                    <Button
+                        startIcon={<AddIcon />}
+                        variant="contained"
+                        color="primary"
+                        onClick={() => {
+                            editDialogApi.openAddDialog();
+                        }}
+                    >
+                        <FormattedMessage id="cometBrevoModule.targetGroup.newTargetGroup" defaultMessage="New target group" />
+                    </Button>
+                </ToolbarActions>
+            </Toolbar>
+        );
+    }
 
     const targetGroupContactsQuery = gql`
         query TargetGroupContacts($targetGroupId: ID!, $offset: Int, $limit: Int, $scope: EmailCampaignContentScopeInput!) {
@@ -282,6 +292,9 @@ export function TargetGroupsGrid({
                     Toolbar: TargetGroupsGridToolbar,
                 }}
             />
+            <EditDialog disableCloseAfterSave componentsProps={{ dialog: { maxWidth: "sm" } }}>
+                <TargetGroupDialog scope={scope} />
+            </EditDialog>
         </MainContent>
     );
 }

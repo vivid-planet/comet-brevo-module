@@ -15,7 +15,6 @@ import {
     ToolbarTitleItem,
     useFormApiRef,
     useStackApi,
-    useStackSwitchApi,
 } from "@comet/admin";
 import { ArrowLeft } from "@comet/admin-icons";
 import { ContentScopeInterface, EditPageLayout, queryUpdatedAt, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
@@ -28,10 +27,8 @@ export { namedOperations as targetGroupFormNamedOperations } from "./TargetGroup
 
 import { AddContactsGridSelect } from "./addContacts/AddContactsGridSelect";
 import { AllAssignedContactsGrid } from "./allAssignedContacts/AllAssignedContactsGrid";
-import { createTargetGroupMutation, targetGroupFormQuery, updateTargetGroupMutation } from "./TargetGroupForm.gql";
+import { targetGroupFormQuery, updateTargetGroupMutation } from "./TargetGroupForm.gql";
 import {
-    GQLCreateTargetGroupMutation,
-    GQLCreateTargetGroupMutationVariables,
     GQLTargetGroupFormQuery,
     GQLTargetGroupFormQueryVariables,
     GQLUpdateTargetGroupMutation,
@@ -44,7 +41,7 @@ export interface EditTargetGroupFinalFormValues {
 }
 
 interface FormProps {
-    id?: string;
+    id: string;
     scope: ContentScopeInterface;
     additionalFormFields?: React.ReactNode;
     nodeFragment?: { name: string; fragment: DocumentNode };
@@ -54,9 +51,8 @@ interface FormProps {
 export function TargetGroupForm({ id, scope, additionalFormFields, input2State, nodeFragment }: FormProps): React.ReactElement {
     const stackApi = useStackApi();
     const client = useApolloClient();
-    const mode = id ? "edit" : "add";
+    const mode = "edit";
     const formApiRef = useFormApiRef<EditTargetGroupFinalFormValues>();
-    const stackSwitchApi = useStackSwitchApi();
 
     const targetGroupFormFragment = gql`
         fragment TargetGroupForm on TargetGroup {
@@ -67,7 +63,7 @@ export function TargetGroupForm({ id, scope, additionalFormFields, input2State, 
 
     const { data, error, loading, refetch } = useQuery<GQLTargetGroupFormQuery, GQLTargetGroupFormQueryVariables>(
         targetGroupFormQuery(targetGroupFormFragment),
-        id ? { variables: { id } } : { skip: true },
+        { variables: { id } },
     );
 
     const initialValues = React.useMemo<Partial<EditTargetGroupFinalFormValues>>(() => {
@@ -104,28 +100,10 @@ export function TargetGroupForm({ id, scope, additionalFormFields, input2State, 
             ...state,
         };
 
-        if (mode === "edit") {
-            if (!id) {
-                throw new Error("Missing id in edit mode");
-            }
-            await client.mutate<GQLUpdateTargetGroupMutation, GQLUpdateTargetGroupMutationVariables>({
-                mutation: updateTargetGroupMutation(targetGroupFormFragment),
-                variables: { id, input: output, lastUpdatedAt: data?.targetGroup?.updatedAt },
-            });
-        } else {
-            const { data: mutationResponse } = await client.mutate<GQLCreateTargetGroupMutation, GQLCreateTargetGroupMutationVariables>({
-                mutation: createTargetGroupMutation(targetGroupFormFragment),
-                variables: { scope, input: output },
-            });
-            if (!event.navigatingBack) {
-                const id = mutationResponse?.createTargetGroup.id;
-                if (id) {
-                    setTimeout(() => {
-                        stackSwitchApi.activatePage("edit", id);
-                    });
-                }
-            }
-        }
+        await client.mutate<GQLUpdateTargetGroupMutation, GQLUpdateTargetGroupMutationVariables>({
+            mutation: updateTargetGroupMutation(targetGroupFormFragment),
+            variables: { id, input: output, lastUpdatedAt: data?.targetGroup?.updatedAt },
+        });
     };
 
     if (error) throw error;
@@ -175,38 +153,31 @@ export function TargetGroupForm({ id, scope, additionalFormFields, input2State, 
                                 {additionalFormFields}
                             </FieldSet>
                         )}
-                        {id && (
-                            <>
-                                <FieldSet
-                                    title={
-                                        <FormattedMessage
-                                            id="cometBrevoModule.targetGroup.manuallyAddContacts"
-                                            defaultMessage="Manually add contacts"
-                                        />
-                                    }
-                                    initiallyExpanded
-                                    disablePadding
-                                >
-                                    <AddContactsGridSelect
-                                        assignedContactsTargetGroupBrevoId={data?.targetGroup.assignedContactsTargetGroupBrevoId ?? undefined}
-                                        id={id}
-                                        scope={scope}
-                                    />
-                                </FieldSet>
-                                <FieldSet
-                                    title={
-                                        <FormattedMessage
-                                            id="cometBrevoModule.targetGroup.allAssignedContacts"
-                                            defaultMessage="All assigned contacts"
-                                        />
-                                    }
-                                    disablePadding
-                                    initiallyExpanded={false}
-                                >
-                                    <AllAssignedContactsGrid brevoId={data?.targetGroup.brevoId ?? undefined} id={id} scope={scope} />
-                                </FieldSet>
-                            </>
-                        )}
+
+                        <>
+                            <FieldSet
+                                title={
+                                    <FormattedMessage id="cometBrevoModule.targetGroup.manuallyAddContacts" defaultMessage="Manually add contacts" />
+                                }
+                                initiallyExpanded
+                                disablePadding
+                            >
+                                <AddContactsGridSelect
+                                    assignedContactsTargetGroupBrevoId={data?.targetGroup.assignedContactsTargetGroupBrevoId ?? undefined}
+                                    id={id}
+                                    scope={scope}
+                                />
+                            </FieldSet>
+                            <FieldSet
+                                title={
+                                    <FormattedMessage id="cometBrevoModule.targetGroup.allAssignedContacts" defaultMessage="All assigned contacts" />
+                                }
+                                disablePadding
+                                initiallyExpanded={false}
+                            >
+                                <AllAssignedContactsGrid brevoId={data?.targetGroup.brevoId ?? undefined} id={id} scope={scope} />
+                            </FieldSet>
+                        </>
                     </MainContent>
                 </EditPageLayout>
             )}

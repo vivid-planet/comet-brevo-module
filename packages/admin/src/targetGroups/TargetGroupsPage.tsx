@@ -55,17 +55,6 @@ export function createTargetGroupsPage({
                             />
                         )}
                     </StackPage>
-                    <StackPage
-                        name="add"
-                        title={intl.formatMessage({ id: "cometBrevoModule.targetGroups.addTargetGroup", defaultMessage: "Add target group" })}
-                    >
-                        <TargetGroupForm
-                            scope={scope}
-                            additionalFormFields={additionalFormFields}
-                            nodeFragment={nodeFragment}
-                            input2State={input2State}
-                        />
-                    </StackPage>
                 </StackSwitch>
             </Stack>
         );

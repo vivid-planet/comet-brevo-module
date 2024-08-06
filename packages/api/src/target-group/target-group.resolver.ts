@@ -96,7 +96,9 @@ export function createTargetGroupsResolver({
 
                 await this.entityManager.flush();
 
-                await this.targetGroupsService.assignContactsToContactList(input.filters, targetGroup, targetGroup.scope);
+                if (input.filters) {
+                    await this.targetGroupsService.assignContactsToContactList(targetGroup, targetGroup.scope, input.filters);
+                }
 
                 return targetGroup;
             }
@@ -194,7 +196,7 @@ export function createTargetGroupsResolver({
                 validateNotModified(targetGroup, lastUpdatedAt);
             }
 
-            await this.targetGroupsService.assignContactsToContactList(input.filters, targetGroup, targetGroup.scope);
+            await this.targetGroupsService.assignContactsToContactList(targetGroup, targetGroup.scope, input.filters);
 
             if (input.title && input.title !== targetGroup.title) {
                 const successfullyUpdatedContactList = await this.brevoApiContactsService.updateBrevoContactList(
