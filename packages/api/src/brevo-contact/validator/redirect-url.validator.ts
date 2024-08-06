@@ -25,20 +25,20 @@ export class IsValidRedirectURLConstraint implements ValidatorConstraintInterfac
 
     async validate(urlToValidate: string, args: ValidationArguments): Promise<boolean> {
         const [scope] = args.constraints;
+        const configForScope = this.config.brevo.resolveConfig(scope);
 
-        try {
-            const configForScope = this.config.brevo.resolveConfig(scope);
-            if (configForScope && urlToValidate?.startsWith(configForScope.allowedRedirectUrl)) {
-                return true;
-            }
-        } catch (error) {
-            console.error(`Error resolving config for scope: ${scope}`, error);
+        if (!configForScope) {
+            throw Error("Scope does not exist");
+        }
+
+        if (urlToValidate?.startsWith(configForScope.allowedRedirectUrl)) {
+            return true;
         }
 
         return false;
     }
 
     defaultMessage(): string {
-        return `URL is not supported or scope does not exist`;
+        return `Scope does not exist`;
     }
 }
