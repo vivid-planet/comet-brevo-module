@@ -27,6 +27,7 @@ import { FormattedMessage } from "react-intl";
 export { namedOperations as targetGroupFormNamedOperations } from "./TargetGroupForm.gql.generated";
 
 import { AddContactsGridSelect } from "./addContacts/AddContactsGridSelect";
+import { AllAssignedContactsGrid } from "./allAssignedContacts/AllAssignedContactsGrid";
 import { createTargetGroupMutation, targetGroupFormQuery, updateTargetGroupMutation } from "./TargetGroupForm.gql";
 import {
     GQLCreateTargetGroupMutation,
@@ -175,19 +176,36 @@ export function TargetGroupForm({ id, scope, additionalFormFields, input2State, 
                             </FieldSet>
                         )}
                         {id && (
-                            <FieldSet
-                                title={
-                                    <FormattedMessage id="cometBrevoModule.targetGroup.manuallyAddContacts" defaultMessage="Manually add contacts" />
-                                }
-                                initiallyExpanded
-                                disablePadding
-                            >
-                                <AddContactsGridSelect
-                                    assignedContactsTargetGroupBrevoId={data?.targetGroup.assignedContactsTargetGroupBrevoId ?? undefined}
-                                    id={id}
-                                    scope={scope}
-                                />
-                            </FieldSet>
+                            <>
+                                <FieldSet
+                                    title={
+                                        <FormattedMessage
+                                            id="cometBrevoModule.targetGroup.manuallyAddContacts"
+                                            defaultMessage="Manually add contacts"
+                                        />
+                                    }
+                                    initiallyExpanded
+                                    disablePadding
+                                >
+                                    <AddContactsGridSelect
+                                        assignedContactsTargetGroupBrevoId={data?.targetGroup.assignedContactsTargetGroupBrevoId ?? undefined}
+                                        id={id}
+                                        scope={scope}
+                                    />
+                                </FieldSet>
+                                <FieldSet
+                                    title={
+                                        <FormattedMessage
+                                            id="cometBrevoModule.targetGroup.allAssignedContacts"
+                                            defaultMessage="All assigned contacts"
+                                        />
+                                    }
+                                    disablePadding
+                                    initiallyExpanded={false}
+                                >
+                                    <AllAssignedContactsGrid brevoId={data?.targetGroup.brevoId ?? undefined} id={id} scope={scope} />
+                                </FieldSet>
+                            </>
                         )}
                     </MainContent>
                 </EditPageLayout>

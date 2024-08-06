@@ -116,7 +116,6 @@ export function createBrevoContactResolver({
                 offset,
                 targetGroup.scope,
             );
-
             return new PaginatedBrevoContacts(contacts, count, { offset, limit });
         }
 
