@@ -24,7 +24,7 @@ import { MemoryRouter } from "react-router";
 import { targetGroupFormNamedOperations } from "../TargetGroupForm";
 import {
     addBrevoContactsToTargetGroupMutation,
-    allBrevoContactsQuery,
+    brevoContactsQuery,
     manuallyAssignedBrevoContactsGridQuery,
     removeBrevoContactFromTargetGroupMutation,
 } from "./AddContactsGridSelect.gql";
@@ -47,7 +47,7 @@ const AssignedContactsGridToolbar = ({ onOpenDialog }: { onOpenDialog: () => voi
     return (
         <Toolbar>
             <ToolbarTitleItem>
-                <FormattedMessage id="cometBrevoModule.targetGroup.assignedContacts.title" defaultMessage="Assigned contacts" />
+                <FormattedMessage id="cometBrevoModule.targetGroup.assignedContacts.title" defaultMessage="Manually assigned contacts" />
             </ToolbarTitleItem>
             <ToolbarItem>
                 <GridToolbarQuickFilter
@@ -142,7 +142,7 @@ export function AddContactsGridSelect({ id, scope, assignedContactsTargetGroupBr
         data: assignableContactsData,
         loading: assignableContactsLoading,
         error: assignableContactsError,
-    } = useQuery<GQLAllBrevoContactsGridQuery, GQLAllBrevoContactsGridQueryVariables>(allBrevoContactsQuery, {
+    } = useQuery<GQLAllBrevoContactsGridQuery, GQLAllBrevoContactsGridQueryVariables>(brevoContactsQuery, {
         variables: {
             offset: dataGridAssignableContactsProps.page * dataGridAssignableContactsProps.pageSize,
             limit: dataGridAssignableContactsProps.pageSize,

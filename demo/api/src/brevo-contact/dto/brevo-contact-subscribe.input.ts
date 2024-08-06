@@ -10,7 +10,7 @@ export class BrevoContactSubscribeInput {
     email: string;
 
     @IsUrl({ require_tld: process.env.NODE_ENV === "production" })
-    @IsValidRedirectURL()
+    @IsValidRedirectURL(EmailContactSubscribeScope)
     redirectionUrl: string;
 
     @ValidateNested()

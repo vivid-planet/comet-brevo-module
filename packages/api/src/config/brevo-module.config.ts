@@ -13,10 +13,10 @@ export interface BrevoModuleConfig {
                 name: string;
                 email: string;
             };
+            allowedRedirectUrl: string;
         };
         BrevoContactAttributes?: Type<BrevoContactAttributesInterface>;
         BrevoContactFilterAttributes?: Type<BrevoContactFilterAttributesInterface>;
-        allowedRedirectUrl: string;
     };
     ecgRtrList: {
         apiKey: string;

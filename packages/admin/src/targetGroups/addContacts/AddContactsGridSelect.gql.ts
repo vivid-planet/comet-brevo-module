@@ -23,7 +23,7 @@ export const manuallyAssignedBrevoContactsGridQuery = gql`
     ${targetGroupBrevoContactsFragment}
 `;
 
-export const allBrevoContactsQuery = gql`
+export const brevoContactsQuery = gql`
     query AllBrevoContactsGrid($offset: Int, $limit: Int, $email: String, $scope: EmailCampaignContentScopeInput!) {
         brevoContacts(offset: $offset, limit: $limit, email: $email, scope: $scope) {
             nodes {
