@@ -167,7 +167,7 @@ input EmailCampaignContentScopeInput {
 type Query {
   brevoContact(id: Int!, scope: EmailCampaignContentScopeInput!): BrevoContact!
   brevoContacts(targetGroupId: ID, email: String, scope: EmailCampaignContentScopeInput!, offset: Int! = 0, limit: Int! = 25): PaginatedBrevoContacts!
-  assignedBrevoContacts(offset: Int! = 0, limit: Int! = 25, targetGroupId: ID!, email: String, onlyManuallyAssigned: Boolean): PaginatedBrevoContacts!
+  manuallyAssignedBrevoContacts(offset: Int! = 0, limit: Int! = 25, targetGroupId: ID!, email: String, onlyManuallyAssigned: Boolean): PaginatedBrevoContacts!
   targetGroup(id: ID!): TargetGroup!
   targetGroups(scope: EmailCampaignContentScopeInput!, search: String, filter: TargetGroupFilter, sort: [TargetGroupSort!], offset: Int! = 0, limit: Int! = 25): PaginatedTargetGroups!
   emailCampaign(id: ID!): EmailCampaign!

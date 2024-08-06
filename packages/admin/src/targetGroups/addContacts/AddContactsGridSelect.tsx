@@ -24,7 +24,7 @@ import { MemoryRouter } from "react-router";
 import { targetGroupFormNamedOperations } from "../TargetGroupForm";
 import {
     addBrevoContactsToTargetGroupMutation,
-    allBrevoContactsQuery,
+    brevoContactsQuery,
     manuallyAssignedBrevoContactsGridQuery,
     removeBrevoContactFromTargetGroupMutation,
 } from "./AddContactsGridSelect.gql";
@@ -142,7 +142,7 @@ export function AddContactsGridSelect({ id, scope, assignedContactsTargetGroupBr
         data: assignableContactsData,
         loading: assignableContactsLoading,
         error: assignableContactsError,
-    } = useQuery<GQLAllBrevoContactsGridQuery, GQLAllBrevoContactsGridQueryVariables>(allBrevoContactsQuery, {
+    } = useQuery<GQLAllBrevoContactsGridQuery, GQLAllBrevoContactsGridQueryVariables>(brevoContactsQuery, {
         variables: {
             offset: dataGridAssignableContactsProps.page * dataGridAssignableContactsProps.pageSize,
             limit: dataGridAssignableContactsProps.pageSize,
@@ -224,7 +224,7 @@ export function AddContactsGridSelect({ id, scope, assignedContactsTargetGroupBr
         },
     ]);
 
-    const assignedContactsRowCount = useBufferedRowCount(assignedContactsData?.assignedBrevoContacts.totalCount);
+    const assignedContactsRowCount = useBufferedRowCount(assignedContactsData?.manuallyAssignedBrevoContacts.totalCount);
     const assignableContactsRowCount = useBufferedRowCount(assignableContactsData?.brevoContacts.totalCount);
 
     if (assignedContactsError || assignableContactsError) throw assignedContactsError ?? assignableContactsError;
@@ -234,7 +234,7 @@ export function AddContactsGridSelect({ id, scope, assignedContactsTargetGroupBr
             <DataGrid
                 {...dataGridAssignedContactsProps}
                 disableSelectionOnClick
-                rows={assignedContactsData?.assignedBrevoContacts.nodes ?? []}
+                rows={assignedContactsData?.manuallyAssignedBrevoContacts.nodes ?? []}
                 rowCount={assignedContactsRowCount}
                 columns={assignedContactsColumns}
                 autoHeight

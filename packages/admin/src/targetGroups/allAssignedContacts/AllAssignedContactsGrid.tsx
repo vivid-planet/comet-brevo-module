@@ -15,8 +15,8 @@ import { FormattedMessage, useIntl } from "react-intl";
 
 import { allAssignedBrevoContactsGridQuery } from "./AllAssignedContactsGrid.gql";
 import {
-    GQLAllAssignedBrevoContactsGridQuery,
-    GQLAllAssignedBrevoContactsGridQueryVariables,
+    GQLBrevoContactsQuery,
+    GQLBrevoContactsQueryVariables,
     GQLTargetGroupBrevoContactsListFragment,
 } from "./AllAssignedContactsGrid.gql.generated";
 
@@ -55,7 +55,7 @@ export function AllAssignedContactsGrid({ id, scope, brevoId }: AllAssignedConta
         data: allAssignedContactsData,
         loading: assignedContactsLoading,
         error: allAssignedContactsError,
-    } = useQuery<GQLAllAssignedBrevoContactsGridQuery, GQLAllAssignedBrevoContactsGridQueryVariables>(allAssignedBrevoContactsGridQuery, {
+    } = useQuery<GQLBrevoContactsQuery, GQLBrevoContactsQueryVariables>(allAssignedBrevoContactsGridQuery, {
         variables: {
             offset: dataGridAllAssignedContactsProps.page * dataGridAllAssignedContactsProps.pageSize,
             limit: dataGridAllAssignedContactsProps.pageSize,
@@ -63,6 +63,7 @@ export function AllAssignedContactsGrid({ id, scope, brevoId }: AllAssignedConta
                 ? dataGridAllAssignedContactsProps.filterModel?.quickFilterValues[0]
                 : undefined,
             targetGroupId: id,
+            scope,
         },
         skip: !brevoId,
     });
@@ -102,7 +103,7 @@ export function AllAssignedContactsGrid({ id, scope, brevoId }: AllAssignedConta
         },
     ];
 
-    const allAssignedContactsRowCount = useBufferedRowCount(allAssignedContactsData?.assignedBrevoContacts.totalCount);
+    const allAssignedContactsRowCount = useBufferedRowCount(allAssignedContactsData?.brevoContacts.totalCount);
 
     if (allAssignedContactsError) throw allAssignedContactsError;
 
@@ -111,7 +112,7 @@ export function AllAssignedContactsGrid({ id, scope, brevoId }: AllAssignedConta
             <DataGrid
                 {...dataGridAllAssignedContactsProps}
                 disableSelectionOnClick
-                rows={allAssignedContactsData?.assignedBrevoContacts.nodes ?? []}
+                rows={allAssignedContactsData?.brevoContacts.nodes ?? []}
                 rowCount={allAssignedContactsRowCount}
                 columns={allAssignedContactsColumns}
                 autoHeight

@@ -12,10 +12,10 @@ import { TargetGroupsService } from "../target-group/target-groups.service";
 import { EmailCampaignScopeInterface } from "../types";
 import { DynamicDtoValidationPipe } from "../validation/dynamic-dto-validation.pipe";
 import { BrevoContactsService } from "./brevo-contacts.service";
-import { AssignedBrevoContactsArgs } from "./dto/assigned-brevo-contacts.args";
 import { BrevoContactInterface } from "./dto/brevo-contact.factory";
 import { BrevoContactInputInterface, BrevoContactUpdateInputInterface } from "./dto/brevo-contact-input.factory";
 import { BrevoContactsArgsFactory } from "./dto/brevo-contacts.args";
+import { ManuallyAssignedBrevoContactsArgs } from "./dto/manually-assigned-brevo-contacts.args";
 import { SubscribeInputInterface } from "./dto/subscribe-input.factory";
 import { SubscribeResponse } from "./dto/subscribe-response.enum";
 import { EcgRtrListService } from "./ecg-rtr-list/ecg-rtr-list.service";
@@ -93,11 +93,10 @@ export function createBrevoContactResolver({
         }
 
         @Query(() => PaginatedBrevoContacts)
-        async assignedBrevoContacts(
-            @Args() { offset, limit, email, targetGroupId, onlyManuallyAssigned }: AssignedBrevoContactsArgs,
+        async manuallyAssignedBrevoContacts(
+            @Args() { offset, limit, email, targetGroupId }: ManuallyAssignedBrevoContactsArgs,
         ): Promise<PaginatedBrevoContacts> {
             const targetGroup = await this.targetGroupRepository.findOneOrFail({ id: targetGroupId });
-            const brevoListId = onlyManuallyAssigned ? targetGroup.assignedContactsTargetGroupBrevoId : targetGroup.brevoId;
 
             if (email) {
                 const contact = await this.brevoContactsApiService.getContactInfoByEmail(email, targetGroup.scope);
@@ -107,12 +106,16 @@ export function createBrevoContactResolver({
                 return new PaginatedBrevoContacts([], 0, { offset, limit });
             }
 
-            if (!brevoListId) {
+            if (!targetGroup.assignedContactsTargetGroupBrevoId) {
                 return new PaginatedBrevoContacts([], 0, { offset, limit });
             }
 
-            const [contacts, count] = await this.brevoContactsApiService.findContactsByListId(brevoListId, limit, offset, targetGroup.scope);
-
+            const [contacts, count] = await this.brevoContactsApiService.findContactsByListId(
+                targetGroup.assignedContactsTargetGroupBrevoId,
+                limit,
+                offset,
+                targetGroup.scope,
+            );
             return new PaginatedBrevoContacts(contacts, count, { offset, limit });
         }
 

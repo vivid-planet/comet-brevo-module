@@ -3,7 +3,7 @@ import { ArgsType, Field, ID } from "@nestjs/graphql";
 import { IsBoolean, IsOptional, IsString } from "class-validator";
 
 @ArgsType()
-export class AssignedBrevoContactsArgs extends OffsetBasedPaginationArgs {
+export class ManuallyAssignedBrevoContactsArgs extends OffsetBasedPaginationArgs {
     @Field(() => ID)
     @IsString()
     targetGroupId: string;
