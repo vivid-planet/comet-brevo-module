@@ -39,6 +39,6 @@ export class IsValidRedirectURLConstraint implements ValidatorConstraintInterfac
     }
 
     defaultMessage(): string {
-        return `Scope does not exist`;
+        return `URL is not supported`;
     }
 }
