@@ -114,6 +114,23 @@ export class BrevoApiContactsService {
         return [data.body.contacts, data.body.count];
     }
 
+    public async findContacts(limit: number, offset: number, scope: EmailCampaignScopeInterface): Promise<BrevoContactInterface[]> {
+        const data = await this.getContactsApi(scope).getContacts(limit, offset);
+
+        return data.body.contacts;
+    }
+
+    public async deleteContacts(contacts: BrevoContactInterface[], scope: EmailCampaignScopeInterface): Promise<boolean> {
+        for (const contact of contacts) {
+            const idAsString = contact.id.toString();
+            const response = await this.getContactsApi(scope).deleteContact(idAsString);
+            if (response.response.statusCode !== 204) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public async blacklistMultipleContacts(emails: string[], scope: EmailCampaignScopeInterface): Promise<void> {
         const blacklistedContacts = emails.map((email) => ({ email, emailBlacklisted: true }));
 
