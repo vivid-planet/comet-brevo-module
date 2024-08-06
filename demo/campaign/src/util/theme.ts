@@ -1,5 +1,4 @@
-const mailWidth = 600;
-const contentSpacing = 20;
+const contentWidth = 600;
 
 export const theme = {
     fontFamily: "Roboto, Helvetica, Arial, sans-serif",
@@ -12,11 +11,10 @@ export const theme = {
         },
     },
     mailSize: {
-        mailWidth,
-        contentSpacing: contentSpacing,
-        contentWidth: mailWidth - contentSpacing * 2,
+        contentWidth,
+        contentSpacing: 20,
         breakpoints: {
-            desktop: mailWidth,
+            desktop: contentWidth,
         },
     },
 };

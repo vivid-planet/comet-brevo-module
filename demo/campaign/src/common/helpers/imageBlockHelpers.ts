@@ -9,7 +9,7 @@ export const getDamAllowedImageWidth = (minimumWidth: number, contentWidth): num
 
     validSizes.forEach((validWidth) => {
         if (minimumWidth === contentWidth) {
-            width = 1020;
+            width = contentWidth * 2;
         } else if (!width && validWidth >= minimumWidth * 2) {
             width = validWidth;
         }

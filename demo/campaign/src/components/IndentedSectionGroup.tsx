@@ -10,7 +10,7 @@ export interface IndentedSectionGroupProps extends React.ComponentProps<typeof M
 
 export const indentedSectionGroupStyles = (
     <MjmlStyle>{css`
-        @media (max-width: ${theme.mailSize.mailWidth - 1}px) {
+        @media (max-width: ${theme.mailSize.contentWidth - 1}px) {
             .indented-section__group {
                 width: 100% !important;
                 max-width: ${theme.mailSize.contentWidth};

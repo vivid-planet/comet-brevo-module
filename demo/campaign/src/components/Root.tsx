@@ -40,7 +40,7 @@ export const Root: React.FC<Props> = ({ children, title }) => {
                 {commonImageBlockStyles}
                 <MjmlConditionalComment condition="if mso">{outlookFontFixStyleString}</MjmlConditionalComment>
             </MjmlHead>
-            <MjmlBody width={theme.mailSize.mailWidth}>{children}</MjmlBody>
+            <MjmlBody width={theme.mailSize.contentWidth}>{children}</MjmlBody>
         </Mjml>
     );
 };
