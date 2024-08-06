@@ -1,10 +1,11 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { registerDecorator, ValidationOptions, ValidatorConstraint, ValidatorConstraintInterface } from "class-validator";
+import { registerDecorator, ValidationArguments, ValidationOptions, ValidatorConstraint, ValidatorConstraintInterface } from "class-validator";
+import { EmailCampaignScopeInterface } from "src/types";
 
 import { BrevoModuleConfig } from "../../config/brevo-module.config";
 import { BREVO_MODULE_CONFIG } from "../../config/brevo-module.constants";
 
-export const IsValidRedirectURL = (validationOptions?: ValidationOptions) => {
+export const IsValidRedirectURL = (scope: EmailCampaignScopeInterface, validationOptions?: ValidationOptions) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return (object: Record<string, any>, propertyName: string): void => {
         registerDecorator({
@@ -12,7 +13,7 @@ export const IsValidRedirectURL = (validationOptions?: ValidationOptions) => {
             propertyName,
             options: validationOptions,
             validator: IsValidRedirectURLConstraint,
-            constraints: [],
+            constraints: [scope],
         });
     };
 };
@@ -22,10 +23,18 @@ export const IsValidRedirectURL = (validationOptions?: ValidationOptions) => {
 export class IsValidRedirectURLConstraint implements ValidatorConstraintInterface {
     constructor(@Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig) {}
 
-    async validate(urlToValidate: string): Promise<boolean> {
-        if (urlToValidate?.startsWith(this.config.brevo.allowedRedirectUrl)) {
+    async validate(urlToValidate: string, args: ValidationArguments): Promise<boolean> {
+        const [scope] = args.constraints;
+        const configForScope = this.config.brevo.resolveConfig(scope);
+
+        if (!configForScope) {
+            throw Error("Scope does not exist");
+        }
+
+        if (urlToValidate?.startsWith(configForScope.allowedRedirectUrl)) {
             return true;
         }
+
         return false;
     }
 

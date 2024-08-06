@@ -145,18 +145,19 @@ export class AppModule {
                                     apiKey: config.brevo.apiKey,
                                     doubleOptInTemplateId: config.brevo.doubleOptInTemplateId,
                                     sender: { name: config.brevo.sender.name, email: config.brevo.sender.email },
+                                    allowedRedirectUrl: config.brevo.allowedRedirectUrl,
                                 };
                             } else {
                                 return {
                                     apiKey: config.brevo.apiKey,
                                     doubleOptInTemplateId: config.brevo.doubleOptInTemplateId,
                                     sender: { name: config.brevo.sender.name, email: config.brevo.sender.email },
+                                    allowedRedirectUrl: config.brevo.allowedRedirectUrl,
                                 };
                             }
                         },
                         BrevoContactAttributes,
                         BrevoContactFilterAttributes,
-                        allowedRedirectUrl: config.brevo.allowedRedirectUrl,
                     },
                     ecgRtrList: {
                         apiKey: config.ecgRtrList.apiKey,

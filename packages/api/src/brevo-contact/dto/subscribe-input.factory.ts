@@ -27,7 +27,7 @@ export class SubscribeInputFactory {
 
             @Field()
             @IsUrl({ require_tld: process.env.NODE_ENV === "production" })
-            @IsValidRedirectURL()
+            @IsValidRedirectURL(Scope)
             redirectionUrl: string;
         }
 
