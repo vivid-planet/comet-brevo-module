@@ -40,7 +40,7 @@ export interface EditTargetGroupFinalFormValues {
 }
 
 interface FormProps {
-    id?: string;
+    id: string;
     scope: ContentScopeInterface;
     additionalFormFields?: React.ReactNode;
     nodeFragment?: { name: string; fragment: DocumentNode };
@@ -62,7 +62,7 @@ export function TargetGroupForm({ id, scope, additionalFormFields, input2State, 
 
     const { data, error, loading, refetch } = useQuery<GQLTargetGroupFormQuery, GQLTargetGroupFormQueryVariables>(
         targetGroupFormQuery(targetGroupFormFragment),
-        id ? { variables: { id } } : { skip: true },
+        { variables: { id } },
     );
 
     const initialValues = React.useMemo<Partial<EditTargetGroupFinalFormValues>>(() => {
@@ -99,9 +99,6 @@ export function TargetGroupForm({ id, scope, additionalFormFields, input2State, 
             ...state,
         };
 
-        if (!id) {
-            throw new Error("Missing id in edit mode");
-        }
         await client.mutate<GQLUpdateTargetGroupMutation, GQLUpdateTargetGroupMutationVariables>({
             mutation: updateTargetGroupMutation(targetGroupFormFragment),
             variables: { id, input: output, lastUpdatedAt: data?.targetGroup?.updatedAt },
@@ -155,21 +152,18 @@ export function TargetGroupForm({ id, scope, additionalFormFields, input2State, 
                                 {additionalFormFields}
                             </FieldSet>
                         )}
-                        {id && (
-                            <FieldSet
-                                title={
-                                    <FormattedMessage id="cometBrevoModule.targetGroup.manuallyAddContacts" defaultMessage="Manually add contacts" />
-                                }
-                                initiallyExpanded
-                                disablePadding
-                            >
-                                <AddContactsGridSelect
-                                    assignedContactsTargetGroupBrevoId={data?.targetGroup.assignedContactsTargetGroupBrevoId ?? undefined}
-                                    id={id}
-                                    scope={scope}
-                                />
-                            </FieldSet>
-                        )}
+
+                        <FieldSet
+                            title={<FormattedMessage id="cometBrevoModule.targetGroup.manuallyAddContacts" defaultMessage="Manually add contacts" />}
+                            initiallyExpanded
+                            disablePadding
+                        >
+                            <AddContactsGridSelect
+                                assignedContactsTargetGroupBrevoId={data?.targetGroup.assignedContactsTargetGroupBrevoId ?? undefined}
+                                id={id}
+                                scope={scope}
+                            />
+                        </FieldSet>
                     </MainContent>
                 </EditPageLayout>
             )}
