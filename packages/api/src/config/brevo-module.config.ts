@@ -21,7 +21,6 @@ export interface BrevoModuleConfig {
     ecgRtrList: {
         apiKey: string;
     };
-
     emailCampaigns: {
         Scope: Type<EmailCampaignScopeInterface>;
         EmailCampaignContentBlock: Block;

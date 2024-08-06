@@ -1,6 +1,6 @@
 import { Block, BlockDataInterface, RootBlock } from "@comet/blocks-api";
 import { DocumentInterface, RootBlockDataScalar, RootBlockType } from "@comet/cms-api";
-import { Embedded, Entity, ManyToOne, OptionalProps, PrimaryKey, Property, Ref } from "@mikro-orm/core";
+import { Embedded, Entity, Enum, ManyToOne, OptionalProps, PrimaryKey, Property, Ref } from "@mikro-orm/core";
 import { Type } from "@nestjs/common";
 import { Field, ID, Int, ObjectType } from "@nestjs/graphql";
 import { v4 } from "uuid";
@@ -39,7 +39,8 @@ export class EmailCampaignEntityFactory {
             implements: () => [DocumentInterface],
         })
         class EmailCampaign implements EmailCampaignInterface, DocumentInterface {
-            [OptionalProps]?: "createdAt" | "updatedAt" | "sendingState";
+            [OptionalProps]?: "createdAt" | "updatedAt";
+
             @PrimaryKey({ columnType: "uuid" })
             @Field(() => ID)
             id: string = v4();
@@ -69,7 +70,7 @@ export class EmailCampaignEntityFactory {
             @Field(() => Int, { nullable: true })
             brevoId?: number;
 
-            @Field(() => SendingState)
+            @Enum(() => SendingState)
             sendingState: SendingState;
 
             @Property({ columnType: "timestamp with time zone", nullable: true })

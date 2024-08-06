@@ -1,9 +1,9 @@
 import { BlocksTransformerService, filtersToMikroOrmQuery, searchToMikroOrmQuery } from "@comet/cms-api";
+import { UpdateCampaignStatus } from "@getbrevo/brevo";
 import { EntityManager, EntityRepository, ObjectQuery, wrap } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { HttpService } from "@nestjs/axios";
 import { Inject, Injectable } from "@nestjs/common";
-import { UpdateCampaignStatus } from "@sendinblue/client";
 import { EmailCampaignScopeInterface } from "src/types";
 
 import { BrevoApiCampaignsService } from "../brevo-api/brevo-api-campaigns.service";
@@ -13,6 +13,7 @@ import { BrevoModuleConfig } from "../config/brevo-module.config";
 import { BREVO_MODULE_CONFIG } from "../config/brevo-module.constants";
 import { EmailCampaignFilter } from "./dto/email-campaign.filter";
 import { EmailCampaignInterface } from "./entities/email-campaign-entity.factory";
+import { SendingState } from "./sending-state.enum";
 
 @Injectable()
 export class EmailCampaignsService {
@@ -91,7 +92,11 @@ export class EmailCampaignsService {
         campaigns: EmailCampaignInterface[],
         scope: EmailCampaignScopeInterface,
     ): Promise<EmailCampaignInterface[]> {
-        const brevoIds = campaigns.map((campaign) => campaign.brevoId).filter((campaign) => campaign) as number[];
+        const potentiallySentCampaigns = campaigns.filter(
+            (campaign) => campaign.sendingState === SendingState.SCHEDULED && campaign.scheduledAt && campaign.scheduledAt < new Date(),
+        );
+
+        const brevoIds = potentiallySentCampaigns.map((campaign) => campaign?.brevoId).filter((campaign) => campaign) as number[];
 
         if (brevoIds.length > 0) {
             const brevoCampaigns = await this.brevoApiCampaignService.loadBrevoCampaignsByIds(brevoIds, scope);
@@ -101,9 +106,10 @@ export class EmailCampaignsService {
 
                 const campaign = campaigns.find((campaign) => campaign.brevoId === brevoCampaign.id);
                 if (campaign) {
-                    campaign.sendingState = sendingState;
+                    wrap(campaign).assign({ sendingState });
                 }
             }
+            this.entityManager.flush();
         }
 
         return campaigns;
@@ -125,7 +131,7 @@ export class EmailCampaignsService {
                     currentOffset,
                     campaign.scope,
                 );
-                const emails = contacts.map((contact) => contact.email);
+                const emails = contacts.map((contact) => contact.email).filter((email): email is string => email !== undefined);
                 const containedEmails = await this.ecgRtrListService.getContainedEcgRtrListEmails(emails);
 
                 if (containedEmails.length > 0) {

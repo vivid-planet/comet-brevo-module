@@ -1,5 +1,6 @@
+import * as Brevo from "@getbrevo/brevo";
+import { Cache, CACHE_MANAGER } from "@nestjs/cache-manager";
 import { Inject, Injectable } from "@nestjs/common";
-import * as SibApiV3Sdk from "@sendinblue/client";
 import { EmailCampaignScopeInterface } from "src/types";
 
 import { BrevoModuleConfig } from "../config/brevo-module.config";
@@ -11,11 +12,11 @@ import { BrevoApiCampaignStatistics } from "./dto/brevo-api-campaign-statistics"
 
 @Injectable()
 export class BrevoApiCampaignsService {
-    private readonly campaignsApis = new Map<string, SibApiV3Sdk.EmailCampaignsApi>();
+    private readonly campaignsApis = new Map<string, Brevo.EmailCampaignsApi>();
 
-    constructor(@Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig) {}
+    constructor(@Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig, @Inject(CACHE_MANAGER) private cacheManager: Cache) {}
 
-    private getCampaignsApi(scope: EmailCampaignScopeInterface): SibApiV3Sdk.EmailCampaignsApi {
+    private getCampaignsApi(scope: EmailCampaignScopeInterface): Brevo.EmailCampaignsApi {
         const existingCampaignsApiForScope = this.campaignsApis.get(JSON.stringify(scope));
 
         if (existingCampaignsApiForScope) {
@@ -23,8 +24,8 @@ export class BrevoApiCampaignsService {
         }
 
         const { apiKey } = this.config.brevo.resolveConfig(scope);
-        const campaignsApi = new SibApiV3Sdk.EmailCampaignsApi();
-        campaignsApi.setApiKey(SibApiV3Sdk.EmailCampaignsApiApiKeys.apiKey, apiKey);
+        const campaignsApi = new Brevo.EmailCampaignsApi();
+        campaignsApi.setApiKey(Brevo.EmailCampaignsApiApiKeys.apiKey, apiKey);
 
         this.campaignsApis.set(JSON.stringify(scope), campaignsApi);
 
@@ -32,9 +33,12 @@ export class BrevoApiCampaignsService {
     }
 
     public getSendingInformationFromBrevoCampaign(campaign: BrevoApiCampaign): SendingState {
-        if (campaign.status === "sent") {
+        if (campaign.status === Brevo.GetEmailCampaignsCampaignsInner.StatusEnum.Sent) {
             return SendingState.SENT;
-        } else if (campaign.status === "queued" || campaign.status === "in_process") {
+        } else if (
+            campaign.status === Brevo.GetEmailCampaignsCampaignsInner.StatusEnum.Queued ||
+            campaign.status === Brevo.GetEmailCampaignsCampaignsInner.StatusEnum.InProcess
+        ) {
             return SendingState.SCHEDULED;
         }
 
@@ -102,15 +106,12 @@ export class BrevoApiCampaignsService {
         return result.response.statusCode === 204;
     }
 
-    public async updateBrevoCampaignStatus(
-        campaign: EmailCampaignInterface,
-        updatedStatus: SibApiV3Sdk.UpdateCampaignStatus.StatusEnum,
-    ): Promise<boolean> {
+    public async updateBrevoCampaignStatus(campaign: EmailCampaignInterface, updatedStatus: Brevo.UpdateCampaignStatus.StatusEnum): Promise<boolean> {
         if (!campaign.brevoId) {
             throw new Error("Campaign has no brevoId");
         }
 
-        const status = new SibApiV3Sdk.UpdateCampaignStatus();
+        const status = new Brevo.UpdateCampaignStatus();
         status.status = updatedStatus;
         const result = await this.getCampaignsApi(campaign.scope).updateCampaignStatus(campaign.brevoId, status);
         return result.response.statusCode === 204;
@@ -126,22 +127,37 @@ export class BrevoApiCampaignsService {
     }
 
     public async loadBrevoCampaignsByIds(ids: number[], scope: EmailCampaignScopeInterface): Promise<BrevoApiCampaign[]> {
-        const campaigns = [];
-        for await (const campaign of await this.getCampaignsResponse(ids, scope)) {
-            campaigns.push(campaign);
+        const brevoCampaigns = [];
+        const nonCachedIds = [];
+
+        for (const brevoId of ids) {
+            const cachedCampaign: BrevoApiCampaign | undefined = await this.cacheManager.get(`brevo-campaign-${brevoId}`);
+            if (cachedCampaign) {
+                brevoCampaigns.push(cachedCampaign);
+            } else {
+                nonCachedIds.push(brevoId);
+            }
         }
 
-        return campaigns;
+        for await (const campaign of this.getCampaignsResponse(nonCachedIds, scope)) {
+            brevoCampaigns.push(campaign);
+            await this.cacheManager.set(`brevo-campaign-${campaign.id}`, campaign);
+        }
+
+        return brevoCampaigns;
     }
 
     public async loadBrevoCampaignById(campaign: EmailCampaignInterface): Promise<BrevoApiCampaign> {
-        if (!campaign.brevoId) {
+        const brevoId = campaign.brevoId;
+        if (brevoId == undefined) {
             throw new Error("Campaign has no brevoId");
         }
-        const response = await this.getCampaignsApi(campaign.scope).getEmailCampaign(campaign.brevoId);
 
-        // wrong type in brevo library -> needs to be cast to unknown first
-        return response.body as unknown as BrevoApiCampaign;
+        return this.cacheManager.wrap<BrevoApiCampaign>(`brevo-campaign-${campaign.id}`, async () => {
+            const response = await this.getCampaignsApi(campaign.scope).getEmailCampaign(brevoId);
+
+            return response.body;
+        });
     }
 
     public async loadBrevoCampaignStatisticsById(campaign: EmailCampaignInterface): Promise<BrevoApiCampaignStatistics> {
@@ -149,9 +165,9 @@ export class BrevoApiCampaignsService {
             throw new Error("Campaign has no brevoId");
         }
 
-        const brevoCampaign = await this.getCampaignsApi(campaign.scope).getEmailCampaign(campaign.brevoId);
+        const brevoCampaign = await this.loadBrevoCampaignById(campaign);
 
-        return brevoCampaign.body.statistics.campaignStats[0];
+        return brevoCampaign.statistics.globalStats;
     }
 
     private async *getCampaignsResponse(

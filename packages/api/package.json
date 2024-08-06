@@ -25,8 +25,10 @@
         "test:watch": "jest --watch"
     },
     "dependencies": {
+        "@getbrevo/brevo": "^2.2.0",
         "@nestjs/axios": "^1.0.0",
-        "@sendinblue/client": "^3.3.1",
+        "@nestjs/cache-manager": "^2.2.2",
+        "cache-manager": "^5.7.3",
         "node-fetch": "^2.6.1"
     },
     "devDependencies": {
