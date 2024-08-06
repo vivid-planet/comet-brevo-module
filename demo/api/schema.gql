@@ -435,21 +435,21 @@ type EmailCampaign implements DocumentInterface {
   title: String!
   subject: String!
   brevoId: Int
-  sendingState: SendingState!
   scheduledAt: DateTime
   targetGroup: TargetGroup
   content: EmailCampaignContentBlockData!
   scope: EmailCampaignContentScope!
+  sendingState: SendingState!
 }
+
+"""EmailCampaignContent root block data"""
+scalar EmailCampaignContentBlockData @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
 
 enum SendingState {
   DRAFT
   SENT
   SCHEDULED
 }
-
-"""EmailCampaignContent root block data"""
-scalar EmailCampaignContentBlockData @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
 
 type PaginatedEmailCampaigns {
   nodes: [EmailCampaign!]!

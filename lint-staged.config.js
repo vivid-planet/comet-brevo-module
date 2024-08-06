@@ -1,3 +1,3 @@
 module.exports = {
-    "./*{js,json,md,yml}": "pnpm exec prettier --check",
+    "./!(demo|packages)/**/*.{js,json,md,yml,yaml}": () => "pnpm lint:root",
 };
