@@ -7,7 +7,7 @@ import { TargetGroupsService } from "../target-group/target-groups.service";
 
 @Injectable()
 @Console()
-export class DeleteUnsubscribedContactsConsole {
+export class DeleteUnsubscribedBrevoContactsConsole {
     constructor(
         private readonly brevoApiContactsService: BrevoApiContactsService,
         private readonly targetGroupsService: TargetGroupsService,
@@ -15,7 +15,7 @@ export class DeleteUnsubscribedContactsConsole {
     ) {}
 
     @Command({
-        command: "delete-unsubscribed-contacts",
+        command: "delete-unsubscribed-brevo-contacts",
         description: "deletes unsubscribed contacts",
     })
     @CreateRequestContext()

@@ -5,7 +5,7 @@ import { BrevoApiModule } from "../brevo-api/brevo-api.module";
 import { ConfigModule } from "../config/config.module";
 import { TargetGroupInterface } from "../target-group/entity/target-group-entity.factory";
 import { BrevoContactAttributesInterface, EmailCampaignScopeInterface } from "../types";
-import { DeleteUnsubscribedContactsConsole } from "./brevo-contact.console";
+import { DeleteUnsubscribedBrevoContactsConsole } from "./brevo-contact.console";
 import { createBrevoContactResolver } from "./brevo-contact.resolver";
 import { BrevoContactsService } from "./brevo-contacts.service";
 import { BrevoContactFactory } from "./dto/brevo-contact.factory";
@@ -42,7 +42,7 @@ export class BrevoContactModule {
                 BrevoContactResolver,
                 EcgRtrListService,
                 IsValidRedirectURLConstraint,
-                DeleteUnsubscribedContactsConsole,
+                DeleteUnsubscribedBrevoContactsConsole,
             ],
             exports: [BrevoContactsService],
         };
