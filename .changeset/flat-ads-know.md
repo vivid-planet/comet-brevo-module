@@ -2,7 +2,7 @@
 "@comet/brevo-api": major
 ---
 
-`allowedRedirectUrl` now must be set in the brevo config and can be adjusted depending on the scope.
+The `allowedRedirectUrl` must now be configured within the resolveConfig for each specific scope, instead of being set once for all scopes in the brevo config.
 
 ```diff
    BrevoModule.register({
