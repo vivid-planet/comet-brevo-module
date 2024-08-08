@@ -10,7 +10,6 @@ Add and export `BrevoTransactionalMailsService` that can be used in the applicat
 constructor(private readonly brevoTransactionalMailsService: BrevoTransactionalMailsService) {}
 
 async send(email: string, htmlContent: string, subject: string): Promise<void> {
-    const { text } = data;
     await this.brevoTransactionalMailsService.send({ to: [{ email }], htmlContent, subject }, data.scope);
 }
 ```
