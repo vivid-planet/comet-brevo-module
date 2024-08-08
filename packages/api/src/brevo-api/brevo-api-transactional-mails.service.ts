@@ -14,19 +14,19 @@ export class BrevoTransactionalMailsService {
     constructor(@Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig) {}
 
     private getTransactionalEmailsApi(scope: EmailCampaignScopeInterface): Brevo.TransactionalEmailsApi {
-        const existingContactsApiForScope = this.transactionalEmailsApi.get(JSON.stringify(scope));
+        const existingTransactionalEmailsApiForScope = this.transactionalEmailsApi.get(JSON.stringify(scope));
 
-        if (existingContactsApiForScope) {
-            return existingContactsApiForScope;
+        if (existingTransactionalEmailsApiForScope) {
+            return existingTransactionalEmailsApiForScope;
         }
 
         const { apiKey } = this.config.brevo.resolveConfig(scope);
-        const contactsApi = new Brevo.TransactionalEmailsApi();
-        contactsApi.setApiKey(Brevo.TransactionalEmailsApiApiKeys.apiKey, apiKey);
+        const transactionalEmailApi = new Brevo.TransactionalEmailsApi();
+        transactionalEmailApi.setApiKey(Brevo.TransactionalEmailsApiApiKeys.apiKey, apiKey);
 
-        this.transactionalEmailsApi.set(JSON.stringify(scope), contactsApi);
+        this.transactionalEmailsApi.set(JSON.stringify(scope), transactionalEmailApi);
 
-        return contactsApi;
+        return transactionalEmailApi;
     }
 
     async send(options: Omit<Brevo.SendSmtpEmail, "sender">, scope: EmailCampaignScopeInterface): SendTransacEmailResponse {
