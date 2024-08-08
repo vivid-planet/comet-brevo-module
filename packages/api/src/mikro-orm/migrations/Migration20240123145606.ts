@@ -1,7 +1,6 @@
 import { Migration } from "@mikro-orm/migrations";
 
 export class Migration20240123145606 extends Migration {
-    // TODO: move to package
     async up(): Promise<void> {
         this.addSql('alter table "EmailCampaign" add column "targetGroup" uuid null');
         this.addSql('alter table "EmailCampaign" drop column "contactList";');
