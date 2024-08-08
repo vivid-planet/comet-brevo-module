@@ -10,8 +10,7 @@ export class BrevoTransactionalMailsController {
 
     @DisableGlobalGuard()
     @Post(`/send`)
-    async send(@Body() data: BrevoTransactionalMailsBody): Promise<void> {
-        const { text } = data;
-        await this.brevoTransactionalMailsService.send({ to: [{ email: data.to }], textContent: text, subject: data.subject }, data.scope);
+    async send(@Body() { text, subject, to, scope }: BrevoTransactionalMailsBody): Promise<void> {
+        await this.brevoTransactionalMailsService.send({ to: [{ email: to }], textContent: text, subject }, scope);
     }
 }
