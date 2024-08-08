@@ -38,7 +38,7 @@ export class BrevoModule {
                 }),
                 ConfigModule.forRoot(config),
             ],
-            exports: [TargetGroupModule, BrevoContactModule],
+            exports: [TargetGroupModule, BrevoContactModule, BrevoApiModule],
         };
     }
 }
