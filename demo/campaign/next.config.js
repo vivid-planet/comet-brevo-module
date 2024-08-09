@@ -54,6 +54,9 @@ const nextConfig = {
     compiler: {
         styledComponents: true,
     },
+    env: {
+        DAM_ALLOWED_IMAGE_SIZES: cometConfig.dam.allowedImageSizes.join(","),
+    },
     async rewrites() {
         return [
             {

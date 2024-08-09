@@ -50,6 +50,9 @@ const nextConfig = {
 
         return config;
     },
+    env: {
+        DAM_ALLOWED_IMAGE_SIZES: cometConfig.dam.allowedImageSizes.join(","),
+    },
     i18n,
     typescript: {
         ignoreBuildErrors: process.env.NODE_ENV === "production",
