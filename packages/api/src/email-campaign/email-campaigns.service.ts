@@ -47,7 +47,7 @@ export class EmailCampaignsService {
 
         const { data: htmlContent, status } = await this.httpService.axiosRef.post(
             this.config.emailCampaigns.frontend.url,
-            { title: campaign.title, content, scope: campaign.scope },
+            { id: campaign.id, title: campaign.title, content, scope: campaign.scope },
             {
                 headers: { "Content-Type": "application/json" },
                 auth: {
