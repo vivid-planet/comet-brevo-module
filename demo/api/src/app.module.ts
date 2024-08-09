@@ -32,7 +32,7 @@ import { AuthModule } from "./auth/auth.module";
 import { AuthLocalModule } from "./auth/auth-local.module";
 import { BrevoContactSubscribeModule } from "./brevo-contact/brevo-contact-subscribe.module";
 import { BrevoContactAttributes, BrevoContactFilterAttributes } from "./brevo-contact/dto/brevo-contact-attributes";
-import { BrevoTransactionalMailsController } from "./brevo-transactional-mails/brevo-transactional-mails.controller";
+import { BrevoTransactionalMailsModule } from "./brevo-transactional-mails/brevo-transactional-mails.module";
 import { Config } from "./config/config";
 import { ConfigModule } from "./config/config.module";
 import { DamFile } from "./dam/entities/dam-file.entity";
@@ -176,7 +176,7 @@ export class AppModule {
                     },
                 }),
                 BrevoContactSubscribeModule,
-                BrevoTransactionalMailsController,
+                BrevoTransactionalMailsModule,
             ],
         };
     }
