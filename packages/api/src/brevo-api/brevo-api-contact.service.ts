@@ -66,7 +66,7 @@ export class BrevoApiContactsService {
     ): Promise<BrevoContactInterface> {
         const idAsString = id.toString(); // brevo expects a string, because it can be an email or the id, so we have to transform the id to string
         await this.getContactsApi(scope).updateContact(idAsString, { emailBlacklisted: blocked, attributes, listIds, unlinkListIds });
-        return this.findContact(id, scope);
+        return this.findContact(id.toString(), scope);
     }
 
     public async updateMultipleContacts(contacts: Brevo.UpdateBatchContactsContactsInner[], scope: EmailCampaignScopeInterface): Promise<boolean> {
@@ -81,8 +81,8 @@ export class BrevoApiContactsService {
         return response.statusCode === 204;
     }
 
-    public async findContact(id: number, scope: EmailCampaignScopeInterface): Promise<BrevoContactInterface> {
-        const idAsString = id.toString(); // brevo expects a string, because it can be an email or the id, so we have to transform the id to string
+    public async findContact(id: string, scope: EmailCampaignScopeInterface): Promise<BrevoContactInterface> {
+        const idAsString = id; // brevo expects a string, because it can be an email or the id
         const { body } = await this.getContactsApi(scope).getContactInfo(idAsString);
 
         return body;

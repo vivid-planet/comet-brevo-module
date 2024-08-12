@@ -129,6 +129,9 @@ export class EnvironmentVariables {
     BREVO_SENDER_EMAIL: string;
 
     @IsString()
+    REDIRECT_URL_FOR_IMPORT: string;
+
+    @IsString()
     ECG_RTR_LIST_API_KEY: string;
 
     @IsString()

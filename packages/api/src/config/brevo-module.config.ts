@@ -14,6 +14,7 @@ export interface BrevoModuleConfig {
                 email: string;
             };
             allowedRedirectUrl: string;
+            redirectUrlForImport: string;
         };
         BrevoContactAttributes?: Type<BrevoContactAttributesInterface>;
         BrevoContactFilterAttributes?: Type<BrevoContactFilterAttributesInterface>;

@@ -1,4 +1,5 @@
 export { BrevoTransactionalMailsService } from "./brevo-api/brevo-api-transactional-mails.service";
+export { BrevoContactImportService } from "./brevo-contact/brevo-contact-import.service";
 export { BrevoContactsService } from "./brevo-contact/brevo-contacts.service";
 export { SubscribeResponse } from "./brevo-contact/dto/subscribe-response.enum";
 export { IsValidRedirectURL } from "./brevo-contact/validator/redirect-url.validator";

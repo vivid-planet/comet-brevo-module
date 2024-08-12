@@ -2,6 +2,9 @@ import { MikroOrmModule } from "@mikro-orm/nestjs";
 import { DynamicModule, Module, Type } from "@nestjs/common";
 
 import { BrevoApiModule } from "../brevo-api/brevo-api.module";
+import { createBrevoContactImportConsole } from "../brevo-contact/brevo-contact-import.console";
+import { createBrevoContactImportController } from "../brevo-contact/brevo-contact-import.controller";
+import { BrevoContactImportService } from "../brevo-contact/brevo-contact-import.service";
 import { ConfigModule } from "../config/config.module";
 import { TargetGroupInterface } from "../target-group/entity/target-group-entity.factory";
 import { BrevoContactAttributesInterface, EmailCampaignScopeInterface } from "../types";
@@ -34,17 +37,23 @@ export class BrevoContactModule {
             BrevoContactUpdateInput,
         });
 
+        const BrevoContactImportConsole = createBrevoContactImportConsole({ Scope });
+        const BrevoContactImportController = createBrevoContactImportController({ Scope });
+
         return {
             module: BrevoContactModule,
             imports: [BrevoApiModule, ConfigModule, MikroOrmModule.forFeature([TargetGroup])],
             providers: [
+                BrevoContactImportService,
                 BrevoContactsService,
                 BrevoContactResolver,
                 EcgRtrListService,
                 IsValidRedirectURLConstraint,
                 DeleteUnsubscribedBrevoContactsConsole,
+                BrevoContactImportConsole,
             ],
-            exports: [BrevoContactsService],
+            controllers: [BrevoContactImportController],
+            exports: [BrevoContactsService, BrevoContactImportService, BrevoContactImportService],
         };
     }
 }

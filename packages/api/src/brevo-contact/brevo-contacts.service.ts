@@ -25,19 +25,28 @@ export class BrevoContactsService {
         redirectionUrl,
         scope,
         templateId,
+        listIds,
     }: {
         email: string;
         attributes?: BrevoContactAttributesInterface;
         redirectionUrl: string;
         scope: EmailCampaignScopeInterface;
         templateId: number;
+        listIds?: number[];
     }): Promise<boolean> {
         const mainTargetGroupForScope = await this.targetGroupService.createIfNotExistMainTargetGroupForScope(scope);
+
         const targetGroupIds = await this.getTargetGroupIdsForNewContact({ scope, contactAttributes: attributes });
+
+        const brevoIds = [mainTargetGroupForScope.brevoId, ...targetGroupIds];
+
+        if (listIds) {
+            brevoIds.push(...listIds);
+        }
 
         const created = await this.brevoContactsApiService.createDoubleOptInBrevoContact(
             { email, redirectionUrl, attributes },
-            [mainTargetGroupForScope.brevoId, ...targetGroupIds],
+            brevoIds,
             templateId,
             scope,
         );
