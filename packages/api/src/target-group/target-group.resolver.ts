@@ -154,7 +154,7 @@ export function createTargetGroupsResolver({
         ): Promise<boolean> {
             const targetGroup = await this.repository.findOneOrFail(id);
             const assignedContactsTargetGroupBrevoId = targetGroup.assignedContactsTargetGroupBrevoId;
-            const brevoContact = await this.brevoApiContactsService.findContact(input.brevoContactId, targetGroup.scope);
+            const brevoContact = await this.brevoApiContactsService.findContact(input.brevoContactId.toString(), targetGroup.scope);
 
             if (!assignedContactsTargetGroupBrevoId) {
                 throw new Error("No assigned contacts target group found");

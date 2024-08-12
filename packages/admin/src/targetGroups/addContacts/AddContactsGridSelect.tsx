@@ -1,8 +1,10 @@
 import { useMutation, useQuery } from "@apollo/client";
 import {
+    Alert,
     CancelButton,
     Field,
     FinalForm,
+    SplitButton,
     Toolbar,
     ToolbarActions,
     ToolbarFillSpace,
@@ -10,17 +12,21 @@ import {
     ToolbarTitleItem,
     useBufferedRowCount,
     useDataGridRemote,
+    useErrorDialog,
     usePersistentColumnState,
+    useSnackbarApi,
 } from "@comet/admin";
-import { Add, Close, Remove, Save } from "@comet/admin-icons";
+import { Add, Close, Remove, Save, Upload } from "@comet/admin-icons";
 import { ContentScopeInterface } from "@comet/cms-admin";
-import { Button, Dialog, DialogActions, DialogTitle, IconButton, useTheme } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogTitle, IconButton, Snackbar, Typography, useTheme } from "@mui/material";
 import { Box } from "@mui/system";
 import { DataGrid, GridColDef, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import * as React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { MemoryRouter } from "react-router";
 
+import { CsvUploadField } from "../../common/form/CsvUploadField";
+import { upload } from "../../common/upload";
 import { targetGroupFormNamedOperations } from "../TargetGroupForm";
 import {
     addBrevoContactsToTargetGroupMutation,
@@ -41,7 +47,7 @@ import {
     namedOperations,
 } from "./AddContactsGridSelect.gql.generated";
 
-const AssignedContactsGridToolbar = ({ onOpenDialog }: { onOpenDialog: () => void }) => {
+const AssignedContactsGridToolbar = ({ onOpenDialog, onOpenCsvImportDialog }: { onOpenDialog: () => void; onOpenCsvImportDialog: () => void }) => {
     const intl = useIntl();
 
     return (
@@ -59,9 +65,14 @@ const AssignedContactsGridToolbar = ({ onOpenDialog }: { onOpenDialog: () => voi
             </ToolbarItem>
             <ToolbarFillSpace />
             <ToolbarActions>
-                <Button startIcon={<Add />} variant="contained" color="primary" onClick={onOpenDialog}>
-                    <FormattedMessage id="cometBrevoModule.targetGroup.assignedContacts.addContact" defaultMessage="Add contacts" />
-                </Button>
+                <SplitButton>
+                    <Button startIcon={<Add />} variant="contained" color="primary" onClick={onOpenDialog}>
+                        <FormattedMessage id="cometBrevoModule.targetGroup.assignedContacts.addContact" defaultMessage="Add contacts" />
+                    </Button>
+                    <Button startIcon={<Upload />} variant="contained" color="primary" onClick={onOpenCsvImportDialog}>
+                        <FormattedMessage id="cometBrevoModule.targetGroup.assignedContacts.importCsvContacts" defaultMessage="Import csv contacts" />
+                    </Button>
+                </SplitButton>
             </ToolbarActions>
         </Toolbar>
     );
@@ -87,7 +98,8 @@ const AssignableContactsGridToolbar = () => {
     );
 };
 
-interface FormProps {
+interface FormData {
+    csvUpload: File;
     brevoContactIds: Array<number>;
 }
 
@@ -98,7 +110,7 @@ const useSubmitMutation = (id: string) => {
             refetchQueries: [namedOperations.Query.ManuallyAssignedBrevoContactsGrid, targetGroupFormNamedOperations.Query.TargetGroupForm],
         },
     );
-    return ({ brevoContactIds }: FormProps) => {
+    return ({ brevoContactIds }: FormData) => {
         return addContactsToTargetGroup({
             variables: {
                 id,
@@ -118,12 +130,56 @@ interface AddContactsGridSelectProps {
 
 export function AddContactsGridSelect({ id, scope, assignedContactsTargetGroupBrevoId }: AddContactsGridSelectProps): React.ReactElement {
     const intl = useIntl();
-    const submit = useSubmitMutation(id);
+    const snackbarApi = useSnackbarApi();
+    const errorDialog = useErrorDialog();
+    const submitMutation = useSubmitMutation(id);
+
+    const submit = async (formData: FormData) => {
+        const response = await upload(
+            formData.csvUpload,
+            scope,
+            assignedContactsTargetGroupBrevoId ? [assignedContactsTargetGroupBrevoId] : undefined,
+        );
+
+        if (response.ok) {
+            setIsCsvImportDialogOpen(false);
+            snackbarApi.showSnackbar(
+                <Snackbar
+                    anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                    key={Math.random()}
+                    autoHideDuration={5000}
+                    onClose={snackbarApi.hideSnackbar}
+                >
+                    <Alert onClose={snackbarApi.hideSnackbar} severity="success">
+                        <FormattedMessage id="goals.importSuccess" defaultMessage="The contacts have been imported successfully" />
+                    </Alert>
+                </Snackbar>,
+            );
+        } else {
+            const errorResponse = await response.json();
+
+            errorDialog?.showError({
+                title: <FormattedMessage id="common.error.serverError" defaultMessage="Server error" />,
+                userMessage: (
+                    <FormattedMessage
+                        id="common.error.defaultMessage"
+                        defaultMessage="A server error occured. Please try again in a while or contact your administrator if the error persists."
+                    />
+                ),
+                error: JSON.stringify(errorResponse),
+            });
+        }
+        if (formData.brevoContactIds.length) {
+            await submitMutation(formData);
+        }
+    };
+
     const theme = useTheme();
     const dataGridAssignedContactsProps = { ...useDataGridRemote(), ...usePersistentColumnState("TargetGroupAssignedBrevoContactsGrid") };
     const dataGridAssignableContactsProps = { ...useDataGridRemote(), ...usePersistentColumnState("TargetGroupAssignableBrevoContactsGrid") };
 
     const [isDialogOpen, setIsDialogOpen] = React.useState<boolean>(false);
+    const [isCsvImportDialogOpen, setIsCsvImportDialogOpen] = React.useState<boolean>(false);
 
     const [removeContacts, { loading: removeLoading }] = useMutation<
         GQLRemoveBrevoContactFromTargetGroupMutation,
@@ -245,11 +301,12 @@ export function AddContactsGridSelect({ id, scope, assignedContactsTargetGroupBr
                 componentsProps={{
                     toolbar: {
                         onOpenDialog: () => setIsDialogOpen(true),
+                        onOpenCsvImportDialog: () => setIsCsvImportDialogOpen(true),
                     },
                 }}
             />
 
-            <FinalForm<FormProps> mode="edit" onSubmit={submit}>
+            <FinalForm<FormData> mode="edit" onSubmit={submit}>
                 {({ handleSubmit, submitting }) => {
                     return (
                         <MemoryRouter>
@@ -290,6 +347,41 @@ export function AddContactsGridSelect({ id, scope, assignedContactsTargetGroupBr
                                         onClick={async () => {
                                             await handleSubmit();
                                             setIsDialogOpen(false);
+                                        }}
+                                        variant="contained"
+                                        color="primary"
+                                    >
+                                        <FormattedMessage id="cometBrevoModule.targetGroup.addBrevoContacts.dialog.save" defaultMessage="Save" />
+                                    </Button>
+                                </DialogActions>
+                            </Dialog>
+                            <Dialog open={isCsvImportDialogOpen} maxWidth="lg" onClose={() => setIsCsvImportDialogOpen(false)}>
+                                <DialogTitle display="flex" flexDirection="row" alignItems="center" justifyContent="space-between">
+                                    <Typography fontWeight={theme.typography.fontWeightMedium}>
+                                        <FormattedMessage id="contacts.importBrevoContactCsv" defaultMessage="Import brevo contacts csv" />
+                                    </Typography>
+                                    <ToolbarFillSpace />
+                                    <IconButton onClick={() => setIsCsvImportDialogOpen(false)}>
+                                        <Close htmlColor={theme.palette.common.white} />
+                                    </IconButton>
+                                </DialogTitle>
+                                <Box>
+                                    <Field
+                                        name="csvUpload"
+                                        fullWidth
+                                        required
+                                        component={CsvUploadField}
+                                        submitting={submitting}
+                                        buttonText={<FormattedMessage id="contacts.selectCsv" defaultMessage="Select CSV" />}
+                                    />
+                                </Box>
+                                <DialogActions>
+                                    <CancelButton onClick={() => setIsCsvImportDialogOpen(false)} />
+                                    <Button
+                                        startIcon={<Save />}
+                                        onClick={async () => {
+                                            await handleSubmit();
+                                            setIsCsvImportDialogOpen(false);
                                         }}
                                         variant="contained"
                                         color="primary"
