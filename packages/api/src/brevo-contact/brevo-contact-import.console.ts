@@ -1,6 +1,6 @@
-import { CreateRequestContext } from "@mikro-orm/core";
+import { CreateRequestContext, MikroORM } from "@mikro-orm/core";
 import { Inject, Injectable, Type } from "@nestjs/common";
-import { validate } from "class-validator";
+import { validateSync } from "class-validator";
 import { InvalidOptionArgumentError } from "commander";
 import * as fs from "fs";
 import { Command, Console } from "nestjs-console";
@@ -12,7 +12,7 @@ import { EmailCampaignScopeInterface } from "../types";
 
 interface CommandOptions {
     path: string;
-    scope: string;
+    scope: Type<EmailCampaignScopeInterface>;
     targetGroupIds: number[];
 }
 
@@ -21,6 +21,7 @@ export function createBrevoContactImportConsole({ Scope }: { Scope: Type<EmailCa
     @Console()
     class BrevoContactImportConsole {
         constructor(
+            private readonly orm: MikroORM,
             @Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig,
             private readonly brevoContactImportService: BrevoContactImportService,
         ) {}
@@ -30,19 +31,29 @@ export function createBrevoContactImportConsole({ Scope }: { Scope: Type<EmailCa
             description: "import brevo contacts as csv",
             options: [
                 {
-                    flags: "-p, --path",
+                    flags: "-p, --path <path>",
                     required: true,
                     description: "path to csv file",
                     fn: (path) => {
                         if (!fs.existsSync(path)) {
                             throw new InvalidOptionArgumentError("Invalid path. File does not exist");
                         }
+                        return path;
                     },
                 },
                 {
-                    flags: "-s, --scope",
+                    flags: "-s, --scope <scope>",
                     required: true,
                     description: "scope for current import file",
+                    fn: (scope) => {
+                        const parsedScope = JSON.parse(scope) as typeof Scope;
+                        const validateErrors = validateSync(parsedScope);
+
+                        if (validateErrors.length) {
+                            throw new InvalidOptionArgumentError("Invalid scope. Scope is not allowed");
+                        }
+                        return parsedScope;
+                    },
                 },
                 {
                     flags: "--targetGroupIds <ids...>",
@@ -68,19 +79,20 @@ export function createBrevoContactImportConsole({ Scope }: { Scope: Type<EmailCa
         })
         @CreateRequestContext()
         async execute(options: CommandOptions): Promise<void> {
-            const scope = JSON.parse(options.scope) as typeof Scope;
-            const validateErrors = await validate(scope);
-            if (validateErrors.length) {
-                throw new InvalidOptionArgumentError("Invalid scope. Scope is not allowed");
-            }
-
-            const redirectUrl = this.config.brevo.resolveConfig(scope).redirectUrlForImport;
+            const redirectUrl = this.config.brevo.resolveConfig(options.scope).redirectUrlForImport;
             const content = fs.readFileSync(options.path);
-            if (!this.validateRedirectUrl(redirectUrl, scope)) {
+            if (!this.validateRedirectUrl(redirectUrl, options.scope)) {
                 throw new InvalidOptionArgumentError("Invalid scope. Scope is not allowed");
             }
 
-            this.brevoContactImportService.importContactFromCsv(content.toString("utf8"), scope, redirectUrl, options.targetGroupIds);
+            const result = await this.brevoContactImportService.importContactFromCsv(
+                content.toString("utf8"),
+                options.scope,
+                redirectUrl,
+                options.targetGroupIds,
+            );
+
+            console.log(result);
         }
 
         async validateRedirectUrl(urlToValidate: string, scope: Type<EmailCampaignScopeInterface>): Promise<boolean> {
