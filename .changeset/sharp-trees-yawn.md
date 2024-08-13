@@ -14,5 +14,5 @@ Added functionality to import Brevo contacts from CSV files.
 To import Brevo contacts from a CSV file, use the following console command:
 
 ```bash
-npm run --prefix api console import-brevo-contacts --path <path-to-csv-file> --scope <scope-json> [--targetGroupIds <ids...>]
+npm run --prefix api console import-brevo-contacts -- -p <path-to-csv-file> -s '<scope-json>' [--targetGroupIds <ids...>]
 
