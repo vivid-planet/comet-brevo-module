@@ -6,7 +6,6 @@ import { FileInterceptor } from "@nestjs/platform-express";
 import { TargetGroupInterface } from "src/target-group/entity/target-group-entity.factory";
 
 import { BrevoContactImportService } from "../brevo-contact/brevo-contact-import.service";
-import { ImporterErrorInterceptor } from "../brevo-contact/contact-importer-error.interceptor";
 import { BrevoModuleConfig } from "../config/brevo-module.config";
 import { BREVO_MODULE_CONFIG } from "../config/brevo-module.constants";
 import { EmailCampaignScopeInterface } from "../types";
@@ -33,7 +32,6 @@ export function createBrevoContactImportController({ Scope }: { Scope: Type<Emai
                 },
             }),
         )
-        @UseInterceptors(ImporterErrorInterceptor)
         @RequiredPermission(["brevo-newsletter"], { skipScopeCheck: true })
         async upload(@UploadedFile() file: Express.Multer.File, @Body("scope") scope: string, @Body("listIds") listIds?: string): Promise<void> {
             const contentContent = file.buffer.toString("utf8");
