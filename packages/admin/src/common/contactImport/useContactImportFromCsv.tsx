@@ -1,10 +1,10 @@
 import { useApolloClient } from "@apollo/client";
 import { RefetchQueriesInclude } from "@apollo/client/core/types";
-import { Loading, messages } from "@comet/admin";
+import { Alert, Loading, messages, useErrorDialog, useSnackbarApi } from "@comet/admin";
 import { Upload } from "@comet/admin-icons";
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
+import { Dialog, DialogContent, DialogTitle, Snackbar } from "@mui/material";
 import * as React from "react";
-import { FileRejection, useDropzone } from "react-dropzone";
+import { useDropzone } from "react-dropzone";
 import { FormattedMessage } from "react-intl";
 
 import { GQLEmailCampaignContentScopeInput } from "../../graphql.generated";
@@ -52,25 +52,52 @@ interface ComponentProps extends UseContactImportProps {
 const ContactImportComponent = ({ scope, targetGroupId, fileInputRef, refetchQueries }: ComponentProps) => {
     const apolloClient = useApolloClient();
     const [importingCsv, setImportingCsv] = React.useState(false);
-    const [error, setError] = React.useState(false);
-    const dialogOpen = importingCsv || error;
+    const snackbarApi = useSnackbarApi();
+    const errorDialog = useErrorDialog();
 
     const { getInputProps } = useDropzone({
         accept: { "text/csv": [] },
         multiple: false,
-        onDrop: async (acceptedFiles: File[], fileRejections: FileRejection[]) => {
+        onDrop: async (acceptedFiles: File[]) => {
             setImportingCsv(true);
 
-            const file = acceptedFiles[0];
-
             try {
-                await upload(file, scope, targetGroupId ? [targetGroupId] : []);
-                await apolloClient.refetchQueries({ include: refetchQueries });
+                const file = acceptedFiles[0];
+                const response = await upload(file, scope, targetGroupId ? [targetGroupId] : []);
+                apolloClient.refetchQueries({ include: refetchQueries });
+
+                if (response.ok) {
+                    setImportingCsv(false);
+
+                    snackbarApi.showSnackbar(
+                        <Snackbar
+                            anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+                            key={Math.random()}
+                            autoHideDuration={5000}
+                            onClose={snackbarApi.hideSnackbar}
+                        >
+                            <Alert onClose={snackbarApi.hideSnackbar} severity="success">
+                                <FormattedMessage id="brevoContacts.importSuccess" defaultMessage="The contacts have been imported successfully" />
+                            </Alert>
+                        </Snackbar>,
+                    );
+                } else {
+                    const errorResponse = await response.json();
+                    throw new Error(JSON.stringify(errorResponse));
+                }
             } catch (e) {
-                setError(true);
-                return;
-            } finally {
                 setImportingCsv(false);
+
+                errorDialog?.showError({
+                    title: <FormattedMessage {...messages.error} />,
+                    userMessage: (
+                        <FormattedMessage
+                            id="cometBrevoModule.useContactImport.error.defaultMessage"
+                            defaultMessage="A error occured during the import. Please try again in a while or contact your administrator if the error persists."
+                        />
+                    ),
+                    error: String(e),
+                });
             }
         },
     });
@@ -78,34 +105,13 @@ const ContactImportComponent = ({ scope, targetGroupId, fileInputRef, refetchQue
     return (
         <>
             <input type="file" hidden {...getInputProps()} ref={fileInputRef} />
-            <Dialog open={dialogOpen}>
+            <Dialog open={importingCsv}>
                 <DialogTitle>
                     {importingCsv && (
                         <FormattedMessage id="cometBrevoModule.useContactImport.importing.title" defaultMessage="Importing contacts from CSV..." />
                     )}
-                    {error && <FormattedMessage {...messages.error} />}
                 </DialogTitle>
-                <DialogContent>
-                    {importingCsv && <Loading />}
-
-                    {error && (
-                        <FormattedMessage
-                            id="cometBrevoModule.useContactImport.error.text"
-                            defaultMessage="An unexpected error occurred while importing your CSV file. Have you checked if it's formatted correctly?"
-                        />
-                    )}
-                </DialogContent>
-                <DialogActions>
-                    {error && (
-                        <Button
-                            onClick={() => {
-                                setError(false);
-                            }}
-                        >
-                            <FormattedMessage {...messages.ok} />
-                        </Button>
-                    )}
-                </DialogActions>
+                <DialogContent>{importingCsv && <Loading />}</DialogContent>
             </Dialog>
         </>
     );
