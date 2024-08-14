@@ -7,6 +7,7 @@ import { BrevoApiContactsService, CreateDoubleOptInContactData } from "../brevo-
 import { BrevoContactsService } from "../brevo-contact/brevo-contacts.service";
 import { BrevoModuleConfig } from "../config/brevo-module.config";
 import { BREVO_MODULE_CONFIG } from "../config/brevo-module.constants";
+import { TargetGroupsService } from "../target-group/target-groups.service";
 import { EmailCampaignScopeInterface } from "../types";
 
 class ValidateableRow {
@@ -24,6 +25,7 @@ export class BrevoContactImportService {
         @Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig,
         private readonly brevoApiContactsService: BrevoApiContactsService,
         private readonly brevoContactsService: BrevoContactsService,
+        private readonly targetGroupsService: TargetGroupsService,
     ) {}
 
     async importContactFromCsv<T extends ValidateableRow>(
@@ -53,9 +55,11 @@ export class BrevoContactImportService {
                     }
                 }
                 if (brevoContact && !brevoContact.emailBlacklisted) {
+                    const mainTargetGroupForScope = await this.targetGroupsService.createIfNotExistMainTargetGroupForScope(scope);
+
                     const updatedBrevoContact = await this.brevoApiContactsService.updateContact(
                         brevoContact.id,
-                        { ...contact, listIds: [...targetGroupIds, ...brevoContact.listIds] },
+                        { ...contact, listIds: [mainTargetGroupForScope.brevoId, ...targetGroupIds, ...brevoContact.listIds] },
                         scope,
                     );
                     if (updatedBrevoContact) updated++;
