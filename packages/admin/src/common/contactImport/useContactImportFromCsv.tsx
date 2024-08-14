@@ -9,7 +9,7 @@ import { FormattedMessage } from "react-intl";
 
 import { GQLEmailCampaignContentScopeInput } from "../../graphql.generated";
 import { CrudMoreActionsItem } from "../../temp/CrudMoreActionsMenu";
-import { upload } from "../upload";
+import { useBrevoConfig } from "../BrevoConfigProvider";
 
 interface UseContactImportProps {
     scope: GQLEmailCampaignContentScopeInput;
@@ -54,6 +54,20 @@ const ContactImportComponent = ({ scope, targetGroupId, fileInputRef, refetchQue
     const [importingCsv, setImportingCsv] = React.useState(false);
     const snackbarApi = useSnackbarApi();
     const errorDialog = useErrorDialog();
+    const config = useBrevoConfig();
+
+    function upload(file: File, scope: GQLEmailCampaignContentScopeInput, listIds?: string[]): Promise<Response> {
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("scope", JSON.stringify(scope));
+
+        if (listIds) formData.append("listIds", JSON.stringify(listIds));
+
+        return fetch(`${config.apiUrl}/brevo-contacts-csv/upload`, {
+            method: "POST",
+            body: formData,
+        });
+    }
 
     const { getInputProps } = useDropzone({
         accept: { "text/csv": [] },
