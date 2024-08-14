@@ -21,7 +21,7 @@ import * as React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { MemoryRouter } from "react-router";
 
-import { useContactImport } from "../../common/contactImport/useContactImport";
+import { useContactImportFromCsv } from "../../common/contactImport/useContactImportFromCsv";
 import { GQLEmailCampaignContentScopeInput } from "../../graphql.generated";
 import { CrudMoreActionsMenu } from "../../temp/CrudMoreActionsMenu";
 import { targetGroupFormNamedOperations } from "../TargetGroupForm";
@@ -55,7 +55,7 @@ const AssignedContactsGridToolbar = ({
 }) => {
     const intl = useIntl();
 
-    const [moreActionsMenuItem, component] = useContactImport({
+    const [moreActionsMenuItem, component] = useContactImportFromCsv({
         scope,
         targetGroupId,
         refetchQueries: [namedOperations.Query.ManuallyAssignedBrevoContactsGrid],

@@ -21,7 +21,7 @@ import { DataGrid, GridColDef, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import * as React from "react";
 import { FormattedMessage, IntlShape, useIntl } from "react-intl";
 
-import { useContactImport } from "../common/contactImport/useContactImport";
+import { useContactImportFromCsv } from "../common/contactImport/useContactImportFromCsv";
 import { GQLEmailCampaignContentScopeInput } from "../graphql.generated";
 import { CrudMoreActionsMenu } from "../temp/CrudMoreActionsMenu";
 import {
@@ -61,7 +61,7 @@ const updateBrevoContactMutation = gql`
 `;
 
 function BrevoContactsGridToolbar({ intl, scope }: { intl: IntlShape; scope: GQLEmailCampaignContentScopeInput }) {
-    const [moreActionsMenuItem, component] = useContactImport({
+    const [moreActionsMenuItem, contactImportComponent] = useContactImportFromCsv({
         scope,
         refetchQueries: [namedOperations.Query.BrevoContactsGrid],
     });
@@ -85,7 +85,7 @@ function BrevoContactsGridToolbar({ intl, scope }: { intl: IntlShape; scope: GQL
                     </Button>
                 </ToolbarActions>
             </Toolbar>
-            {component}
+            {contactImportComponent}
         </>
     );
 }

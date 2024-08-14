@@ -17,7 +17,7 @@ interface UseContactImportProps {
     refetchQueries?: RefetchQueriesInclude;
 }
 
-export const useContactImport = ({ scope, targetGroupId, refetchQueries }: UseContactImportProps): [CrudMoreActionsItem, React.ReactNode] => {
+export const useContactImportFromCsv = ({ scope, targetGroupId, refetchQueries }: UseContactImportProps): [CrudMoreActionsItem, React.ReactNode] => {
     const fileInputRef = React.useRef<HTMLInputElement>(null);
 
     const moreActionsMenuItem: CrudMoreActionsItem = React.useMemo(
@@ -38,7 +38,7 @@ export const useContactImport = ({ scope, targetGroupId, refetchQueries }: UseCo
     );
 
     const component = React.useMemo(
-        () => <Component scope={scope} targetGroupId={targetGroupId} fileInputRef={fileInputRef} refetchQueries={refetchQueries} />,
+        () => <ContactImportComponent scope={scope} targetGroupId={targetGroupId} fileInputRef={fileInputRef} refetchQueries={refetchQueries} />,
         [refetchQueries, scope, targetGroupId],
     );
 
@@ -49,7 +49,7 @@ interface ComponentProps extends UseContactImportProps {
     fileInputRef: React.RefObject<HTMLInputElement>;
 }
 
-const Component = ({ scope, targetGroupId, fileInputRef, refetchQueries }: ComponentProps) => {
+const ContactImportComponent = ({ scope, targetGroupId, fileInputRef, refetchQueries }: ComponentProps) => {
     const apolloClient = useApolloClient();
     const [importingCsv, setImportingCsv] = React.useState(false);
     const [error, setError] = React.useState(false);
