@@ -53,7 +53,7 @@ export class BrevoContactModule {
                 BrevoContactImportConsole,
             ],
             controllers: [BrevoContactImportController],
-            exports: [BrevoContactsService, BrevoContactImportService, BrevoContactImportService],
+            exports: [BrevoContactsService, BrevoContactImportService],
         };
     }
 }
