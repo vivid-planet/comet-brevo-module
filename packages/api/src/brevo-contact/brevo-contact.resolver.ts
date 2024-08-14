@@ -57,7 +57,7 @@ export function createBrevoContactResolver({
             @Args("id", { type: () => Int }) id: number,
             @Args("scope", { type: () => Scope }, new DynamicDtoValidationPipe(Scope)) scope: typeof Scope,
         ): Promise<BrevoContactInterface> {
-            return this.brevoContactsApiService.findContact(id.toString(), scope);
+            return this.brevoContactsApiService.findContact(id, scope);
         }
 
         @Query(() => PaginatedBrevoContacts)
