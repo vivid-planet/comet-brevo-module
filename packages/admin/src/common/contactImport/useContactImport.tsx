@@ -13,7 +13,7 @@ import { upload } from "../upload";
 
 interface UseContactImportProps {
     scope: GQLEmailCampaignContentScopeInput;
-    targetGroupId: string;
+    targetGroupId?: string;
     refetchQueries?: RefetchQueriesInclude;
 }
 
@@ -64,7 +64,7 @@ const Component = ({ scope, targetGroupId, fileInputRef, refetchQueries }: Compo
             const file = acceptedFiles[0];
 
             try {
-                await upload(file, scope, [targetGroupId]);
+                await upload(file, scope, targetGroupId ? [targetGroupId] : []);
                 await apolloClient.refetchQueries({ include: refetchQueries });
             } catch (e) {
                 setError(true);

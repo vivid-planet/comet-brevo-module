@@ -21,6 +21,9 @@ import { DataGrid, GridColDef, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import * as React from "react";
 import { FormattedMessage, IntlShape, useIntl } from "react-intl";
 
+import { useContactImport } from "../common/contactImport/useContactImport";
+import { GQLEmailCampaignContentScopeInput } from "../graphql.generated";
+import { CrudMoreActionsMenu } from "../temp/CrudMoreActionsMenu";
 import {
     GQLBrevoContactsGridQuery,
     GQLBrevoContactsGridQueryVariables,
@@ -29,6 +32,7 @@ import {
     GQLDeleteBrevoContactMutationVariables,
     GQLUpdateBrevoContactMutation,
     GQLUpdateBrevoContactMutationVariables,
+    namedOperations,
 } from "./BrevoContactsGrid.generated";
 
 const brevoContactsFragment = gql`
@@ -56,24 +60,33 @@ const updateBrevoContactMutation = gql`
     }
 `;
 
-function BrevoContactsGridToolbar({ intl }: { intl: IntlShape }) {
+function BrevoContactsGridToolbar({ intl, scope }: { intl: IntlShape; scope: GQLEmailCampaignContentScopeInput }) {
+    const [moreActionsMenuItem, component] = useContactImport({
+        scope,
+        refetchQueries: [namedOperations.Query.BrevoContactsGrid],
+    });
+
     return (
-        <Toolbar>
-            <ToolbarTitleItem>
-                <FormattedMessage id="cometBrevoModule.brevoContact.title" defaultMessage="Contacts" />
-            </ToolbarTitleItem>
-            <ToolbarItem>
-                <GridToolbarQuickFilter
-                    placeholder={intl.formatMessage({ id: "cometBrevoModule.brevoContact.searchEmail", defaultMessage: "Search email address" })}
-                />
-            </ToolbarItem>
-            <ToolbarFillSpace />
-            <ToolbarActions>
-                <Button startIcon={<Add />} component={StackLink} pageName="add" payload="add" variant="contained" color="primary">
-                    <FormattedMessage id="cometBrevoModule.brevoContact.newContact" defaultMessage="New contact" />
-                </Button>
-            </ToolbarActions>
-        </Toolbar>
+        <>
+            <Toolbar>
+                <ToolbarTitleItem>
+                    <FormattedMessage id="cometBrevoModule.brevoContact.title" defaultMessage="Contacts" />
+                </ToolbarTitleItem>
+                <ToolbarItem>
+                    <GridToolbarQuickFilter
+                        placeholder={intl.formatMessage({ id: "cometBrevoModule.brevoContact.searchEmail", defaultMessage: "Search email address" })}
+                    />
+                </ToolbarItem>
+                <ToolbarFillSpace />
+                <ToolbarActions>
+                    <CrudMoreActionsMenu overallItems={[moreActionsMenuItem]} />
+                    <Button startIcon={<Add />} component={StackLink} pageName="add" payload="add" variant="contained" color="primary">
+                        <FormattedMessage id="cometBrevoModule.brevoContact.newContact" defaultMessage="New contact" />
+                    </Button>
+                </ToolbarActions>
+            </Toolbar>
+            {component}
+        </>
     );
 }
 
@@ -216,6 +229,7 @@ export function BrevoContactsGrid({
                 componentsProps={{
                     toolbar: {
                         intl,
+                        scope,
                     },
                 }}
             />
