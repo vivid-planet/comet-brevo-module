@@ -54,7 +54,7 @@ export interface DividerItem extends React.ComponentProps<typeof Divider> {
     type: "divider";
 }
 
-type CrudMoreActionsItem = ActionItem | DividerItem;
+export type CrudMoreActionsItem = ActionItem | DividerItem;
 
 export interface CrudMoreActionsMenuProps {
     selectionSize?: number;

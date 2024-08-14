@@ -21,6 +21,9 @@ import * as React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { MemoryRouter } from "react-router";
 
+import { useContactImport } from "../../common/contactImport/useContactImport";
+import { GQLEmailCampaignContentScopeInput } from "../../graphql.generated";
+import { CrudMoreActionsMenu } from "../../temp/CrudMoreActionsMenu";
 import { targetGroupFormNamedOperations } from "../TargetGroupForm";
 import {
     addBrevoContactsToTargetGroupMutation,
@@ -41,29 +44,47 @@ import {
     namedOperations,
 } from "./AddContactsGridSelect.gql.generated";
 
-const AssignedContactsGridToolbar = ({ onOpenDialog }: { onOpenDialog: () => void }) => {
+const AssignedContactsGridToolbar = ({
+    onOpenDialog,
+    scope,
+    targetGroupId,
+}: {
+    onOpenDialog: () => void;
+    scope: GQLEmailCampaignContentScopeInput;
+    targetGroupId: string;
+}) => {
     const intl = useIntl();
 
+    const [moreActionsMenuItem, component] = useContactImport({
+        scope,
+        targetGroupId,
+        refetchQueries: [namedOperations.Query.ManuallyAssignedBrevoContactsGrid],
+    });
+
     return (
-        <Toolbar>
-            <ToolbarTitleItem>
-                <FormattedMessage id="cometBrevoModule.targetGroup.assignedContacts.title" defaultMessage="Manually assigned contacts" />
-            </ToolbarTitleItem>
-            <ToolbarItem>
-                <GridToolbarQuickFilter
-                    placeholder={intl.formatMessage({
-                        id: "cometBrevoModule.targetGroup.assignedContacts.searchEmail",
-                        defaultMessage: "Search email address",
-                    })}
-                />
-            </ToolbarItem>
-            <ToolbarFillSpace />
-            <ToolbarActions>
-                <Button startIcon={<Add />} variant="contained" color="primary" onClick={onOpenDialog}>
-                    <FormattedMessage id="cometBrevoModule.targetGroup.assignedContacts.addContact" defaultMessage="Add contacts" />
-                </Button>
-            </ToolbarActions>
-        </Toolbar>
+        <>
+            <Toolbar>
+                <ToolbarTitleItem>
+                    <FormattedMessage id="cometBrevoModule.targetGroup.assignedContacts.title" defaultMessage="Manually assigned contacts" />
+                </ToolbarTitleItem>
+                <ToolbarItem>
+                    <GridToolbarQuickFilter
+                        placeholder={intl.formatMessage({
+                            id: "cometBrevoModule.targetGroup.assignedContacts.searchEmail",
+                            defaultMessage: "Search email address",
+                        })}
+                    />
+                </ToolbarItem>
+                <ToolbarFillSpace />
+                <ToolbarActions>
+                    <CrudMoreActionsMenu overallItems={[moreActionsMenuItem]} />
+                    <Button startIcon={<Add />} variant="contained" color="primary" onClick={onOpenDialog}>
+                        <FormattedMessage id="cometBrevoModule.targetGroup.assignedContacts.addContact" defaultMessage="Add contacts" />
+                    </Button>
+                </ToolbarActions>
+            </Toolbar>
+            {component}
+        </>
     );
 };
 
@@ -245,6 +266,8 @@ export function AddContactsGridSelect({ id, scope, assignedContactsTargetGroupBr
                 componentsProps={{
                     toolbar: {
                         onOpenDialog: () => setIsDialogOpen(true),
+                        scope,
+                        targetGroupId: id,
                     },
                 }}
             />
