@@ -42,10 +42,10 @@ export function createBrevoContactImportController({ Scope }: { Scope: Type<Emai
             let parsedListIds = undefined;
             if (listIds) parsedListIds = JSON.parse(listIds) as string[];
 
-            const targetGroupBrevoIds = (await this.targetGroupRepository.find({ id: { $in: parsedListIds } })).map(({ brevoId }) => brevoId);
+            const targetGroups = await this.targetGroupRepository.find({ id: { $in: parsedListIds } });
 
             const redirectUrl = this.config.brevo.resolveConfig(parsedScope).redirectUrlForImport;
-            await this.brevoContactImportService.importContactFromCsv(contentContent, parsedScope, redirectUrl, targetGroupBrevoIds);
+            await this.brevoContactImportService.importContactFromCsv(contentContent, parsedScope, redirectUrl, targetGroups);
         }
     }
 

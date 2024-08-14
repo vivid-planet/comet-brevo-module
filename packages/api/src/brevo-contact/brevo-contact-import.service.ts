@@ -7,6 +7,7 @@ import { BrevoApiContactsService, CreateDoubleOptInContactData } from "../brevo-
 import { BrevoContactsService } from "../brevo-contact/brevo-contacts.service";
 import { BrevoModuleConfig } from "../config/brevo-module.config";
 import { BREVO_MODULE_CONFIG } from "../config/brevo-module.constants";
+import { TargetGroupInterface } from "../target-group/entity/target-group-entity.factory";
 import { TargetGroupsService } from "../target-group/target-groups.service";
 import { EmailCampaignScopeInterface } from "../types";
 
@@ -32,13 +33,18 @@ export class BrevoContactImportService {
         csvContent: string,
         scope: EmailCampaignScopeInterface,
         redirectUrl: string,
-        targetGroupIds: number[] = [],
+        targetGroups: TargetGroupInterface[] = [],
         validateable?: T,
     ): Promise<{ created: number; updated: number; failed: number }> {
         let created = 0;
         let updated = 0;
         let failed = 0;
         const contacts = await this.parseCsvToBrevoContacts(csvContent, redirectUrl, validateable);
+        const targetGroupBrevoIds = await Promise.all(
+            targetGroups.map((targetGroup) => {
+                return this.targetGroupsService.createIfNotExistsManuallyAssignedContactsTargetGroup(targetGroup);
+            }),
+        );
 
         for (const contact of contacts) {
             try {
@@ -59,7 +65,7 @@ export class BrevoContactImportService {
 
                     const updatedBrevoContact = await this.brevoApiContactsService.updateContact(
                         brevoContact.id,
-                        { ...contact, listIds: [mainTargetGroupForScope.brevoId, ...targetGroupIds, ...brevoContact.listIds] },
+                        { ...contact, listIds: [mainTargetGroupForScope.brevoId, ...targetGroupBrevoIds, ...brevoContact.listIds] },
                         scope,
                     );
                     if (updatedBrevoContact) updated++;
@@ -69,7 +75,7 @@ export class BrevoContactImportService {
                         ...contact,
                         scope,
                         templateId: this.config.brevo.resolveConfig(scope).doubleOptInTemplateId,
-                        listIds: targetGroupIds,
+                        listIds: targetGroupBrevoIds,
                     });
                     if (success) created++;
                     else failed++;

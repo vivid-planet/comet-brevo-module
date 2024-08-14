@@ -1,4 +1,5 @@
-import { CreateRequestContext, MikroORM } from "@mikro-orm/core";
+import { CreateRequestContext, EntityRepository } from "@mikro-orm/core";
+import { InjectRepository } from "@mikro-orm/nestjs";
 import { Inject, Injectable, Type } from "@nestjs/common";
 import { validateSync } from "class-validator";
 import { InvalidOptionArgumentError } from "commander";
@@ -8,12 +9,13 @@ import { Command, Console } from "nestjs-console";
 import { BrevoContactImportService } from "../brevo-contact/brevo-contact-import.service";
 import { BrevoModuleConfig } from "../config/brevo-module.config";
 import { BREVO_MODULE_CONFIG } from "../config/brevo-module.constants";
+import { TargetGroupInterface } from "../target-group/entity/target-group-entity.factory";
 import { EmailCampaignScopeInterface } from "../types";
 
 interface CommandOptions {
     path: string;
     scope: Type<EmailCampaignScopeInterface>;
-    targetGroupIds: number[];
+    targetGroupIds: string[];
 }
 
 export function createBrevoContactImportConsole({ Scope }: { Scope: Type<EmailCampaignScopeInterface> }): Type<unknown> {
@@ -21,9 +23,9 @@ export function createBrevoContactImportConsole({ Scope }: { Scope: Type<EmailCa
     @Console()
     class BrevoContactImportConsole {
         constructor(
-            private readonly orm: MikroORM,
             @Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig,
             private readonly brevoContactImportService: BrevoContactImportService,
+            @InjectRepository("TargetGroup") private readonly targetGroupRepository: EntityRepository<TargetGroupInterface>,
         ) {}
 
         @Command({
@@ -85,11 +87,13 @@ export function createBrevoContactImportConsole({ Scope }: { Scope: Type<EmailCa
                 throw new InvalidOptionArgumentError("Invalid scope. Scope is not allowed");
             }
 
+            const targetGroups = await this.targetGroupRepository.find({ id: { $in: options.targetGroupIds } });
+
             const result = await this.brevoContactImportService.importContactFromCsv(
                 content.toString("utf8"),
                 options.scope,
                 redirectUrl,
-                options.targetGroupIds,
+                targetGroups,
             );
 
             console.log(result);
