@@ -1,5 +1,5 @@
 import { filtersToMikroOrmQuery, searchToMikroOrmQuery } from "@comet/cms-api";
-import { EntityManager, EntityRepository, FilterQuery, ObjectQuery } from "@mikro-orm/core";
+import { EntityManager, EntityRepository, FilterQuery, ObjectQuery, wrap } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable } from "@nestjs/common";
 
@@ -139,5 +139,28 @@ export class TargetGroupsService {
         }
 
         throw new Error("Brevo Error: Could not create contact list");
+    }
+
+    public async createIfNotExistsManuallyAssignedContactsTargetGroup(targetGroup: TargetGroupInterface) {
+        if (targetGroup.assignedContactsTargetGroupBrevoId) {
+            return targetGroup.assignedContactsTargetGroupBrevoId;
+        }
+
+        const brevoId = await this.brevoApiContactsService.createBrevoContactList(
+            `Manually assigned contacts for target group ${targetGroup.brevoId}`,
+            targetGroup.scope,
+        );
+
+        if (!brevoId) {
+            throw new Error("Brevo Error: Could not create target group in brevo");
+        }
+
+        wrap(targetGroup).assign({
+            assignedContactsTargetGroupBrevoId: brevoId,
+        });
+
+        await this.entityManager.flush();
+
+        return brevoId;
     }
 }
