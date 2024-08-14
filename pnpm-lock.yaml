@@ -949,9 +949,6 @@ importers:
       '@nestjs/cache-manager':
         specifier: ^2.2.2
         version: 2.2.2(@nestjs/common@9.4.3)(@nestjs/core@9.4.3)(cache-manager@5.7.3)(rxjs@7.8.1)
-      '@nestjs/platform-express':
-        specifier: ^9.0.0
-        version: 9.4.3(@nestjs/common@9.4.3)(@nestjs/core@9.4.3)
       '@types/multer':
         specifier: ^1.4.11
         version: 1.4.11
@@ -1007,6 +1004,9 @@ importers:
       '@nestjs/graphql':
         specifier: ^10.0.0
         version: 10.2.1(@nestjs/common@9.4.3)(@nestjs/core@9.4.3)(class-transformer@0.5.1)(class-validator@0.13.2)(graphql@15.8.0)(reflect-metadata@0.1.14)
+      '@nestjs/platform-express':
+        specifier: ^9.0.0
+        version: 9.4.3(@nestjs/common@9.4.3)(@nestjs/core@9.4.3)
       '@types/jest':
         specifier: ^29.5.0
         version: 29.5.11
@@ -5372,7 +5372,7 @@ packages:
       graphql: ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
     dependencies:
       graphql: 15.8.0
-      tslib: 2.4.1
+      tslib: 2.6.2
     dev: true
 
   /@graphql-tools/utils@8.9.0(graphql@15.8.0):
