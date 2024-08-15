@@ -1,8 +1,8 @@
 import { useApolloClient } from "@apollo/client";
 import { RefetchQueriesInclude } from "@apollo/client/core/types";
-import { Alert, Loading, messages, useErrorDialog, useSnackbarApi } from "@comet/admin";
+import { Alert, Loading, messages, useErrorDialog } from "@comet/admin";
 import { Upload } from "@comet/admin-icons";
-import { Dialog, DialogContent, DialogTitle, Snackbar } from "@mui/material";
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
 import * as React from "react";
 import { useDropzone } from "react-dropzone";
 import { FormattedMessage } from "react-intl";
@@ -52,7 +52,8 @@ interface ComponentProps extends UseContactImportProps {
 const ContactImportComponent = ({ scope, targetGroupId, fileInputRef, refetchQueries }: ComponentProps) => {
     const apolloClient = useApolloClient();
     const [importingCsv, setImportingCsv] = React.useState(false);
-    const snackbarApi = useSnackbarApi();
+    const [importSuccessful, setImportSuccessful] = React.useState(false);
+    const dialogOpen = importingCsv || importSuccessful;
     const errorDialog = useErrorDialog();
     const config = useBrevoConfig();
 
@@ -82,19 +83,7 @@ const ContactImportComponent = ({ scope, targetGroupId, fileInputRef, refetchQue
 
                 if (response.ok) {
                     setImportingCsv(false);
-
-                    snackbarApi.showSnackbar(
-                        <Snackbar
-                            anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-                            key={Math.random()}
-                            autoHideDuration={5000}
-                            onClose={snackbarApi.hideSnackbar}
-                        >
-                            <Alert onClose={snackbarApi.hideSnackbar} severity="success">
-                                <FormattedMessage id="brevoContacts.importSuccess" defaultMessage="The contacts have been imported successfully" />
-                            </Alert>
-                        </Snackbar>,
-                    );
+                    setImportSuccessful(true);
                 } else {
                     const errorResponse = await response.json();
                     throw new Error(JSON.stringify(errorResponse));
@@ -119,13 +108,41 @@ const ContactImportComponent = ({ scope, targetGroupId, fileInputRef, refetchQue
     return (
         <>
             <input type="file" hidden {...getInputProps()} ref={fileInputRef} />
-            <Dialog open={importingCsv}>
+            <Dialog open={dialogOpen}>
                 <DialogTitle>
                     {importingCsv && (
                         <FormattedMessage id="cometBrevoModule.useContactImport.importing.title" defaultMessage="Importing contacts from CSV..." />
                     )}
+                    {importSuccessful && (
+                        <FormattedMessage id="cometBrevoModule.useContactImport.importSuccessful.title" defaultMessage="Import successful" />
+                    )}
                 </DialogTitle>
-                <DialogContent>{importingCsv && <Loading />}</DialogContent>
+                <DialogContent>
+                    {importingCsv && <Loading />}
+                    {importSuccessful && (
+                        <>
+                            <FormattedMessage
+                                id="cometBrevoModule.useContactImport.importSuccessful.message"
+                                defaultMessage="The contacts have been imported successfully"
+                            />
+                            <Box mt={2}>
+                                <Alert severity="warning">
+                                    <FormattedMessage
+                                        id="cometBrevoModule.useContactImport.importSuccessful.doiNotice"
+                                        defaultMessage="Contacts who have not yet confirmed their subscription will receive a double opt-in email to complete the process. These contacts will not appear in this list until they confirm their subscription. Once confirmed, they will automatically be added to the appropriate target group(s)."
+                                    />
+                                </Alert>
+                            </Box>
+                        </>
+                    )}
+                </DialogContent>
+                <DialogActions>
+                    {importSuccessful && (
+                        <Button onClick={() => setImportSuccessful(false)} variant="contained">
+                            <FormattedMessage {...messages.ok} />
+                        </Button>
+                    )}
+                </DialogActions>
             </Dialog>
         </>
     );
