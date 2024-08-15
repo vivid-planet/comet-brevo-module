@@ -1,7 +1,7 @@
-import { CreateRequestContext, EntityRepository } from "@mikro-orm/core";
+import { CreateRequestContext, EntityRepository, MikroORM } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
-import { Inject, Injectable, Type } from "@nestjs/common";
-import { validateSync } from "class-validator";
+import { Inject, Injectable, Logger, Type } from "@nestjs/common";
+import { isUUID, validateSync } from "class-validator";
 import { InvalidOptionArgumentError } from "commander";
 import * as fs from "fs";
 import { Command, Console } from "nestjs-console";
@@ -22,7 +22,10 @@ export function createBrevoContactImportConsole({ Scope }: { Scope: Type<EmailCa
     @Injectable()
     @Console()
     class BrevoContactImportConsole {
+        private readonly logger = new Logger(BrevoContactImportConsole.name);
+
         constructor(
+            private readonly orm: MikroORM, // necessary for @CreateRequestContext() to work
             @Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig,
             private readonly brevoContactImportService: BrevoContactImportService,
             @InjectRepository("TargetGroup") private readonly targetGroupRepository: EntityRepository<TargetGroupInterface>,
@@ -61,20 +64,18 @@ export function createBrevoContactImportConsole({ Scope }: { Scope: Type<EmailCa
                     flags: "--targetGroupIds <ids...>",
                     required: false,
                     defaultValue: [],
-                    description: "list of target groups to apply the contacts to",
-                    fn: (ids) => {
-                        if (!Array.isArray(ids)) {
-                            throw new InvalidOptionArgumentError("Invalid targetGroupIds. Must be an array of strings.");
-                        }
-                        // Convert the array of strings to an array of numbers
-                        const numbersArray = ids.map((id) => {
-                            const num = parseInt(id, 10);
-                            if (isNaN(num)) {
-                                throw new InvalidOptionArgumentError(`Invalid number: ${id}`);
+                    description:
+                        "list of target groups to apply the contacts to, format: comma separated UUIds, e.g. 2618c982-fdf8-4cab-9811-a21d3272c62c,362bbd39-02f1-4a41-8916-2402087751bc",
+                    fn: (passedIds) => {
+                        const ids = passedIds.split(",").map((id) => id.trim());
+
+                        for (const id of ids) {
+                            if (!isUUID(id)) {
+                                throw new InvalidOptionArgumentError("Invalid targetGroupIds. Must be a list of UUIDs.");
                             }
-                            return num;
-                        });
-                        return numbersArray;
+                        }
+
+                        return ids;
                     },
                 },
             ],
@@ -96,7 +97,7 @@ export function createBrevoContactImportConsole({ Scope }: { Scope: Type<EmailCa
                 targetGroups,
             );
 
-            console.log(result);
+            this.logger.log(result);
         }
 
         async validateRedirectUrl(urlToValidate: string, scope: Type<EmailCampaignScopeInterface>): Promise<boolean> {
