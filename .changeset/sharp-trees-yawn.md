@@ -1,18 +1,19 @@
 ---
-"@comet/brevo-api": major
+"@comet/brevo-api": minor
 "@comet/brevo-admin": minor
 ---
 
-Added functionality to import Brevo contacts from CSV files.
+Add functionality to import Brevo contacts from CSV files
 
-**Important Notice:**
+You can import CSV files via the Admin interface or via CLI command.
 
--   A major bump in `@comet/brevo-api` is required because a new `.env` variable named `REDIRECT_URL_FOR_IMPORT` is needed.
+**Note:** For the import to work, you must provide a `redirectUrlForImport` to the `BrevoModule` in the API and an `apiUrl` to the `BrevoConfigProvider` in the admin. See the respective changelog entries for more information.
 
-**Usage:**
-
-To import Brevo contacts from a CSV file, use the following console command:
+CLI command:
 
 ```bash
 npm run --prefix api console import-brevo-contacts -- -p <path-to-csv-file> -s '<scope-json>' [--targetGroupIds <ids...>]
+
+// Example:
+npm run --prefix api console import-brevo-contacts -- -p test_contacts_import.csv -s '{"domain": "main", "language":"de"}' --targetGroupIds 2618c982-fdf8-4cab-9811-a21d3272c62c,c5197539-2529-48a7-9bd1-764e9620cbd2
 ```
