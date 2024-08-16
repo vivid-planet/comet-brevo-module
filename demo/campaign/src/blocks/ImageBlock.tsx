@@ -7,7 +7,7 @@ import { theme } from "@src/util/theme";
 
 export const ImageBlock = ({ data }: PropsWithData<PixelImageBlockData>) => {
     return (
-        <IndentedSectionGroup>
+        <IndentedSectionGroup paddingLeft={0} paddingRight={0}>
             <MjmlColumn>
                 <CommonImageBlock data={data} desktopRenderWidth={theme.mailSize.contentWidth} />
             </MjmlColumn>

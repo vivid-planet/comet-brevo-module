@@ -21,7 +21,13 @@ export const indentedSectionGroupStyles = (
 
 export const IndentedSectionGroup = ({ children, cssClass, ...restProps }: IndentedSectionGroupProps) => {
     return (
-        <MjmlSection cssClass={`indented-section ${cssClass || ""}`.trim()} backgroundColor={theme.colors.background.content} {...restProps}>
+        <MjmlSection
+            cssClass={`indented-section ${cssClass || ""}`.trim()}
+            paddingLeft={theme.mailSize.contentSpacing}
+            paddingRight={theme.mailSize.contentSpacing}
+            backgroundColor={theme.colors.background.content}
+            {...restProps}
+        >
             <MjmlGroup cssClass="indented-section__group">{children}</MjmlGroup>
         </MjmlSection>
     );
