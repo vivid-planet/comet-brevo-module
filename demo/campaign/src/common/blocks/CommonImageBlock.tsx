@@ -14,14 +14,16 @@ interface Props extends React.ComponentProps<typeof MjmlImage> {
 
 export const commonImageBlockStyles = (
     <MjmlStyle>{css`
-        @media (max-width: ${theme.mailSize.contentWidth - 1}px) {
-            .image-block > table > tbody > tr > td {
-                width: 100% !important;
-            }
+        .image-block {
+            padding: 0 !important;
+        }
 
-            .image-block img {
-                height: auto !important;
-            }
+        .image-block > table > tbody > tr > td {
+            width: 100% !important;
+        }
+
+        .image-block img {
+            height: auto !important;
         }
     `}</MjmlStyle>
 );
