@@ -90,7 +90,7 @@ export function createBrevoContactImportConsole({ Scope }: { Scope: Type<EmailCa
 
             const targetGroups = await this.targetGroupRepository.find({ id: { $in: options.targetGroupIds } });
 
-            const result = await this.brevoContactImportService.importContactFromCsv(
+            const result = await this.brevoContactImportService.importContactsFromCsv(
                 content.toString("utf8"),
                 options.scope,
                 redirectUrl,

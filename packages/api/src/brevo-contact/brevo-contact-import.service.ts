@@ -29,7 +29,7 @@ export class BrevoContactImportService {
         private readonly targetGroupsService: TargetGroupsService,
     ) {}
 
-    async importContactFromCsv<T extends ValidateableRow>(
+    async importContactsFromCsv<T extends ValidateableRow>(
         csvContent: string,
         scope: EmailCampaignScopeInterface,
         redirectUrl: string,
