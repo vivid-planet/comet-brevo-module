@@ -14,16 +14,13 @@ interface Props extends React.ComponentProps<typeof MjmlImage> {
 
 export const commonImageBlockStyles = (
     <MjmlStyle>{css`
-        .image-block {
-            padding: 0 !important;
-        }
-
-        .image-block > table > tbody > tr > td {
-            width: 100% !important;
-        }
-
-        .image-block img {
-            height: auto !important;
+        @media (max-width: ${theme.mailSize.contentWidth - 1}px) {
+            .image-block > table > tbody > tr > td {
+                width: 100% !important;
+            }
+            .image-block img {
+                height: auto !important;
+            }
         }
     `}</MjmlStyle>
 );
@@ -57,6 +54,7 @@ export const CommonImageBlock = ({ data, desktopRenderWidth, ...restProps }: Pro
             height={desktopImageHeight}
             alt={damFile.altText}
             title={damFile.title}
+            padding={0}
             {...restProps}
         />
     );
