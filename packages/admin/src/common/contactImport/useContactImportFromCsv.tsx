@@ -94,7 +94,7 @@ const ContactImportComponent = ({ scope, targetGroupId, fileInputRef, refetchQue
                 let userMessage = (
                     <FormattedMessage
                         id="cometBrevoModule.useContactImport.error.defaultMessage"
-                        defaultMessage="A error occured during the import. Please try again in a while or contact your administrator if the error persists."
+                        defaultMessage="An error occured during the import. Please try again in a while or contact your administrator if the error persists."
                     />
                 );
                 if (e?.message && typeof e.message === "string" && e.message.includes("Too many contacts")) {
