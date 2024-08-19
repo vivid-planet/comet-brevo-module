@@ -29,17 +29,16 @@ export class BrevoContactImportService {
         private readonly targetGroupsService: TargetGroupsService,
     ) {}
 
-    async importContactsFromCsv<T extends ValidateableRow>(
+    async importContactsFromCsv(
         csvContent: string,
         scope: EmailCampaignScopeInterface,
         redirectUrl: string,
         targetGroups: TargetGroupInterface[] = [],
-        validateable?: T,
     ): Promise<{ created: number; updated: number; failed: number }> {
         let created = 0;
         let updated = 0;
         let failed = 0;
-        const contacts = await this.parseCsvToBrevoContacts(csvContent, redirectUrl, validateable);
+        const contacts = await this.parseCsvToBrevoContacts(csvContent, redirectUrl);
         const targetGroupBrevoIds = await Promise.all(
             targetGroups.map((targetGroup) => {
                 return this.targetGroupsService.createIfNotExistsManuallyAssignedContactsTargetGroup(targetGroup);
@@ -88,11 +87,7 @@ export class BrevoContactImportService {
         return { created, updated, failed };
     }
 
-    async parseCsvToBrevoContacts<T extends ValidateableRow>(
-        csvContent: string,
-        redirectUrl: string,
-        validateable?: T,
-    ): Promise<CreateDoubleOptInContactData[]> {
+    async parseCsvToBrevoContacts(csvContent: string, redirectUrl: string): Promise<CreateDoubleOptInContactData[]> {
         const brevoContacts: CreateDoubleOptInContactData[] = [];
 
         return new Promise((resolve, reject) => {
@@ -104,7 +99,7 @@ export class BrevoContactImportService {
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 .on("data", async (row: Record<string, any>) => {
                     try {
-                        const contactData = await this.processRow(row, redirectUrl, validateable);
+                        const contactData = await this.processRow(row, redirectUrl);
                         brevoContacts.push(contactData);
                     } catch (validationError) {
                         console.error(validationError);
@@ -118,39 +113,17 @@ export class BrevoContactImportService {
         });
     }
 
-    private async processRow<T extends ValidateableRow>(
+    private async processRow(
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         row: Record<string, any>,
         redirectUrlForImport: string,
-        validateable?: T,
     ): Promise<CreateDoubleOptInContactData> {
-        let validatedRow: ValidateableRow;
-
-        if (validateable) {
-            validatedRow = await this.populateAndValidateRow(row, validateable);
-        } else {
-            validatedRow = await this.createAndValidateRow(row);
-        }
-
-        const { email, ...data } = validatedRow;
+        const { email, ...data } = await this.createAndValidateRow(row);
         return {
             email,
             redirectionUrl: redirectUrlForImport,
             attributes: { ...data },
         };
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private async populateAndValidateRow<T extends ValidateableRow>(row: Record<string, any>, validateable: T): Promise<ValidateableRow> {
-        const keysOfProps = Object.keys(validateable);
-        keysOfProps.forEach((key) => {
-            const value = row[key] || row[key.toLowerCase()] || row[key.toUpperCase()];
-            if (value) {
-                validateable[key as keyof T] = value;
-            }
-        });
-        await validateOrReject(validateable);
-        return validateable;
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
