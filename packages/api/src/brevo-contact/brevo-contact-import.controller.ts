@@ -34,16 +34,22 @@ export function createBrevoContactImportController({ Scope }: { Scope: Type<Emai
         )
         @RequiredPermission(["brevo-newsletter"], { skipScopeCheck: true })
         async upload(@UploadedFile() file: Express.Multer.File, @Body("scope") scope: string, @Body("listIds") listIds?: string): Promise<void> {
-            const contentContent = file.buffer.toString("utf8");
+            const content = file.buffer.toString("utf8");
             const parsedScope = JSON.parse(scope) as EmailCampaignScopeInterface;
+
+            const redirectUrl = this.config.brevo.resolveConfig(parsedScope).redirectUrlForImport;
+            const contacts = await this.brevoContactImportService.parseCsvToBrevoContacts(content, redirectUrl);
+
+            if (contacts.length > 100) {
+                throw new CometValidationException("Too many contacts in file. Currently we only support 100 contacts at once.");
+            }
 
             let parsedListIds = undefined;
             if (listIds) parsedListIds = JSON.parse(listIds) as string[];
 
             const targetGroups = await this.targetGroupRepository.find({ id: { $in: parsedListIds } });
 
-            const redirectUrl = this.config.brevo.resolveConfig(parsedScope).redirectUrlForImport;
-            await this.brevoContactImportService.importContactFromCsv(contentContent, parsedScope, redirectUrl, targetGroups);
+            await this.brevoContactImportService.importContactFromCsv(content, parsedScope, redirectUrl, targetGroups);
         }
     }
 

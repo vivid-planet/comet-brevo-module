@@ -91,14 +91,24 @@ const ContactImportComponent = ({ scope, targetGroupId, fileInputRef, refetchQue
             } catch (e) {
                 setImportingCsv(false);
 
+                let userMessage = (
+                    <FormattedMessage
+                        id="cometBrevoModule.useContactImport.error.defaultMessage"
+                        defaultMessage="A error occured during the import. Please try again in a while or contact your administrator if the error persists."
+                    />
+                );
+                if (e?.message && typeof e.message === "string" && e.message.includes("Too many contacts")) {
+                    userMessage = (
+                        <FormattedMessage
+                            id="cometBrevoModule.useContactImport.error.tooManyContactsMessage"
+                            defaultMessage="Too many contacts in file. Currently we only support 100 contacts at once."
+                        />
+                    );
+                }
+
                 errorDialog?.showError({
                     title: <FormattedMessage {...messages.error} />,
-                    userMessage: (
-                        <FormattedMessage
-                            id="cometBrevoModule.useContactImport.error.defaultMessage"
-                            defaultMessage="A error occured during the import. Please try again in a while or contact your administrator if the error persists."
-                        />
-                    ),
+                    userMessage,
                     error: String(e),
                 });
             }
