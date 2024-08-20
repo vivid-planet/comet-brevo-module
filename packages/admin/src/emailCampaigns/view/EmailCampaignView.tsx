@@ -2,7 +2,7 @@ import { useQuery } from "@apollo/client";
 import { Loading, MainContent, Toolbar, ToolbarFillSpace, ToolbarItem, ToolbarTitleItem, useStackApi } from "@comet/admin";
 import { ArrowLeft } from "@comet/admin-icons";
 import { BlockInterface, IFrameBridgeProvider } from "@comet/blocks-admin";
-import { BlockPreview, EditPageLayout, useBlockPreview, useCmsBlockContext } from "@comet/cms-admin";
+import { BlockPreview, EditPageLayout, useBlockPreview, useCmsBlockContext, useContentScope } from "@comet/cms-admin";
 import { IconButton } from "@mui/material";
 import React from "react";
 import { FormattedMessage } from "react-intl";
@@ -22,6 +22,7 @@ export function EmailCampaignView({ id, EmailCampaignContentBlock, previewUrl }:
     const previewApi = useBlockPreview();
     const blockContext = useCmsBlockContext();
     const match = useRouteMatch();
+    const { scope } = useContentScope();
 
     const { data, error, loading } = useQuery<GQLEmailCampaignViewQuery, GQLEmailCampaignViewQueryVariables>(emailCampaignViewQuery, {
         variables: { id },
@@ -46,6 +47,7 @@ export function EmailCampaignView({ id, EmailCampaignContentBlock, previewUrl }:
     const previewState = {
         emailCampaignId: id,
         content: EmailCampaignContentBlock.createPreviewState(EmailCampaignContentBlock.input2State(data.emailCampaign.content), previewContext),
+        scope,
     };
 
     return (
