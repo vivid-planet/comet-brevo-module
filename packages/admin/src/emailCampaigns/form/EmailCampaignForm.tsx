@@ -67,9 +67,9 @@ export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope, previe
         content: EmailCampaignContentBlock,
     };
 
-    type EmailCampaignState = Omit<GQLEmailCampaignFormFragment, "content" | "targetGroup"> & {
+    type EmailCampaignState = Omit<GQLEmailCampaignFormFragment, "content"> & {
         [key in keyof typeof rootBlocks]: BlockState<(typeof rootBlocks)[key]>;
-    } & { targetGroup?: string };
+    };
 
     const stackApi = useStackApi();
     const stackSwitchApi = useStackSwitchApi();
@@ -103,14 +103,15 @@ export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope, previe
                 content: EmailCampaignContentBlock.input2State(emailCampaign.content),
                 scheduledAt: emailCampaign?.scheduledAt ? new Date(emailCampaign.scheduledAt) : null,
                 sendingState: emailCampaign?.sendingState,
-                targetGroup: emailCampaign?.targetGroup?.id,
+                targetGroups: emailCampaign?.targetGroups,
             };
         },
         state2Output: (state) => ({
             ...state,
             content: EmailCampaignContentBlock.state2Output(state.content),
-            scheduledAt: state.targetGroup ? state.scheduledAt ?? null : null,
+            scheduledAt: state.targetGroups.length > 0 ? state.scheduledAt ?? null : null,
             sendingState: undefined,
+            targetGroups: state.targetGroups.map((targetGroup) => targetGroup.id),
         }),
         defaultState: {
             title: "",
@@ -118,6 +119,7 @@ export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope, previe
             content: EmailCampaignContentBlock.defaultValues(),
             sendingState: "DRAFT",
             scheduledAt: undefined,
+            targetGroups: [],
         },
     });
 
@@ -168,6 +170,7 @@ export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope, previe
             if (!id) {
                 throw new Error("Missing id in edit mode");
             }
+
             const { data: mutationResponse } = await client.mutate<GQLUpdateEmailCampaignMutation, GQLUpdateEmailCampaignMutationVariables>({
                 mutation: updateEmailCampaignMutation,
                 variables: { id, input: { ...output }, lastUpdatedAt: query.data?.emailCampaign?.updatedAt },
@@ -181,7 +184,7 @@ export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope, previe
         } else {
             const { data: mutationResponse } = await client.mutate<GQLCreateEmailCampaignMutation, GQLCreateEmailCampaignMutationVariables>({
                 mutation: createEmailCampaignMutation,
-                variables: { scope, input: { ...output, targetGroup: output.targetGroup } },
+                variables: { scope, input: { ...output, targetGroups: output.targetGroups } },
             });
 
             if (!mutationResponse) {
@@ -215,7 +218,7 @@ export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope, previe
     };
 
     const isScheduledDateInPast = state.scheduledAt != undefined && isBefore(new Date(state.scheduledAt), new Date());
-    const isSchedulingDisabled = state.sendingState === "SENT" || mode === "add" || !state.targetGroup || isScheduledDateInPast;
+    const isSchedulingDisabled = state.sendingState === "SENT" || mode === "add" || state.targetGroups.length === 0 || isScheduledDateInPast;
 
     return (
         <EditPageLayout>
@@ -283,19 +286,19 @@ export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope, previe
                             ),
                             content: (
                                 <BlocksFinalForm
-                                    onSubmit={(values) => setState({ ...state, scheduledAt: values.scheduledAt, targetGroup: values.targetGroup })}
+                                    onSubmit={(values) => setState({ ...state, scheduledAt: values.scheduledAt, targetGroups: values.targetGroups })}
                                     initialValues={{
-                                        targetGroup: state.targetGroup,
+                                        targetGroups: state.targetGroups,
                                         scheduledAt: state.scheduledAt,
                                     }}
                                 >
                                     <SendManagerFields
                                         scope={scope}
                                         isSchedulingDisabled={isSchedulingDisabled}
-                                        isSendable={!hasChanges && state.targetGroup != undefined}
+                                        isSendable={!hasChanges && state.targetGroups != undefined}
                                         id={id}
                                     />
-                                    <TestEmailCampaignForm id={id} isSendable={!hasChanges && state.targetGroup != undefined} />
+                                    <TestEmailCampaignForm id={id} isSendable={!hasChanges && state.targetGroups != undefined} />
                                 </BlocksFinalForm>
                             ),
                         },

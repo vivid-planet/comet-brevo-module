@@ -1,10 +1,10 @@
-import { useMutation, useQuery } from "@apollo/client";
-import { Field, FinalFormSelect, SaveButton, useStackSwitchApi } from "@comet/admin";
+import { useApolloClient, useMutation } from "@apollo/client";
+import { Field, FinalFormSelect, SaveButton, useAsyncOptionsProps, useStackSwitchApi } from "@comet/admin";
 import { FinalFormDateTimePicker } from "@comet/admin-date-time";
 import { Newsletter } from "@comet/admin-icons";
 import { AdminComponentPaper, AdminComponentSectionGroup } from "@comet/blocks-admin";
 import { ContentScopeInterface } from "@comet/cms-admin";
-import { Card, MenuItem } from "@mui/material";
+import { Card } from "@mui/material";
 import * as React from "react";
 import { FormattedMessage } from "react-intl";
 
@@ -13,6 +13,7 @@ import { sendEmailCampaignNowMutation, targetGroupsSelectQuery } from "./SendMan
 import {
     GQLSendEmailCampaignNowMutation,
     GQLSendEmailCampaignNowMutationVariables,
+    GQLTargetGroupSelectFragment,
     GQLTargetGroupsSelectQuery,
     GQLTargetGroupsSelectQueryVariables,
 } from "./SendManagerFields.gql.generated";
@@ -39,12 +40,18 @@ const validateScheduledAt = (value: Date, now: Date) => {
 
 export const SendManagerFields = ({ isSchedulingDisabled, scope, id, isSendable }: SendManagerFieldsProps) => {
     const stackSwitchApi = useStackSwitchApi();
+    const apolloClient = useApolloClient();
 
     const [isSendEmailCampaignNowDialogOpen, setIsSendEmailCampaignNowDialogOpen] = React.useState(false);
 
-    const { data: targetGroups } = useQuery<GQLTargetGroupsSelectQuery, GQLTargetGroupsSelectQueryVariables>(targetGroupsSelectQuery, {
-        variables: { scope },
-        fetchPolicy: "network-only",
+    const selectAsyncMultipleProps = useAsyncOptionsProps(async () => {
+        return (
+            await apolloClient.query<GQLTargetGroupsSelectQuery, GQLTargetGroupsSelectQueryVariables>({
+                query: targetGroupsSelectQuery,
+                variables: { scope },
+                fetchPolicy: "network-only",
+            })
+        ).data.targetGroups.nodes;
     });
 
     const [sendEmailCampaignNow, { loading: sendEmailCampaignNowLoading, error: sendEmailCampaignNowError }] = useMutation<
@@ -69,21 +76,19 @@ export const SendManagerFields = ({ isSchedulingDisabled, scope, id, isSendable 
                         validate={(value) => (isSchedulingDisabled ? undefined : validateScheduledAt(value, now))}
                         componentsProps={{ datePicker: { placeholder: "DD.MM.YYYY", minDate: now }, timePicker: { placeholder: "HH:mm" } }}
                     />
+
                     <Field
-                        label={<FormattedMessage id="cometBrevoModule.emailCampaigns.targetGroup" defaultMessage="Target group" />}
-                        name="targetGroup"
+                        component={FinalFormSelect}
+                        getOptionLabel={(option: GQLTargetGroupSelectFragment) => option.title}
+                        getOptionSelected={(option: GQLTargetGroupSelectFragment, value: string) => {
+                            return option.id === value;
+                        }}
+                        {...selectAsyncMultipleProps}
+                        name="targetGroups"
+                        label={<FormattedMessage id="cometBrevoModule.emailCampaigns.targetGroups" defaultMessage="Target groups" />}
+                        multiple
                         fullWidth
-                    >
-                        {(props) => (
-                            <FinalFormSelect {...props} fullWidth clearable>
-                                {targetGroups?.targetGroups.nodes.map((option) => (
-                                    <MenuItem value={option.id} key={option.id}>
-                                        {option.title}
-                                    </MenuItem>
-                                ))}
-                            </FinalFormSelect>
-                        )}
-                    </Field>
+                    />
 
                     <SaveButton
                         variant="contained"

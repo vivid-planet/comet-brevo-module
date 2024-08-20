@@ -1,5 +1,5 @@
 import { AffectedEntity, extractGraphqlFields, PaginatedResponseFactory, RequiredPermission, validateNotModified } from "@comet/cms-api";
-import { EntityManager, EntityRepository, FindOptions, Reference, wrap } from "@mikro-orm/core";
+import { EntityManager, EntityRepository, FindOptions, wrap } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Type } from "@nestjs/common";
 import { Args, ArgsType, ID, Info, Mutation, ObjectType, Parent, Query, ResolveField, Resolver } from "@nestjs/graphql";
@@ -66,8 +66,8 @@ export function createEmailCampaignsResolver({
 
             const fields = extractGraphqlFields(info, { root: "nodes" });
             const populate: string[] = [];
-            if (fields.includes("targetGroup")) {
-                populate.push("targetGroup");
+            if (fields.includes("targetGroups")) {
+                populate.push("targetGroups");
             }
 
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -94,12 +94,9 @@ export function createEmailCampaignsResolver({
             scope: typeof Scope,
             @Args("input", { type: () => EmailCampaignInput }, new DynamicDtoValidationPipe(EmailCampaignInput)) input: EmailCampaignInputInterface,
         ): Promise<EmailCampaignInterface> {
-            const { targetGroup: targetGroupInput } = input;
-
             const campaign = this.repository.create({
                 ...input,
                 scope,
-                targetGroup: targetGroupInput ? Reference.create(await this.targetGroupRepository.findOneOrFail(targetGroupInput)) : undefined,
                 content: input.content.transformToBlockData(),
                 scheduledAt: input.scheduledAt ?? undefined,
                 sendingState: input.scheduledAt ? SendingState.SCHEDULED : SendingState.DRAFT,
@@ -240,9 +237,9 @@ export function createEmailCampaignsResolver({
             return campaign.sendingState;
         }
 
-        @ResolveField(() => TargetGroup, { nullable: true })
-        async targetGroup(@Parent() emailCampaign: EmailCampaignInterface): Promise<TargetGroupInterface | undefined> {
-            return emailCampaign.targetGroup?.load();
+        @ResolveField(() => [TargetGroup])
+        async targetGroups(@Parent() emailCampaign: EmailCampaignInterface): Promise<TargetGroupInterface[] | undefined> {
+            return emailCampaign.targetGroups.loadItems();
         }
     }
 

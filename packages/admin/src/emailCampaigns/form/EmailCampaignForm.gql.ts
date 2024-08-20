@@ -7,8 +7,9 @@ export const emailCampaignFormFragment = gql`
         scheduledAt
         content
         sendingState
-        targetGroup {
+        targetGroups {
             id
+            title
         }
     }
 `;

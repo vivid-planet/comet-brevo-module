@@ -10,7 +10,7 @@ export interface EmailCampaignInputInterface {
     subject: string;
     scheduledAt?: Date | null;
     content: BlockInputInterface;
-    targetGroup?: string;
+    targetGroups: string[];
 }
 
 export class EmailCampaignInputFactory {
@@ -38,10 +38,9 @@ export class EmailCampaignInputFactory {
             @Field(() => Date, { nullable: true })
             scheduledAt?: Date | null;
 
-            @IsUndefinable()
-            @Field(() => ID, { nullable: true })
-            @IsUUID()
-            targetGroup?: string;
+            @Field(() => [ID])
+            @IsUUID(4, { each: true })
+            targetGroups: string[];
 
             @Field(() => RootBlockInputScalar(EmailCampaignContentBlock))
             @Transform(({ value }) => (isBlockInputInterface(value) ? value : EmailCampaignContentBlock.blockInputFactory(value)), {

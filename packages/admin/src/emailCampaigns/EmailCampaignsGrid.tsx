@@ -46,7 +46,7 @@ const emailCampaignsFragment = gql`
         scheduledAt
         brevoId
         content
-        targetGroup {
+        targetGroups {
             id
             title
         }
@@ -155,10 +155,10 @@ export function EmailCampaignsGrid({
             width: 200,
         },
         {
-            field: "targetGroup",
-            headerName: intl.formatMessage({ id: "cometBrevoModule.emailCampaign.targetGroup", defaultMessage: "Target group" }),
+            field: "targetGroups",
+            headerName: intl.formatMessage({ id: "cometBrevoModule.emailCampaign.targetGroups", defaultMessage: "Target groups" }),
             width: 150,
-            renderCell: ({ value }) => (value ? value.title : "-"),
+            renderCell: ({ value }) => value.map((value: { title: string }) => value.title).join(", "),
             filterable: false,
             sortable: false,
         },
@@ -195,12 +195,13 @@ export function EmailCampaignsGrid({
                                     title: row.title,
                                     subject: row.subject,
                                     content: EmailCampaignContentBlock.state2Output(EmailCampaignContentBlock.input2State(row.content)),
+                                    targetGroups: row.targetGroups.map((targetGroup) => targetGroup.id),
                                 };
                             }}
                             onPaste={async ({ input }) => {
                                 await client.mutate<GQLCreateEmailCampaignMutation, GQLCreateEmailCampaignMutationVariables>({
                                     mutation: createEmailCampaignMutation,
-                                    variables: { scope, input },
+                                    variables: { scope, input: { ...input } },
                                 });
                             }}
                             onDelete={

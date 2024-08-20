@@ -60,7 +60,7 @@ async function generateSchema(): Promise<void> {
     const gqlSchemaFactory = app.get(GraphQLSchemaFactory);
 
     const BrevoContact = BrevoContactFactory.create({});
-    const [BrevoContactInput, BrevoContactUpdateInput] = BrevoContactInputFactory.create({});
+    const [BrevoContactInput, BrevoContactUpdateInput] = BrevoContactInputFactory.create({ Scope: EmailCampaignScope });
     const BrevoContactSubscribeInput = SubscribeInputFactory.create({ Scope: EmailCampaignScope });
     const BrevoContactResolver = createBrevoContactResolver({
         BrevoContact,
