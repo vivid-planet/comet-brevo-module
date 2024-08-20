@@ -6,6 +6,7 @@ import "material-design-icons/iconfont/material-icons.css";
 
 import { ApolloProvider } from "@apollo/client";
 import { ErrorDialogHandler, MuiThemeProvider, RouterBrowserRouter, SnackbarProvider } from "@comet/admin";
+import { BrevoConfigProvider } from "@comet/brevo-admin";
 import {
     AllCategories,
     BuildInformationProvider,
@@ -77,23 +78,25 @@ export function App() {
                                 <MuiThemeProvider theme={theme}>
                                     <DndProvider backend={HTML5Backend}>
                                         <SnackbarProvider>
-                                            <CmsBlockContextProvider
-                                                damConfig={{
-                                                    apiUrl: config.apiUrl,
-                                                    apiClient,
-                                                    maxFileSize: config.dam.uploadsMaxFileSize,
-                                                    maxSrcResolution: config.imgproxy.maxSrcResolution,
-                                                    allowedImageAspectRatios: config.dam.allowedImageAspectRatios,
-                                                }}
-                                                pageTreeCategories={categories}
-                                                pageTreeDocumentTypes={pageTreeDocumentTypes}
-                                            >
-                                                <RouterBrowserRouter>
-                                                    <GlobalStyle />
-                                                    <Routes />
-                                                    <ErrorDialogHandler />
-                                                </RouterBrowserRouter>
-                                            </CmsBlockContextProvider>
+                                            <BrevoConfigProvider value={{ apiUrl: config.apiUrl }}>
+                                                <CmsBlockContextProvider
+                                                    damConfig={{
+                                                        apiUrl: config.apiUrl,
+                                                        apiClient,
+                                                        maxFileSize: config.dam.uploadsMaxFileSize,
+                                                        maxSrcResolution: config.imgproxy.maxSrcResolution,
+                                                        allowedImageAspectRatios: config.dam.allowedImageAspectRatios,
+                                                    }}
+                                                    pageTreeCategories={categories}
+                                                    pageTreeDocumentTypes={pageTreeDocumentTypes}
+                                                >
+                                                    <RouterBrowserRouter>
+                                                        <GlobalStyle />
+                                                        <Routes />
+                                                        <ErrorDialogHandler />
+                                                    </RouterBrowserRouter>
+                                                </CmsBlockContextProvider>
+                                            </BrevoConfigProvider>
                                         </SnackbarProvider>
                                     </DndProvider>
                                 </MuiThemeProvider>

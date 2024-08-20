@@ -1,13 +1,5 @@
 import { useQuery } from "@apollo/client";
-import {
-    Toolbar,
-    ToolbarFillSpace,
-    ToolbarItem,
-    ToolbarTitleItem,
-    useBufferedRowCount,
-    useDataGridRemote,
-    usePersistentColumnState,
-} from "@comet/admin";
+import { Toolbar, ToolbarItem, ToolbarTitleItem, useBufferedRowCount, useDataGridRemote, usePersistentColumnState } from "@comet/admin";
 import { ContentScopeInterface } from "@comet/cms-admin";
 import { DataGrid, GridColDef, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import * as React from "react";
@@ -20,7 +12,7 @@ import {
     GQLTargetGroupBrevoContactsListFragment,
 } from "./AllAssignedContactsGrid.gql.generated";
 
-const AssignedContactsGridToolbar = ({ onOpenDialog }: { onOpenDialog: () => void }) => {
+const AssignedContactsGridToolbar = () => {
     const intl = useIntl();
 
     return (
@@ -36,7 +28,6 @@ const AssignedContactsGridToolbar = ({ onOpenDialog }: { onOpenDialog: () => voi
                     })}
                 />
             </ToolbarItem>
-            <ToolbarFillSpace />
         </Toolbar>
     );
 };
@@ -108,19 +99,17 @@ export function AllAssignedContactsGrid({ id, scope, brevoId }: AllAssignedConta
     if (allAssignedContactsError) throw allAssignedContactsError;
 
     return (
-        <>
-            <DataGrid
-                {...dataGridAllAssignedContactsProps}
-                disableSelectionOnClick
-                rows={allAssignedContactsData?.brevoContacts.nodes ?? []}
-                rowCount={allAssignedContactsRowCount}
-                columns={allAssignedContactsColumns}
-                autoHeight
-                loading={assignedContactsLoading}
-                components={{
-                    Toolbar: AssignedContactsGridToolbar,
-                }}
-            />
-        </>
+        <DataGrid
+            {...dataGridAllAssignedContactsProps}
+            disableSelectionOnClick
+            rows={allAssignedContactsData?.brevoContacts.nodes ?? []}
+            rowCount={allAssignedContactsRowCount}
+            columns={allAssignedContactsColumns}
+            autoHeight
+            loading={assignedContactsLoading}
+            components={{
+                Toolbar: AssignedContactsGridToolbar,
+            }}
+        />
     );
 }

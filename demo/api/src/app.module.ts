@@ -147,6 +147,7 @@ export class AppModule {
                                     doubleOptInTemplateId: config.brevo.doubleOptInTemplateId,
                                     sender: { name: config.brevo.sender.name, email: config.brevo.sender.email },
                                     allowedRedirectUrl: config.brevo.allowedRedirectUrl,
+                                    redirectUrlForImport: config.brevo.redirectUrlForImport,
                                 };
                             } else {
                                 return {
@@ -154,6 +155,7 @@ export class AppModule {
                                     doubleOptInTemplateId: config.brevo.doubleOptInTemplateId,
                                     sender: { name: config.brevo.sender.name, email: config.brevo.sender.email },
                                     allowedRedirectUrl: config.brevo.allowedRedirectUrl,
+                                    redirectUrlForImport: config.brevo.redirectUrlForImport,
                                 };
                             }
                         },

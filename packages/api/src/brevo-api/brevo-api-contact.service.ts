@@ -81,8 +81,8 @@ export class BrevoApiContactsService {
         return response.statusCode === 204;
     }
 
-    public async findContact(id: number, scope: EmailCampaignScopeInterface): Promise<BrevoContactInterface> {
-        const idAsString = id.toString(); // brevo expects a string, because it can be an email or the id, so we have to transform the id to string
+    public async findContact(idOrEmail: string | number, scope: EmailCampaignScopeInterface): Promise<BrevoContactInterface> {
+        const idAsString = String(idOrEmail); // brevo expects a string, because it can be an email or the id
         const { body } = await this.getContactsApi(scope).getContactInfo(idAsString);
 
         return body;
