@@ -140,7 +140,7 @@ type EmailCampaign implements DocumentInterface {
   subject: String!
   brevoId: Int
   scheduledAt: DateTime
-  targetGroup: TargetGroup
+  targetGroups: [TargetGroup!]!
   content: EmailCampaignContentBlockData!
   scope: EmailCampaignContentScope!
   sendingState: SendingState!
@@ -303,7 +303,7 @@ input EmailCampaignInput {
   title: String!
   subject: String!
   scheduledAt: DateTime
-  targetGroup: ID
+  targetGroups: [ID!]!
   content: EmailCampaignContentBlockInput!
 }
 
@@ -314,7 +314,7 @@ input EmailCampaignUpdateInput {
   title: String
   subject: String
   scheduledAt: DateTime
-  targetGroup: ID
+  targetGroups: [ID!]
   content: EmailCampaignContentBlockInput
 }
 

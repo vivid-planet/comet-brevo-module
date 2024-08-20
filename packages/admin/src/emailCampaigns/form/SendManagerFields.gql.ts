@@ -1,14 +1,22 @@
 import { gql } from "@apollo/client";
 
+const targetGroupSelectFragment = gql`
+    fragment TargetGroupSelect on TargetGroup {
+        id
+        title
+    }
+`;
+
 export const targetGroupsSelectQuery = gql`
     query TargetGroupsSelect($scope: EmailCampaignContentScopeInput!) {
-        targetGroups(scope: $scope) {
+        targetGroups(scope: $scope, limit: 100) {
             nodes {
-                id
-                title
+                ...TargetGroupSelect
             }
         }
     }
+
+    ${targetGroupSelectFragment}
 `;
 
 export const sendEmailCampaignNowMutation = gql`

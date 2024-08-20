@@ -1,9 +1,10 @@
 import { DocumentInterface } from "@comet/cms-api";
-import { Embedded, Entity, OptionalProps, PrimaryKey, Property } from "@mikro-orm/core";
+import { Collection, Embedded, Entity, ManyToMany, OptionalProps, PrimaryKey, Property } from "@mikro-orm/core";
 import { Type } from "@nestjs/common";
 import { Field, ID, Int, ObjectType } from "@nestjs/graphql";
 import { v4 } from "uuid";
 
+import { EmailCampaignInterface } from "../../email-campaign/entities/email-campaign-entity.factory";
 import { BrevoContactFilterAttributesInterface, EmailCampaignScopeInterface } from "../../types";
 
 export interface TargetGroupInterface {
@@ -19,6 +20,7 @@ export interface TargetGroupInterface {
     scope: EmailCampaignScopeInterface;
     filters?: BrevoContactFilterAttributesInterface;
     assignedContactsTargetGroupBrevoId?: number;
+    campaigns: Collection<EmailCampaignInterface, object>;
 }
 
 export class TargetGroupEntityFactory {
@@ -74,6 +76,9 @@ export class TargetGroupEntityFactory {
             @Property({ columnType: "int", nullable: true })
             @Field(() => Int, { nullable: true })
             assignedContactsTargetGroupBrevoId?: number;
+
+            @ManyToMany("EmailCampaign", "targetGroups")
+            campaigns = new Collection<EmailCampaignInterface>(this);
         }
         if (BrevoFilterAttributes) {
             @Entity()

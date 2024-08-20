@@ -118,32 +118,34 @@ export class EmailCampaignsService {
     public async sendEmailCampaignNow(campaign: EmailCampaignInterface): Promise<boolean> {
         const brevoCampaign = await this.saveEmailCampaignInBrevo(campaign);
 
-        const targetGroup = await brevoCampaign.targetGroup?.load();
+        const targetGroups = await brevoCampaign.targetGroups.loadItems();
 
-        if (targetGroup?.brevoId) {
-            let currentOffset = 0;
-            let totalContacts = 0;
-            const limit = 50;
-            do {
-                const [contacts, total] = await this.brevoApiContactsService.findContactsByListId(
-                    targetGroup.brevoId,
-                    limit,
-                    currentOffset,
-                    campaign.scope,
-                );
-                const emails = contacts.map((contact) => contact.email).filter((email): email is string => email !== undefined);
-                const containedEmails = await this.ecgRtrListService.getContainedEcgRtrListEmails(emails);
+        for (const targetGroup of targetGroups) {
+            if (targetGroup?.brevoId) {
+                let currentOffset = 0;
+                let totalContacts = 0;
+                const limit = 50;
+                do {
+                    const [contacts, total] = await this.brevoApiContactsService.findContactsByListId(
+                        targetGroup.brevoId,
+                        limit,
+                        currentOffset,
+                        campaign.scope,
+                    );
+                    const emails = contacts.map((contact) => contact.email).filter((email): email is string => email !== undefined);
+                    const containedEmails = await this.ecgRtrListService.getContainedEcgRtrListEmails(emails);
 
-                if (containedEmails.length > 0) {
-                    await this.brevoApiContactsService.blacklistMultipleContacts(containedEmails, campaign.scope);
+                    if (containedEmails.length > 0) {
+                        await this.brevoApiContactsService.blacklistMultipleContacts(containedEmails, campaign.scope);
+                    }
+
+                    currentOffset += limit;
+                    totalContacts = total;
+                } while (currentOffset < totalContacts);
+
+                if (brevoCampaign.brevoId) {
+                    return this.brevoApiCampaignService.sendBrevoCampaign(brevoCampaign);
                 }
-
-                currentOffset += limit;
-                totalContacts = total;
-            } while (currentOffset < totalContacts);
-
-            if (brevoCampaign.brevoId) {
-                return this.brevoApiCampaignService.sendBrevoCampaign(brevoCampaign);
             }
         }
 
