@@ -1,4 +1,4 @@
-import { Mjml, MjmlAttributes, MjmlBody, MjmlDivider, MjmlHead, MjmlText, MjmlTitle } from "@luma-team/mjml-react";
+import { Mjml, MjmlAttributes, MjmlBody, MjmlDivider, MjmlHead, MjmlSection, MjmlText, MjmlTitle } from "@luma-team/mjml-react";
 import { commonImageBlockStyles } from "@src/common/blocks/CommonImageBlock";
 import { css } from "@src/util/stylesHelper";
 import { theme } from "@src/util/theme";
@@ -38,6 +38,7 @@ export const Root: React.FC<Props> = ({ children, title }) => {
                 <MjmlAttributes>
                     <MjmlText padding={0} />
                     <MjmlDivider padding={0} />
+                    <MjmlSection padding={0} />
                 </MjmlAttributes>
                 {!!title && <MjmlTitle>{title}</MjmlTitle>}
                 {indentedSectionGroupStyles}
