@@ -23,7 +23,7 @@ jobs:
         with:
           repository: vivid-planet/comet-lang
           token: ${{ secrets.VIVID_PLANET_BOT_TOKEN }}
-          path: "demo/admin/lang/comet-brevo-module-lang"
+          path: "demo/admin/lang/comet-lang"
 
       - name: "COMET Brevo Library: Clone translations"
         uses: actions/checkout@v3
