@@ -18,7 +18,14 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
 
-      - name: "Library: Clone translations"
+      - name: "COMET Library: Clone translations"
+        uses: actions/checkout@v3
+        with:
+          repository: vivid-planet/comet-lang
+          token: ${{ secrets.VIVID_PLANET_BOT_TOKEN }}
+          path: "demo/admin/lang/comet-brevo-module-lang"
+
+      - name: "COMET Brevo Library: Clone translations"
         uses: actions/checkout@v3
         with:
           repository: vivid-planet/comet-brevo-module-lang
