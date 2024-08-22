@@ -15,8 +15,9 @@
         "lint:prettier": "npx prettier --check './**/*.{js,json,md,yml,yaml}'",
         "intl:extract": "formatjs extract \"src/**/*.ts*\" --ignore ./**.d.ts --out-file lang-extracted/en.json --format simple",
         "intl:compile:comet-brevo-module": "formatjs compile-folder --format simple --ast lang/comet-brevo-module-lang lang-compiled/comet-brevo-module-lang",
-        "intl:compile:comet-brevo-module-demo": "formatjs compile-folder --format simple --ast lang/comet-brevo-module-demo-lang lang-compiled/comet-brevo-module-demo-lang",
-        "intl:compile": "run-p intl:compile:comet-brevo-module-demo intl:compile:comet-brevo-module",
+        "intl:compile:comet-brevo-module-demo": "formatjs compile-folder --format simple --ast lang/comet-brevo-module-demo-lang/admin lang-compiled/comet-brevo-module-demo-lang",
+        "intl:compile:comet": "formatjs compile-folder --format simple --ast lang/comet-lang lang-compiled/comet-lang",
+        "intl:compile": "run-p intl:compile:comet intl:compile:comet-brevo-module-demo intl:compile:comet-brevo-module",
         "lint:generated-files-not-modified": "$npm_execpath admin-generator && git diff --exit-code HEAD --",
         "generate-block-types": "comet generate-block-types --inputs",
         "generate-block-types:watch": "chokidar -s \"**/block-meta.json\" -c \"npm run generate-block-types\""
