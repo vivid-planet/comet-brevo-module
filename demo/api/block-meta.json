@@ -209,7 +209,8 @@
                             "blocks": {
                                 "text": "RichText",
                                 "divider": "EmailCampaignDivider",
-                                "salutation": "EmailCampaignSalutation"
+                                "salutation": "EmailCampaignSalutation",
+                                "image": "PixelImage"
                             },
                             "nullable": false
                         }
@@ -245,7 +246,8 @@
                             "blocks": {
                                 "text": "RichText",
                                 "divider": "EmailCampaignDivider",
-                                "salutation": "EmailCampaignSalutation"
+                                "salutation": "EmailCampaignSalutation",
+                                "image": "PixelImage"
                             },
                             "nullable": false
                         }

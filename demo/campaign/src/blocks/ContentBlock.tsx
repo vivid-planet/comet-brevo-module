@@ -4,12 +4,14 @@ import { RichTextBlock } from "@src/blocks//RichTextBlock";
 import { DividerBlock } from "@src/blocks/DividerBlock";
 import React from "react";
 
+import { ImageBlock } from "./ImageBlock";
 import { SalutationBlock } from "./SalutationBlock";
 
 const supportedBlocks: SupportedBlocks = {
     divider: (data) => <DividerBlock />,
     text: (data) => <RichTextBlock data={data} />,
     salutation: (data) => <SalutationBlock data={data} />,
+    image: (data) => <ImageBlock data={data} />,
 };
 
 interface Props {
