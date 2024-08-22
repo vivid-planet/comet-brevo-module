@@ -1,9 +1,12 @@
-import { Mjml, MjmlBody, MjmlHead, MjmlTitle } from "@luma-team/mjml-react";
+import { Mjml, MjmlAttributes, MjmlBody, MjmlDivider, MjmlHead, MjmlSection, MjmlText, MjmlTitle } from "@luma-team/mjml-react";
+import { commonImageBlockStyles } from "@src/common/blocks/CommonImageBlock";
 import { css } from "@src/util/stylesHelper";
 import { theme } from "@src/util/theme";
 import { MjmlConditionalComment } from "mjml-react/extensions";
 import React from "react";
 import { renderToString } from "react-dom/server";
+
+import { indentedSectionGroupStyles } from "./IndentedSectionGroup";
 
 type Props = React.PropsWithChildren<{
     title?: string;
@@ -32,7 +35,14 @@ export const Root: React.FC<Props> = ({ children, title }) => {
     return (
         <Mjml>
             <MjmlHead>
+                <MjmlAttributes>
+                    <MjmlText padding={0} />
+                    <MjmlDivider padding={0} />
+                    <MjmlSection padding={0} />
+                </MjmlAttributes>
                 {!!title && <MjmlTitle>{title}</MjmlTitle>}
+                {indentedSectionGroupStyles}
+                {commonImageBlockStyles}
                 <MjmlConditionalComment condition="if mso">{outlookFontFixStyleString}</MjmlConditionalComment>
             </MjmlHead>
             <MjmlBody width={theme.mailSize.contentWidth}>{children}</MjmlBody>
