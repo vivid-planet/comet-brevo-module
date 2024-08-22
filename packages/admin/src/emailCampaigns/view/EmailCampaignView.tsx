@@ -8,21 +8,22 @@ import React from "react";
 import { FormattedMessage } from "react-intl";
 import { useRouteMatch } from "react-router";
 
+import { useBrevoConfig } from "../../common/BrevoConfigProvider";
 import { emailCampaignViewQuery } from "./EmailCampaignView.gql";
 import { GQLEmailCampaignViewQuery, GQLEmailCampaignViewQueryVariables } from "./EmailCampaignView.gql.generated";
 
 interface EmailCampaignViewProps {
     id: string;
     EmailCampaignContentBlock: BlockInterface;
-    previewUrl: string;
 }
 
-export function EmailCampaignView({ id, EmailCampaignContentBlock, previewUrl }: EmailCampaignViewProps): React.ReactElement {
+export function EmailCampaignView({ id, EmailCampaignContentBlock }: EmailCampaignViewProps): React.ReactElement {
     const stackApi = useStackApi();
     const previewApi = useBlockPreview();
     const blockContext = useCmsBlockContext();
     const match = useRouteMatch();
     const { scope } = useContentScope();
+    const { previewUrl } = useBrevoConfig();
 
     const { data, error, loading } = useQuery<GQLEmailCampaignViewQuery, GQLEmailCampaignViewQueryVariables>(emailCampaignViewQuery, {
         variables: { id },

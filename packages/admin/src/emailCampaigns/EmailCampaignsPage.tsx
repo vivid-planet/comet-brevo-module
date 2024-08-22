@@ -12,10 +12,9 @@ import { EmailCampaignView } from "./view/EmailCampaignView";
 interface CreateEmailCampaignsPageOptions {
     scopeParts: string[];
     EmailCampaignContentBlock: BlockInterface;
-    previewUrl: string;
 }
 
-export function createEmailCampaignsPage({ scopeParts, EmailCampaignContentBlock, previewUrl }: CreateEmailCampaignsPageOptions) {
+export function createEmailCampaignsPage({ scopeParts, EmailCampaignContentBlock }: CreateEmailCampaignsPageOptions) {
     function EmailCampaignsPage(): JSX.Element {
         const { scope: completeScope } = useContentScope();
         const intl = useIntl();
@@ -33,29 +32,20 @@ export function createEmailCampaignsPage({ scopeParts, EmailCampaignContentBlock
                     </StackPage>
                     <StackPage name="statistics">{(selectedId) => <EmailCampaignStatistics id={selectedId} />}</StackPage>
                     <StackPage name="view">
-                        {(selectedId) => (
-                            <EmailCampaignView id={selectedId} previewUrl={previewUrl} EmailCampaignContentBlock={EmailCampaignContentBlock} />
-                        )}
+                        {(selectedId) => <EmailCampaignView id={selectedId} EmailCampaignContentBlock={EmailCampaignContentBlock} />}
                     </StackPage>
 
                     <StackPage
                         name="edit"
                         title={intl.formatMessage({ id: "cometBrevoModule.emailCampaigns.editEmailCampaign", defaultMessage: "Edit email campaign" })}
                     >
-                        {(selectedId) => (
-                            <EmailCampaignForm
-                                previewUrl={previewUrl}
-                                id={selectedId}
-                                EmailCampaignContentBlock={EmailCampaignContentBlock}
-                                scope={scope}
-                            />
-                        )}
+                        {(selectedId) => <EmailCampaignForm id={selectedId} EmailCampaignContentBlock={EmailCampaignContentBlock} scope={scope} />}
                     </StackPage>
                     <StackPage
                         name="add"
                         title={intl.formatMessage({ id: "cometBrevoModule.emailCampaigns.addEmailCampaign", defaultMessage: "Add email campaign" })}
                     >
-                        <EmailCampaignForm previewUrl={previewUrl} EmailCampaignContentBlock={EmailCampaignContentBlock} scope={scope} />
+                        <EmailCampaignForm EmailCampaignContentBlock={EmailCampaignContentBlock} scope={scope} />
                     </StackPage>
                 </StackSwitch>
             </Stack>

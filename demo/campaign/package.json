@@ -9,6 +9,7 @@
         "export": "next export",
         "gql:types": "graphql-codegen",
         "gql:watch": "graphql-codegen --watch",
+        "intl:extract": "formatjs extract \"src/**/*.ts*\" --ignore ./**.d.ts --out-file lang-extracted/en.json --format simple",
         "lint": "run-p gql:types generate-block-types && run-p lint:prettier lint:eslint lint:tsc",
         "lint:prettier": "npx prettier --check './**/*.{js,json,md,yml,yaml}'",
         "lint:eslint": "eslint --max-warnings 0 --config ./.eslintrc.cli.js --ext .ts,.tsx,.js,.jsx,.json,.md src/ package.json",

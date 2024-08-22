@@ -40,6 +40,7 @@ import React, { useMemo } from "react";
 import { FormattedMessage } from "react-intl";
 import { useRouteMatch } from "react-router";
 
+import { useBrevoConfig } from "../../common/BrevoConfigProvider";
 import { GQLEmailCampaignInput } from "../../graphql.generated";
 import { ConfigFields } from "./ConfigFields";
 import { createEmailCampaignMutation, emailCampaignFormQuery, updateEmailCampaignMutation } from "./EmailCampaignForm.gql";
@@ -59,10 +60,9 @@ interface FormProps {
     id?: string;
     EmailCampaignContentBlock: BlockInterface;
     scope: ContentScopeInterface;
-    previewUrl: string;
 }
 
-export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope, previewUrl }: FormProps): React.ReactElement {
+export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope }: FormProps): React.ReactElement {
     const rootBlocks = {
         content: EmailCampaignContentBlock,
     };
@@ -71,6 +71,7 @@ export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope, previe
         [key in keyof typeof rootBlocks]: BlockState<(typeof rootBlocks)[key]>;
     };
 
+    const { previewUrl } = useBrevoConfig();
     const stackApi = useStackApi();
     const stackSwitchApi = useStackSwitchApi();
     const client = useApolloClient();

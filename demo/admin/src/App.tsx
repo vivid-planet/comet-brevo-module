@@ -78,7 +78,14 @@ export function App() {
                                 <MuiThemeProvider theme={theme}>
                                     <DndProvider backend={HTML5Backend}>
                                         <SnackbarProvider>
-                                            <BrevoConfigProvider value={{ apiUrl: config.apiUrl }}>
+                                            <BrevoConfigProvider
+                                                value={{
+                                                    apiUrl: config.apiUrl,
+                                                    resolvePreviewUrlForScope: (scope: ContentScope) => {
+                                                        return `${config.campaignUrl}/preview/${scope.domain}/${scope.language}`;
+                                                    },
+                                                }}
+                                            >
                                                 <CmsBlockContextProvider
                                                     damConfig={{
                                                         apiUrl: config.apiUrl,

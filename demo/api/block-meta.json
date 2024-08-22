@@ -208,7 +208,8 @@
                             "kind": "OneOfBlocks",
                             "blocks": {
                                 "text": "RichText",
-                                "divider": "EmailCampaignDivider"
+                                "divider": "EmailCampaignDivider",
+                                "salutation": "EmailCampaignSalutation"
                             },
                             "nullable": false
                         }
@@ -243,7 +244,8 @@
                             "kind": "OneOfBlocks",
                             "blocks": {
                                 "text": "RichText",
-                                "divider": "EmailCampaignDivider"
+                                "divider": "EmailCampaignDivider",
+                                "salutation": "EmailCampaignSalutation"
                             },
                             "nullable": false
                         }
@@ -318,6 +320,11 @@
                 "nullable": true
             }
         ]
+    },
+    {
+        "name": "EmailCampaignSalutation",
+        "fields": [],
+        "inputFields": []
     },
     {
         "name": "ExternalLink",
