@@ -5,6 +5,7 @@ import { Type as TypeTransformer } from "class-transformer";
 import { IsNotEmpty, IsString, ValidateNested } from "class-validator";
 
 import { BrevoContactFilterAttributesInterface } from "../../types";
+import { EmptyBrevoContactFilterAttributes } from "./empty-brevo-contact-filter-attributes";
 
 export interface TargetGroupInputInterface {
     title: string;
@@ -41,9 +42,16 @@ export class TargetGroupInputFactory {
 
             return [TargetGroupInput, TargetGroupUpdateInput];
         }
-
         @InputType()
-        class TargetGroupInput extends TargetGroupInputBase {}
+        class TargetGroupInput extends TargetGroupInputBase {
+            @Field(() => EmptyBrevoContactFilterAttributes, {
+                nullable: true,
+            })
+            @TypeTransformer(() => EmptyBrevoContactFilterAttributes)
+            @ValidateNested()
+            @IsUndefinable()
+            filters?: BrevoContactFilterAttributesInterface;
+        }
 
         @InputType()
         class TargetGroupUpdateInput extends PartialType(TargetGroupInput) {}

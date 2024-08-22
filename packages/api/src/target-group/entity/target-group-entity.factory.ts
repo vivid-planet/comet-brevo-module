@@ -6,6 +6,7 @@ import { v4 } from "uuid";
 
 import { EmailCampaignInterface } from "../../email-campaign/entities/email-campaign-entity.factory";
 import { BrevoContactFilterAttributesInterface, EmailCampaignScopeInterface } from "../../types";
+import { EmptyBrevoContactFilterAttributes } from "../dto/empty-brevo-contact-filter-attributes";
 
 export interface TargetGroupInterface {
     [OptionalProps]?: "createdAt" | "updatedAt" | "totalSubscribers" | "totalContactsBlocked";
@@ -93,12 +94,17 @@ export class TargetGroupEntityFactory {
 
             return TargetGroup;
         }
-
         @Entity()
         @ObjectType({
             implements: () => [DocumentInterface],
         })
-        class TargetGroup extends TargetGroupBase {}
+        class TargetGroup extends TargetGroupBase {
+            @Embedded(() => EmptyBrevoContactFilterAttributes, { nullable: true })
+            @Field(() => EmptyBrevoContactFilterAttributes, {
+                nullable: true,
+            })
+            filters?: BrevoContactFilterAttributesInterface;
+        }
 
         return TargetGroup;
     }
