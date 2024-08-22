@@ -84,6 +84,10 @@ type BrevoApiCampaignStatistics {
   viewed: Int!
 }
 
+type EmptyBrevoContactFilterAttributes {
+  thisFilterHasNoFields____: [String!]
+}
+
 type EmailCampaignContentScope {
   thisScopeHasNoFields____: String
 }
@@ -115,6 +119,7 @@ type TargetGroup implements DocumentInterface {
   totalContactsBlocked: Int!
   scope: EmailCampaignContentScope!
   assignedContactsTargetGroupBrevoId: Int
+  filters: EmptyBrevoContactFilterAttributes
 }
 
 interface DocumentInterface {
@@ -158,6 +163,10 @@ enum SendingState {
 type PaginatedEmailCampaigns {
   nodes: [EmailCampaign!]!
   totalCount: Int!
+}
+
+input BrevoContactFilterAttributesInput {
+  thisFilterHasNoFields____: [String!]
 }
 
 input EmailCampaignContentScopeInput {
@@ -280,10 +289,6 @@ input SubscribeInput {
 input TargetGroupInput {
   title: String!
   filters: BrevoContactFilterAttributesInput
-}
-
-input BrevoContactFilterAttributesInput {
-  thisFilterHasNoFields____: [String!]
 }
 
 input AddBrevoContactsInput {
