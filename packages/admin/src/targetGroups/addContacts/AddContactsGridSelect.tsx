@@ -65,7 +65,7 @@ const AssignedContactsGridToolbar = ({
         <>
             <Toolbar>
                 <ToolbarTitleItem>
-                    <FormattedMessage id="cometBrevoModule.targetGroup.assignedContacts.title" defaultMessage="Manually assigned contacts" />
+                    <FormattedMessage id="cometBrevoModule.targetGroup.manuallyAssignedContacts.title" defaultMessage="Manually assigned contacts" />
                 </ToolbarTitleItem>
                 <ToolbarItem>
                     <GridToolbarQuickFilter

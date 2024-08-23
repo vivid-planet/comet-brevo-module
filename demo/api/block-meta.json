@@ -208,7 +208,8 @@
                             "kind": "OneOfBlocks",
                             "blocks": {
                                 "text": "RichText",
-                                "divider": "EmailCampaignDivider"
+                                "divider": "EmailCampaignDivider",
+                                "image": "PixelImage"
                             },
                             "nullable": false
                         }
@@ -243,7 +244,8 @@
                             "kind": "OneOfBlocks",
                             "blocks": {
                                 "text": "RichText",
-                                "divider": "EmailCampaignDivider"
+                                "divider": "EmailCampaignDivider",
+                                "image": "PixelImage"
                             },
                             "nullable": false
                         }

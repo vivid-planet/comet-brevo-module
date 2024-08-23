@@ -21,7 +21,7 @@
         "lint:root": "$npm_execpath prettier --check './!(demo|packages)/**/*.{js,json,md,yml,yaml}'",
         "lint:eslint": "pnpm recursive run lint:eslint",
         "lint:tsc": "pnpm recursive run lint:tsc",
-        "intl:extract": "formatjs extract \"src/**/*.ts*\" --ignore ./**.d.ts --out-file lang-extracted/en.json --format simple",
+        "intl:extract": "formatjs extract './packages/admin/**/*.ts*' --out-file 'lang/en.json' --ignore './**.d.ts' --ignore './**.d.ts.map' --format simple --throws",
         "version": "$npm_execpath changeset version && pnpm install --lockfile-only",
         "publish": "pnpm run build:lib && $npm_execpath changeset publish"
     },
