@@ -209,6 +209,7 @@
                             "blocks": {
                                 "text": "RichText",
                                 "divider": "EmailCampaignDivider",
+                                "salutation": "EmailCampaignSalutation",
                                 "image": "PixelImage"
                             },
                             "nullable": false
@@ -245,6 +246,7 @@
                             "blocks": {
                                 "text": "RichText",
                                 "divider": "EmailCampaignDivider",
+                                "salutation": "EmailCampaignSalutation",
                                 "image": "PixelImage"
                             },
                             "nullable": false
@@ -320,6 +322,11 @@
                 "nullable": true
             }
         ]
+    },
+    {
+        "name": "EmailCampaignSalutation",
+        "fields": [],
+        "inputFields": []
     },
     {
         "name": "ExternalLink",

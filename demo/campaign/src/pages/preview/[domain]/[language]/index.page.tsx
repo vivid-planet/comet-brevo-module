@@ -31,10 +31,9 @@ const MailPreviewPage: React.FC<Props> = (props) => (
 
 export default MailPreviewPage;
 
-export async function getServerSideProps({ locale: localeFromContext }: GetServerSidePropsContext): Promise<{ props: Props } | undefined> {
-    const locale = localeFromContext ?? defaultLanguage;
+export async function getServerSideProps({ params }: GetServerSidePropsContext): Promise<{ props: Props } | undefined> {
+    const locale = typeof params?.language === "string" ? params.language : defaultLanguage;
     const [messages] = await Promise.all([getMessages(locale)]);
-
     return {
         props: {
             intlProviderValues: {
