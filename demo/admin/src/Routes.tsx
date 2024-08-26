@@ -33,6 +33,14 @@ export const Routes: React.FC = () => {
         input2State: brevoContactConfig.input2State,
     });
 
+    const BrevoTestContactsPage = createBrevoContactsPage({
+        scopeParts: ["domain", "language"],
+        additionalAttributesFragment: brevoContactConfig.additionalAttributesFragment,
+        additionalGridFields: brevoContactConfig.additionalGridFields,
+        additionalFormFields: brevoContactConfig.additionalFormFields,
+        input2State: brevoContactConfig.input2State,
+    });
+
     const TargetGroupsPage = createTargetGroupsPage({
         scopeParts: ["domain", "language"],
         additionalFormFields: additionalFormConfig.additionalFormFields,
@@ -94,6 +102,7 @@ export const Routes: React.FC = () => {
                                     />
 
                                     <RouteWithErrorBoundary path={`${match.path}/newsletter/contacts`} component={BrevoContactsPage} />
+                                    <RouteWithErrorBoundary path={`${match.path}/newsletter/test-contacts`} component={BrevoTestContactsPage} />
                                     <RouteWithErrorBoundary path={`${match.path}/newsletter/target-groups`} component={TargetGroupsPage} />
                                     <RouteWithErrorBoundary path={`${match.path}/newsletter/email-campaigns`} component={EmailCampaignsPage} />
 
