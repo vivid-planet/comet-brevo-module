@@ -1,0 +1,192 @@
+# @comet/brevo-api
+
+## 2.0.0
+
+### Major Changes
+
+-   7461c8b: Basic migrations for EmailCampaign and TargetGroup are now available in the module directly.
+
+    They must be imported into the project and added to the `migrationsList` in the `ormConfig`. Migrations for adding the `scope` and `filters` must still be done in the project's migrations.
+
+    ```diff
+    export const ormConfig = createOrmConfig({
+        // ...
+        migrations: {
+            // ...
+    -       migrationsList: createMigrationsList(path.resolve(__dirname, "migrations")),
+    +       migrationsList: [...brevoMigrationsList, ...createMigrationsList(path.resolve(__dirname, "migrations"))],
+        },
+    });
+
+    ```
+
+    **Breaking Changes**:
+
+    -   Requires adaption of the project's migrations
+
+-   6b5b9a4: The `allowedRedirectUrl` must now be configured within the resolveConfig for each specific scope, instead of being set once for all scopes in the brevo config.
+
+    ```diff
+       BrevoModule.register({
+                        brevo: {
+                            resolveConfig: (scope: EmailCampaignContentScope) => {
+                                // change config based on scope - for example different sender email
+                                // this is just to show you can use the scope to change the config but it has no real use in this example
+                                if (scope.domain === "main") {
+                                    return {
+                                        apiKey: config.brevo.apiKey,
+                                        doubleOptInTemplateId: config.brevo.doubleOptInTemplateId,
+                                        sender: { name: config.brevo.sender.name, email: config.brevo.sender.email },
+    +                                   allowedRedirectUrl: config.brevo.allowedRedirectUrl,
+                                    };
+                                } else {
+                                    return {
+                                        apiKey: config.brevo.apiKey,
+                                        doubleOptInTemplateId: config.brevo.doubleOptInTemplateId,
+                                        sender: { name: config.brevo.sender.name, email: config.brevo.sender.email },
+    +                                   allowedRedirectUrl: config.brevo.allowedRedirectUrl,
+                                    };
+                                }
+                            },
+                            BrevoContactAttributes,
+                            BrevoContactFilterAttributes,
+    -                       allowedRedirectUrl: config.brevo.allowedRedirectUrl,
+                        },
+        })
+    ```
+
+-   166ac36: Make this package compatible with [COMET v6](https://docs.comet-dxp.com/docs/migration/migration-from-v5-to-v6)
+
+    **Breaking Changes**:
+
+    -   Now requires >= v6.0.0 for `@comet` packages
+    -   All GraphQL resolvers now require the `brevo-newsletter` permission.
+    -   `BrevoContactResolver#subscribeBrevoContact` mutation: The `scope` argument was moved outside `input` to enable an automatic scope check
+    -   `BrevoContactsService#createDoubleOptInContact`: `scope` was moved outside `data` and is now the second argument
+    -   `TargetGroupsService#findNonMainTargetGroups`: `data` was replaced with `scope`
+
+-   aae0de4: Add `redirectUrlForImport` to `BrevoModule` config
+
+    You must now pass a `redirectUrlForImport` to your `BrevoModule` config:
+
+    ```ts
+    BrevoModule.register({
+        brevo: {
+            resolveConfig: (scope: EmailCampaignContentScope) => {
+                return {
+                    // ...
+                    redirectUrlForImport: config.brevo.redirectUrlForImport,
+                };
+            },
+        },
+    });
+    ```
+
+    The `redirectUrlForImport` will usually be the site URL of a scope. It is used by the CSV contact import as redirect target after the user completes the double opt-in.
+
+-   b254b38: Removes the brevo config page, `createBrevoConfigPage` is no longer available.
+
+    ```diff
+    -    const BrevoConfigPage = createBrevoConfigPage({
+    -        scopeParts: ["domain", "language"],
+    -    });
+    ```
+
+    Brevo config now must be set in the api brevo module initialization and can be adjusted depending on the scope.
+    Scope argument was added to resolver and service functions to ensure the correct config is used for passed scope.
+
+    ```diff
+        BrevoModule.register({
+            brevo: {
+    +           resolveConfig: (scope: EmailCampaignContentScope) => {
+    +               if (scope.domain === "main") {
+    +                   return {
+    +                       apiKey: config.brevo.apiKey,
+    +                       doubleOptInTemplateId: config.brevo.doubleOptInTemplateId,
+    +                       sender: { name: config.brevo.sender.name, email: config.brevo.sender.email },
+    +                   };
+    +               } else {
+    +                   return {
+    +                       apiKey: config.brevo.otherApiKey,
+    +                       doubleOptInTemplateId: config.brevo.otherDoubleOptInTemplateId,
+    +                       sender: { name: config.brevo.otherSender.name, email: config.brevo.otherSender.email },
+    +                   };
+    +               }
+    +           },
+                // ...
+            },
+        })
+    ```
+
+### Minor Changes
+
+-   d21db92: Add `DeleteUnsubscribedBrevoContactsConsole` job to enable the deletion of blocklisted contacts. This job can be utilized as a cronjob to periodically clean up the blocklisted contacts.
+-   31f1241: Export `BrevoContactsService` so that it can be used in the application
+
+    This allows, for example, adding a custom REST request in the application to subscribe to the newsletter. The application should then add reCAPTCHA before calling the BrevoContactsService to prevent problems with bots.
+
+-   e774ecb: Allow manually assigning contacts to a target group
+
+    This is in addition to the existing automatic assignment via filters.
+
+-   34beaac: All assigned contacts are now displayed in a datagrid on the target group edit admin page.
+-   6cf6252: Add scope to the preview state so it can be accessed in the preview page if necessary
+-   aae0de4: Add functionality to import Brevo contacts from CSV files
+
+    You can import CSV files via the Admin interface or via CLI command.
+
+    **Note:** For the import to work, you must provide a `redirectUrlForImport` to the `BrevoModule` in the API and an `apiUrl` to the `BrevoConfigProvider` in the admin. See the respective changelog entries for more information.
+
+    CLI command:
+
+    ```bash
+    npm run --prefix api console import-brevo-contacts -- -p <path-to-csv-file> -s '<scope-json>' [--targetGroupIds <ids...>]
+
+    // Example:
+    npm run --prefix api console import-brevo-contacts -- -p test_contacts_import.csv -s '{"domain": "main", "language":"de"}' --targetGroupIds 2618c982-fdf8-4cab-9811-a21d3272c62c,c5197539-2529-48a7-9bd1-764e9620cbd2
+    ```
+
+-   3f3fdeb: Add and export `BrevoTransactionalMailsService` that can be used in the application for sending transactional mails.
+
+    **Example Usage of `BrevoTransactionalMailsService`**
+
+    ```typescript
+    constructor(private readonly brevoTransactionalMailsService: BrevoTransactionalMailsService) {}
+
+    async send(email: string, htmlContent: string, subject: string): Promise<void> {
+        await this.brevoTransactionalMailsService.send({ to: [{ email }], htmlContent, subject }, data.scope);
+    }
+    ```
+
+-   f7c0fdd: Allow sending a campaign to multiple target groups
+-   42746b1: Add an edit page for brevo contacts
+    It is possible to configure additional form fields for this page in the `createBrevoContactsPage`.
+
+    ```diff
+        createBrevoContactsPage({
+             //...
+    +        additionalFormFields: brevoContactConfig.additionalFormFields,
+    +        input2State: brevoContactConfig.input2State,
+        });
+    ```
+
+-   3407537: Add `id` to the POST request to the mailing frontend, enabling applications to use the `id` to generate a `browserUrl` for rendering the email in a web browser.
+-   44fcc6c: A required brevo config page must now be generated with `createBrevoConfigPage`.
+    All necessary brevo configuration (for each scope) must be configured within this page for emails campaigns to be sent.
+
+    ```diff
+    + const BrevoConfigPage = createBrevoConfigPage({
+    +        scopeParts: ["domain", "language"],
+    + });
+    ```
+
+    Env vars containing the brevo sender information can be removed.
+
+    ```diff
+    - BREVO_SENDER_NAME=senderName
+    - BREVO_SENDER_EMAIL=senderEmail
+    ```
+
+### Patch Changes
+
+-   42746b1: Fix bug that does not add the contact to all target groups when subscribing
