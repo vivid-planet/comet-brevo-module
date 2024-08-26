@@ -55,14 +55,13 @@ export function TargetGroupForm({ id, scope, additionalFormFields, input2State, 
     const formApiRef = useFormApiRef<EditTargetGroupFinalFormValues>();
 
     let targetGroupFormFragment: DocumentNode | undefined;
-
-    if (additionalFormFields) {
+    if (additionalFormFields && nodeFragment) {
         targetGroupFormFragment = gql`
-        fragment TargetGroupForm on TargetGroup {
-            ${nodeFragment ? "...".concat(nodeFragment.name) : ""}
-        }
-        ${nodeFragment?.fragment ?? ""}
-    `;
+            fragment TargetGroupForm on TargetGroup {
+                ${"...".concat(nodeFragment.name)}
+            }
+            ${nodeFragment.fragment}
+        `;
     }
 
     const { data, error, loading, refetch } = useQuery<GQLTargetGroupFormQuery, GQLTargetGroupFormQueryVariables>(
