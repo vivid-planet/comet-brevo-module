@@ -93,6 +93,39 @@ export function createBrevoContactResolver({
         }
 
         @Query(() => PaginatedBrevoContacts)
+        async brevoTestContacts(@Args() { offset, limit, email, targetGroupId, scope }: BrevoContactsArgs): Promise<PaginatedBrevoContacts> {
+            const where: FilterQuery<TargetGroupInterface> = { scope, isMainList: false };
+
+            if (targetGroupId) {
+                where.id = targetGroupId;
+                where.isMainList = false;
+                where.title = "Test list for current scope";
+            }
+
+            let targetGroup = await this.targetGroupRepository.findOne(where);
+
+            if (!targetGroup) {
+                if (targetGroupId) {
+                    return new PaginatedBrevoContacts([], 0, { offset, limit });
+                }
+
+                // when there is no test target group for the scope, create one
+                targetGroup = await this.targetGroupService.createIfNotExistTestTargetGroupForScope(scope);
+            }
+
+            if (email) {
+                const contact = await this.brevoContactsApiService.getContactInfoByEmail(email, scope);
+                if (contact && contact.listIds.includes(targetGroup.brevoId)) {
+                    return new PaginatedBrevoContacts([contact], 1, { offset, limit });
+                }
+                return new PaginatedBrevoContacts([], 0, { offset, limit });
+            }
+            const [contacts, count] = await this.brevoContactsApiService.findContactsByListId(targetGroup.brevoId, limit, offset, targetGroup.scope);
+
+            return new PaginatedBrevoContacts(contacts, count, { offset, limit });
+        }
+
+        @Query(() => PaginatedBrevoContacts)
         async manuallyAssignedBrevoContacts(
             @Args() { offset, limit, email, targetGroupId }: ManuallyAssignedBrevoContactsArgs,
         ): Promise<PaginatedBrevoContacts> {
@@ -175,6 +208,26 @@ export function createBrevoContactResolver({
                 redirectionUrl: input.redirectionUrl,
                 scope,
                 templateId: this.config.brevo.resolveConfig(scope).doubleOptInTemplateId,
+            });
+
+            if (created) {
+                return SubscribeResponse.SUCCESSFUL;
+            }
+
+            return SubscribeResponse.ERROR_UNKNOWN;
+        }
+
+        @Mutation(() => SubscribeResponse)
+        @RequiredPermission(["brevo-newsletter"], { skipScopeCheck: true })
+        async createBrevoTestContact(
+            @Args("scope", { type: () => Scope }, new DynamicDtoValidationPipe(Scope)) scope: typeof Scope,
+            @Args("input", { type: () => BrevoContactInput })
+            input: BrevoContactInputInterface,
+        ): Promise<SubscribeResponse> {
+            const created = await this.brevoContactsService.createTestContact({
+                email: input.email,
+                attributes: input.attributes,
+                scope,
             });
 
             if (created) {
