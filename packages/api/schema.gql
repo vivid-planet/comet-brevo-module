@@ -167,6 +167,7 @@ input EmailCampaignContentScopeInput {
 type Query {
   brevoContact(id: Int!, scope: EmailCampaignContentScopeInput!): BrevoContact!
   brevoContacts(targetGroupId: ID, email: String, scope: EmailCampaignContentScopeInput!, offset: Int! = 0, limit: Int! = 25): PaginatedBrevoContacts!
+  brevoTestContacts(targetGroupId: ID, email: String, scope: EmailCampaignContentScopeInput!, offset: Int! = 0, limit: Int! = 25): PaginatedBrevoContacts!
   manuallyAssignedBrevoContacts(offset: Int! = 0, limit: Int! = 25, targetGroupId: ID!, email: String): PaginatedBrevoContacts!
   targetGroup(id: ID!): TargetGroup!
   targetGroups(scope: EmailCampaignContentScopeInput!, search: String, filter: TargetGroupFilter, sort: [TargetGroupSort!], offset: Int! = 0, limit: Int! = 25): PaginatedTargetGroups!
@@ -242,6 +243,7 @@ enum EmailCampaignSortField {
 type Mutation {
   updateBrevoContact(id: Int!, scope: EmailCampaignContentScopeInput!, input: BrevoContactUpdateInput!): BrevoContact!
   createBrevoContact(scope: EmailCampaignContentScopeInput!, input: BrevoContactInput!): SubscribeResponse!
+  createBrevoTestContact(scope: EmailCampaignContentScopeInput!, input: BrevoContactInput!): SubscribeResponse!
   deleteBrevoContact(id: Int!, scope: EmailCampaignContentScopeInput!): Boolean!
   subscribeBrevoContact(input: SubscribeInput!, scope: EmailCampaignContentScopeInput!): SubscribeResponse!
   createTargetGroup(scope: EmailCampaignContentScopeInput!, input: TargetGroupInput!): TargetGroup!
