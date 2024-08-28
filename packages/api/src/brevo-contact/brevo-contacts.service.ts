@@ -53,6 +53,23 @@ export class BrevoContactsService {
         return created;
     }
 
+    public async createTestContact({
+        email,
+        attributes,
+        scope,
+    }: {
+        email: string;
+        attributes?: BrevoContactAttributesInterface;
+        scope: EmailCampaignScopeInterface;
+    }): Promise<boolean> {
+        const testTargetGroupForScope = await this.targetGroupService.createIfNotExistTestTargetGroupForScope(scope);
+
+        const brevoIds = [testTargetGroupForScope.brevoId];
+
+        const created = await this.brevoContactsApiService.createTestContact({ email, attributes }, brevoIds, scope);
+        return created;
+    }
+
     public async getTargetGroupIdsForNewContact({
         contactAttributes,
         scope,
