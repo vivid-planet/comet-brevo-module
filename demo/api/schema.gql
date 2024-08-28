@@ -528,6 +528,7 @@ type Query {
   mainMenu(scope: PageTreeNodeScopeInput!): [PageTreeNode!]!
   brevoContact(id: Int!, scope: EmailCampaignContentScopeInput!): BrevoContact!
   brevoContacts(targetGroupId: ID, email: String, scope: EmailCampaignContentScopeInput!, offset: Int! = 0, limit: Int! = 25): PaginatedBrevoContacts!
+  brevoTestContacts(targetGroupId: ID, email: String, scope: EmailCampaignContentScopeInput!, offset: Int! = 0, limit: Int! = 25): PaginatedBrevoContacts!
   manuallyAssignedBrevoContacts(offset: Int! = 0, limit: Int! = 25, targetGroupId: ID!, email: String): PaginatedBrevoContacts!
   emailCampaign(id: ID!): EmailCampaign!
   emailCampaigns(scope: EmailCampaignContentScopeInput!, search: String, filter: EmailCampaignFilter, sort: [EmailCampaignSort!], offset: Int! = 0, limit: Int! = 25): PaginatedEmailCampaigns!
@@ -739,6 +740,7 @@ type Mutation {
   deleteDamFolder(id: ID!): Boolean!
   updateBrevoContact(id: Int!, scope: EmailCampaignContentScopeInput!, input: BrevoContactUpdateInput!): BrevoContact!
   createBrevoContact(scope: EmailCampaignContentScopeInput!, input: BrevoContactInput!): SubscribeResponse!
+  createBrevoTestContact(scope: EmailCampaignContentScopeInput!, input: BrevoContactInput!): SubscribeResponse!
   deleteBrevoContact(id: Int!, scope: EmailCampaignContentScopeInput!): Boolean!
   subscribeBrevoContact(input: SubscribeInput!, scope: EmailCampaignContentScopeInput!): SubscribeResponse!
   createEmailCampaign(scope: EmailCampaignContentScopeInput!, input: EmailCampaignInput!): EmailCampaign!
