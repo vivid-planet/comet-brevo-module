@@ -150,6 +150,27 @@ export class TargetGroupsService {
         throw new Error("Brevo Error: Could not create contact list");
     }
 
+    public async createIfNotExistTestTargetGroupForScope(scope: EmailCampaignScopeInterface): Promise<TargetGroupInterface> {
+        const testList = await this.repository.findOne({ scope, isMainList: false, title: "Test list for current scope" });
+
+        if (testList) {
+            return testList;
+        }
+
+        const title = "Test list for current scope";
+        const brevoId = await this.brevoApiContactsService.createBrevoContactList(title, scope);
+
+        if (brevoId) {
+            const testTargetGroupForScope = this.repository.create({ title, brevoId, scope, isMainList: false });
+
+            await this.entityManager.flush();
+
+            return testTargetGroupForScope;
+        }
+
+        throw new Error("Brevo Error: Could not create contact list");
+    }
+
     public async createIfNotExistsManuallyAssignedContactsTargetGroup(targetGroup: TargetGroupInterface) {
         if (targetGroup.assignedContactsTargetGroupBrevoId) {
             return targetGroup.assignedContactsTargetGroupBrevoId;
