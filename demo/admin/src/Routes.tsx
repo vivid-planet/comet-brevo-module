@@ -1,6 +1,6 @@
 import { MasterLayout, RouteWithErrorBoundary } from "@comet/admin";
 import { Domain } from "@comet/admin-icons";
-import { createBrevoContactsPage, createEmailCampaignsPage, createTargetGroupsPage } from "@comet/brevo-admin";
+import { createBrevoContactsPage, createBrevoTestContactsPage, createEmailCampaignsPage, createTargetGroupsPage } from "@comet/brevo-admin";
 import { ContentScopeIndicator, createRedirectsPage, DamPage, PagesPage, PublisherPage, SitePreview } from "@comet/cms-admin";
 import { getBrevoContactConfig } from "@src/common/brevoModuleConfig/brevoContactsPageAttributesConfig";
 import { pageTreeCategories, urlParamToCategory } from "@src/pageTree/pageTreeCategories";
@@ -33,7 +33,7 @@ export const Routes: React.FC = () => {
         input2State: brevoContactConfig.input2State,
     });
 
-    const BrevoTestContactsPage = createBrevoContactsPage({
+    const BrevoTestContactsPage = createBrevoTestContactsPage({
         scopeParts: ["domain", "language"],
         additionalAttributesFragment: brevoContactConfig.additionalAttributesFragment,
         additionalGridFields: brevoContactConfig.additionalGridFields,
