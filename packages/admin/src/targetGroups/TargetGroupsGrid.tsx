@@ -277,7 +277,7 @@ export function TargetGroupsGrid({
     });
     const rowCount = useBufferedRowCount(data?.targetGroups.totalCount);
     if (error) throw error;
-    const rows = data?.targetGroups.nodes ?? [];
+    const rows = (data?.targetGroups.nodes ?? []).filter((node) => node.title !== "Test list for current scope");
 
     return (
         <MainContent fullHeight>
