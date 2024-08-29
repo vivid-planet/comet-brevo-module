@@ -73,9 +73,11 @@ export class BrevoContactsService {
     public async getTargetGroupIdsForNewContact({
         contactAttributes,
         scope,
+        assignedContactsTargetGroupBrevoId,
     }: {
         contactAttributes?: BrevoContactAttributesInterface;
         scope?: EmailCampaignScopeInterface;
+        assignedContactsTargetGroupBrevoId?: number;
     }): Promise<number[]> {
         let offset = 0;
         let totalCount = 0;
@@ -89,7 +91,11 @@ export class BrevoContactsService {
             offset += targetGroups.length;
 
             for (const targetGroup of targetGroups) {
-                const contactIsInTargetGroup = this.targetGroupService.checkIfContactIsInTargetGroup(contactAttributes, targetGroup.filters);
+                const contactIsInTargetGroup = this.targetGroupService.checkIfContactIsInTargetGroup(
+                    contactAttributes,
+                    targetGroup.filters,
+                    assignedContactsTargetGroupBrevoId,
+                );
 
                 if (contactIsInTargetGroup) {
                     targetGroupIds.push(targetGroup.brevoId);

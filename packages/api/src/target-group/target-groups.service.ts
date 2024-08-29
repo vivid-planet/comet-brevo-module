@@ -34,7 +34,10 @@ export class TargetGroupsService {
     public checkIfContactIsInTargetGroup(
         contactAttributes?: BrevoContactAttributesInterface,
         filters?: BrevoContactFilterAttributesInterface,
+        assignedContactsTargetGroupBrevoId?: number,
     ): boolean {
+        if (!contactAttributes || !assignedContactsTargetGroupBrevoId) return false;
+
         if (filters && contactAttributes) {
             for (const [key, value] of Object.entries(filters)) {
                 if (!value || value.length === 0) continue;
