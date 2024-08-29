@@ -26,13 +26,14 @@ import { GQLEmailCampaignContentScopeInput } from "../graphql.generated";
 import { CrudMoreActionsMenu } from "../temp/CrudMoreActionsMenu";
 import {
     GQLBrevoContactsListFragment,
+    GQLBrevoTestContactsGridQuery,
+    GQLBrevoTestContactsGridQueryVariables,
     GQLDeleteBrevoContactMutation,
     GQLDeleteBrevoContactMutationVariables,
     GQLUpdateBrevoContactMutation,
     GQLUpdateBrevoContactMutationVariables,
     namedOperations,
-} from "./BrevoContactsGrid.generated";
-import { GQLBrevoTestContactsGridQuery, GQLBrevoTestContactsGridQueryVariables } from "./BrevoTestContactsGrid.generated";
+} from "./BrevoTestContactsGrid.generated";
 
 const brevoContactsFragment = gql`
     fragment BrevoContactsList on BrevoContact {
@@ -62,7 +63,7 @@ const updateBrevoContactMutation = gql`
 function BrevoTestContactsGridToolbar({ intl, scope }: { intl: IntlShape; scope: GQLEmailCampaignContentScopeInput }) {
     const [moreActionsMenuItem, contactImportComponent] = useContactImportFromCsv({
         scope,
-        refetchQueries: [namedOperations.Query.BrevoContactsGrid],
+        refetchQueries: [namedOperations.Query.BrevoTestContactsGrid],
     });
 
     return (
