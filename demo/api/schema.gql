@@ -411,6 +411,7 @@ type TargetGroup implements DocumentInterface {
   createdAt: DateTime!
   title: String!
   isMainList: Boolean!
+  isTestList: Boolean
   brevoId: Int!
   totalSubscribers: Int!
   totalContactsBlocked: Int!
