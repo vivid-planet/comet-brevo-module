@@ -181,6 +181,7 @@ input TargetGroupFilter {
   createdAt: DateFilter
   updatedAt: DateFilter
   title: StringFilter
+  isTestList: BooleanFilter
   and: [TargetGroupFilter!]
   or: [TargetGroupFilter!]
 }
@@ -200,6 +201,10 @@ input StringFilter {
   endsWith: String
   equal: String
   notEqual: String
+}
+
+input BooleanFilter {
+  equal: Boolean
 }
 
 input TargetGroupSort {

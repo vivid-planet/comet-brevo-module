@@ -689,6 +689,7 @@ input TargetGroupFilter {
   createdAt: DateFilter
   updatedAt: DateFilter
   title: StringFilter
+  isTestList: BooleanFilter
   and: [TargetGroupFilter!]
   or: [TargetGroupFilter!]
 }
