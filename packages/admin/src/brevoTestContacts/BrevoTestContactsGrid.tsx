@@ -14,7 +14,7 @@ import {
     useDataGridRemote,
     usePersistentColumnState,
 } from "@comet/admin";
-import { Add, Block, Check, Delete, Edit } from "@comet/admin-icons";
+import { Add, Delete, Edit } from "@comet/admin-icons";
 import { ContentScopeInterface } from "@comet/cms-admin";
 import { Button, IconButton } from "@mui/material";
 import { DataGrid, GridColDef, GridToolbarQuickFilter } from "@mui/x-data-grid";
@@ -30,8 +30,6 @@ import {
     GQLBrevoTestContactsGridQueryVariables,
     GQLDeleteBrevoContactMutation,
     GQLDeleteBrevoContactMutationVariables,
-    GQLUpdateBrevoContactMutation,
-    GQLUpdateBrevoContactMutationVariables,
     namedOperations,
 } from "./BrevoTestContactsGrid.generated";
 
@@ -49,14 +47,6 @@ const brevoContactsFragment = gql`
 const deleteBrevoContactMutation = gql`
     mutation DeleteBrevoContact($id: Int!, $scope: EmailCampaignContentScopeInput!) {
         deleteBrevoContact(id: $id, scope: $scope)
-    }
-`;
-
-const updateBrevoContactMutation = gql`
-    mutation UpdateBrevoContact($id: Int!, $input: BrevoContactUpdateInput!, $scope: EmailCampaignContentScopeInput!) {
-        updateBrevoContact(id: $id, input: $input, scope: $scope) {
-            id
-        }
     }
 `;
 
@@ -141,14 +131,6 @@ export function BrevoTestContactsGrid({
             width: 150,
             flex: 1,
         },
-        {
-            field: "emailBlacklisted",
-            headerName: intl.formatMessage({ id: "cometBrevoModule.brevoContact.emailBlocked", defaultMessage: "Email blocked" }),
-            type: "boolean",
-            filterable: false,
-            sortable: false,
-            width: 150,
-        },
         ...additionalGridFields,
         {
             field: "actions",
@@ -164,23 +146,6 @@ export function BrevoTestContactsGrid({
                         </IconButton>
                         <RowActionsMenu>
                             <RowActionsMenu>
-                                <RowActionsItem
-                                    onClick={async () => {
-                                        await client.mutate<GQLUpdateBrevoContactMutation, GQLUpdateBrevoContactMutationVariables>({
-                                            mutation: updateBrevoContactMutation,
-                                            variables: { id: params.row.id, input: { blocked: !params.row.emailBlacklisted }, scope },
-                                            refetchQueries: [brevoTestContactsQuery],
-                                        });
-                                    }}
-                                    icon={params.row.emailBlacklisted ? <Check /> : <Block />}
-                                >
-                                    {params.row.emailBlacklisted ? (
-                                        <FormattedMessage id="cometBrevoModule.brevoContact.actions.unblock" defaultMessage="Unblock" />
-                                    ) : (
-                                        <FormattedMessage id="cometBrevoModule.brevoContact.actions.block" defaultMessage="Block" />
-                                    )}
-                                </RowActionsItem>
-
                                 <RowActionsItem
                                     onClick={async () => {
                                         await client.mutate<GQLDeleteBrevoContactMutation, GQLDeleteBrevoContactMutationVariables>({
