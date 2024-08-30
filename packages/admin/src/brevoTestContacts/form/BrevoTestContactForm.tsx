@@ -170,7 +170,7 @@ export function BrevoTestContactForm({ id, scope, input2State, additionalFormFie
                             </IconButton>
                         </ToolbarItem>
                         <ToolbarTitleItem>
-                            <FormattedMessage id="cometBrevoModule.brevoContacts.brevoContact" defaultMessage="Contact" />
+                            <FormattedMessage id="cometBrevoModule.brevoTestContacts.brevoTestContact" defaultMessage="Test contact" />
                         </ToolbarTitleItem>
                         <ToolbarFillSpace />
                         <ToolbarActions>
@@ -192,13 +192,15 @@ export function BrevoTestContactForm({ id, scope, input2State, additionalFormFie
                             required
                             fullWidth
                             name="email"
-                            label={<FormattedMessage id="cometBrevoModule.brevoContact.email" defaultMessage="Email" />}
+                            label={<FormattedMessage id="cometBrevoModule.brevoTestContact.email" defaultMessage="Email" />}
                             disabled={mode === "edit"}
                         />
 
                         {additionalFormFields && (
                             <Card sx={{ padding: 4 }}>
-                                <FormSection title={<FormattedMessage id="cometBrevoModule.brevoContact.attributes" defaultMessage="Attributes" />}>
+                                <FormSection
+                                    title={<FormattedMessage id="cometBrevoModule.brevoTestContact.attributes" defaultMessage="Attributes" />}
+                                >
                                     {additionalFormFields}
                                 </FormSection>
                             </Card>
