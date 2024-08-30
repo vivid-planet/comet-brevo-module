@@ -143,7 +143,7 @@ export class TargetGroupsService {
     }
 
     public async createIfNotExistTestTargetGroupForScope(scope: EmailCampaignScopeInterface): Promise<TargetGroupInterface> {
-        const testList = await this.repository.findOne({ scope, isMainList: false, title: "Test list for current scope" });
+        const testList = await this.repository.findOne({ scope, isMainList: false, isTestList: true });
 
         if (testList) {
             return testList;
@@ -153,7 +153,7 @@ export class TargetGroupsService {
         const brevoId = await this.brevoApiContactsService.createBrevoContactList(title, scope);
 
         if (brevoId) {
-            const testTargetGroupForScope = this.repository.create({ title, brevoId, scope, isMainList: false });
+            const testTargetGroupForScope = this.repository.create({ title, brevoId, scope, isMainList: false, isTestList: true });
 
             await this.entityManager.flush();
 
