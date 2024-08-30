@@ -1,5 +1,6 @@
 import { DocumentNode, gql, useApolloClient, useQuery } from "@apollo/client";
 import {
+    Alert,
     MainContent,
     messages,
     RowActionsItem,
@@ -16,7 +17,7 @@ import {
 } from "@comet/admin";
 import { Add, Delete, Edit } from "@comet/admin-icons";
 import { ContentScopeInterface } from "@comet/cms-admin";
-import { Button, IconButton } from "@mui/material";
+import { Box, Button, IconButton } from "@mui/material";
 import { DataGrid, GridColDef, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import * as React from "react";
 import { FormattedMessage, IntlShape, useIntl } from "react-intl";
@@ -181,6 +182,14 @@ export function BrevoTestContactsGrid({
 
     return (
         <MainContent fullHeight>
+            <Box sx={{ marginBottom: 4 }}>
+                <Alert severity="warning">
+                    <FormattedMessage
+                        id="cometBrevoModule.brevoTestContact.testContactAlert"
+                        defaultMessage="Contacts in this list are only added for testing purposes. Users do not get a double-opt in to confirm their subscription."
+                    />
+                </Alert>
+            </Box>
             <DataGrid
                 {...dataGridProps}
                 disableSelectionOnClick
