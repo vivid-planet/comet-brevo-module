@@ -22,16 +22,13 @@ import { DataGrid, GridColDef, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import * as React from "react";
 import { FormattedMessage, IntlShape, useIntl } from "react-intl";
 
-import { useContactImportFromCsv } from "../common/contactImport/useContactImportFromCsv";
 import { GQLEmailCampaignContentScopeInput } from "../graphql.generated";
-import { CrudMoreActionsMenu } from "../temp/CrudMoreActionsMenu";
 import {
     GQLBrevoContactsListFragment,
     GQLBrevoTestContactsGridQuery,
     GQLBrevoTestContactsGridQueryVariables,
     GQLDeleteBrevoContactMutation,
     GQLDeleteBrevoContactMutationVariables,
-    namedOperations,
 } from "./BrevoTestContactsGrid.generated";
 
 const brevoContactsFragment = gql`
@@ -52,31 +49,27 @@ const deleteBrevoContactMutation = gql`
 `;
 
 function BrevoTestContactsGridToolbar({ intl, scope }: { intl: IntlShape; scope: GQLEmailCampaignContentScopeInput }) {
-    const [moreActionsMenuItem, contactImportComponent] = useContactImportFromCsv({
-        scope,
-        refetchQueries: [namedOperations.Query.BrevoTestContactsGrid],
-    });
-
     return (
         <>
             <Toolbar>
                 <ToolbarTitleItem>
-                    <FormattedMessage id="cometBrevoModule.brevoContact.title" defaultMessage="Contacts" />
+                    <FormattedMessage id="cometBrevoModule.brevoTestContact.title" defaultMessage="Test contacts" />
                 </ToolbarTitleItem>
                 <ToolbarItem>
                     <GridToolbarQuickFilter
-                        placeholder={intl.formatMessage({ id: "cometBrevoModule.brevoContact.searchEmail", defaultMessage: "Search email address" })}
+                        placeholder={intl.formatMessage({
+                            id: "cometBrevoModule.brevoTestContact.searchEmail",
+                            defaultMessage: "Search email address",
+                        })}
                     />
                 </ToolbarItem>
                 <ToolbarFillSpace />
                 <ToolbarActions>
-                    <CrudMoreActionsMenu overallItems={[moreActionsMenuItem]} />
                     <Button startIcon={<Add />} component={StackLink} pageName="add" payload="add" variant="contained" color="primary">
-                        <FormattedMessage id="cometBrevoModule.brevoContact.newContact" defaultMessage="New contact" />
+                        <FormattedMessage id="cometBrevoModule.brevoTestContact.newContact" defaultMessage="New test contact" />
                     </Button>
                 </ToolbarActions>
             </Toolbar>
-            {contactImportComponent}
         </>
     );
 }
@@ -110,7 +103,7 @@ export function BrevoTestContactsGrid({
     const columns: GridColDef<GQLBrevoContactsListFragment>[] = [
         {
             field: "createdAt",
-            headerName: intl.formatMessage({ id: "cometBrevoModule.brevoContact.subscribedAt", defaultMessage: "Subscribed At" }),
+            headerName: intl.formatMessage({ id: "cometBrevoModule.brevoTestContact.subscribedAt", defaultMessage: "Subscribed At" }),
             filterable: false,
             sortable: false,
             width: 150,
@@ -118,7 +111,7 @@ export function BrevoTestContactsGrid({
         },
         {
             field: "modifiedAt",
-            headerName: intl.formatMessage({ id: "cometBrevoModule.brevoContact.modifiedAt", defaultMessage: "Modified At" }),
+            headerName: intl.formatMessage({ id: "cometBrevoModule.brevoTestContact.modifiedAt", defaultMessage: "Modified At" }),
             filterable: false,
             sortable: false,
             width: 150,
@@ -126,7 +119,7 @@ export function BrevoTestContactsGrid({
         },
         {
             field: "email",
-            headerName: intl.formatMessage({ id: "cometBrevoModule.brevoContact.email", defaultMessage: "Email" }),
+            headerName: intl.formatMessage({ id: "cometBrevoModule.brevoTestContact.email", defaultMessage: "Email" }),
             filterable: false,
             sortable: false,
             width: 150,
