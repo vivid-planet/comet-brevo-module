@@ -59,23 +59,24 @@ const pageTreeDocumentTypes = {
 export function App() {
     return (
         <ApolloProvider client={apolloClient}>
-            <CurrentUserProvider>
-                <BuildInformationProvider value={{ date: config.buildDate, number: config.buildNumber, commitHash: config.commitSha }}>
-                    <SitesConfigProvider
-                        value={{
-                            configs: config.sitesConfig,
-                            resolveSiteConfigForScope: (configs, scope: ContentScope) => {
-                                const siteConfig = configs[scope.domain];
-                                return {
-                                    ...siteConfig,
-                                    previewUrl: `${siteConfig.previewUrl}/${scope.language}`,
-                                };
-                            },
-                        }}
-                    >
-                        <IntlProvider locale="en" defaultLocale="en" messages={getMessages()}>
-                            <LocaleProvider resolveLocaleForScope={(scope: ContentScope) => scope.domain}>
-                                <MuiThemeProvider theme={theme}>
+            <BuildInformationProvider value={{ date: config.buildDate, number: config.buildNumber, commitHash: config.commitSha }}>
+                <SitesConfigProvider
+                    value={{
+                        configs: config.sitesConfig,
+                        resolveSiteConfigForScope: (configs, scope: ContentScope) => {
+                            const siteConfig = configs[scope.domain];
+                            return {
+                                ...siteConfig,
+                                previewUrl: `${siteConfig.previewUrl}/${scope.language}`,
+                            };
+                        },
+                    }}
+                >
+                    <IntlProvider locale="en" defaultLocale="en" messages={getMessages()}>
+                        <LocaleProvider resolveLocaleForScope={(scope: ContentScope) => scope.domain}>
+                            <MuiThemeProvider theme={theme}>
+                                <ErrorDialogHandler />
+                                <CurrentUserProvider>
                                     <DndProvider backend={HTML5Backend}>
                                         <SnackbarProvider>
                                             <BrevoConfigProvider
@@ -100,18 +101,17 @@ export function App() {
                                                     <RouterBrowserRouter>
                                                         <GlobalStyle />
                                                         <Routes />
-                                                        <ErrorDialogHandler />
                                                     </RouterBrowserRouter>
                                                 </CmsBlockContextProvider>
                                             </BrevoConfigProvider>
                                         </SnackbarProvider>
                                     </DndProvider>
-                                </MuiThemeProvider>
-                            </LocaleProvider>
-                        </IntlProvider>
-                    </SitesConfigProvider>
-                </BuildInformationProvider>
-            </CurrentUserProvider>
+                                </CurrentUserProvider>
+                            </MuiThemeProvider>
+                        </LocaleProvider>
+                    </IntlProvider>
+                </SitesConfigProvider>
+            </BuildInformationProvider>
         </ApolloProvider>
     );
 }
