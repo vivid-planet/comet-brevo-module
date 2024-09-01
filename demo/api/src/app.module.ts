@@ -78,6 +78,7 @@ export class AppModule {
                 authModule,
                 UserPermissionsModule.forRootAsync({
                     useFactory: (accessControlService: AccessControlService) => ({
+                        systemUsers: ["system-user"],
                         availableContentScopes: [
                             { domain: "main", language: "en" },
                             { domain: "main", language: "de" },
