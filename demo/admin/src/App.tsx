@@ -67,7 +67,7 @@ export function App() {
                             const siteConfig = configs[scope.domain];
                             return {
                                 ...siteConfig,
-                                previewUrl: `${siteConfig.previewUrl}/${scope.language}`,
+                                previewUrl: `${siteConfig.blockPreviewBaseUrl}/${scope.language}`,
                             };
                         },
                     }}
