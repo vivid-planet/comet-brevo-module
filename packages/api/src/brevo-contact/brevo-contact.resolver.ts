@@ -224,17 +224,36 @@ export function createBrevoContactResolver({
             @Args("input", { type: () => BrevoContactInput })
             input: BrevoContactInputInterface,
         ): Promise<SubscribeResponse> {
-            const created = await this.brevoContactsService.createTestContact({
-                email: input.email,
-                attributes: input.attributes,
-                scope,
-            });
+            const where: FilterQuery<TargetGroupInterface> = { scope, isMainList: false, isTestList: true };
+            const targetGroup = await this.targetGroupRepository.findOne(where);
+            const contact = await this.brevoContactsApiService.getContactInfoByEmail(input.email, scope);
 
-            if (created) {
+            if (contact && targetGroup) {
+                const listIds: number[] = contact.listIds ? [...contact.listIds] : [];
+                listIds.push(targetGroup.brevoId);
+
+                await this.brevoContactsApiService.updateContact(
+                    contact.id,
+                    {
+                        listIds,
+                    },
+                    scope,
+                );
+
                 return SubscribeResponse.SUCCESSFUL;
-            }
+            } else {
+                const created = await this.brevoContactsService.createTestContact({
+                    email: input.email,
+                    attributes: input.attributes,
+                    scope,
+                });
 
-            return SubscribeResponse.ERROR_UNKNOWN;
+                if (created) {
+                    return SubscribeResponse.SUCCESSFUL;
+                }
+
+                return SubscribeResponse.ERROR_UNKNOWN;
+            }
         }
 
         @Mutation(() => Boolean)
