@@ -2,7 +2,7 @@ import { DocumentNode, gql, useApolloClient, useQuery } from "@apollo/client";
 import {
     Alert,
     FinalForm,
-    FinalFormSaveSplitButton,
+    FinalFormSaveButton,
     FinalFormSubmitEvent,
     FormSection,
     Loading,
@@ -174,7 +174,7 @@ export function BrevoContactForm({ id, scope, input2State, additionalFormFields,
                         </ToolbarTitleItem>
                         <ToolbarFillSpace />
                         <ToolbarActions>
-                            <FinalFormSaveSplitButton hasConflict={saveConflict.hasConflict} />
+                            <FinalFormSaveButton hasConflict={saveConflict.hasConflict} />
                         </ToolbarActions>
                     </Toolbar>
                     <MainContent>

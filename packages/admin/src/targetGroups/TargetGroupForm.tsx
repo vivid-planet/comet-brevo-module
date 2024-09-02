@@ -4,7 +4,7 @@ import {
     FieldSet,
     FinalForm,
     FinalFormInput,
-    FinalFormSaveSplitButton,
+    FinalFormSaveButton,
     FinalFormSubmitEvent,
     Loading,
     MainContent,
@@ -131,7 +131,7 @@ export function TargetGroupForm({ id, scope, additionalFormFields, input2State, 
                         </ToolbarTitleItem>
                         <ToolbarFillSpace />
                         <ToolbarActions>
-                            <FinalFormSaveSplitButton hasConflict={saveConflict.hasConflict} />
+                            <FinalFormSaveButton hasConflict={saveConflict.hasConflict} />
                         </ToolbarActions>
                     </Toolbar>
                     <MainContent>
