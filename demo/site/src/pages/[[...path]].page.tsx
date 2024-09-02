@@ -1,20 +1,14 @@
-import { inferContentScopeFromContext } from "@src/common/contentScope/inferContentScopeFromContext";
-import { domain as configuredDomain } from "@src/config";
+import { SitePreviewParams } from "@comet/cms-site";
+import { ContentScope } from "@src/common/contentScope/ContentScope";
+import { defaultLanguage, domain as configuredDomain, domain } from "@src/config";
 import { Page as PageTypePage, pageQuery as PageTypePageQuery } from "@src/documents/pages/Page";
-import { GQLPage } from "@src/graphql.generated";
+import { GQLPage, GQLPageTreeNodeScopeInput } from "@src/graphql.generated";
 import { getLayout } from "@src/layout/Layout";
 import NotFound404 from "@src/pages/404.page";
 import { createGraphQLClient } from "@src/util/createGraphQLClient";
 import { gql } from "graphql-request";
-import {
-    GetServerSidePropsContext,
-    GetServerSidePropsResult,
-    GetStaticPaths,
-    GetStaticProps,
-    GetStaticPropsContext,
-    GetStaticPropsResult,
-    InferGetStaticPropsType,
-} from "next";
+import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
+import { ParsedUrlQuery } from "querystring";
 import * as React from "react";
 
 import { GQLPagesQuery, GQLPagesQueryVariables, GQLPageTypeQuery, GQLPageTypeQueryVariables } from "./[[...path]].page.generated";
@@ -22,6 +16,9 @@ import { GQLPagesQuery, GQLPagesQueryVariables, GQLPageTypeQuery, GQLPageTypeQue
 interface PageProps {
     documentType: string;
     id: string;
+    pageTreeNode: { path: string; name: string };
+    breadcrumbs: string[];
+    scope: ContentScope;
 }
 export type PageUniversalProps = PageProps & GQLPage;
 
@@ -36,6 +33,7 @@ export default function Page(props: InferGetStaticPropsType<typeof getStaticProp
         );
     }
     const { component: Component } = pageTypes[props.documentType];
+
     return <Component {...props} />;
 }
 
@@ -44,76 +42,68 @@ const pageTypeQuery = gql`
         pageTreeNodeByPath(path: $path, scope: $scope) {
             id
             documentType
+            parentNodes {
+                id
+                documentType
+                name
+            }
         }
     }
 `;
 
-const pageTypes = {
+export const pageTypes = {
     Page: {
         query: PageTypePageQuery,
         component: PageTypePage,
     },
 };
 
-export const getStaticProps: GetStaticProps<PageUniversalProps> = async (context) => {
-    const getUniversalProps = createGetUniversalProps();
-    return getUniversalProps(context);
+export const getStaticProps: GetStaticProps<PageUniversalProps, ParsedUrlQuery, SitePreviewParams & { scope: GQLPageTreeNodeScopeInput }> = async (
+    context,
+) => {
+    const path = context.params?.path ?? "";
+
+    const { scope, previewData } = context.previewData ?? { scope: { domain, language: context.locale ?? defaultLanguage }, previewData: undefined };
+
+    const client = createGraphQLClient({
+        includeInvisiblePages: context.preview,
+        includeInvisibleBlocks: previewData?.includeInvisible,
+        previewDamUrls: context.preview,
+    });
+
+    //fetch pageType
+    const data = await client.request<GQLPageTypeQuery, GQLPageTypeQueryVariables>(pageTypeQuery, {
+        path: `/${Array.isArray(path) ? path.join("/") : path}`,
+        scope,
+    });
+    if (!data.pageTreeNodeByPath?.documentType) {
+        // eslint-disable-next-line no-console
+        console.log("got no data from api", data, path);
+        return { notFound: true };
+    }
+    const pageId = data.pageTreeNodeByPath.id;
+
+    const pageType = data.pageTreeNodeByPath.documentType;
+
+    //pageType dependent query
+    const { query: queryForPageType } = pageTypes[pageType];
+
+    const [layout, pageTypeData] = await Promise.all([getLayout(client, scope), client.request(queryForPageType, { pageId })]);
+
+    return {
+        props: {
+            layout,
+            ...pageTypeData,
+            documentType: data.pageTreeNodeByPath.documentType,
+            id: pageId,
+            scope,
+        },
+    };
 };
 
-interface CreateGetUniversalPropsOptions {
-    includeInvisibleBlocks?: boolean;
-    includeInvisiblePages?: boolean;
-    previewDamUrls?: boolean;
-}
-
-// a function to create a universal function which can be used as getStaticProps or getServerSideProps (preview)
-export function createGetUniversalProps({
-    includeInvisibleBlocks = false,
-    includeInvisiblePages = false,
-    previewDamUrls = false,
-}: CreateGetUniversalPropsOptions = {}) {
-    return async function getUniversalProps<Context extends GetStaticPropsContext | GetServerSidePropsContext>(
-        context: Context,
-    ): Promise<Context extends GetStaticPropsContext ? GetStaticPropsResult<PageUniversalProps> : GetServerSidePropsResult<PageUniversalProps>> {
-        const { params } = context;
-
-        const client = createGraphQLClient({ includeInvisibleBlocks, includeInvisiblePages, previewDamUrls });
-        const scope = inferContentScopeFromContext(context);
-
-        const path = params?.path ?? "";
-
-        //fetch pageType
-        const data = await client.request<GQLPageTypeQuery, GQLPageTypeQueryVariables>(pageTypeQuery, {
-            path: `/${Array.isArray(path) ? path.join("/") : path}`,
-            scope,
-        });
-        if (!data.pageTreeNodeByPath?.documentType) {
-            // eslint-disable-next-line no-console
-            console.log("got no data from api", data, path);
-            return { notFound: true };
-        }
-        const pageId = data.pageTreeNodeByPath.id;
-
-        //pageType dependent query
-        const { query: queryForPageType } = pageTypes[data.pageTreeNodeByPath.documentType];
-
-        const [layout, pageTypeData] = await Promise.all([getLayout(client, scope), client.request(queryForPageType, { pageId })]);
-
-        return {
-            props: {
-                layout,
-                ...pageTypeData,
-                documentType: data.pageTreeNodeByPath.documentType,
-                id: pageId,
-                scope,
-            },
-        };
-    };
-}
-
 const pagesQuery = gql`
-    query Pages($scope: PageTreeNodeScopeInput!) {
-        pageTreeNodeList(scope: $scope) {
+    query Pages($contentScope: PageTreeNodeScopeInput!) {
+        pageTreeNodeList(scope: $contentScope) {
             id
             path
             documentType
@@ -123,10 +113,13 @@ const pagesQuery = gql`
 
 export const getStaticPaths: GetStaticPaths = async ({ locales = [] }) => {
     const paths: Array<{ params: { path: string[] }; locale: string }> = [];
-    if (process.env.NEXT_PUBLIC_SITE_IS_PREVIEW !== "true") {
+    if (process.env.SITE_IS_PREVIEW !== "true") {
         for (const locale of locales) {
+            if (locale === "default") {
+                continue;
+            }
             const data = await createGraphQLClient().request<GQLPagesQuery, GQLPagesQueryVariables>(pagesQuery, {
-                scope: { domain: configuredDomain, language: locale },
+                contentScope: { domain: configuredDomain, language: locale },
             });
 
             paths.push(
