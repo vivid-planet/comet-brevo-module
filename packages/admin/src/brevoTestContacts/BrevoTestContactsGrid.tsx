@@ -27,8 +27,8 @@ import {
     GQLBrevoContactsListFragment,
     GQLBrevoTestContactsGridQuery,
     GQLBrevoTestContactsGridQueryVariables,
-    GQLDeleteBrevoContactMutation,
-    GQLDeleteBrevoContactMutationVariables,
+    GQLDeleteBrevoTestContactMutation,
+    GQLDeleteBrevoTestContactMutationVariables,
 } from "./BrevoTestContactsGrid.generated";
 
 const brevoContactsFragment = gql`
@@ -42,9 +42,9 @@ const brevoContactsFragment = gql`
     }
 `;
 
-const deleteBrevoContactMutation = gql`
-    mutation DeleteBrevoContact($id: Int!, $scope: EmailCampaignContentScopeInput!) {
-        deleteBrevoContact(id: $id, scope: $scope)
+const deleteBrevoTestContactMutation = gql`
+    mutation DeleteBrevoTestContact($id: Int!, $scope: EmailCampaignContentScopeInput!) {
+        deleteBrevoTestContact(id: $id, scope: $scope)
     }
 `;
 
@@ -142,8 +142,8 @@ export function BrevoTestContactsGrid({
                             <RowActionsMenu>
                                 <RowActionsItem
                                     onClick={async () => {
-                                        await client.mutate<GQLDeleteBrevoContactMutation, GQLDeleteBrevoContactMutationVariables>({
-                                            mutation: deleteBrevoContactMutation,
+                                        await client.mutate<GQLDeleteBrevoTestContactMutation, GQLDeleteBrevoTestContactMutationVariables>({
+                                            mutation: deleteBrevoTestContactMutation,
                                             variables: { id: params.row.id, scope },
                                             refetchQueries: [brevoTestContactsQuery],
                                         });

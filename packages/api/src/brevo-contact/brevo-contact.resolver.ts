@@ -262,7 +262,58 @@ export function createBrevoContactResolver({
             @Args("id", { type: () => Int }) id: number,
             @Args("scope", { type: () => Scope }, new DynamicDtoValidationPipe(Scope)) scope: typeof Scope,
         ): Promise<boolean> {
-            return this.brevoContactsApiService.deleteContact(id, scope);
+            const contact = await this.brevoContactsApiService.findContact(id, scope);
+            const where: FilterQuery<TargetGroupInterface> = { scope, isMainList: false, isTestList: true };
+            const testTargetGroup = await this.targetGroupRepository.findOne(where);
+            const contactIncludesTestList = testTargetGroup?.brevoId ? contact.listIds.includes(testTargetGroup.brevoId) : false;
+
+            if (testTargetGroup && contactIncludesTestList) {
+                const testListId = testTargetGroup.brevoId;
+
+                const unlinkListIds = contact.listIds.filter((id) => id !== testListId);
+
+                await this.brevoContactsApiService.updateContact(
+                    contact.id,
+                    {
+                        listIds: [testListId],
+                        unlinkListIds,
+                    },
+                    scope,
+                );
+                return true;
+            } else {
+                return this.brevoContactsApiService.deleteContact(id, scope);
+            }
+        }
+
+        @Mutation(() => Boolean)
+        @AffectedEntity(BrevoContact)
+        async deleteBrevoTestContact(
+            @Args("id", { type: () => Int }) id: number,
+            @Args("scope", { type: () => Scope }, new DynamicDtoValidationPipe(Scope)) scope: typeof Scope,
+        ): Promise<boolean> {
+            const contact = await this.brevoContactsApiService.findContact(id, scope);
+            const where: FilterQuery<TargetGroupInterface> = { scope, isMainList: false, isTestList: true };
+            const testTargetGroup = await this.targetGroupRepository.findOne(where);
+            const contactIncludesMainList = testTargetGroup?.brevoId ? contact.listIds.includes(testTargetGroup.brevoId) : false;
+
+            if (testTargetGroup && contactIncludesMainList) {
+                const testListId = testTargetGroup.brevoId;
+
+                const linkListIds = contact.listIds.filter((id) => id !== testListId);
+
+                await this.brevoContactsApiService.updateContact(
+                    contact.id,
+                    {
+                        listIds: linkListIds,
+                        unlinkListIds: [testListId],
+                    },
+                    scope,
+                );
+                return true;
+            } else {
+                return this.brevoContactsApiService.deleteContact(id, scope);
+            }
         }
 
         @Mutation(() => SubscribeResponse)
