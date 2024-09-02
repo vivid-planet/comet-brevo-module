@@ -62,7 +62,7 @@ interface FormProps {
     scope: ContentScopeInterface;
 }
 
-export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope }: FormProps): React.ReactElement {
+export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope }: FormProps) {
     const rootBlocks = {
         content: EmailCampaignContentBlock,
     };
@@ -197,7 +197,7 @@ export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope }: Form
     }
 
     if (!state) {
-        return <></>;
+        return null;
     }
 
     if (error) throw error;

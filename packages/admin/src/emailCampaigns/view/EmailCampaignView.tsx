@@ -17,7 +17,7 @@ interface EmailCampaignViewProps {
     EmailCampaignContentBlock: BlockInterface;
 }
 
-export function EmailCampaignView({ id, EmailCampaignContentBlock }: EmailCampaignViewProps): React.ReactElement {
+export function EmailCampaignView({ id, EmailCampaignContentBlock }: EmailCampaignViewProps) {
     const stackApi = useStackApi();
     const previewApi = useBlockPreview();
     const blockContext = useCmsBlockContext();
@@ -36,7 +36,7 @@ export function EmailCampaignView({ id, EmailCampaignContentBlock }: EmailCampai
     }
 
     if (!data) {
-        return <></>;
+        return null;
     }
 
     const previewContext = {
