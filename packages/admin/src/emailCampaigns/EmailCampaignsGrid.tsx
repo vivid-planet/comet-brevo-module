@@ -2,6 +2,7 @@ import { gql, useApolloClient, useQuery } from "@apollo/client";
 import {
     CrudContextMenu,
     DataGridToolbar,
+    GridColDef,
     GridFilterButton,
     MainContent,
     muiGridFilterToGql,
@@ -19,7 +20,7 @@ import { Add as AddIcon, Edit, Statistics, Visible } from "@comet/admin-icons";
 import { BlockInterface } from "@comet/blocks-admin";
 import { ContentScopeInterface } from "@comet/cms-admin";
 import { Button, IconButton } from "@mui/material";
-import { DataGrid, GridColDef, GridToolbarQuickFilter } from "@mui/x-data-grid";
+import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import { isBefore } from "date-fns";
 import * as React from "react";
 import { FormattedMessage, useIntl } from "react-intl";

@@ -1,7 +1,15 @@
 import { useQuery } from "@apollo/client";
-import { DataGridToolbar, ToolbarItem, ToolbarTitleItem, useBufferedRowCount, useDataGridRemote, usePersistentColumnState } from "@comet/admin";
+import {
+    DataGridToolbar,
+    GridColDef,
+    ToolbarItem,
+    ToolbarTitleItem,
+    useBufferedRowCount,
+    useDataGridRemote,
+    usePersistentColumnState,
+} from "@comet/admin";
 import { ContentScopeInterface } from "@comet/cms-admin";
-import { DataGrid, GridColDef, GridToolbarQuickFilter } from "@mui/x-data-grid";
+import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import * as React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 

@@ -4,6 +4,7 @@ import {
     DataGridToolbar,
     Field,
     FinalForm,
+    GridColDef,
     ToolbarActions,
     ToolbarFillSpace,
     ToolbarItem,
@@ -16,7 +17,7 @@ import { Add, Close, Remove, Save } from "@comet/admin-icons";
 import { ContentScopeInterface } from "@comet/cms-admin";
 import { Button, Dialog, DialogActions, DialogTitle, IconButton, useTheme } from "@mui/material";
 import { Box } from "@mui/system";
-import { DataGrid, GridColDef, GridToolbarQuickFilter } from "@mui/x-data-grid";
+import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import * as React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { MemoryRouter } from "react-router";

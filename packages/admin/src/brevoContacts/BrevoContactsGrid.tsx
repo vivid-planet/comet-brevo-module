@@ -1,6 +1,7 @@
 import { DocumentNode, gql, useApolloClient, useQuery } from "@apollo/client";
 import {
     DataGridToolbar,
+    GridColDef,
     MainContent,
     messages,
     RowActionsItem,
@@ -17,7 +18,7 @@ import {
 import { Add, Block, Check, Delete, Edit } from "@comet/admin-icons";
 import { ContentScopeInterface } from "@comet/cms-admin";
 import { Button, IconButton } from "@mui/material";
-import { DataGrid, GridColDef, GridToolbarQuickFilter } from "@mui/x-data-grid";
+import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import * as React from "react";
 import { FormattedMessage, IntlShape, useIntl } from "react-intl";
 
