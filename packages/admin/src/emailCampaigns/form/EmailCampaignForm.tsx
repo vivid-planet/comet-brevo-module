@@ -24,6 +24,7 @@ import {
 } from "@comet/blocks-admin";
 import {
     BlockPreviewWithTabs,
+    ContentScopeIndicator,
     ContentScopeInterface,
     queryUpdatedAt,
     resolveHasSaveConflict,
@@ -223,7 +224,7 @@ export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope }: Form
     return (
         <>
             {saveConflict.dialogs}
-            <Toolbar>
+            <Toolbar scopeIndicator={<ContentScopeIndicator scope={scope} />}>
                 <ToolbarItem>
                     <IconButton onClick={stackApi?.goBack}>
                         <ArrowLeft />

@@ -1,9 +1,9 @@
 import { useMutation, useQuery } from "@apollo/client";
 import {
     CancelButton,
+    DataGridToolbar,
     Field,
     FinalForm,
-    Toolbar,
     ToolbarActions,
     ToolbarFillSpace,
     ToolbarItem,
@@ -63,7 +63,7 @@ const AssignedContactsGridToolbar = ({
 
     return (
         <>
-            <Toolbar>
+            <DataGridToolbar>
                 <ToolbarTitleItem>
                     <FormattedMessage id="cometBrevoModule.targetGroup.manuallyAssignedContacts.title" defaultMessage="Manually assigned contacts" />
                 </ToolbarTitleItem>
@@ -82,7 +82,7 @@ const AssignedContactsGridToolbar = ({
                         <FormattedMessage id="cometBrevoModule.targetGroup.assignedContacts.addContact" defaultMessage="Add contacts" />
                     </Button>
                 </ToolbarActions>
-            </Toolbar>
+            </DataGridToolbar>
             {component}
         </>
     );
@@ -92,7 +92,7 @@ const AssignableContactsGridToolbar = () => {
     const intl = useIntl();
 
     return (
-        <Toolbar>
+        <DataGridToolbar>
             <ToolbarTitleItem>
                 <FormattedMessage id="cometBrevoModule.targetGroup.assignableContacts.title" defaultMessage="Assignable contacts" />
             </ToolbarTitleItem>
@@ -104,7 +104,7 @@ const AssignableContactsGridToolbar = () => {
                     })}
                 />
             </ToolbarItem>
-        </Toolbar>
+        </DataGridToolbar>
     );
 };
 

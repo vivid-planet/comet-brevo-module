@@ -1,12 +1,12 @@
 import { gql, useApolloClient, useQuery } from "@apollo/client";
 import {
     CrudContextMenu,
+    DataGridToolbar,
     GridFilterButton,
     MainContent,
     muiGridFilterToGql,
     muiGridSortToGql,
     StackLink,
-    Toolbar,
     ToolbarActions,
     ToolbarAutomaticTitleItem,
     ToolbarFillSpace,
@@ -88,7 +88,7 @@ const createEmailCampaignMutation = gql`
 
 function EmailCampaignsGridToolbar() {
     return (
-        <Toolbar>
+        <DataGridToolbar>
             <ToolbarAutomaticTitleItem />
             <ToolbarItem>
                 <GridToolbarQuickFilter />
@@ -102,7 +102,7 @@ function EmailCampaignsGridToolbar() {
                     <FormattedMessage id="cometBrevoModule.emailCampaign.newEmailCampaign" defaultMessage="New email campaign" />
                 </Button>
             </ToolbarActions>
-        </Toolbar>
+        </DataGridToolbar>
     );
 }
 

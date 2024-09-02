@@ -17,7 +17,7 @@ import {
     useStackApi,
 } from "@comet/admin";
 import { ArrowLeft } from "@comet/admin-icons";
-import { ContentScopeInterface, queryUpdatedAt, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
+import { ContentScopeIndicator, ContentScopeInterface, queryUpdatedAt, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
 import { IconButton } from "@mui/material";
 import { FormApi } from "final-form";
 import React from "react";
@@ -120,7 +120,7 @@ export function TargetGroupForm({ id, scope, additionalFormFields, input2State, 
             {({ values }) => (
                 <>
                     {saveConflict.dialogs}
-                    <Toolbar>
+                    <Toolbar scopeIndicator={<ContentScopeIndicator scope={scope} />}>
                         <ToolbarItem>
                             <IconButton onClick={stackApi?.goBack}>
                                 <ArrowLeft />

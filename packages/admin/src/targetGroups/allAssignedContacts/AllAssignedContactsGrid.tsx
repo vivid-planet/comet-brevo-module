@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import { Toolbar, ToolbarItem, ToolbarTitleItem, useBufferedRowCount, useDataGridRemote, usePersistentColumnState } from "@comet/admin";
+import { DataGridToolbar, ToolbarItem, ToolbarTitleItem, useBufferedRowCount, useDataGridRemote, usePersistentColumnState } from "@comet/admin";
 import { ContentScopeInterface } from "@comet/cms-admin";
 import { DataGrid, GridColDef, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import * as React from "react";
@@ -16,7 +16,7 @@ const AssignedContactsGridToolbar = () => {
     const intl = useIntl();
 
     return (
-        <Toolbar>
+        <DataGridToolbar>
             <ToolbarTitleItem>
                 <FormattedMessage id="cometBrevoModule.targetGroup.allAssignedContacts.title" defaultMessage="All assigned contacts" />
             </ToolbarTitleItem>
@@ -28,7 +28,7 @@ const AssignedContactsGridToolbar = () => {
                     })}
                 />
             </ToolbarItem>
-        </Toolbar>
+        </DataGridToolbar>
     );
 };
 

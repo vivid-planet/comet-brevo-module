@@ -1,6 +1,6 @@
-import { Stack, StackPage, StackSwitch } from "@comet/admin";
+import { Stack, StackPage, StackSwitch, StackToolbar } from "@comet/admin";
 import { BlockInterface } from "@comet/blocks-admin";
-import { useContentScope } from "@comet/cms-admin";
+import { ContentScopeIndicator, useContentScope } from "@comet/cms-admin";
 import * as React from "react";
 import { useIntl } from "react-intl";
 
@@ -28,6 +28,7 @@ export function createEmailCampaignsPage({ scopeParts, EmailCampaignContentBlock
             <Stack topLevelTitle={intl.formatMessage({ id: "cometBrevoModule.emailCampaigns.emailCampaigns", defaultMessage: "Email campaigns" })}>
                 <StackSwitch>
                     <StackPage name="grid">
+                        <StackToolbar scopeIndicator={<ContentScopeIndicator scope={scope} />} />
                         <EmailCampaignsGrid scope={scope} EmailCampaignContentBlock={EmailCampaignContentBlock} />
                     </StackPage>
                     <StackPage name="statistics">{(selectedId) => <EmailCampaignStatistics id={selectedId} />}</StackPage>

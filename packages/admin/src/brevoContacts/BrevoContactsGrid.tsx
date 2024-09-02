@@ -1,11 +1,11 @@
 import { DocumentNode, gql, useApolloClient, useQuery } from "@apollo/client";
 import {
+    DataGridToolbar,
     MainContent,
     messages,
     RowActionsItem,
     RowActionsMenu,
     StackLink,
-    Toolbar,
     ToolbarActions,
     ToolbarFillSpace,
     ToolbarItem,
@@ -68,7 +68,7 @@ function BrevoContactsGridToolbar({ intl, scope }: { intl: IntlShape; scope: GQL
 
     return (
         <>
-            <Toolbar>
+            <DataGridToolbar>
                 <ToolbarTitleItem>
                     <FormattedMessage id="cometBrevoModule.brevoContact.title" defaultMessage="Contacts" />
                 </ToolbarTitleItem>
@@ -84,7 +84,7 @@ function BrevoContactsGridToolbar({ intl, scope }: { intl: IntlShape; scope: GQL
                         <FormattedMessage id="cometBrevoModule.brevoContact.newContact" defaultMessage="New contact" />
                     </Button>
                 </ToolbarActions>
-            </Toolbar>
+            </DataGridToolbar>
             {contactImportComponent}
         </>
     );

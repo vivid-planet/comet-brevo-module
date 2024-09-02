@@ -1,12 +1,12 @@
 import { gql, useApolloClient, useQuery } from "@apollo/client";
 import {
     CrudContextMenu,
+    DataGridToolbar,
     GridFilterButton,
     MainContent,
     muiGridFilterToGql,
     muiGridSortToGql,
     StackLink,
-    Toolbar,
     ToolbarActions,
     ToolbarAutomaticTitleItem,
     ToolbarFillSpace,
@@ -112,7 +112,7 @@ export function TargetGroupsGrid({
 
     function TargetGroupsGridToolbar() {
         return (
-            <Toolbar>
+            <DataGridToolbar>
                 <ToolbarAutomaticTitleItem />
                 <ToolbarItem>
                     <GridToolbarQuickFilter />
@@ -133,7 +133,7 @@ export function TargetGroupsGrid({
                         <FormattedMessage id="cometBrevoModule.targetGroup.newTargetGroup" defaultMessage="New target group" />
                     </Button>
                 </ToolbarActions>
-            </Toolbar>
+            </DataGridToolbar>
         );
     }
 
