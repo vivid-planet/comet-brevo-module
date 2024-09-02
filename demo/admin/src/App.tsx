@@ -1,7 +1,4 @@
-import "@fontsource/roboto/300.css";
-import "@fontsource/roboto/400.css";
-import "@fontsource/roboto/500.css";
-import "@fontsource/roboto/700.css";
+import "@fontsource-variable/roboto-flex/full.css";
 import "material-design-icons/iconfont/material-icons.css";
 
 import { ApolloProvider } from "@apollo/client";

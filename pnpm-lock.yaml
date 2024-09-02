@@ -80,9 +80,9 @@ importers:
       '@emotion/styled':
         specifier: ^11.9.3
         version: 11.11.0(@emotion/react@11.11.3)(@types/react@17.0.75)(react@17.0.2)
-      '@fontsource/roboto':
-        specifier: ^4.5.8
-        version: 4.5.8
+      '@fontsource-variable/roboto-flex':
+        specifier: ^5.0.14
+        version: 5.0.16
       '@mui/icons-material':
         specifier: ^5.8.4
         version: 5.14.5(@mui/material@5.15.5)(@types/react@17.0.75)(react@17.0.2)
@@ -4558,8 +4558,8 @@ packages:
   /@floating-ui/utils@0.2.1:
     resolution: {integrity: sha512-9TANp6GPoMtYzQdt54kfAyMmz1+osLlXdg2ENroU7zzrtflTLrrC/lgrIfaSe+Wu0b89GKccT7vxXA0MoAIO+Q==}
 
-  /@fontsource/roboto@4.5.8:
-    resolution: {integrity: sha512-CnD7zLItIzt86q4Sj3kZUiLcBk1dSk81qcqgMGaZe7SQ1P8hFNxhMl5AZthK1zrDM5m74VVhaOpuMGIL4gagaA==}
+  /@fontsource-variable/roboto-flex@5.0.16:
+    resolution: {integrity: sha512-aMJw0ac9M2fu78YUx5BRtdSqNqGV4cJPF6lbFpow8e0hXVH7wPwk5d0mpox1MTwvHFHRStmkYVB/SSUytmlaSw==}
     dev: false
 
   /@formatjs/cli@3.2.0:
