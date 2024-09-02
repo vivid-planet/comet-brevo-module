@@ -2,7 +2,7 @@ import { useQuery } from "@apollo/client";
 import { Loading, MainContent, Toolbar, ToolbarFillSpace, ToolbarItem, ToolbarTitleItem, useStackApi } from "@comet/admin";
 import { ArrowLeft } from "@comet/admin-icons";
 import { BlockInterface, IFrameBridgeProvider } from "@comet/blocks-admin";
-import { BlockPreview, EditPageLayout, useBlockPreview, useCmsBlockContext, useContentScope } from "@comet/cms-admin";
+import { BlockPreview, useBlockPreview, useCmsBlockContext, useContentScope } from "@comet/cms-admin";
 import { IconButton } from "@mui/material";
 import React from "react";
 import { FormattedMessage } from "react-intl";
@@ -52,7 +52,7 @@ export function EmailCampaignView({ id, EmailCampaignContentBlock }: EmailCampai
     };
 
     return (
-        <EditPageLayout>
+        <>
             <Toolbar>
                 <ToolbarItem>
                     <IconButton onClick={stackApi?.goBack}>
@@ -69,6 +69,6 @@ export function EmailCampaignView({ id, EmailCampaignContentBlock }: EmailCampai
                     <BlockPreview url={previewUrl} previewState={previewState} previewApi={previewApi} />
                 </IFrameBridgeProvider>
             </MainContent>
-        </EditPageLayout>
+        </>
     );
 }

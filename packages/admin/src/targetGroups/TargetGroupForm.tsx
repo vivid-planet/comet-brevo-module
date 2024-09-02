@@ -17,7 +17,7 @@ import {
     useStackApi,
 } from "@comet/admin";
 import { ArrowLeft } from "@comet/admin-icons";
-import { ContentScopeInterface, EditPageLayout, queryUpdatedAt, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
+import { ContentScopeInterface, queryUpdatedAt, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
 import { IconButton } from "@mui/material";
 import { FormApi } from "final-form";
 import React from "react";
@@ -118,7 +118,7 @@ export function TargetGroupForm({ id, scope, additionalFormFields, input2State, 
     return (
         <FinalForm<EditTargetGroupFinalFormValues> apiRef={formApiRef} onSubmit={handleSubmit} mode={mode} initialValues={initialValues}>
             {({ values }) => (
-                <EditPageLayout>
+                <>
                     {saveConflict.dialogs}
                     <Toolbar>
                         <ToolbarItem>
@@ -182,7 +182,7 @@ export function TargetGroupForm({ id, scope, additionalFormFields, input2State, 
                             </FieldSet>
                         </>
                     </MainContent>
-                </EditPageLayout>
+                </>
             )}
         </FinalForm>
     );

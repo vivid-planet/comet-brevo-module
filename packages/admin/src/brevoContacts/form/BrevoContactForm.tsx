@@ -17,7 +17,7 @@ import {
     useStackApi,
 } from "@comet/admin";
 import { ArrowLeft } from "@comet/admin-icons";
-import { ContentScopeInterface, EditPageLayout, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
+import { ContentScopeInterface, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
 import { Card, IconButton } from "@mui/material";
 import { Box } from "@mui/system";
 import { FormApi } from "final-form";
@@ -161,7 +161,7 @@ export function BrevoContactForm({ id, scope, input2State, additionalFormFields,
     return (
         <FinalForm<EditBrevoContactFormValues> apiRef={formApiRef} onSubmit={handleSubmit} mode={mode} initialValues={initialValues}>
             {({ values }) => (
-                <EditPageLayout>
+                <>
                     {saveConflict.dialogs}
                     <Toolbar>
                         <ToolbarItem>
@@ -221,7 +221,7 @@ export function BrevoContactForm({ id, scope, input2State, additionalFormFields,
                             </Card>
                         )}
                     </MainContent>
-                </EditPageLayout>
+                </>
             )}
         </FinalForm>
     );

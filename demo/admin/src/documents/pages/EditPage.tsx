@@ -5,7 +5,6 @@ import { AdminComponentRoot, AdminTabLabel } from "@comet/blocks-admin";
 import {
     BlockPreviewWithTabs,
     createUsePage,
-    EditPageLayout,
     openSitePreviewWindow,
     PageName,
     useBlockPreview,
@@ -97,7 +96,7 @@ export const EditPage: React.FC<Props> = ({ id, category }) => {
     }
 
     return (
-        <EditPageLayout>
+        <>
             {hasChanges && (
                 <RouterPrompt
                     message={(location) => {
@@ -172,6 +171,6 @@ export const EditPage: React.FC<Props> = ({ id, category }) => {
                 </BlockPreviewWithTabs>
             </MainContent>
             {dialogs}
-        </EditPageLayout>
+        </>
     );
 };

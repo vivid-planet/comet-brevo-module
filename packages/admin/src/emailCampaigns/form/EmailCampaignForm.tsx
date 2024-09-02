@@ -25,7 +25,6 @@ import {
 import {
     BlockPreviewWithTabs,
     ContentScopeInterface,
-    EditPageLayout,
     queryUpdatedAt,
     resolveHasSaveConflict,
     useBlockPreview,
@@ -222,7 +221,7 @@ export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope }: Form
     const isSchedulingDisabled = state.sendingState === "SENT" || mode === "add" || state.targetGroups.length === 0 || isScheduledDateInPast;
 
     return (
-        <EditPageLayout>
+        <>
             {saveConflict.dialogs}
             <Toolbar>
                 <ToolbarItem>
@@ -306,6 +305,6 @@ export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope }: Form
                     ]}
                 </BlockPreviewWithTabs>
             </MainContent>
-        </EditPageLayout>
+        </>
     );
 }
