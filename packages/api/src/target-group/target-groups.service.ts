@@ -31,13 +31,10 @@ export class TargetGroupsService {
         return andFilters.length > 0 ? { $and: andFilters } : {};
     }
 
-    public checkIfContactIsInTargetGroup(
+    public checkIfContactIsInTargetGroupByAttributes(
         contactAttributes?: BrevoContactAttributesInterface,
         filters?: BrevoContactFilterAttributesInterface,
-        assignedContactsTargetGroupBrevoId?: number,
     ): boolean {
-        if (!contactAttributes || !assignedContactsTargetGroupBrevoId) return false;
-
         if (filters && contactAttributes) {
             for (const [key, value] of Object.entries(filters)) {
                 if (!value || value.length === 0) continue;
@@ -87,7 +84,7 @@ export class TargetGroupsService {
             const contactsNotInContactList: BrevoContactInterface[] = [];
 
             for (const contact of contacts) {
-                const contactIsInTargetGroupByFilters = this.checkIfContactIsInTargetGroup(contact.attributes, filters);
+                const contactIsInTargetGroupByFilters = this.checkIfContactIsInTargetGroupByAttributes(contact.attributes, filters);
 
                 const manuallyAssignedTargetGroup = targetGroup.assignedContactsTargetGroupBrevoId;
                 const contactIsManuallyAssignedToTargetGroup = manuallyAssignedTargetGroup
