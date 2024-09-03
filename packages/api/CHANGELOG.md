@@ -1,5 +1,11 @@
 # @comet/brevo-api
 
+## 2.0.1
+
+### Patch Changes
+
+-   799366c: Prevent invisible blocks from being included in the newsletter
+
 ## 2.0.0
 
 ### Major Changes
