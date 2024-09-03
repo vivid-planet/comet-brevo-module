@@ -15,6 +15,7 @@ import { BrevoContactsService } from "./brevo-contacts.service";
 import { BrevoContactInterface } from "./dto/brevo-contact.factory";
 import { BrevoContactInputInterface, BrevoContactUpdateInputInterface } from "./dto/brevo-contact-input.factory";
 import { BrevoContactsArgsFactory } from "./dto/brevo-contacts.args";
+import { BrevoTestContactInputInterface } from "./dto/brevo-test-contact-input.factory";
 import { ManuallyAssignedBrevoContactsArgs } from "./dto/manually-assigned-brevo-contacts.args";
 import { SubscribeInputInterface } from "./dto/subscribe-input.factory";
 import { SubscribeResponse } from "./dto/subscribe-response.enum";
@@ -26,11 +27,13 @@ export function createBrevoContactResolver({
     Scope,
     BrevoContactInput,
     BrevoContactUpdateInput,
+    BrevoTestContactInput,
 }: {
     BrevoContact: Type<BrevoContactInterface>;
     BrevoContactSubscribeInput: Type<SubscribeInputInterface>;
     BrevoContactInput: Type<BrevoContactInputInterface>;
     BrevoContactUpdateInput: Type<Partial<BrevoContactInputInterface>>;
+    BrevoTestContactInput: Type<BrevoTestContactInputInterface>;
     Scope: Type<EmailCampaignScopeInterface>;
 }): Type<unknown> {
     @ObjectType()
@@ -221,7 +224,7 @@ export function createBrevoContactResolver({
         @RequiredPermission(["brevo-newsletter"], { skipScopeCheck: true })
         async createBrevoTestContact(
             @Args("scope", { type: () => Scope }, new DynamicDtoValidationPipe(Scope)) scope: typeof Scope,
-            @Args("input", { type: () => BrevoContactInput })
+            @Args("input", { type: () => BrevoTestContactInput })
             input: BrevoContactInputInterface,
         ): Promise<SubscribeResponse> {
             const where: FilterQuery<TargetGroupInterface> = { scope, isMainList: false, isTestList: true };
