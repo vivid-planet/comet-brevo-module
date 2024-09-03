@@ -43,7 +43,10 @@ export class EmailCampaignsService {
     }
 
     async saveEmailCampaignInBrevo(campaign: EmailCampaignInterface, scheduledAt?: Date): Promise<EmailCampaignInterface> {
-        const content = await this.blockTransformerService.transformToPlain(campaign.content);
+        const content = await this.blockTransformerService.transformToPlain(campaign.content, {
+            includeInvisibleContent: false,
+            previewDamUrls: false,
+        });
 
         const { data: htmlContent, status } = await this.httpService.axiosRef.post(
             this.config.emailCampaigns.frontend.url,
