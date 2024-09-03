@@ -20,7 +20,7 @@ export const brevoContactFormCheckForChangesQuery = gql`
 `;
 
 export const createBrevoTestContactMutation = gql`
-    mutation CreateBrevoTestContact($scope: EmailCampaignContentScopeInput!, $input: BrevoContactInput!) {
+    mutation CreateBrevoTestContact($scope: EmailCampaignContentScopeInput!, $input: BrevoTestContactInput!) {
         createBrevoTestContact(scope: $scope, input: $input)
     }
 `;

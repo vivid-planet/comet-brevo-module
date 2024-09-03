@@ -742,7 +742,7 @@ type Mutation {
   deleteDamFolder(id: ID!): Boolean!
   updateBrevoContact(id: Int!, scope: EmailCampaignContentScopeInput!, input: BrevoContactUpdateInput!): BrevoContact!
   createBrevoContact(scope: EmailCampaignContentScopeInput!, input: BrevoContactInput!): SubscribeResponse!
-  createBrevoTestContact(scope: EmailCampaignContentScopeInput!, input: BrevoContactInput!): SubscribeResponse!
+  createBrevoTestContact(scope: EmailCampaignContentScopeInput!, input: BrevoTestContactInput!): SubscribeResponse!
   deleteBrevoContact(id: Int!, scope: EmailCampaignContentScopeInput!): Boolean!
   deleteBrevoTestContact(id: Int!, scope: EmailCampaignContentScopeInput!): Boolean!
   subscribeBrevoContact(input: SubscribeInput!, scope: EmailCampaignContentScopeInput!): SubscribeResponse!
@@ -898,6 +898,12 @@ input BrevoContactInput {
   email: String!
   blocked: Boolean!
   redirectionUrl: String!
+  attributes: BrevoContactAttributesInput
+}
+
+input BrevoTestContactInput {
+  email: String!
+  blocked: Boolean!
   attributes: BrevoContactAttributesInput
 }
 

@@ -43,7 +43,6 @@ import {
 
 export type EditBrevoContactFormValues = {
     email: string;
-    redirectionUrl: string;
     [key: string]: unknown;
 };
 
@@ -80,7 +79,7 @@ export function BrevoTestContactForm({ id, scope, input2State, additionalFormFie
         let additionalInitialValues = {};
 
         if (input2State) {
-            additionalInitialValues = input2State({ email: "", redirectionUrl: "", ...data?.brevoContact });
+            additionalInitialValues = input2State({ email: "", ...data?.brevoContact });
         }
         return data?.brevoContact
             ? {
@@ -126,7 +125,7 @@ export function BrevoTestContactForm({ id, scope, input2State, additionalFormFie
             if (!id) {
                 throw new Error("Missing id in edit mode");
             }
-            const { email, redirectionUrl, ...rest } = output;
+            const { email, ...rest } = output;
             await client.mutate<GQLUpdateBrevoContactMutation, GQLUpdateBrevoContactMutationVariables>({
                 mutation: updateBrevoContactMutation(brevoContactFormFragment),
                 variables: { id, input: rest, scope },

@@ -138,10 +138,9 @@ export const getBrevoContactConfig = (
                 />
             </>
         ),
-        input2State: (values?: AdditionalFormConfigInputProps) => {
+        input2State: (values: AdditionalFormConfigInputProps) => {
             return {
-                email: values?.email ?? "",
-                redirectionUrl: values?.redirectionUrl ?? "",
+                ...values,
                 attributes: {
                     BRANCH: values?.attributes?.BRANCH ?? [],
                     SALUTATION: values?.attributes?.SALUTATION,
