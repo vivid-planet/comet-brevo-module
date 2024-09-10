@@ -42,9 +42,13 @@ import {
 } from "./BrevoContactForm.gql.generated";
 
 export type EditBrevoContactFormValues = {
+    [key: string]: unknown;
+};
+
+type BaseBrevoContactFormValues = EditBrevoContactFormValues & {
+    //Umbenennen
     email: string;
     redirectionUrl: string;
-    [key: string]: unknown;
 };
 
 interface FormProps {
@@ -59,14 +63,11 @@ export function BrevoContactForm({ id, scope, input2State, additionalFormFields,
     const stackApi = useStackApi();
     const client = useApolloClient();
     const mode = id ? "edit" : "add";
-    const formApiRef = useFormApiRef<EditBrevoContactFormValues>();
+    const formApiRef = useFormApiRef<BaseBrevoContactFormValues>();
 
     const brevoContactFormFragment = gql`
         fragment BrevoContactForm on BrevoContact {
             email
-            createdAt
-            emailBlacklisted
-            smsBlacklisted
             ${additionalAttributesFragment ? "...".concat(additionalAttributesFragment?.name) : ""}
         }
         ${additionalAttributesFragment?.fragment ?? ""}
@@ -76,11 +77,15 @@ export function BrevoContactForm({ id, scope, input2State, additionalFormFields,
         id ? { variables: { id, scope } } : { skip: true },
     );
 
-    const initialValues = React.useMemo<Partial<EditBrevoContactFormValues>>(() => {
+    const initialValues = React.useMemo<Partial<BaseBrevoContactFormValues>>(() => {
         let additionalInitialValues = {};
 
         if (input2State) {
-            additionalInitialValues = input2State({ email: "", redirectionUrl: "", ...data?.brevoContact });
+            additionalInitialValues = input2State({
+                email: "",
+                redirectionUrl: "",
+                ...data?.brevoContact,
+            });
         }
         return data?.brevoContact
             ? {
@@ -112,7 +117,7 @@ export function BrevoContactForm({ id, scope, input2State, additionalFormFields,
         },
     });
 
-    const handleSubmit = async (state: EditBrevoContactFormValues, form: FormApi<EditBrevoContactFormValues>, event: FinalFormSubmitEvent) => {
+    const handleSubmit = async (state: BaseBrevoContactFormValues, form: FormApi<BaseBrevoContactFormValues>, event: FinalFormSubmitEvent) => {
         if (await saveConflict.checkForConflicts()) {
             throw new Error("Conflicts detected");
         }
@@ -159,7 +164,7 @@ export function BrevoContactForm({ id, scope, input2State, additionalFormFields,
     }
 
     return (
-        <FinalForm<EditBrevoContactFormValues> apiRef={formApiRef} onSubmit={handleSubmit} mode={mode} initialValues={initialValues}>
+        <FinalForm<BaseBrevoContactFormValues> apiRef={formApiRef} onSubmit={handleSubmit} mode={mode} initialValues={initialValues}>
             {({ values }) => (
                 <EditPageLayout>
                     {saveConflict.dialogs}
