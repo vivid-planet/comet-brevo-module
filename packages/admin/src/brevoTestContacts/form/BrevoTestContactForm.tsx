@@ -42,8 +42,11 @@ import {
 } from "./BrevoTestContactForm.gql.generated";
 
 export type EditBrevoContactFormValues = {
-    email: string;
     [key: string]: unknown;
+};
+
+type BaseBrevoContactFormValues = EditBrevoContactFormValues & {
+    email: string;
 };
 
 interface FormProps {
@@ -58,10 +61,10 @@ export function BrevoTestContactForm({ id, scope, input2State, additionalFormFie
     const stackApi = useStackApi();
     const client = useApolloClient();
     const mode = id ? "edit" : "add";
-    const formApiRef = useFormApiRef<EditBrevoContactFormValues>();
+    const formApiRef = useFormApiRef<BaseBrevoContactFormValues>();
 
-    const brevoContactFormFragment = gql`
-        fragment BrevoContactForm on BrevoContact {
+    const brevoTestContactFormFragment = gql`
+        fragment BrevoTestContactForm on BrevoContact {
             email
             createdAt
             emailBlacklisted
@@ -71,7 +74,7 @@ export function BrevoTestContactForm({ id, scope, input2State, additionalFormFie
         ${additionalAttributesFragment?.fragment ?? ""}
 `;
     const { data, error, loading, refetch } = useQuery<GQLBrevoContactFormQuery, GQLBrevoContactFormQueryVariables>(
-        brevoContactFormQuery(brevoContactFormFragment),
+        brevoContactFormQuery(brevoTestContactFormFragment),
         id ? { variables: { id, scope } } : { skip: true },
     );
 
@@ -79,7 +82,10 @@ export function BrevoTestContactForm({ id, scope, input2State, additionalFormFie
         let additionalInitialValues = {};
 
         if (input2State) {
-            additionalInitialValues = input2State({ email: "", ...data?.brevoContact });
+            additionalInitialValues = input2State({
+                email: "",
+                ...data?.brevoContact,
+            });
         }
         return data?.brevoContact
             ? {
@@ -111,7 +117,7 @@ export function BrevoTestContactForm({ id, scope, input2State, additionalFormFie
         },
     });
 
-    const handleSubmit = async (state: EditBrevoContactFormValues, form: FormApi<EditBrevoContactFormValues>, event: FinalFormSubmitEvent) => {
+    const handleSubmit = async (state: BaseBrevoContactFormValues, form: FormApi<BaseBrevoContactFormValues>, event: FinalFormSubmitEvent) => {
         if (await saveConflict.checkForConflicts()) {
             throw new Error("Conflicts detected");
         }
@@ -127,7 +133,7 @@ export function BrevoTestContactForm({ id, scope, input2State, additionalFormFie
             }
             const { email, ...rest } = output;
             await client.mutate<GQLUpdateBrevoContactMutation, GQLUpdateBrevoContactMutationVariables>({
-                mutation: updateBrevoContactMutation(brevoContactFormFragment),
+                mutation: updateBrevoContactMutation(brevoTestContactFormFragment),
                 variables: { id, input: rest, scope },
             });
         } else {
@@ -158,7 +164,7 @@ export function BrevoTestContactForm({ id, scope, input2State, additionalFormFie
     }
 
     return (
-        <FinalForm<EditBrevoContactFormValues> apiRef={formApiRef} onSubmit={handleSubmit} mode={mode} initialValues={initialValues}>
+        <FinalForm<BaseBrevoContactFormValues> apiRef={formApiRef} onSubmit={handleSubmit} mode={mode} initialValues={initialValues}>
             {({ values }) => (
                 <EditPageLayout>
                     {saveConflict.dialogs}

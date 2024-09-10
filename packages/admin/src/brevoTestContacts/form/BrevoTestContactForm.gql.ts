@@ -1,14 +1,14 @@
 import { DocumentNode, gql } from "@apollo/client";
 
-export const brevoContactFormQuery = (brevoContactFormFragment: DocumentNode) => gql`
+export const brevoContactFormQuery = (brevoTestContactFormFragment: DocumentNode) => gql`
     query BrevoContactForm($id: Int!, $scope: EmailCampaignContentScopeInput!) {
         brevoContact(id: $id, scope: $scope) {
             id
             modifiedAt
-            ...BrevoContactForm
+            ...BrevoTestContactForm
         }
     }
-    ${brevoContactFormFragment}
+    ${brevoTestContactFormFragment}
 `;
 
 export const brevoContactFormCheckForChangesQuery = gql`
@@ -25,13 +25,13 @@ export const createBrevoTestContactMutation = gql`
     }
 `;
 
-export const updateBrevoContactMutation = (brevoContactFormFragment: DocumentNode) => gql`
+export const updateBrevoContactMutation = (brevoTestContactFormFragment: DocumentNode) => gql`
     mutation UpdateBrevoContact($id: Int!, $input: BrevoContactUpdateInput!, $scope: EmailCampaignContentScopeInput!) {
         updateBrevoContact(id: $id, input: $input, scope: $scope) {
             id
             modifiedAt
-            ...BrevoContactForm
+            ...BrevoTestContactForm
         }
     }
-    ${brevoContactFormFragment}
+    ${brevoTestContactFormFragment}
 `;
