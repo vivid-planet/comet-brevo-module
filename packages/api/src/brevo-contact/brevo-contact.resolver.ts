@@ -96,22 +96,12 @@ export function createBrevoContactResolver({
         }
 
         @Query(() => PaginatedBrevoContacts)
-        async brevoTestContacts(@Args() { offset, limit, email, targetGroupId, scope }: BrevoContactsArgs): Promise<PaginatedBrevoContacts> {
+        async brevoTestContacts(@Args() { offset, limit, email, scope }: BrevoContactsArgs): Promise<PaginatedBrevoContacts> {
             const where: FilterQuery<TargetGroupInterface> = { scope, isMainList: false, isTestList: true };
-
-            if (targetGroupId) {
-                where.id = targetGroupId;
-                where.isMainList = false;
-                where.isTestList = true;
-            }
 
             let targetGroup = await this.targetGroupRepository.findOne(where);
 
             if (!targetGroup) {
-                if (targetGroupId) {
-                    return new PaginatedBrevoContacts([], 0, { offset, limit });
-                }
-
                 // when there is no test target group for the scope, create one
                 targetGroup = await this.targetGroupService.createIfNotExistTestTargetGroupForScope(scope);
             }
