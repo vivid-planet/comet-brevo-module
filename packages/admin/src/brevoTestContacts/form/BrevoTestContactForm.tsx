@@ -78,21 +78,19 @@ export function BrevoTestContactForm({ id, scope, input2State, additionalFormFie
         id ? { variables: { id, scope } } : { skip: true },
     );
 
-    const initialValues = React.useMemo<Partial<EditBrevoContactFormValues>>(() => {
-        let additionalInitialValues = {};
+    const initialValues = React.useMemo<Partial<BaseBrevoContactFormValues>>(() => {
+        let baseInitialValues = {
+            email: "",
+        };
 
         if (input2State) {
-            additionalInitialValues = input2State({
-                email: "",
-                ...data?.brevoContact,
-            });
+            baseInitialValues = {
+                ...baseInitialValues,
+                ...input2State(data?.brevoContact),
+            };
         }
-        return data?.brevoContact
-            ? {
-                  email: data.brevoContact.email,
-                  ...additionalInitialValues,
-              }
-            : additionalInitialValues;
+
+        return data?.brevoContact?.email ? { ...baseInitialValues, email: data.brevoContact.email } : baseInitialValues;
     }, [data?.brevoContact, input2State]);
 
     const saveConflict = useFormSaveConflict({
