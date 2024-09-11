@@ -35,9 +35,7 @@ export class TargetGroupsService {
         contactAttributes?: BrevoContactAttributesInterface,
         filters?: BrevoContactFilterAttributesInterface,
     ): boolean {
-        if (!contactAttributes) return false;
-
-        if (filters) {
+        if (filters && contactAttributes) {
             for (const [key, value] of Object.entries(filters)) {
                 if (!value) continue;
                 if (value.includes(contactAttributes[key])) {
@@ -49,7 +47,7 @@ export class TargetGroupsService {
             return true;
         }
 
-        return true;
+        return false;
     }
 
     public async assignContactsToContactList(
