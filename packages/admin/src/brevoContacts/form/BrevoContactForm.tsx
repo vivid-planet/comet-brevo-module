@@ -46,7 +46,6 @@ export type EditBrevoContactFormValues = {
 };
 
 type BaseBrevoContactFormValues = EditBrevoContactFormValues & {
-    //Umbenennen
     email: string;
     redirectionUrl: string;
 };
