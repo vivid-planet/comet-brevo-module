@@ -64,9 +64,7 @@ export class BrevoContactsService {
     }): Promise<boolean> {
         const testTargetGroupForScope = await this.targetGroupService.createIfNotExistTestTargetGroupForScope(scope);
 
-        const brevoIds = [testTargetGroupForScope.brevoId];
-
-        const created = await this.brevoContactsApiService.createTestContact({ email, attributes }, brevoIds, scope);
+        const created = await this.brevoContactsApiService.createTestContact({ email, attributes }, [testTargetGroupForScope.brevoId], scope);
         return created;
     }
 
