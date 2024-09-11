@@ -71,11 +71,9 @@ export class BrevoContactsService {
     public async getTargetGroupIdsForNewContact({
         contactAttributes,
         scope,
-        assignedContactsTargetGroupBrevoId,
     }: {
         contactAttributes?: BrevoContactAttributesInterface;
         scope?: EmailCampaignScopeInterface;
-        assignedContactsTargetGroupBrevoId?: number;
     }): Promise<number[]> {
         let offset = 0;
         let totalCount = 0;
