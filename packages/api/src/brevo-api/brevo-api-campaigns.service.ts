@@ -167,7 +167,10 @@ export class BrevoApiCampaignsService {
 
         const brevoCampaign = await this.loadBrevoCampaignById(campaign);
 
-        return brevoCampaign.statistics.globalStats;
+        // The property globalStats seems to be right here according to the docs: https://developers.brevo.com/reference/getemailcampaign
+        // Unforunately, the API returns only 0 values for the globalStats property.
+        // That's why we return the first element of the campaignStats array, which contains the correct values.
+        return brevoCampaign.statistics.campaignStats[0];
     }
 
     private async *getCampaignsResponse(
