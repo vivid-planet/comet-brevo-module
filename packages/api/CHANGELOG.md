@@ -1,5 +1,23 @@
 # @comet/brevo-api
 
+## 2.1.0
+
+### Minor Changes
+
+-   3606421: Brevo returns a 404 error when an email address is not found and a 400 error if an invalid email is provided. Instead of handling only one of these errors, both status codes must be ignored to prevent the contact search from throwing an error.
+
+## 2.0.2
+
+### Patch Changes
+
+-   06c18b7: Fix campaign statistics
+
+    Addressed an issue where the globalStats property was being used to retrieve campaign stats, but it wasn’t working as expected. We now use the campaignStats property instead, which returns a list. The first value from this list is now used to show accurate campaign statistics.
+
+-   b1cff9b: Fix searching contacts
+
+    Previously, Brevo returned a 400 error when an email address was not found. The implementation has been updated to correctly handle the 404 status code instead of 400. As a result, the contact search functionality now works as expected without throwing an error when no matching email address is found.
+
 ## 2.0.1
 
 ### Patch Changes
