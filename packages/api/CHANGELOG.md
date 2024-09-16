@@ -1,5 +1,11 @@
 # @comet/brevo-api
 
+## 2.1.0
+
+### Minor Changes
+
+-   3606421: Brevo returns a 404 error when an email address is not found and a 400 error if an invalid email is provided. Instead of handling only one of these errors, both status codes must be ignored to prevent the contact search from throwing an error.
+
 ## 2.0.2
 
 ### Patch Changes
