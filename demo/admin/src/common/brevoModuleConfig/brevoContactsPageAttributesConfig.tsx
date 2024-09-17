@@ -108,7 +108,7 @@ export const getBrevoContactConfig = (
                 />
             </>
         ),
-        input2State: (values: AdditionalFormConfigInputProps) => {
+        input2State: (values?: AdditionalFormConfigInputProps) => {
             return {
                 attributes: {
                     SALUTATION: values?.attributes?.SALUTATION,
