@@ -3,4 +3,6 @@
 "@comet/brevo-api": major
 ---
 
-Add test contact page
+Adds `createBrevoTestContactsPage` for creating a test contacts page, that is indepent from the main list.
+
+Remove `email` and `redirectionUrl` from `brevoContactsPageAttributesConfig`
