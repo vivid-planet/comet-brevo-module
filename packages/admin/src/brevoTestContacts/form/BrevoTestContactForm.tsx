@@ -45,7 +45,7 @@ export type EditBrevoContactFormValues = {
     [key: string]: unknown;
 };
 
-type BaseBrevoContactFormValues = EditBrevoContactFormValues & {
+type EditBrevoContactFormValuesWithAttributes = EditBrevoContactFormValues & {
     email: string;
 };
 
@@ -61,7 +61,7 @@ export function BrevoTestContactForm({ id, scope, input2State, additionalFormFie
     const stackApi = useStackApi();
     const client = useApolloClient();
     const mode = id ? "edit" : "add";
-    const formApiRef = useFormApiRef<BaseBrevoContactFormValues>();
+    const formApiRef = useFormApiRef<EditBrevoContactFormValuesWithAttributes>();
 
     const brevoTestContactFormFragment = gql`
         fragment BrevoTestContactForm on BrevoContact {
@@ -78,7 +78,7 @@ export function BrevoTestContactForm({ id, scope, input2State, additionalFormFie
         id ? { variables: { id, scope } } : { skip: true },
     );
 
-    const initialValues = React.useMemo<Partial<BaseBrevoContactFormValues>>(() => {
+    const initialValues = React.useMemo<Partial<EditBrevoContactFormValuesWithAttributes>>(() => {
         let baseInitialValues = {
             email: "",
         };
@@ -115,7 +115,11 @@ export function BrevoTestContactForm({ id, scope, input2State, additionalFormFie
         },
     });
 
-    const handleSubmit = async (state: BaseBrevoContactFormValues, form: FormApi<BaseBrevoContactFormValues>, event: FinalFormSubmitEvent) => {
+    const handleSubmit = async (
+        state: EditBrevoContactFormValuesWithAttributes,
+        form: FormApi<EditBrevoContactFormValuesWithAttributes>,
+        event: FinalFormSubmitEvent,
+    ) => {
         if (await saveConflict.checkForConflicts()) {
             throw new Error("Conflicts detected");
         }
@@ -162,7 +166,7 @@ export function BrevoTestContactForm({ id, scope, input2State, additionalFormFie
     }
 
     return (
-        <FinalForm<BaseBrevoContactFormValues> apiRef={formApiRef} onSubmit={handleSubmit} mode={mode} initialValues={initialValues}>
+        <FinalForm<EditBrevoContactFormValuesWithAttributes> apiRef={formApiRef} onSubmit={handleSubmit} mode={mode} initialValues={initialValues}>
             {({ values }) => (
                 <EditPageLayout>
                     {saveConflict.dialogs}
