@@ -5,7 +5,7 @@
     "fixed": [["@comet/*"]],
     "linked": [],
     "access": "restricted",
-    "baseBranch": "main",
+    "baseBranch": "v1.x.x",
     "updateInternalDependencies": "patch",
     "ignore": ["comet-brevo-module-demo-api", "comet-brevo-module-demo-admin", "comet-brevo-module-demo-site"],
     "snapshot": {
