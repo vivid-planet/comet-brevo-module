@@ -281,11 +281,18 @@ type BrevoContactAttributes {
   LASTNAME: String!
   FIRSTNAME: String!
   SALUTATION: BrevoContactSalutation
+  BRANCH: [BrevoContactBranch!]
 }
 
 enum BrevoContactSalutation {
   MALE
   FEMALE
+}
+
+enum BrevoContactBranch {
+  PRODUCTS
+  MARKETING
+  NEWS
 }
 
 type BrevoContactFilterAttributes {
@@ -470,6 +477,7 @@ input BrevoContactAttributesInput {
   LASTNAME: String!
   FIRSTNAME: String!
   SALUTATION: BrevoContactSalutation
+  BRANCH: [BrevoContactBranch!]
 }
 
 input BrevoContactFilterAttributesInput {
