@@ -43,4 +43,10 @@ export class BrevoContactFilterAttributes {
     @Enum({ items: () => BrevoContactSalutation, array: true })
     @IsUndefinable()
     SALUTATION?: BrevoContactSalutation[];
+
+    @Field(() => [BrevoContactBranch], { nullable: true })
+    @IsEnum(BrevoContactBranch, { each: true })
+    @Enum({ items: () => BrevoContactBranch, array: true })
+    @IsUndefinable()
+    BRANCH?: BrevoContactBranch[];
 }

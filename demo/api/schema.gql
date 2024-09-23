@@ -297,6 +297,7 @@ enum BrevoContactBranch {
 
 type BrevoContactFilterAttributes {
   SALUTATION: [BrevoContactSalutation!]
+  BRANCH: [BrevoContactBranch!]
 }
 
 type DamFolder {
@@ -482,6 +483,7 @@ input BrevoContactAttributesInput {
 
 input BrevoContactFilterAttributesInput {
   SALUTATION: [BrevoContactSalutation!]
+  BRANCH: [BrevoContactBranch!]
 }
 
 input EmailCampaignContentScopeInput {
