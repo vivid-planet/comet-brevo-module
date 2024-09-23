@@ -157,7 +157,10 @@ export class TargetGroupsService {
             return testList;
         }
 
-        const title = "Test list for current scope";
+        const title = `Test list for scope: ${scope.country ? `${scope.country} (country)` : ""}${
+            scope.language ? ` ${scope.language} (language)` : ""
+        }${scope.brand ? ` ${scope.brand} (brand)` : ""}`;
+
         const brevoId = await this.brevoApiContactsService.createBrevoContactList(title, scope);
 
         if (brevoId) {
