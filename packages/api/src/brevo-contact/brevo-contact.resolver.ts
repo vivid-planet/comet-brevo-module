@@ -288,9 +288,9 @@ export function createBrevoContactResolver({
             const contact = await this.brevoContactsApiService.findContact(id, scope);
             const where: FilterQuery<TargetGroupInterface> = { scope, isMainList: false, isTestList: true };
             const testTargetGroup = await this.targetGroupRepository.findOne(where);
-            const contactIncludesMainList = testTargetGroup?.brevoId ? contact.listIds.includes(testTargetGroup.brevoId) : false;
+            const contactIncludesTestList = testTargetGroup?.brevoId ? contact.listIds.includes(testTargetGroup.brevoId) : false;
 
-            if (testTargetGroup && contactIncludesMainList) {
+            if (testTargetGroup && contactIncludesTestList) {
                 const testListId = testTargetGroup.brevoId;
 
                 const linkListIds = contact.listIds.filter((id) => id !== testListId);
