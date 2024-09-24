@@ -106,7 +106,7 @@ export class BrevoContactsService {
         scope,
     }: {
         contact?: BrevoContactInterface;
-        scope?: EmailCampaignScopeInterface;
+        scope: EmailCampaignScopeInterface;
     }): Promise<number[]> {
         let offset = 0;
         let totalCount = 0;
@@ -120,17 +120,10 @@ export class BrevoContactsService {
             offset += targetGroups.length;
 
             for (const targetGroup of targetGroups) {
-                const contactIsInTargetGroupByAttributes = this.targetGroupService.checkIfContactIsInTargetGroup(
-                    contact?.attributes,
-                    targetGroup.filters,
-                );
+                const contactIsInTargetGroup = this.targetGroupService.checkIfContactIsInTargetGroup(contact?.attributes, targetGroup.filters);
 
-                if (contactIsInTargetGroupByAttributes) {
+                if (contactIsInTargetGroup) {
                     targetGroupIds.push(targetGroup.brevoId);
-                }
-
-                if (targetGroup.assignedContactsTargetGroupBrevoId && contact?.listIds.includes(targetGroup.assignedContactsTargetGroupBrevoId)) {
-                    targetGroupIds.push(targetGroup.brevoId, targetGroup.assignedContactsTargetGroupBrevoId);
                 }
             }
         } while (offset < totalCount);
