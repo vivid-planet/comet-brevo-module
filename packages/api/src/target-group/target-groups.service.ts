@@ -2,6 +2,7 @@ import { filtersToMikroOrmQuery, searchToMikroOrmQuery } from "@comet/cms-api";
 import { EntityManager, EntityRepository, FilterQuery, ObjectQuery, wrap } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable } from "@nestjs/common";
+import { stringify } from "querystring";
 
 import { BrevoApiContactsService } from "../brevo-api/brevo-api-contact.service";
 import { BrevoContactInterface } from "../brevo-contact/dto/brevo-contact.factory";
@@ -157,9 +158,7 @@ export class TargetGroupsService {
             return testList;
         }
 
-        const title = `Test list for scope: ${scope.country ? `${scope.country} (country)` : ""}${
-            scope.language ? ` ${scope.language} (language)` : ""
-        }${scope.brand ? ` ${scope.brand} (brand)` : ""}`;
+        const title = `Test list for scope: ${stringify(scope)}`;
 
         const brevoId = await this.brevoApiContactsService.createBrevoContactList(title, scope);
 
