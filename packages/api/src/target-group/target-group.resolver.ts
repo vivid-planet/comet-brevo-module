@@ -140,7 +140,7 @@ export function createTargetGroupsResolver({
                 throw new Error("No assigned contacts target group found");
             }
 
-            const contactIsInTargetGroupByAttributes = this.targetGroupsService.checkIfContactIsInTargetGroup(
+            const contactIsInTargetGroupByAttributes = this.targetGroupsService.checkIfContactIsInTargetGroupByAttributes(
                 brevoContact.attributes,
                 targetGroup.filters,
             );

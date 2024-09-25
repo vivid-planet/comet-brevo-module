@@ -2,6 +2,7 @@ import { filtersToMikroOrmQuery, searchToMikroOrmQuery } from "@comet/cms-api";
 import { EntityManager, EntityRepository, FilterQuery, ObjectQuery, wrap } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable } from "@nestjs/common";
+import { stringify } from "querystring";
 
 import { BrevoApiContactsService } from "../brevo-api/brevo-api-contact.service";
 import { BrevoContactInterface } from "../brevo-contact/dto/brevo-contact.factory";
@@ -31,7 +32,7 @@ export class TargetGroupsService {
         return andFilters.length > 0 ? { $and: andFilters } : {};
     }
 
-    public checkIfContactIsInTargetGroup(
+    public checkIfContactIsInTargetGroupByAttributes(
         contactAttributes?: BrevoContactAttributesInterface,
         filters?: BrevoContactFilterAttributesInterface,
     ): boolean {
@@ -73,7 +74,7 @@ export class TargetGroupsService {
             const contactsNotInContactList: BrevoContactInterface[] = [];
 
             for (const contact of contacts) {
-                const contactIsInTargetGroupByFilters = this.checkIfContactIsInTargetGroup(contact.attributes, filters);
+                const contactIsInTargetGroupByFilters = this.checkIfContactIsInTargetGroupByAttributes(contact.attributes, filters);
 
                 const manuallyAssignedTargetGroup = targetGroup.assignedContactsTargetGroupBrevoId;
                 const contactIsManuallyAssignedToTargetGroup = manuallyAssignedTargetGroup
@@ -134,6 +135,28 @@ export class TargetGroupsService {
             await this.entityManager.flush();
 
             return mainTargetGroupForScope;
+        }
+
+        throw new Error("Brevo Error: Could not create contact list");
+    }
+
+    public async createIfNotExistTestTargetGroupForScope(scope: EmailCampaignScopeInterface): Promise<TargetGroupInterface> {
+        const testList = await this.repository.findOne({ scope, isMainList: false, isTestList: true });
+
+        if (testList) {
+            return testList;
+        }
+
+        const title = `Test list for scope: ${stringify(scope)}`;
+
+        const brevoId = await this.brevoApiContactsService.createBrevoContactList(title, scope);
+
+        if (brevoId) {
+            const testTargetGroupForScope = this.repository.create({ title, brevoId, scope, isMainList: false, isTestList: true });
+
+            await this.entityManager.flush();
+
+            return testTargetGroupForScope;
         }
 
         throw new Error("Brevo Error: Could not create contact list");
