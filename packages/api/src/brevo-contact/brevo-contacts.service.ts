@@ -120,9 +120,12 @@ export class BrevoContactsService {
             offset += targetGroups.length;
 
             for (const targetGroup of targetGroups) {
-                const contactIsInTargetGroup = this.targetGroupService.checkIfContactIsInTargetGroup(contact?.attributes, targetGroup.filters);
+                const contactIsInTargetGroupByAttributes = this.targetGroupService.checkIfContactIsInTargetGroup(
+                    contact?.attributes,
+                    targetGroup.filters,
+                );
 
-                if (contactIsInTargetGroup) {
+                if (contactIsInTargetGroupByAttributes) {
                     targetGroupIds.push(targetGroup.brevoId);
                 }
             }
