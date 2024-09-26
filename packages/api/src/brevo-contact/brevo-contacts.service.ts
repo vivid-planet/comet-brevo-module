@@ -128,6 +128,10 @@ export class BrevoContactsService {
                 if (contactIsInTargetGroupByAttributes) {
                     targetGroupIds.push(targetGroup.brevoId);
                 }
+
+                if (targetGroup.assignedContactsTargetGroupBrevoId && contact?.listIds.includes(targetGroup.assignedContactsTargetGroupBrevoId)) {
+                    targetGroupIds.push(targetGroup.brevoId, targetGroup.assignedContactsTargetGroupBrevoId);
+                }
             }
         } while (offset < totalCount);
 
