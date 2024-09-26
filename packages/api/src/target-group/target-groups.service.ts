@@ -39,13 +39,18 @@ export class TargetGroupsService {
             for (const [key, value] of Object.entries(filters)) {
                 if (!value || value.length === 0) continue;
 
+                let isFound = false;
+
                 if (Array.isArray(contactAttributes[key])) {
                     for (const attribute of contactAttributes[key]) {
                         if (value.includes(attribute)) {
+                            isFound = true;
                             break;
                         }
                     }
-                    continue;
+                    if (isFound) {
+                        continue;
+                    }
                 } else if (value.includes(contactAttributes[key])) {
                     continue;
                 }
