@@ -42,12 +42,11 @@ export class TargetGroupsService {
                 if (Array.isArray(contactAttributes[key])) {
                     for (const attribute of contactAttributes[key]) {
                         if (value.includes(attribute)) {
-                            return true;
+                            break;
                         }
                     }
-                }
-
-                if (value.includes(contactAttributes[key])) {
+                    continue;
+                } else if (value.includes(contactAttributes[key])) {
                     continue;
                 }
                 return false;
