@@ -2,7 +2,7 @@ import { IsUndefinable } from "@comet/cms-api";
 import { Type } from "@nestjs/common";
 import { Field, InputType } from "@nestjs/graphql";
 import { Type as TypeTransformer } from "class-transformer";
-import { IsBoolean, IsNotEmpty, IsOptional, IsString, ValidateNested } from "class-validator";
+import { IsBoolean, IsNotEmpty, IsString, ValidateNested } from "class-validator";
 
 import { BrevoContactAttributesInterface, EmailCampaignScopeInterface } from "../../types";
 
@@ -36,7 +36,7 @@ export class BrevoTestContactInputFactory {
 
             @IsBoolean()
             @Field()
-            @IsOptional()
+            @IsUndefinable()
             blocked?: boolean;
         }
 
