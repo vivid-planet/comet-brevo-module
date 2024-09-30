@@ -4,11 +4,13 @@ import { InjectRepository } from "@mikro-orm/nestjs";
 import { Body, Controller, Inject, Post, Type, UploadedFile, UseInterceptors } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { TargetGroupInterface } from "src/target-group/entity/target-group-entity.factory";
+import { Readable } from "stream";
 
 import { BrevoContactImportService } from "../brevo-contact/brevo-contact-import.service";
 import { BrevoModuleConfig } from "../config/brevo-module.config";
 import { BREVO_MODULE_CONFIG } from "../config/brevo-module.constants";
 import { EmailCampaignScopeInterface } from "../types";
+import { CSVImportInformation } from "./brevo-contact-import.service";
 
 export function createBrevoContactImportController({ Scope }: { Scope: Type<EmailCampaignScopeInterface> }): Type<unknown> {
     @Controller("brevo-contacts-csv")
@@ -33,23 +35,27 @@ export function createBrevoContactImportController({ Scope }: { Scope: Type<Emai
             }),
         )
         @RequiredPermission(["brevo-newsletter"], { skipScopeCheck: true })
-        async upload(@UploadedFile() file: Express.Multer.File, @Body("scope") scope: string, @Body("listIds") listIds?: string): Promise<void> {
-            const content = file.buffer.toString("utf8");
+        async upload(
+            @UploadedFile() file: Express.Multer.File,
+            @Body("scope") scope: string,
+            @Body("listIds") listIds?: string,
+        ): Promise<CSVImportInformation> {
             const parsedScope = JSON.parse(scope) as EmailCampaignScopeInterface;
-
             const redirectUrl = this.config.brevo.resolveConfig(parsedScope).redirectUrlForImport;
-            const contacts = await this.brevoContactImportService.parseCsvToBrevoContacts(content, redirectUrl);
-
-            if (contacts.length > 100) {
-                throw new CometValidationException("Too many contacts in file. Currently we only support 100 contacts at once.");
-            }
 
             let parsedListIds = undefined;
             if (listIds) parsedListIds = JSON.parse(listIds) as string[];
 
             const targetGroups = await this.targetGroupRepository.find({ id: { $in: parsedListIds } });
 
-            await this.brevoContactImportService.importContactsFromCsv(content, parsedScope, redirectUrl, targetGroups);
+            const stream = Readable.from(file.buffer);
+            return this.brevoContactImportService.importContactsFromCsv({
+                fileStream: stream,
+                scope: parsedScope,
+                redirectUrl,
+                targetGroups,
+                isAdminImport: true,
+            });
         }
     }
 
