@@ -269,7 +269,7 @@ export function TargetGroupsGrid({
     const { data, loading, error } = useQuery<GQLTargetGroupsGridQuery, GQLTargetGroupsGridQueryVariables>(targetGroupsQuery, {
         variables: {
             scope,
-            filter: { isTestList: { equal: null } },
+            filter: { isTestList: { equal: false } },
             search: gqlSearch,
             offset: dataGridProps.page * dataGridProps.pageSize,
             limit: dataGridProps.pageSize,
