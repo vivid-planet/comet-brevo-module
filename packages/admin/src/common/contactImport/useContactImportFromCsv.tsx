@@ -96,12 +96,10 @@ const ContactImportComponent = ({ scope, targetGroupId, fileInputRef, refetchQue
 
         // Add each row of failed columns data
         for (const column of failedColumns) {
-            const row = [];
-            for (const key in column) {
-                // If a value is undefined or null, treat it as an empty string
-                row.push(column[key] !== undefined && column[key] !== null ? column[key] : "");
-            }
-            // Join row values, and explicitly retain empty fields but remove the final semicolon for non-empty rows
+            // Use Object.values to get the values of each column
+            const row = Object.values(column); // No need to check for undefined/null
+
+            // Join row values and remove the trailing semicolon if not needed
             const rowStr = row.join(";");
             errorData += `${rowStr.replace(/;+$/, "")}\n`;
         }
