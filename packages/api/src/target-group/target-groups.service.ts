@@ -141,7 +141,7 @@ export class TargetGroupsService {
         const brevoId = await this.brevoApiContactsService.createBrevoContactList(title, scope);
 
         if (brevoId) {
-            const mainTargetGroupForScope = this.repository.create({ title, brevoId, scope, isMainList: true });
+            const mainTargetGroupForScope = this.repository.create({ title, brevoId, scope, isMainList: true, isTestList: false });
 
             await this.entityManager.flush();
 
