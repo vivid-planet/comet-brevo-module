@@ -1,5 +1,11 @@
 # @comet/brevo-api
 
+## 2.1.1
+
+### Patch Changes
+
+-   06d4132: Add check for arrays in `checkIfContactIsInTargetGroup` function, to check if at least one `contactAttribute` is included in the filter.
+
 ## 2.1.0
 
 ### Minor Changes
