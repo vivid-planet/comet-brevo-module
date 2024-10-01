@@ -37,16 +37,27 @@ export class TargetGroupsService {
     ): boolean {
         if (filters && contactAttributes) {
             for (const [key, value] of Object.entries(filters)) {
-                if (!value) continue;
-                if (value.includes(contactAttributes[key])) {
+                if (!value || value.length === 0) continue;
+
+                let isFound = false;
+
+                if (Array.isArray(contactAttributes[key])) {
+                    for (const attribute of contactAttributes[key]) {
+                        if (value.includes(attribute)) {
+                            isFound = true;
+                            break;
+                        }
+                    }
+                    if (isFound) {
+                        continue;
+                    }
+                } else if (value.includes(contactAttributes[key])) {
                     continue;
                 }
-
                 return false;
             }
             return true;
         }
-
         return false;
     }
 
