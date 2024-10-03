@@ -55,11 +55,12 @@ export class BrevoContactImportService {
     }: ImportContactsFromCsvParams): Promise<CsvImportInformation> {
         const failedColumns: unknown[] = [];
 
-        const targetGroupBrevoIds = await Promise.all(
+        const manuallyAssignedBrevoContacts = await Promise.all(
             targetGroups.map((targetGroup) => {
                 return this.targetGroupsService.createIfNotExistsManuallyAssignedContactsTargetGroup(targetGroup);
             }),
         );
+        const targetGroupBrevoIds = [...targetGroups.map((targetGroup) => targetGroup.brevoId), ...manuallyAssignedBrevoContacts];
 
         const rows = fileStream.pipe(csv.parse({ headers: true, delimiter: ";", ignoreEmpty: true })).on("error", (error) => {
             throw error;
@@ -126,9 +127,8 @@ export class BrevoContactImportService {
                     throw error;
                 }
             }
+            const mainTargetGroupForScope = await this.targetGroupsService.createIfNotExistMainTargetGroupForScope(scope);
             if (brevoContact && !brevoContact.emailBlacklisted) {
-                const mainTargetGroupForScope = await this.targetGroupsService.createIfNotExistMainTargetGroupForScope(scope);
-
                 const updatedBrevoContact = await this.brevoApiContactsService.updateContact(
                     brevoContact.id,
                     { ...contact, listIds: [mainTargetGroupForScope.brevoId, ...targetGroupBrevoIds, ...brevoContact.listIds] },
@@ -140,7 +140,7 @@ export class BrevoContactImportService {
                     ...contact,
                     scope,
                     templateId: this.config.brevo.resolveConfig(scope).doubleOptInTemplateId,
-                    listIds: targetGroupBrevoIds,
+                    listIds: [mainTargetGroupForScope.brevoId, ...targetGroupBrevoIds],
                 });
                 if (success) return "created";
             }
