@@ -21,7 +21,7 @@ class BasicValidateableRow {
     [key: string]: string;
 }
 
-export interface CSVImportInformation {
+export interface CsvImportInformation {
     created: number;
     updated: number;
     failed: number;
@@ -29,7 +29,7 @@ export interface CSVImportInformation {
     errorMessage?: string;
 }
 
-interface ImportContactsFromScvParams {
+interface ImportContactsFromCsvParams {
     fileStream: Readable;
     scope: EmailCampaignScopeInterface;
     redirectUrl: string;
@@ -52,7 +52,7 @@ export class BrevoContactImportService {
         redirectUrl,
         targetGroups = [],
         isAdminImport = false,
-    }: ImportContactsFromScvParams): Promise<CSVImportInformation> {
+    }: ImportContactsFromCsvParams): Promise<CsvImportInformation> {
         const failedColumns: unknown[] = [];
 
         const targetGroupBrevoIds = await Promise.all(
@@ -118,10 +118,10 @@ export class BrevoContactImportService {
             try {
                 brevoContact = await this.brevoApiContactsService.findContact(contact.email, scope);
             } catch (error) {
-                // Brevo throws 404 error if no contact was found
                 if (!isErrorFromBrevo(error)) {
                     throw error;
                 }
+                // Brevo throws 404 error if no contact was found
                 if (error.response.statusCode !== 404) {
                     throw error;
                 }

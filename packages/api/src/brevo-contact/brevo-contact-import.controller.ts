@@ -10,7 +10,7 @@ import { BrevoContactImportService } from "../brevo-contact/brevo-contact-import
 import { BrevoModuleConfig } from "../config/brevo-module.config";
 import { BREVO_MODULE_CONFIG } from "../config/brevo-module.constants";
 import { EmailCampaignScopeInterface } from "../types";
-import { CSVImportInformation } from "./brevo-contact-import.service";
+import { CsvImportInformation } from "./brevo-contact-import.service";
 
 export function createBrevoContactImportController({ Scope }: { Scope: Type<EmailCampaignScopeInterface> }): Type<unknown> {
     @Controller("brevo-contacts-csv")
@@ -39,7 +39,7 @@ export function createBrevoContactImportController({ Scope }: { Scope: Type<Emai
             @UploadedFile() file: Express.Multer.File,
             @Body("scope") scope: string,
             @Body("listIds") listIds?: string,
-        ): Promise<CSVImportInformation> {
+        ): Promise<CsvImportInformation> {
             const parsedScope = JSON.parse(scope) as EmailCampaignScopeInterface;
             const redirectUrl = this.config.brevo.resolveConfig(parsedScope).redirectUrlForImport;
 

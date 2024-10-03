@@ -196,7 +196,7 @@ const ContactImportComponent = ({ scope, targetGroupId, fileInputRef, refetchQue
                                             values={{
                                                 amount: importInformation.failed,
                                                 link: (chunks: React.ReactNode) => (
-                                                    <CSVDownloadLink onClick={saveErrorFile}>{chunks}</CSVDownloadLink>
+                                                    <CsvDownloadLink onClick={saveErrorFile}>{chunks}</CsvDownloadLink>
                                                 ),
                                             }}
                                         />
@@ -229,7 +229,7 @@ const ContactImportComponent = ({ scope, targetGroupId, fileInputRef, refetchQue
     );
 };
 
-const CSVDownloadLink = styled("span")`
+const CsvDownloadLink = styled("span")`
     color: ${({ theme }) => theme.palette.info.main};
     text-decoration: underline;
     cursor: pointer;
