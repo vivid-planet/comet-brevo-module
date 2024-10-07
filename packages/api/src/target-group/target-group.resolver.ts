@@ -92,7 +92,7 @@ export function createTargetGroupsResolver({
             const brevoId = await this.brevoApiContactsService.createBrevoContactList(input.title, scope);
 
             if (brevoId) {
-                const targetGroup = this.repository.create({ ...input, brevoId, scope, isMainList: false });
+                const targetGroup = this.repository.create({ ...input, brevoId, scope, isMainList: false, isTestList: false });
 
                 await this.entityManager.flush();
 
@@ -140,7 +140,7 @@ export function createTargetGroupsResolver({
                 throw new Error("No assigned contacts target group found");
             }
 
-            const contactIsInTargetGroupByAttributes = this.targetGroupsService.checkIfContactIsInTargetGroup(
+            const contactIsInTargetGroupByAttributes = this.targetGroupsService.checkIfContactIsInTargetGroupByAttributes(
                 brevoContact.attributes,
                 targetGroup.filters,
             );
