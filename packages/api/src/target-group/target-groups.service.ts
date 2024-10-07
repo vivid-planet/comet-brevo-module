@@ -121,7 +121,6 @@ export class TargetGroupsService {
             return true;
         } catch (error) {
             handleBrevoError(error);
-            throw error;
         }
     }
 
