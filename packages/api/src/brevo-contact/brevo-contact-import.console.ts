@@ -81,20 +81,18 @@ export function createBrevoContactImportConsole({ Scope }: { Scope: Type<EmailCa
             ],
         })
         @CreateRequestContext()
-        async execute(options: CommandOptions): Promise<void> {
-            const redirectUrl = this.config.brevo.resolveConfig(options.scope).redirectUrlForImport;
-            const fileStream = fs.createReadStream(options.path);
-            if (!this.validateRedirectUrl(redirectUrl, options.scope)) {
+        async execute({ scope, path, targetGroupIds }: CommandOptions): Promise<void> {
+            const redirectUrl = this.config.brevo.resolveConfig(scope).redirectUrlForImport;
+            const fileStream = fs.createReadStream(path);
+            if (!this.validateRedirectUrl(redirectUrl, scope)) {
                 throw new InvalidOptionArgumentError("Invalid scope. Scope is not allowed");
             }
 
-            const targetGroups = await this.targetGroupRepository.find({ id: { $in: options.targetGroupIds } });
-
             const result = await this.brevoContactImportService.importContactsFromCsv({
                 fileStream,
-                scope: options.scope,
+                scope,
                 redirectUrl,
-                targetGroups,
+                targetGroupIds,
             });
 
             this.logger.log(result);

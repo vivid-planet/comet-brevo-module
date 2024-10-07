@@ -1,6 +1,10 @@
 import * as csv from "@fast-csv/parse";
+import { EntityRepository } from "@mikro-orm/core";
+import { InjectRepository } from "@mikro-orm/nestjs";
 import { Inject, Injectable } from "@nestjs/common";
 import { IsEmail, IsNotEmpty, validateSync } from "class-validator";
+import isEqual from "lodash.isequal";
+import { TargetGroupInterface } from "src/target-group/entity/target-group-entity.factory";
 import { Readable } from "stream";
 
 import { isErrorFromBrevo } from "../brevo-api/brevo-api.utils";
@@ -8,7 +12,6 @@ import { BrevoApiContactsService, CreateDoubleOptInContactData } from "../brevo-
 import { BrevoContactsService } from "../brevo-contact/brevo-contacts.service";
 import { BrevoModuleConfig } from "../config/brevo-module.config";
 import { BREVO_MODULE_CONFIG } from "../config/brevo-module.constants";
-import { TargetGroupInterface } from "../target-group/entity/target-group-entity.factory";
 import { TargetGroupsService } from "../target-group/target-groups.service";
 import { EmailCampaignScopeInterface } from "../types";
 
@@ -33,7 +36,7 @@ interface ImportContactsFromCsvParams {
     fileStream: Readable;
     scope: EmailCampaignScopeInterface;
     redirectUrl: string;
-    targetGroups?: TargetGroupInterface[];
+    targetGroupIds?: string[];
     isAdminImport?: boolean;
 }
 
@@ -44,16 +47,28 @@ export class BrevoContactImportService {
         private readonly brevoApiContactsService: BrevoApiContactsService,
         private readonly brevoContactsService: BrevoContactsService,
         private readonly targetGroupsService: TargetGroupsService,
+        @InjectRepository("TargetGroup") private readonly targetGroupRepository: EntityRepository<TargetGroupInterface>,
     ) {}
 
     async importContactsFromCsv({
         fileStream,
         scope,
         redirectUrl,
-        targetGroups = [],
+        targetGroupIds = [],
         isAdminImport = false,
     }: ImportContactsFromCsvParams): Promise<CsvImportInformation> {
         const failedColumns: unknown[] = [];
+        const targetGroups = await this.targetGroupRepository.find({ id: { $in: targetGroupIds } });
+
+        for (const targetGroup of targetGroups) {
+            if (targetGroup.isMainList) {
+                throw new Error("Main lists are not allowed as target groups for import");
+            }
+
+            if (!isEqual({ ...targetGroup.scope }, scope)) {
+                throw new Error("Target group scope does not match the scope of the import file");
+            }
+        }
 
         const manuallyAssignedBrevoContacts = await Promise.all(
             targetGroups.map((targetGroup) => {

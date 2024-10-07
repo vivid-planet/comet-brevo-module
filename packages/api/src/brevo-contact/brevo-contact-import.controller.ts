@@ -1,9 +1,6 @@
 import { CometValidationException, RequiredPermission } from "@comet/cms-api";
-import { EntityRepository } from "@mikro-orm/core";
-import { InjectRepository } from "@mikro-orm/nestjs";
 import { Body, Controller, Inject, Post, Type, UploadedFile, UseInterceptors } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
-import { TargetGroupInterface } from "src/target-group/entity/target-group-entity.factory";
 import { Readable } from "stream";
 
 import { BrevoContactImportService } from "../brevo-contact/brevo-contact-import.service";
@@ -18,7 +15,6 @@ export function createBrevoContactImportController({ Scope }: { Scope: Type<Emai
         constructor(
             @Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig,
             @Inject(BrevoContactImportService) private readonly brevoContactImportService: BrevoContactImportService,
-            @InjectRepository("TargetGroup") private readonly targetGroupRepository: EntityRepository<TargetGroupInterface>,
         ) {}
 
         @Post("upload")
@@ -43,17 +39,15 @@ export function createBrevoContactImportController({ Scope }: { Scope: Type<Emai
             const parsedScope = JSON.parse(scope) as EmailCampaignScopeInterface;
             const redirectUrl = this.config.brevo.resolveConfig(parsedScope).redirectUrlForImport;
 
-            let parsedListIds = undefined;
-            if (listIds) parsedListIds = JSON.parse(listIds) as string[];
-
-            const targetGroups = await this.targetGroupRepository.find({ id: { $in: parsedListIds } });
+            let targetGroupIds = undefined;
+            if (listIds) targetGroupIds = JSON.parse(listIds) as string[];
 
             const stream = Readable.from(file.buffer);
             return this.brevoContactImportService.importContactsFromCsv({
                 fileStream: stream,
                 scope: parsedScope,
                 redirectUrl,
-                targetGroups,
+                targetGroupIds,
                 isAdminImport: true,
             });
         }
