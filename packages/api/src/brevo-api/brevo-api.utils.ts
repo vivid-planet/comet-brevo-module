@@ -21,6 +21,6 @@ export function handleBrevoError(error: unknown): never {
     if (isErrorFromBrevo(error)) {
         throw new Error(error.body.message);
     } else {
-        throw new Error();
+        throw error;
     }
 }
