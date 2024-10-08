@@ -54,6 +54,9 @@ const nextConfig = {
     compiler: {
         styledComponents: true,
     },
+    experimental: {
+        optimizePackageImports: ["@comet/cms-site"],
+    },
     env: {
         DAM_ALLOWED_IMAGE_SIZES: cometConfig.dam.allowedImageSizes.join(","),
     },

@@ -1,7 +1,9 @@
+import { SitePreviewProvider } from "@comet/cms-site";
 import { ContentScope, ContentScopeProvider } from "@src/common/contentScope/ContentScope";
 import { defaultLanguage, domain } from "@src/config";
 import App, { AppProps, NextWebVitalsMetric } from "next/app";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import Script from "next/script";
 import * as React from "react";
 import { IntlProvider } from "react-intl";
@@ -44,6 +46,8 @@ interface CustomAppProps extends AppProps {
 }
 
 export default function CustomApp({ Component, pageProps, scope, messages }: CustomAppProps): JSX.Element {
+    const router = useRouter();
+
     return (
         // see https://github.com/vercel/next.js/tree/master/examples/with-react-intl
         // for a complete strategy to couple next with react-intl
@@ -74,7 +78,13 @@ export default function CustomApp({ Component, pageProps, scope, messages }: Cus
             )}
             <ContentScopeProvider scope={scope}>
                 <GlobalStyle />
-                <Component {...pageProps} />
+                {router.isPreview ? (
+                    <SitePreviewProvider>
+                        <Component {...pageProps} />
+                    </SitePreviewProvider>
+                ) : (
+                    <Component {...pageProps} />
+                )}
             </ContentScopeProvider>
         </IntlProvider>
     );

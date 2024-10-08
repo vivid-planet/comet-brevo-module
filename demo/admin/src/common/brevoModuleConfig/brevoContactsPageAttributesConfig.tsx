@@ -1,7 +1,6 @@
-import { Field, FinalFormSelect, TextField } from "@comet/admin";
+import { Field, FinalFormSelect, GridColDef, TextField } from "@comet/admin";
 import { EditBrevoContactFormValues } from "@comet/brevo-admin";
 import { MenuItem } from "@mui/material";
-import { GridColDef } from "@mui/x-data-grid";
 import { GQLBrevoContactSalutation } from "@src/graphql.generated";
 import { DocumentNode } from "graphql";
 import gql from "graphql-tag";

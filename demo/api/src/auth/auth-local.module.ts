@@ -21,7 +21,6 @@ export class AuthLocalModule {
                         id: "10f266b8-ec2e-4a0c-98ec-2cfacceda1b7",
                         name: "Test Admin",
                         email: "demo@comet-dxp.com",
-                        language: "en",
                     },
                 }),
                 createAuthResolver({

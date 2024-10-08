@@ -1,12 +1,13 @@
 import { gql, useApolloClient, useQuery } from "@apollo/client";
 import {
     CrudContextMenu,
+    DataGridToolbar,
+    GridColDef,
     GridFilterButton,
     MainContent,
     muiGridFilterToGql,
     muiGridSortToGql,
     StackLink,
-    Toolbar,
     ToolbarActions,
     ToolbarAutomaticTitleItem,
     ToolbarFillSpace,
@@ -19,7 +20,7 @@ import {
 import { Add as AddIcon, Download, Edit } from "@comet/admin-icons";
 import { ContentScopeInterface } from "@comet/cms-admin";
 import { Button, IconButton } from "@mui/material";
-import { DataGrid, GridColDef, GridToolbarQuickFilter } from "@mui/x-data-grid";
+import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import saveAs from "file-saver";
 import { DocumentNode } from "graphql";
 import * as React from "react";
@@ -112,7 +113,7 @@ export function TargetGroupsGrid({
 
     function TargetGroupsGridToolbar() {
         return (
-            <Toolbar>
+            <DataGridToolbar>
                 <ToolbarAutomaticTitleItem />
                 <ToolbarItem>
                     <GridToolbarQuickFilter />
@@ -133,7 +134,7 @@ export function TargetGroupsGrid({
                         <FormattedMessage id="cometBrevoModule.targetGroup.newTargetGroup" defaultMessage="New target group" />
                     </Button>
                 </ToolbarActions>
-            </Toolbar>
+            </DataGridToolbar>
         );
     }
 

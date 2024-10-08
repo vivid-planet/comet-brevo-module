@@ -1,5 +1,5 @@
-import { Stack, StackPage, StackSwitch } from "@comet/admin";
-import { useContentScope } from "@comet/cms-admin";
+import { Stack, StackPage, StackSwitch, Toolbar } from "@comet/admin";
+import { ContentScopeIndicator, useContentScope } from "@comet/cms-admin";
 import { DocumentNode } from "graphql";
 import * as React from "react";
 import { useIntl } from "react-intl";
@@ -39,6 +39,7 @@ export function createTargetGroupsPage({
             <Stack topLevelTitle={intl.formatMessage({ id: "cometBrevoModule.targetGroups.targetGroups", defaultMessage: "Target groups" })}>
                 <StackSwitch>
                     <StackPage name="grid">
+                        <Toolbar scopeIndicator={<ContentScopeIndicator scope={scope} />} />
                         <TargetGroupsGrid scope={scope} exportTargetGroupOptions={exportTargetGroupOptions} />
                     </StackPage>
                     <StackPage

@@ -6,7 +6,7 @@ import * as React from "react";
 import { NextImageBottomPaddingFix } from "../NextImageBottomPaddingFix";
 
 type Props = PropsWithData<DamImageBlockData> &
-    Omit<ImageProps, "src" | "width" | "height"> & {
+    Omit<ImageProps, "src" | "width" | "height" | "alt"> & {
         aspectRatio?: string;
     } & (
         | { layout?: "fixed" | "intrinsic" }
@@ -27,7 +27,7 @@ export const DamImageBlock = withPreview(
         if (block.type === "pixelImage") {
             return (
                 <NextImageBottomPaddingFix>
-                    <PixelImageBlock data={block.props as PixelImageBlockData} layout={layout} aspectRatio={aspectRatio} {...imageProps} />
+                    <PixelImageBlock data={block.props as PixelImageBlockData} aspectRatio={aspectRatio} {...imageProps} />
                 </NextImageBottomPaddingFix>
             );
         } else if (block.type === "svgImage") {

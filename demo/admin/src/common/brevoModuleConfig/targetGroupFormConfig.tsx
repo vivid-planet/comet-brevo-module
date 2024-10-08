@@ -45,18 +45,16 @@ export const additionalFormConfig = {
     },
     nodeFragment: additionalPageTreeNodeFieldsFragment,
     additionalFormFields: (
-        <>
-            <Field label={<FormattedMessage id="targetGroup.fields.salutation" defaultMessage="Salutation" />} name="filters.SALUTATION" fullWidth>
-                {(props) => (
-                    <FinalFormSelect {...props} fullWidth multiple clearable>
-                        {salutationOptions.map((option) => (
-                            <MenuItem value={option.value} key={option.value}>
-                                {option.label}
-                            </MenuItem>
-                        ))}
-                    </FinalFormSelect>
-                )}
-            </Field>
-        </>
+        <Field label={<FormattedMessage id="targetGroup.fields.salutation" defaultMessage="Salutation" />} name="filters.SALUTATION" fullWidth>
+            {(props) => (
+                <FinalFormSelect {...props} fullWidth multiple clearable>
+                    {salutationOptions.map((option) => (
+                        <MenuItem value={option.value} key={option.value}>
+                            {option.label}
+                        </MenuItem>
+                    ))}
+                </FinalFormSelect>
+            )}
+        </Field>
     ),
 };

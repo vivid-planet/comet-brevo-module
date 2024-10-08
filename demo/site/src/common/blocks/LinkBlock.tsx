@@ -13,9 +13,17 @@ export const LinkBlock = withPreview(
         }
 
         if (block.type === "internal") {
-            return <InternalLinkBlock data={block.props as InternalLinkBlockData}>{children}</InternalLinkBlock>;
+            return (
+                <InternalLinkBlock data={block.props as InternalLinkBlockData} legacyBehavior>
+                    {children}
+                </InternalLinkBlock>
+            );
         } else {
-            return <ExternalLinkBlock data={block.props as ExternalLinkBlockData}>{children}</ExternalLinkBlock>;
+            return (
+                <ExternalLinkBlock data={block.props as ExternalLinkBlockData} legacyBehavior>
+                    {children}
+                </ExternalLinkBlock>
+            );
         }
     },
     { label: "Link" },

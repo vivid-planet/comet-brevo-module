@@ -14,30 +14,24 @@ export const SeoBlock: React.FunctionComponent<SeoBlockProps> = ({
 }) => {
     const usedHtmlTitle = htmlTitle && htmlTitle != "" ? htmlTitle : title;
     return (
-        <>
-            <Head>
-                <title>{usedHtmlTitle}</title>
+        <Head>
+            <title>{usedHtmlTitle}</title>
 
-                {/* Meta*/}
-                {metaDescription && <meta name="description" content={metaDescription} />}
-                <link rel="canonical" href={canonicalUrl} />
+            {/* Meta*/}
+            {metaDescription && <meta name="description" content={metaDescription} />}
+            <link rel="canonical" href={canonicalUrl} />
 
-                {/* Open Graph */}
-                {openGraphTitle && <meta property={"og:title"} content={openGraphTitle} />}
-                {openGraphDescription && <meta property={"og:description"} content={openGraphDescription} />}
-                <meta property={"og:type"} content={"website"} />
-                <meta property={"og:url"} content={canonicalUrl} />
-                {openGraphImage.block?.urlTemplate && (
-                    <meta property={"og:image"} content={generateImageUrl({ src: openGraphImage.block.urlTemplate, width: 1024 }, 1 / 1)} />
-                )}
+            {/* Open Graph */}
+            {openGraphTitle && <meta property="og:title" content={openGraphTitle} />}
+            {openGraphDescription && <meta property="og:description" content={openGraphDescription} />}
+            <meta property="og:type" content="website" />
+            <meta property="og:url" content={canonicalUrl} />
+            {openGraphImage.block?.urlTemplate && (
+                <meta property="og:image" content={generateImageUrl({ src: openGraphImage.block.urlTemplate, width: 1024 }, 1 / 1)} />
+            )}
 
-                {/* No Index */}
-                {noIndex && (
-                    <>
-                        <meta name={"robots"} content={"noindex"} />
-                    </>
-                )}
-            </Head>
-        </>
+            {/* No Index */}
+            {noIndex && <meta name="robots" content="noindex" />}
+        </Head>
     );
 };
