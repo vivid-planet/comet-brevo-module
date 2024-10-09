@@ -20,8 +20,7 @@ class BasicValidateableRow {
     @IsNotEmpty()
     email: string;
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    [key: string]: string;
+    [key: string]: string | string[];
 }
 
 export interface CsvImportInformation {
@@ -165,6 +164,18 @@ export class BrevoContactImportService {
         return "error";
     }
 
+    private parseValue({ value, key }: { value: string; key: string }): string | string[] {
+        if (this.config.brevo.BrevoContactAttributes) {
+            const designType = Reflect.getMetadata("design:type", this.config.brevo.BrevoContactAttributes.prototype, key.toUpperCase())?.name;
+
+            if (designType === "Array") {
+                return value.trim() === "" ? [] : value.split(",").map((item) => item.trim());
+            }
+        }
+
+        return value;
+    }
+
     private async processCsvRow(row: Record<string, string>, redirectUrlForImport: string): Promise<CreateDoubleOptInContactData> {
         const mappedRow = this.createValidateableCsvRowClass();
 
@@ -174,7 +185,7 @@ export class BrevoContactImportService {
             if (key.toLowerCase() === "email") {
                 mappedRow.email = row[key];
             } else {
-                mappedRow[key.toUpperCase()] = row[key];
+                mappedRow[key.toUpperCase()] = this.parseValue({ value: row[key], key });
             }
         }
 
