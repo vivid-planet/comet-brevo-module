@@ -101,18 +101,12 @@ export class BrevoContactsService {
         return SubscribeResponse.ERROR_UNKNOWN;
     }
 
-    public async getTargetGroupIdsForExistingContact({
-        contact,
-        scope,
-    }: {
-        contact?: BrevoContactInterface;
-        scope?: EmailCampaignScopeInterface;
-    }): Promise<number[]> {
+    public async getTargetGroupIdsForExistingContact({ contact }: { contact?: BrevoContactInterface }): Promise<number[]> {
         let offset = 0;
         let totalCount = 0;
         const targetGroupIds: number[] = [];
         const limit = 50;
-        const where = { isMainList: false, scope };
+        const where = { isMainList: false };
 
         do {
             const [targetGroups, totalContactLists] = await this.targetGroupService.findTargetGroups({ offset, limit, where });
