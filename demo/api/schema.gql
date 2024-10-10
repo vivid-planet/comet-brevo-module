@@ -281,6 +281,7 @@ type BrevoContactAttributes {
   LASTNAME: String!
   FIRSTNAME: String!
   SALUTATION: BrevoContactSalutation
+  BRANCH: [BrevoContactBranch!]
 }
 
 enum BrevoContactSalutation {
@@ -288,8 +289,15 @@ enum BrevoContactSalutation {
   FEMALE
 }
 
+enum BrevoContactBranch {
+  PRODUCTS
+  MARKETING
+  NEWS
+}
+
 type BrevoContactFilterAttributes {
   SALUTATION: [BrevoContactSalutation!]
+  BRANCH: [BrevoContactBranch!]
 }
 
 type DamFolder {
@@ -470,10 +478,12 @@ input BrevoContactAttributesInput {
   LASTNAME: String!
   FIRSTNAME: String!
   SALUTATION: BrevoContactSalutation
+  BRANCH: [BrevoContactBranch!]
 }
 
 input BrevoContactFilterAttributesInput {
   SALUTATION: [BrevoContactSalutation!]
+  BRANCH: [BrevoContactBranch!]
 }
 
 input EmailCampaignContentScopeInput {
