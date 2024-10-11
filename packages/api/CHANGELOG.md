@@ -1,5 +1,13 @@
 # @comet/brevo-api
 
+## 2.1.3
+
+### Patch Changes
+
+-   3c5b342: Fix brevo error handling error
+
+    Fix brevo error handling causing contact import to fail if contact does not exists in brevo yet
+
 ## 2.1.2
 
 ### Patch Changes
