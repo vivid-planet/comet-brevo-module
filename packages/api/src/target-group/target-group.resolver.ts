@@ -140,6 +140,10 @@ export function createTargetGroupsResolver({
                 throw new Error("No assigned contacts target group found");
             }
 
+            if (!brevoContact) {
+                throw new Error(`Brevo contact with id ${input.brevoContactId} not found`);
+            }
+
             const contactIsInTargetGroupByAttributes = this.targetGroupsService.checkIfContactIsInTargetGroup(
                 brevoContact.attributes,
                 targetGroup.filters,

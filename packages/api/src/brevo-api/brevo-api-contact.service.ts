@@ -75,7 +75,14 @@ export class BrevoApiContactsService {
         try {
             const idAsString = id.toString(); // brevo expects a string, because it can be an email or the id, so we have to transform the id to string
             await this.getContactsApi(scope).updateContact(idAsString, { emailBlacklisted: blocked, attributes, listIds, unlinkListIds });
-            return this.findContact(id, scope);
+
+            const brevoContact = await this.findContact(id, scope);
+
+            if (!brevoContact) {
+                throw new Error(`The brevo contact with the id ${id} not found`);
+            }
+
+            return brevoContact;
         } catch (error) {
             handleBrevoError(error);
         }
@@ -101,27 +108,32 @@ export class BrevoApiContactsService {
         }
     }
 
-    public async findContact(idOrEmail: string | number, scope: EmailCampaignScopeInterface): Promise<BrevoContactInterface> {
+    public async findContact(idOrEmail: string | number, scope: EmailCampaignScopeInterface): Promise<BrevoContactInterface | null> {
         try {
             const idAsString = String(idOrEmail); // brevo expects a string, because it can be an email or the id
             const { body } = await this.getContactsApi(scope).getContactInfo(idAsString);
 
             return body;
         } catch (error) {
+            // Brevo returns a 404 error if no contact is found and a 400 error if an invalid email is provided.
+            if (isErrorFromBrevo(error) && (error.response.statusCode === 404 || error.response.statusCode === 400)) {
+                return null;
+            }
+
             handleBrevoError(error);
         }
     }
 
-    public async getContactInfoByEmail(email: string, scope: EmailCampaignScopeInterface): Promise<BrevoContactInterface | undefined> {
+    public async getContactInfoByEmail(email: string, scope: EmailCampaignScopeInterface): Promise<BrevoContactInterface | null> {
         try {
             const data = await this.getContactsApi(scope).getContactInfo(email);
             const contact = data.body;
-            if (!contact) return undefined;
+            if (!contact) return null;
             return contact;
         } catch (error) {
             // Brevo returns a 404 error if no contact is found and a 400 error if an invalid email is provided.
             if (isErrorFromBrevo(error) && (error.response.statusCode === 404 || error.response.statusCode === 400)) {
-                return undefined;
+                return null;
             }
             handleBrevoError(error);
         }
