@@ -79,7 +79,7 @@ export class BrevoApiContactsService {
             const brevoContact = await this.findContact(id, scope);
 
             if (!brevoContact) {
-                throw new Error(`The brevo contact with the id ${id} was not found`);
+                throw new Error(`The brevo contact with the id ${id} not found`);
             }
 
             return brevoContact;
