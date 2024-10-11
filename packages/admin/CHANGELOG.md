@@ -1,5 +1,21 @@
 # @comet/brevo-admin
 
+## 2.1.3
+
+## 2.1.2
+
+### Patch Changes
+
+-   f675cd0: CSV Import Validation Improvements and Bug Fix
+
+    Add better validation for csv imports.
+
+    Add better feedback after a csv import when something goes wrong. User can download a file with failing rows.
+
+    Fix a bug when importing via csv in a targetgroup. The contact was only added to the manually assigned contacts and not to the actual target group.
+
+## 2.1.1
+
 ## 2.1.0
 
 ## 2.0.2

@@ -3,7 +3,7 @@ import { Embeddable, Enum } from "@mikro-orm/core";
 import { Field, InputType, ObjectType } from "@nestjs/graphql";
 import { IsEnum, IsNotEmpty, IsString } from "class-validator";
 
-import { BrevoContactSalutation } from "./brevo-contact.enums";
+import { BrevoContactBranch, BrevoContactSalutation } from "./brevo-contact.enums";
 
 @ObjectType()
 @InputType("BrevoContactAttributesInput")
@@ -22,6 +22,12 @@ export class BrevoContactAttributes {
     @IsEnum(BrevoContactSalutation)
     @IsUndefinable()
     SALUTATION?: BrevoContactSalutation;
+
+    @Field(() => [BrevoContactBranch], { nullable: true })
+    @IsEnum(BrevoContactBranch, { each: true })
+    @Enum({ items: () => BrevoContactBranch, array: true })
+    @IsUndefinable()
+    BRANCH?: BrevoContactBranch[];
 }
 
 @Embeddable()
@@ -37,4 +43,10 @@ export class BrevoContactFilterAttributes {
     @Enum({ items: () => BrevoContactSalutation, array: true })
     @IsUndefinable()
     SALUTATION?: BrevoContactSalutation[];
+
+    @Field(() => [BrevoContactBranch], { nullable: true })
+    @IsEnum(BrevoContactBranch, { each: true })
+    @Enum({ items: () => BrevoContactBranch, array: true })
+    @IsUndefinable()
+    BRANCH?: BrevoContactBranch[];
 }

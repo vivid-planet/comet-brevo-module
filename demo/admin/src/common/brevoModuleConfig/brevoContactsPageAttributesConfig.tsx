@@ -2,7 +2,7 @@ import { Field, FinalFormSelect, TextField } from "@comet/admin";
 import { EditBrevoContactFormValues } from "@comet/brevo-admin";
 import { MenuItem } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
-import { GQLBrevoContactSalutation } from "@src/graphql.generated";
+import { GQLBrevoContactBranch, GQLBrevoContactSalutation } from "@src/graphql.generated";
 import { DocumentNode } from "graphql";
 import gql from "graphql-tag";
 import React from "react";
@@ -16,6 +16,7 @@ const attributesFragment = gql`
             LASTNAME
             FIRSTNAME
             SALUTATION
+            BRANCH
         }
     }
 `;
@@ -31,8 +32,24 @@ const salutationOptions: Array<{ label: React.ReactNode; value: GQLBrevoContactS
     },
 ];
 
+const branchOptions: Array<{ label: React.ReactNode; value: GQLBrevoContactBranch }> = [
+    {
+        label: <FormattedMessage id="brevoContact.filters.branch.products" defaultMessage="Products" />,
+        value: "PRODUCTS",
+    },
+    {
+        label: <FormattedMessage id="brevoContact.filters.branch.marketing" defaultMessage="Marketing" />,
+        value: "MARKETING",
+    },
+    {
+        label: <FormattedMessage id="brevoContact.filters.branch.news" defaultMessage="News" />,
+        value: "NEWS",
+    },
+];
+
 interface AdditionalFormConfigInputProps extends EditBrevoContactFormValues {
     attributes: {
+        BRANCH?: Array<GQLBrevoContactBranch>;
         SALUTATION?: GQLBrevoContactSalutation;
         FIRSTNAME?: string;
         LASTNAME?: string;
@@ -55,7 +72,7 @@ export const getBrevoContactConfig = (
     input2State: (values?: AdditionalFormConfigInputProps) => {
         email: string;
         redirectionUrl: string;
-        attributes: { SALUTATION?: GQLBrevoContactSalutation; FIRSTNAME?: string; LASTNAME?: string };
+        attributes: { BRANCH?: Array<GQLBrevoContactBranch>; SALUTATION?: GQLBrevoContactSalutation; FIRSTNAME?: string; LASTNAME?: string };
     };
     exportFields: {
         renderValue: (row: GQLBrevoContactAttributesFragmentFragment) => string;
@@ -98,6 +115,17 @@ export const getBrevoContactConfig = (
                         </FinalFormSelect>
                     )}
                 </Field>
+                <Field label={<FormattedMessage id="brevoContact.fields.branch" defaultMessage="Branch" />} name="attributes.BRANCH" fullWidth>
+                    {(props) => (
+                        <FinalFormSelect {...props} fullWidth multiple>
+                            {branchOptions.map((option) => (
+                                <MenuItem value={option.value} key={option.value}>
+                                    {option.label}
+                                </MenuItem>
+                            ))}
+                        </FinalFormSelect>
+                    )}
+                </Field>
                 <TextField
                     label={<FormattedMessage id="brevoContact.fields.salutation" defaultMessage="First name" />}
                     name="attributes.FIRSTNAME"
@@ -115,6 +143,7 @@ export const getBrevoContactConfig = (
                 email: values?.email ?? "",
                 redirectionUrl: values?.redirectionUrl ?? "",
                 attributes: {
+                    BRANCH: values?.attributes?.BRANCH ?? [],
                     SALUTATION: values?.attributes?.SALUTATION,
                     FIRSTNAME: values?.attributes?.FIRSTNAME,
                     LASTNAME: values?.attributes?.LASTNAME,
