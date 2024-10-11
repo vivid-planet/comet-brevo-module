@@ -7,7 +7,6 @@ import isEqual from "lodash.isequal";
 import { TargetGroupInterface } from "src/target-group/entity/target-group-entity.factory";
 import { Readable } from "stream";
 
-import { isErrorFromBrevo } from "../brevo-api/brevo-api.utils";
 import { BrevoApiContactsService, CreateDoubleOptInContactData } from "../brevo-api/brevo-api-contact.service";
 import { BrevoContactsService } from "../brevo-contact/brevo-contacts.service";
 import { BrevoModuleConfig } from "../config/brevo-module.config";
@@ -129,18 +128,8 @@ export class BrevoContactImportService {
         targetGroupBrevoIds: number[],
     ): Promise<"created" | "updated" | "error"> {
         try {
-            let brevoContact;
-            try {
-                brevoContact = await this.brevoApiContactsService.findContact(contact.email, scope);
-            } catch (error) {
-                if (!isErrorFromBrevo(error)) {
-                    throw error;
-                }
-                // Brevo throws 404 error if no contact was found
-                if (error.response.statusCode !== 404) {
-                    throw error;
-                }
-            }
+            const brevoContact = await this.brevoApiContactsService.findContact(contact.email, scope);
+
             const mainTargetGroupForScope = await this.targetGroupsService.createIfNotExistMainTargetGroupForScope(scope);
             if (brevoContact && !brevoContact.emailBlacklisted) {
                 const updatedBrevoContact = await this.brevoApiContactsService.updateContact(
