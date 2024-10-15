@@ -46,37 +46,50 @@ export function createBrevoContactImportResolver({
         async startBrevoContactImport(@Args() { fileId, targetGroupIds, scope }: BrevoContactImportArgs): Promise<CsvImportInformation> {
             let storageFile: NodeJS.ReadableStream | null = null;
             let objectName = null;
-            const publicUpload = await this.publicUploadRepository.findOne(fileId);
 
-            if (publicUpload) {
-                objectName = createHashedPath(publicUpload.contentHash);
+            try {
+                const publicUpload = await this.publicUploadRepository.findOne(fileId);
+
+                if (publicUpload) {
+                    objectName = createHashedPath(publicUpload.contentHash);
+
+                    if (await this.storageService.fileExists(this.publicUploadsConfig.directory, objectName)) {
+                        storageFile = await this.storageService.getFile(this.publicUploadsConfig.directory, objectName);
+                    }
+                }
+
+                if (!storageFile || !objectName) {
+                    throw new Error("File not found");
+                }
+
+                const redirectUrl = this.config.brevo.resolveConfig(scope).redirectUrlForImport;
+
+                const result = await this.brevoContactImportService.importContactsFromCsv({
+                    fileStream: Readable.from(storageFile),
+                    scope,
+                    redirectUrl,
+                    targetGroupIds,
+                });
 
                 if (await this.storageService.fileExists(this.publicUploadsConfig.directory, objectName)) {
-                    storageFile = await this.storageService.getFile(this.publicUploadsConfig.directory, objectName);
+                    await this.storageService.removeFile(this.publicUploadsConfig.directory, objectName);
+                    await this.publicUploadRepository.nativeDelete({ id: fileId });
                 }
+
+                await this.entityManager.flush();
+
+                return result;
+            } catch (error) {
+                // in case of error always delete the uploaded file
+                if (objectName && (await this.storageService.fileExists(this.publicUploadsConfig.directory, objectName))) {
+                    await this.storageService.removeFile(this.publicUploadsConfig.directory, objectName);
+                    await this.publicUploadRepository.nativeDelete({ id: fileId });
+                }
+
+                await this.entityManager.flush();
+
+                throw error;
             }
-
-            if (!storageFile || !objectName) {
-                throw new Error("File not found");
-            }
-
-            const redirectUrl = this.config.brevo.resolveConfig(scope).redirectUrlForImport;
-
-            const result = await this.brevoContactImportService.importContactsFromCsv({
-                fileStream: Readable.from(storageFile),
-                scope,
-                redirectUrl,
-                targetGroupIds,
-            });
-
-            if (await this.storageService.fileExists(this.publicUploadsConfig.directory, objectName)) {
-                await this.storageService.removeFile(this.publicUploadsConfig.directory, objectName);
-                await this.publicUploadRepository.nativeDelete({ id: fileId });
-            }
-
-            await this.entityManager.flush();
-
-            return result;
         }
     }
 
