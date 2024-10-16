@@ -1,5 +1,36 @@
 # @comet/brevo-api
 
+## 2.1.3
+
+### Patch Changes
+
+-   3c5b342: Fix brevo error handling error
+
+    Fix brevo error handling causing contact import to fail if contact does not exists in brevo yet
+
+## 2.1.2
+
+### Patch Changes
+
+-   e6dc804: Handle brevo errors explicitly to improve error messages
+-   f675cd0: CSV Import Validation Improvements and Bug Fix
+
+    Add better validation for csv imports.
+
+    Add better feedback after a csv import when something goes wrong. User can download a file with failing rows.
+
+    Fix a bug when importing via csv in a targetgroup. The contact was only added to the manually assigned contacts and not to the actual target group.
+
+-   acffd63: Support multiselect values in contact import
+
+    Previously the contact import did not support multiselect values since brevo expects an array of values and the csv import only sent values as strings. Now the import value gets transformed to an array in case the contact attribute should be of type array. The value in the csv file's column needs to be separated with a comma in case of multiple selected values.
+
+## 2.1.1
+
+### Patch Changes
+
+-   06d4132: Add check for arrays in `checkIfContactIsInTargetGroup` function, to check if at least one `contactAttribute` is included in the filter.
+
 ## 2.1.0
 
 ### Minor Changes
