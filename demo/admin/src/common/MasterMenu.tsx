@@ -48,6 +48,10 @@ export const MasterMenu: React.FC = () => {
                     primary={intl.formatMessage({ id: "menu.newsletter.emailCampaigns", defaultMessage: "Email campaigns" })}
                     to={`${match.url}/newsletter/email-campaigns`}
                 />
+                <MenuItemRouterLink
+                    primary={intl.formatMessage({ id: "menu.newsletter.brevoConfig", defaultMessage: "Brevo config" })}
+                    to={`${match.url}/newsletter/brevo-config`}
+                />
             </MenuCollapsibleItem>
             <MenuItemRouterLink
                 primary={intl.formatMessage({ id: "menu.dam", defaultMessage: "Assets" })}
