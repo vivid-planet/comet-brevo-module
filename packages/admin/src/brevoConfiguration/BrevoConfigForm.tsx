@@ -1,11 +1,12 @@
 import { useApolloClient, useQuery } from "@apollo/client";
 import {
+    Field,
     FinalForm,
+    FinalFormAutocomplete,
     FinalFormSaveSplitButton,
     FinalFormSubmitEvent,
     Loading,
     MainContent,
-    TextField,
     Toolbar,
     ToolbarActions,
     ToolbarFillSpace,
@@ -13,23 +14,30 @@ import {
     useFormApiRef,
     useStackSwitchApi,
 } from "@comet/admin";
-import { ContentScopeInterface, EditPageLayout, queryUpdatedAt, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
+import { ContentScopeInterface, EditPageLayout, useFormSaveConflict } from "@comet/cms-admin";
 import { FormApi } from "final-form";
 import React from "react";
 import { FormattedMessage } from "react-intl";
 
-import { brevoConfigFormQuery, createBrevoConfigMutation, updateBrevoConfigMutation } from "./BrevoConfigForm.gql";
+import { brevoConfigFormQuery, createBrevoConfigMutation, sendersSelectQuery, updateBrevoConfigMutation } from "./BrevoConfigForm.gql";
 import {
-    GQLBrevoConfigFormFragment,
     GQLBrevoConfigFormQuery,
     GQLBrevoConfigFormQueryVariables,
     GQLCreateBrevoConfigMutation,
     GQLCreateBrevoConfigMutationVariables,
+    GQLSendersSelectQuery,
+    GQLSendersSelectQueryVariables,
     GQLUpdateBrevoConfigMutation,
     GQLUpdateBrevoConfigMutationVariables,
 } from "./BrevoConfigForm.gql.generated";
 
-type FormValues = GQLBrevoConfigFormFragment;
+interface Option {
+    value: string;
+    label: string;
+}
+type FormValues = {
+    sender: Option;
+};
 
 interface FormProps {
     scope: ContentScopeInterface;
@@ -44,22 +52,38 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
         variables: { scope },
     });
 
+    const {
+        data: sendersData,
+        error: senderError,
+        loading: senderLoading,
+    } = useQuery<GQLSendersSelectQuery, GQLSendersSelectQueryVariables>(sendersSelectQuery);
+
+    const senderOptions =
+        sendersData?.senders?.map((sender) => ({
+            value: sender.email,
+            label: `${sender.name} (${sender.email})`,
+        })) ?? [];
+
     const mode = data?.brevoConfig?.id ? "edit" : "add";
 
-    const initialValues = React.useMemo<Partial<FormValues>>(
-        () =>
-            data?.brevoConfig
-                ? {
-                      ...data.brevoConfig,
-                  }
-                : {},
-        [data],
-    );
+    const initialValues = React.useMemo<Partial<FormValues>>(() => {
+        const sender = sendersData?.senders?.find((s) => s.email === data?.brevoConfig?.senderMail && s.name === data?.brevoConfig?.senderName);
+        return sender
+            ? {
+                  sender: {
+                      value: sender.id,
+                      label: `${sender.name} (${sender.email})`,
+                  },
+              }
+            : {};
+    }, [data?.brevoConfig?.senderMail, data?.brevoConfig?.senderName, sendersData?.senders]);
 
     const saveConflict = useFormSaveConflict({
         checkConflict: async () => {
-            const updatedAt = await queryUpdatedAt(client, "brevoConfig", data?.brevoConfig?.id);
-            return resolveHasSaveConflict(data?.brevoConfig?.updatedAt, updatedAt);
+            // TODO:
+            return false;
+            // const updatedAt = await queryUpdatedAt(client, "brevoConfig", scope);
+            // return resolveHasSaveConflict(data?.brevoConfig?.updatedAt, updatedAt);
         },
         formApiRef,
         loadLatestVersion: async () => {
@@ -72,9 +96,15 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
             throw new Error("Conflicts detected");
         }
 
+        const sender = sendersData?.senders?.find((s) => s.email === state.sender.value);
+
+        if (!sender) {
+            throw new Error("No sender selected");
+        }
+
         const output = {
-            senderName: state.senderName.trim(),
-            senderMail: state.senderMail.trim(),
+            senderName: sender?.name,
+            senderMail: sender?.email,
         };
 
         if (mode === "edit") {
@@ -101,42 +131,41 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
         }
     };
 
-    if (error) throw error;
+    if (error || senderError) throw error ?? senderError;
 
-    if (loading) {
+    if (loading || senderLoading) {
         return <Loading behavior="fillPageHeight" />;
     }
 
     return (
         <FinalForm<FormValues> apiRef={formApiRef} onSubmit={handleSubmit} mode={mode} initialValues={initialValues}>
-            {({ values }) => (
-                <EditPageLayout>
-                    {saveConflict.dialogs}
-                    <Toolbar>
-                        <ToolbarTitleItem>
-                            <FormattedMessage id="cometBrevoModule.brevoConfig.title" defaultMessage="Brevo config" />
-                        </ToolbarTitleItem>
-                        <ToolbarFillSpace />
-                        <ToolbarActions>
-                            <FinalFormSaveSplitButton hasConflict={saveConflict.hasConflict} />
-                        </ToolbarActions>
-                    </Toolbar>
-                    <MainContent>
-                        <TextField
-                            required
-                            fullWidth
-                            name="senderMail"
-                            label={<FormattedMessage id="cometBrevoModule.brevoConfig.senderMail" defaultMessage="Sender mail" />}
-                        />
-                        <TextField
-                            required
-                            fullWidth
-                            name="senderName"
-                            label={<FormattedMessage id="cometBrevoModule.brevoConfig.senderName" defaultMessage="Sender name" />}
-                        />
-                    </MainContent>
-                </EditPageLayout>
-            )}
+            {({ values }) => {
+                return (
+                    <EditPageLayout>
+                        {saveConflict.dialogs}
+                        <Toolbar>
+                            <ToolbarTitleItem>
+                                <FormattedMessage id="cometBrevoModule.brevoConfig.title" defaultMessage="Brevo config" />
+                            </ToolbarTitleItem>
+                            <ToolbarFillSpace />
+                            <ToolbarActions>
+                                <FinalFormSaveSplitButton hasConflict={saveConflict.hasConflict} />
+                            </ToolbarActions>
+                        </Toolbar>
+                        <MainContent>
+                            <Field
+                                component={FinalFormAutocomplete}
+                                getOptionLabel={(option: Option) => option.label}
+                                isOptionEqualToValue={(option: Option, value: Option) => option.value === value.value}
+                                options={senderOptions}
+                                name="sender"
+                                label={<FormattedMessage id="cometBrevoModule.brevoConfig.sender" defaultMessage="Sender" />}
+                                fullWidth
+                            />
+                        </MainContent>
+                    </EditPageLayout>
+                );
+            }}
         </FinalForm>
     );
 }
