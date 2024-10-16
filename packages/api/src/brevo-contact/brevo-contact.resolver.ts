@@ -262,6 +262,8 @@ export function createBrevoContactResolver({
             @Args("scope", { type: () => Scope }, new DynamicDtoValidationPipe(Scope)) scope: typeof Scope,
         ): Promise<boolean> {
             const contact = await this.brevoContactsApiService.findContact(id, scope);
+            if (!contact) return false;
+
             const where: FilterQuery<TargetGroupInterface> = { scope, isMainList: false, isTestList: true };
             const testTargetGroup = await this.targetGroupRepository.findOne(where);
             const contactIncludesTestList = testTargetGroup?.brevoId ? contact.listIds.includes(testTargetGroup.brevoId) : false;
@@ -292,6 +294,8 @@ export function createBrevoContactResolver({
             @Args("scope", { type: () => Scope }, new DynamicDtoValidationPipe(Scope)) scope: typeof Scope,
         ): Promise<boolean> {
             const contact = await this.brevoContactsApiService.findContact(id, scope);
+            if (!contact) return false;
+
             const where: FilterQuery<TargetGroupInterface> = { scope, isMainList: false, isTestList: true };
             const testTargetGroup = await this.targetGroupRepository.findOne(where);
             const mainTargetGroup = await this.targetGroupRepository.findOne({ scope, isMainList: true });
