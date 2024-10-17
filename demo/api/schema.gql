@@ -961,6 +961,6 @@ input BrevoConfigInput {
 }
 
 input BrevoConfigUpdateInput {
-  senderMail: String
-  senderName: String
+  senderMail: String!
+  senderName: String!
 }
