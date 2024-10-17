@@ -1,3 +1,4 @@
+import { MikroOrmModule } from "@mikro-orm/nestjs";
 import { CacheModule } from "@nestjs/cache-manager";
 import { Module } from "@nestjs/common";
 
@@ -8,7 +9,7 @@ import { BrevoApiSenderService } from "./brevo-api-sender.service";
 import { BrevoTransactionalMailsService } from "./brevo-api-transactional-mails.service";
 
 @Module({
-    imports: [ConfigModule, CacheModule.register({ ttl: 1000 * 60 })],
+    imports: [ConfigModule, CacheModule.register({ ttl: 1000 * 60 }), MikroOrmModule.forFeature(["BrevoConfig"])],
     providers: [BrevoApiContactsService, BrevoApiCampaignsService, BrevoTransactionalMailsService, BrevoApiSenderService],
     exports: [BrevoApiContactsService, BrevoApiCampaignsService, BrevoTransactionalMailsService, BrevoApiSenderService],
 })

@@ -1,5 +1,8 @@
 import * as Brevo from "@getbrevo/brevo";
+import { EntityRepository } from "@mikro-orm/core";
+import { InjectRepository } from "@mikro-orm/nestjs";
 import { Inject, Injectable } from "@nestjs/common";
+import { BrevoConfigInterface } from "src/brevo-config/entities/brevo-config-entity.factory";
 import { EmailCampaignScopeInterface } from "src/types";
 
 import { BrevoModuleConfig } from "../config/brevo-module.config";
@@ -8,14 +11,13 @@ import { handleBrevoError } from "./brevo-api.utils";
 
 type SendTransacEmailResponse = ReturnType<Brevo.TransactionalEmailsApi["sendTransacEmail"]>;
 
-//TODO: Fix BrevoConfig
-
 @Injectable()
 export class BrevoTransactionalMailsService {
     private readonly transactionalEmailsApi = new Map<string, Brevo.TransactionalEmailsApi>();
 
     constructor(
-        @Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig, // @InjectRepository("BrevoConfig") private readonly brevoConfigRepository: EntityRepository<BrevoConfigInterface>,
+        @Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig,
+        @InjectRepository("BrevoConfig") private readonly brevoConfigRepository: EntityRepository<BrevoConfigInterface>,
     ) {}
 
     private getTransactionalEmailsApi(scope: EmailCampaignScopeInterface): Brevo.TransactionalEmailsApi {
@@ -40,11 +42,11 @@ export class BrevoTransactionalMailsService {
 
     async send(options: Omit<Brevo.SendSmtpEmail, "sender">, scope: EmailCampaignScopeInterface): SendTransacEmailResponse {
         try {
-            // const brevoConfig = await this.brevoConfigRepository.findOneOrFail({ scope });
+            const brevoConfig = await this.brevoConfigRepository.findOneOrFail({ scope });
 
             return this.getTransactionalEmailsApi(scope).sendTransacEmail({
                 ...options,
-                sender: { name: "brevoConfig.senderName", email: "brevoConfig.senderMail" },
+                sender: { name: brevoConfig.senderName, email: brevoConfig.senderMail },
             });
         } catch (error) {
             handleBrevoError(error);
