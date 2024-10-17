@@ -27,11 +27,21 @@ export function createBrevoConfigResolver({
             @InjectRepository(BrevoConfig) private readonly repository: EntityRepository<BrevoConfigInterface>,
         ) {}
 
+        private async isValidSender({ email, name }: { email: string; name: string }): Promise<boolean> {
+            const senders = await this.brevoSenderApiService.getSenders(Scope);
+
+            if (senders && senders.some((sender) => sender.email === email && sender.name === name)) {
+                return true;
+            }
+
+            return false;
+        }
+
         @RequiredPermission(["brevo-newsletter-config"], { skipScopeCheck: true })
         @Query(() => [BrevoApiSender], { nullable: true })
         async senders(): Promise<Array<BrevoApiSender> | undefined> {
-            // const senders = await this.brevoSenderApiService.getSenders();
-            return undefined;
+            const senders = await this.brevoSenderApiService.getSenders(Scope);
+            return senders;
         }
 
         @Query(() => BrevoConfig, { nullable: true })

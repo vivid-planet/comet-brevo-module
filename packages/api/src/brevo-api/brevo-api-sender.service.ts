@@ -1,5 +1,6 @@
 import * as Brevo from "@getbrevo/brevo";
 import { Inject, Injectable } from "@nestjs/common";
+import { EmailCampaignScopeInterface } from "src/types";
 
 import { BrevoModuleConfig } from "../config/brevo-module.config";
 import { BREVO_MODULE_CONFIG } from "../config/brevo-module.constants";
@@ -11,11 +12,12 @@ export class BrevoApiSenderService {
 
     constructor(@Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig) {
         this.senderApi = new Brevo.SendersApi();
-        //TODO fix scope
-        this.senderApi.setApiKey(Brevo.SendersApiApiKeys.apiKey, config.brevo.resolveConfig({ language: "en", domain: "en" }).apiKey);
     }
 
-    public async getSenders(): Promise<Array<Brevo.GetSendersListSendersInner> | undefined> {
+    public async getSenders(scope: EmailCampaignScopeInterface): Promise<Array<Brevo.GetSendersListSendersInner> | undefined> {
+        const apiKey = this.config.brevo.resolveConfig(scope).apiKey;
+        this.senderApi.setApiKey(Brevo.SendersApiApiKeys.apiKey, apiKey);
+
         const { response, body } = await this.senderApi.getSenders();
 
         if (response.statusCode !== 200) {
