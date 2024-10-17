@@ -62,6 +62,21 @@ export class BrevoApiContactsService {
         }
     }
 
+    public async createTestContact(
+        { email, attributes }: Brevo.CreateContact,
+        brevoIds: number[],
+        scope: EmailCampaignScopeInterface,
+    ): Promise<boolean> {
+        const contact = {
+            email,
+            listIds: brevoIds,
+            attributes,
+        };
+        const { response } = await this.getContactsApi(scope).createContact(contact);
+
+        return response.statusCode === 204 || response.statusCode === 201;
+    }
+
     public async updateContact(
         id: number,
         {
