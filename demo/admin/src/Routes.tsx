@@ -1,6 +1,6 @@
 import { MasterLayout, RouteWithErrorBoundary } from "@comet/admin";
 import { Domain } from "@comet/admin-icons";
-import { createBrevoContactsPage, createEmailCampaignsPage, createTargetGroupsPage } from "@comet/brevo-admin";
+import { createBrevoConfigPage, createBrevoContactsPage, createEmailCampaignsPage, createTargetGroupsPage } from "@comet/brevo-admin";
 import { ContentScopeIndicator, createRedirectsPage, DamPage, PagesPage, PublisherPage, SitePreview } from "@comet/cms-admin";
 import { getBrevoContactConfig } from "@src/common/brevoModuleConfig/brevoContactsPageAttributesConfig";
 import { pageTreeCategories, urlParamToCategory } from "@src/pageTree/pageTreeCategories";
@@ -47,6 +47,10 @@ export const Routes: React.FC = () => {
     const EmailCampaignsPage = createEmailCampaignsPage({
         scopeParts: ["domain", "language"],
         EmailCampaignContentBlock: EmailCampaignContentBlock,
+    });
+
+    const BrevoConfigPage = createBrevoConfigPage({
+        scopeParts: ["domain", "language"],
     });
 
     return (
@@ -96,6 +100,7 @@ export const Routes: React.FC = () => {
                                     <RouteWithErrorBoundary path={`${match.path}/newsletter/contacts`} component={BrevoContactsPage} />
                                     <RouteWithErrorBoundary path={`${match.path}/newsletter/target-groups`} component={TargetGroupsPage} />
                                     <RouteWithErrorBoundary path={`${match.path}/newsletter/email-campaigns`} component={EmailCampaignsPage} />
+                                    <RouteWithErrorBoundary path={`${match.path}/newsletter/brevo-config`} component={BrevoConfigPage} />
 
                                     <RouteWithErrorBoundary path={`${match.path}/assets`} component={DamPage} />
 
