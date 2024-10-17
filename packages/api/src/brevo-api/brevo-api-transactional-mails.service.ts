@@ -4,6 +4,7 @@ import { EmailCampaignScopeInterface } from "src/types";
 
 import { BrevoModuleConfig } from "../config/brevo-module.config";
 import { BREVO_MODULE_CONFIG } from "../config/brevo-module.constants";
+import { handleBrevoError } from "./brevo-api.utils";
 
 type SendTransacEmailResponse = ReturnType<Brevo.TransactionalEmailsApi["sendTransacEmail"]>;
 
@@ -14,23 +15,31 @@ export class BrevoTransactionalMailsService {
     constructor(@Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig) {}
 
     private getTransactionalEmailsApi(scope: EmailCampaignScopeInterface): Brevo.TransactionalEmailsApi {
-        const existingTransactionalEmailsApiForScope = this.transactionalEmailsApi.get(JSON.stringify(scope));
+        try {
+            const existingTransactionalEmailsApiForScope = this.transactionalEmailsApi.get(JSON.stringify(scope));
 
-        if (existingTransactionalEmailsApiForScope) {
-            return existingTransactionalEmailsApiForScope;
+            if (existingTransactionalEmailsApiForScope) {
+                return existingTransactionalEmailsApiForScope;
+            }
+
+            const { apiKey } = this.config.brevo.resolveConfig(scope);
+            const transactionalEmailApi = new Brevo.TransactionalEmailsApi();
+            transactionalEmailApi.setApiKey(Brevo.TransactionalEmailsApiApiKeys.apiKey, apiKey);
+
+            this.transactionalEmailsApi.set(JSON.stringify(scope), transactionalEmailApi);
+
+            return transactionalEmailApi;
+        } catch (error) {
+            handleBrevoError(error);
         }
-
-        const { apiKey } = this.config.brevo.resolveConfig(scope);
-        const transactionalEmailApi = new Brevo.TransactionalEmailsApi();
-        transactionalEmailApi.setApiKey(Brevo.TransactionalEmailsApiApiKeys.apiKey, apiKey);
-
-        this.transactionalEmailsApi.set(JSON.stringify(scope), transactionalEmailApi);
-
-        return transactionalEmailApi;
     }
 
     async send(options: Omit<Brevo.SendSmtpEmail, "sender">, scope: EmailCampaignScopeInterface): SendTransacEmailResponse {
-        const config = this.config.brevo.resolveConfig(scope);
-        return this.getTransactionalEmailsApi(scope).sendTransacEmail({ ...options, sender: config.sender });
+        try {
+            const config = this.config.brevo.resolveConfig(scope);
+            return this.getTransactionalEmailsApi(scope).sendTransacEmail({ ...options, sender: config.sender });
+        } catch (error) {
+            handleBrevoError(error);
+        }
     }
 }
