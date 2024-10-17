@@ -12,6 +12,7 @@ import {
     KubernetesModule,
     PageTreeModule,
     PageTreeService,
+    PublicUploadModule,
     RedirectsModule,
     UserPermissionsModule,
 } from "@comet/cms-api";
@@ -136,6 +137,11 @@ export class AppModule {
                 StatusModule,
                 MenusModule,
                 DependenciesModule,
+                PublicUploadModule.register({
+                    acceptedMimeTypes: ["text/csv"],
+                    maxFileSize: config.publicUploads.maxFileSize,
+                    directory: `${config.blob.storageDirectoryPrefix}-public-uploads`,
+                }),
                 BrevoModule.register({
                     brevo: {
                         resolveConfig: (scope: EmailCampaignContentScope) => {

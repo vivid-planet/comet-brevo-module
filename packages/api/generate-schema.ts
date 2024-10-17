@@ -7,6 +7,7 @@ import { writeFile } from "fs/promises";
 import { printSchema } from "graphql";
 
 import { createBrevoContactResolver } from "./src/brevo-contact/brevo-contact.resolver";
+import { createBrevoContactImportResolver } from "./src/brevo-contact/brevo-contact-import.resolver";
 import { BrevoContactFactory } from "./src/brevo-contact/dto/brevo-contact.factory";
 import { BrevoContactInputFactory } from "./src/brevo-contact/dto/brevo-contact-input.factory";
 import { SubscribeInputFactory } from "./src/brevo-contact/dto/subscribe-input.factory";
@@ -69,6 +70,10 @@ async function generateSchema(): Promise<void> {
         BrevoContactInput,
         BrevoContactUpdateInput,
     });
+    const BrevoContactImportResolver = createBrevoContactImportResolver({
+        BrevoContact,
+        Scope: EmailCampaignScope,
+    });
 
     const TargetGroup = TargetGroupEntityFactory.create({ Scope: EmailCampaignScope });
     const [TargetGroupInput, TargetGroupUpdateInput] = TargetGroupInputFactory.create({ BrevoFilterAttributes: BrevoContactFilterAttributes });
@@ -84,7 +89,7 @@ async function generateSchema(): Promise<void> {
         Scope: EmailCampaignScope,
     });
 
-    const schema = await gqlSchemaFactory.create([BrevoContactResolver, TargetGroupResolver, EmailCampaignResolver]);
+    const schema = await gqlSchemaFactory.create([BrevoContactResolver, TargetGroupResolver, EmailCampaignResolver, BrevoContactImportResolver]);
 
     await writeFile("schema.gql", printSchema(schema));
 
