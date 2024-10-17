@@ -1,4 +1,4 @@
-import { useApolloClient, useQuery } from "@apollo/client";
+import { gql, useApolloClient, useQuery } from "@apollo/client";
 import {
     Field,
     FinalForm,
@@ -14,7 +14,7 @@ import {
     useFormApiRef,
     useStackSwitchApi,
 } from "@comet/admin";
-import { ContentScopeInterface, EditPageLayout, useFormSaveConflict } from "@comet/cms-admin";
+import { ContentScopeInterface, EditPageLayout, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
 import { FormApi } from "final-form";
 import React from "react";
 import { FormattedMessage } from "react-intl";
@@ -80,10 +80,20 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
 
     const saveConflict = useFormSaveConflict({
         checkConflict: async () => {
-            // TODO:
-            return false;
-            // const updatedAt = await queryUpdatedAt(client, "brevoConfig", scope);
-            // return resolveHasSaveConflict(data?.brevoConfig?.updatedAt, updatedAt);
+            const query = gql`
+                query ($scope: EmailCampaignContentScopeInput!) {
+                    brevoConfig(scope: $scope) {
+                        updatedAt
+                    }
+                }
+            `;
+            const { data } = await client.query({
+                query,
+                variables: { scope },
+                fetchPolicy: "no-cache",
+            });
+
+            return resolveHasSaveConflict(data?.brevoConfig?.updatedAt, data.updatedAt);
         },
         formApiRef,
         loadLatestVersion: async () => {
