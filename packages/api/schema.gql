@@ -1,6 +1,12 @@
+type User {
+  id: String!
+  name: String!
+  email: String!
+}
+
 type CurrentUserPermission {
-    permission: String!
-    contentScopes: [JSONObject!]!
+  permission: String!
+  contentScopes: [JSONObject!]!
 }
 
 """
@@ -9,180 +15,152 @@ The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](
 scalar JSONObject @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
 
 type Dependency {
-    rootId: String!
-    rootGraphqlObjectType: String!
-    rootColumnName: String!
-    jsonPath: String!
-    visible: Boolean!
-    targetGraphqlObjectType: String!
-    targetId: String!
-    name: String
-    secondaryInformation: String
+  rootId: String!
+  rootGraphqlObjectType: String!
+  rootColumnName: String!
+  jsonPath: String!
+  visible: Boolean!
+  targetGraphqlObjectType: String!
+  targetId: String!
+  name: String
+  secondaryInformation: String
 }
 
 type ImageCropArea {
-    focalPoint: FocalPoint!
-    width: Float
-    height: Float
-    x: Float
-    y: Float
+  focalPoint: FocalPoint!
+  width: Float
+  height: Float
+  x: Float
+  y: Float
 }
 
 enum FocalPoint {
-    SMART
-    CENTER
-    NORTHWEST
-    NORTHEAST
-    SOUTHWEST
-    SOUTHEAST
-}
-
-type User {
-    id: String!
-    name: String!
-    email: String!
+  SMART
+  CENTER
+  NORTHWEST
+  NORTHEAST
+  SOUTHWEST
+  SOUTHEAST
 }
 
 type BrevoApiEmailTemplateSender {
-    id: String
-    subject: String
-    email: String
+  id: String
+  subject: String
+  email: String
 }
 
 type BrevoApiEmailTemplate {
-    id: ID!
-    name: String!
-    subject: String!
-    isActive: Boolean!
-    testSent: Boolean!
-    replyTo: String!
-    toField: String!
-    tag: String!
-    htmlContent: String!
-    createdAt: String!
-    modifiedAt: String!
-    sender: BrevoApiEmailTemplateSender!
+  id: ID!
+  name: String!
+  subject: String!
+  isActive: Boolean!
+  testSent: Boolean!
+  replyTo: String!
+  toField: String!
+  tag: String!
+  htmlContent: String!
+  createdAt: String!
+  modifiedAt: String!
+  sender: BrevoApiEmailTemplateSender!
 }
 
 type BrevoApiSender {
-    id: ID!
-    name: String!
-    email: String!
-    active: Boolean!
-    ips: [BrevoIp!]
+  id: ID!
+  name: String!
+  email: String!
+  active: Boolean!
+  ips: [BrevoIp!]
 }
 
 type BrevoIp {
-    ip: String!
-    domain: String!
-    weight: Int!
+  ip: String!
+  domain: String!
+  weight: Int!
 }
 
 type CsvImportInformation {
-    created: Int!
-    updated: Int!
-    failed: Int!
-    failedColumns: [[String!]!]
-    errorMessage: String
+  created: Int!
+  updated: Int!
+  failed: Int!
+  failedColumns: [[String!]!]
+  errorMessage: String
 }
 
 type BrevoApiCampaignStatistics {
-    """
-    Number of unique clicks for the campaign
-    """
-    uniqueClicks: Int!
+  """Number of unique clicks for the campaign"""
+  uniqueClicks: Int!
 
-    """
-    Number of total clicks for the campaign
-    """
-    clickers: Int!
+  """Number of total clicks for the campaign"""
+  clickers: Int!
 
-    """
-    Number of complaints (Spam reports) for the campaign
-    """
-    complaints: Int!
+  """Number of complaints (Spam reports) for the campaign"""
+  complaints: Int!
 
-    """
-    Number of delivered emails for the campaign
-    """
-    delivered: Int!
+  """Number of delivered emails for the campaign"""
+  delivered: Int!
 
-    """
-    Number of sent emails for the campaign
-    """
-    sent: Int!
+  """Number of sent emails for the campaign"""
+  sent: Int!
 
-    """
-    Number of softbounce for the campaign
-    """
-    softBounces: Int!
+  """Number of softbounce for the campaign"""
+  softBounces: Int!
 
-    """
-    Number of hardbounces for the campaign
-    """
-    hardBounces: Int!
+  """Number of hardbounces for the campaign"""
+  hardBounces: Int!
 
-    """
-    Number of unique openings for the campaign
-    """
-    uniqueViews: Int!
+  """Number of unique openings for the campaign"""
+  uniqueViews: Int!
 
-    """
-    Number of unique openings for the campaign
-    """
-    trackableViews: Int!
+  """Number of unique openings for the campaign"""
+  trackableViews: Int!
 
-    """
-    Rate of recipients without any privacy protection option enabled in their email client, applied to all delivered emails
-    """
-    estimatedViews: Int!
+  """
+  Rate of recipients without any privacy protection option enabled in their email client, applied to all delivered emails
+  """
+  estimatedViews: Int!
 
-    """
-    Number of unsubscription for the campaign
-    """
-    unsubscriptions: Int!
+  """Number of unsubscription for the campaign"""
+  unsubscriptions: Int!
 
-    """
-    Number of openings for the campaign
-    """
-    viewed: Int!
+  """Number of openings for the campaign"""
+  viewed: Int!
 }
 
 type EmailCampaignContentScope {
-    thisScopeHasNoFields____: String
+  thisScopeHasNoFields____: String
 }
 
 type BrevoContact {
-    id: Int!
-    createdAt: String!
-    modifiedAt: String!
-    email: String!
-    emailBlacklisted: Boolean!
-    smsBlacklisted: Boolean!
-    listIds: [Int!]!
-    listUnsubscribed: [Int!]!
+  id: Int!
+  createdAt: String!
+  modifiedAt: String!
+  email: String!
+  emailBlacklisted: Boolean!
+  smsBlacklisted: Boolean!
+  listIds: [Int!]!
+  listUnsubscribed: [Int!]!
 }
 
 type PaginatedBrevoContacts {
-    nodes: [BrevoContact!]!
-    totalCount: Int!
+  nodes: [BrevoContact!]!
+  totalCount: Int!
 }
 
 type TargetGroup implements DocumentInterface {
-    id: ID!
-    updatedAt: DateTime!
-    createdAt: DateTime!
-    title: String!
-    isMainList: Boolean!
-    brevoId: Int!
-    totalSubscribers: Int!
-    scope: EmailCampaignContentScope!
-    assignedContactsTargetGroupBrevoId: Int
+  id: ID!
+  updatedAt: DateTime!
+  createdAt: DateTime!
+  title: String!
+  isMainList: Boolean!
+  brevoId: Int!
+  totalSubscribers: Int!
+  scope: EmailCampaignContentScope!
+  assignedContactsTargetGroupBrevoId: Int
 }
 
 interface DocumentInterface {
-    id: ID!
-    updatedAt: DateTime!
+  id: ID!
+  updatedAt: DateTime!
 }
 
 """
@@ -191,247 +169,224 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 scalar DateTime
 
 type PaginatedTargetGroups {
-    nodes: [TargetGroup!]!
-    totalCount: Int!
+  nodes: [TargetGroup!]!
+  totalCount: Int!
 }
 
 type EmailCampaign implements DocumentInterface {
-    id: ID!
-    updatedAt: DateTime!
-    createdAt: DateTime!
-    title: String!
-    subject: String!
-    brevoId: Int
-    scheduledAt: DateTime
-    targetGroups: [TargetGroup!]!
-    content: EmailCampaignContentBlockData!
-    scope: EmailCampaignContentScope!
-    sendingState: SendingState!
+  id: ID!
+  updatedAt: DateTime!
+  createdAt: DateTime!
+  title: String!
+  subject: String!
+  brevoId: Int
+  scheduledAt: DateTime
+  targetGroups: [TargetGroup!]!
+  content: EmailCampaignContentBlockData!
+  scope: EmailCampaignContentScope!
+  sendingState: SendingState!
 }
 
-"""
-EmailCampaignContent root block data
-"""
+"""EmailCampaignContent root block data"""
 scalar EmailCampaignContentBlockData @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
 
 enum SendingState {
-    DRAFT
-    SENT
-    SCHEDULED
+  DRAFT
+  SENT
+  SCHEDULED
 }
 
 type PaginatedEmailCampaigns {
-    nodes: [EmailCampaign!]!
-    totalCount: Int!
+  nodes: [EmailCampaign!]!
+  totalCount: Int!
 }
 
 type BrevoConfig implements DocumentInterface {
-    id: ID!
-    updatedAt: DateTime!
-    senderMail: String!
-    senderName: String!
-    doiTemplateId: Int
-    createdAt: DateTime!
-    scope: EmailCampaignContentScope!
+  id: ID!
+  updatedAt: DateTime!
+  senderMail: String!
+  senderName: String!
+  doiTemplateId: Int
+  createdAt: DateTime!
+  scope: EmailCampaignContentScope!
 }
 
 input EmailCampaignContentScopeInput {
-    thisScopeHasNoFields____: String
+  thisScopeHasNoFields____: String
 }
 
 type Query {
-    brevoContact(id: Int!, scope: EmailCampaignContentScopeInput!): BrevoContact!
-    brevoContacts(
-        targetGroupId: ID
-        email: String
-        scope: EmailCampaignContentScopeInput!
-        offset: Int! = 0
-        limit: Int! = 25
-    ): PaginatedBrevoContacts!
-    manuallyAssignedBrevoContacts(offset: Int! = 0, limit: Int! = 25, targetGroupId: ID!, email: String): PaginatedBrevoContacts!
-    targetGroup(id: ID!): TargetGroup!
-    targetGroups(
-        scope: EmailCampaignContentScopeInput!
-        search: String
-        filter: TargetGroupFilter
-        sort: [TargetGroupSort!]
-        offset: Int! = 0
-        limit: Int! = 25
-    ): PaginatedTargetGroups!
-    emailCampaign(id: ID!): EmailCampaign!
-    emailCampaigns(
-        scope: EmailCampaignContentScopeInput!
-        search: String
-        filter: EmailCampaignFilter
-        sort: [EmailCampaignSort!]
-        offset: Int! = 0
-        limit: Int! = 25
-    ): PaginatedEmailCampaigns!
-    emailCampaignStatistics(id: ID!): BrevoApiCampaignStatistics
-    senders(scope: EmailCampaignContentScopeInput!): [BrevoApiSender!]
-    brevoConfig(scope: EmailCampaignContentScopeInput!): BrevoConfig
+  brevoContact(id: Int!, scope: EmailCampaignContentScopeInput!): BrevoContact!
+  brevoContacts(targetGroupId: ID, email: String, scope: EmailCampaignContentScopeInput!, offset: Int! = 0, limit: Int! = 25): PaginatedBrevoContacts!
+  manuallyAssignedBrevoContacts(offset: Int! = 0, limit: Int! = 25, targetGroupId: ID!, email: String): PaginatedBrevoContacts!
+  targetGroup(id: ID!): TargetGroup!
+  targetGroups(scope: EmailCampaignContentScopeInput!, search: String, filter: TargetGroupFilter, sort: [TargetGroupSort!], offset: Int! = 0, limit: Int! = 25): PaginatedTargetGroups!
+  emailCampaign(id: ID!): EmailCampaign!
+  emailCampaigns(scope: EmailCampaignContentScopeInput!, search: String, filter: EmailCampaignFilter, sort: [EmailCampaignSort!], offset: Int! = 0, limit: Int! = 25): PaginatedEmailCampaigns!
+  emailCampaignStatistics(id: ID!): BrevoApiCampaignStatistics
+  senders(scope: EmailCampaignContentScopeInput!): [BrevoApiSender!]
+  doiTemplates: [BrevoApiEmailTemplate!]
+  brevoConfig(scope: EmailCampaignContentScopeInput!): BrevoConfig
 }
 
 input TargetGroupFilter {
-    createdAt: DateTimeFilter
-    updatedAt: DateTimeFilter
-    title: StringFilter
-    and: [TargetGroupFilter!]
-    or: [TargetGroupFilter!]
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  title: StringFilter
+  and: [TargetGroupFilter!]
+  or: [TargetGroupFilter!]
 }
 
 input DateTimeFilter {
-    equal: DateTime
-    lowerThan: DateTime
-    greaterThan: DateTime
-    lowerThanEqual: DateTime
-    greaterThanEqual: DateTime
-    notEqual: DateTime
+  equal: DateTime
+  lowerThan: DateTime
+  greaterThan: DateTime
+  lowerThanEqual: DateTime
+  greaterThanEqual: DateTime
+  notEqual: DateTime
 }
 
 input StringFilter {
-    contains: String
-    startsWith: String
-    endsWith: String
-    equal: String
-    notEqual: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  equal: String
+  notEqual: String
 }
 
 input TargetGroupSort {
-    field: TargetGroupSortField!
-    direction: SortDirection! = ASC
+  field: TargetGroupSortField!
+  direction: SortDirection! = ASC
 }
 
 enum TargetGroupSortField {
-    createdAt
-    updatedAt
-    title
+  createdAt
+  updatedAt
+  title
 }
 
 enum SortDirection {
-    ASC
-    DESC
+  ASC
+  DESC
 }
 
 input EmailCampaignFilter {
-    createdAt: DateTimeFilter
-    updatedAt: DateTimeFilter
-    title: StringFilter
-    subject: StringFilter
-    scheduledAt: DateTimeFilter
-    and: [EmailCampaignFilter!]
-    or: [EmailCampaignFilter!]
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  title: StringFilter
+  subject: StringFilter
+  scheduledAt: DateTimeFilter
+  and: [EmailCampaignFilter!]
+  or: [EmailCampaignFilter!]
 }
 
 input EmailCampaignSort {
-    field: EmailCampaignSortField!
-    direction: SortDirection! = ASC
+  field: EmailCampaignSortField!
+  direction: SortDirection! = ASC
 }
 
 enum EmailCampaignSortField {
-    createdAt
-    updatedAt
-    title
-    subject
-    scheduledAt
+  createdAt
+  updatedAt
+  title
+  subject
+  scheduledAt
 }
 
 type Mutation {
-    updateBrevoContact(id: Int!, scope: EmailCampaignContentScopeInput!, input: BrevoContactUpdateInput!): BrevoContact!
-    createBrevoContact(scope: EmailCampaignContentScopeInput!, input: BrevoContactInput!): SubscribeResponse!
-    deleteBrevoContact(id: Int!, scope: EmailCampaignContentScopeInput!): Boolean!
-    subscribeBrevoContact(input: SubscribeInput!, scope: EmailCampaignContentScopeInput!): SubscribeResponse!
-    createTargetGroup(scope: EmailCampaignContentScopeInput!, input: TargetGroupInput!): TargetGroup!
-    addBrevoContactsToTargetGroup(id: ID!, input: AddBrevoContactsInput!): Boolean!
-    removeBrevoContactFromTargetGroup(id: ID!, input: RemoveBrevoContactInput!): Boolean!
-    updateTargetGroup(id: ID!, input: TargetGroupUpdateInput!, lastUpdatedAt: DateTime): TargetGroup!
-    deleteTargetGroup(id: ID!): Boolean!
-    createEmailCampaign(scope: EmailCampaignContentScopeInput!, input: EmailCampaignInput!): EmailCampaign!
-    updateEmailCampaign(id: ID!, input: EmailCampaignUpdateInput!, lastUpdatedAt: DateTime): EmailCampaign!
-    deleteEmailCampaign(id: ID!): Boolean!
-    sendEmailCampaignNow(id: ID!): Boolean!
-    sendEmailCampaignToTestEmails(id: ID!, data: SendTestEmailCampaignArgs!): Boolean!
-    startBrevoContactImport(fileId: ID!, targetGroupIds: [ID!], scope: EmailCampaignContentScopeInput!): CsvImportInformation!
-    createBrevoConfig(scope: EmailCampaignContentScopeInput!, input: BrevoConfigInput!): BrevoConfig!
-    updateBrevoConfig(id: ID!, input: BrevoConfigUpdateInput!, lastUpdatedAt: DateTime): BrevoConfig!
+  updateBrevoContact(id: Int!, scope: EmailCampaignContentScopeInput!, input: BrevoContactUpdateInput!): BrevoContact!
+  createBrevoContact(scope: EmailCampaignContentScopeInput!, input: BrevoContactInput!): SubscribeResponse!
+  deleteBrevoContact(id: Int!, scope: EmailCampaignContentScopeInput!): Boolean!
+  subscribeBrevoContact(input: SubscribeInput!, scope: EmailCampaignContentScopeInput!): SubscribeResponse!
+  createTargetGroup(scope: EmailCampaignContentScopeInput!, input: TargetGroupInput!): TargetGroup!
+  addBrevoContactsToTargetGroup(id: ID!, input: AddBrevoContactsInput!): Boolean!
+  removeBrevoContactFromTargetGroup(id: ID!, input: RemoveBrevoContactInput!): Boolean!
+  updateTargetGroup(id: ID!, input: TargetGroupUpdateInput!, lastUpdatedAt: DateTime): TargetGroup!
+  deleteTargetGroup(id: ID!): Boolean!
+  createEmailCampaign(scope: EmailCampaignContentScopeInput!, input: EmailCampaignInput!): EmailCampaign!
+  updateEmailCampaign(id: ID!, input: EmailCampaignUpdateInput!, lastUpdatedAt: DateTime): EmailCampaign!
+  deleteEmailCampaign(id: ID!): Boolean!
+  sendEmailCampaignNow(id: ID!): Boolean!
+  sendEmailCampaignToTestEmails(id: ID!, data: SendTestEmailCampaignArgs!): Boolean!
+  startBrevoContactImport(fileId: ID!, targetGroupIds: [ID!], scope: EmailCampaignContentScopeInput!): CsvImportInformation!
+  createBrevoConfig(scope: EmailCampaignContentScopeInput!, input: BrevoConfigInput!): BrevoConfig!
+  updateBrevoConfig(id: ID!, input: BrevoConfigUpdateInput!, lastUpdatedAt: DateTime): BrevoConfig!
 }
 
 input BrevoContactUpdateInput {
-    blocked: Boolean!
+  blocked: Boolean!
 }
 
 enum SubscribeResponse {
-    SUCCESSFUL
-    ERROR_UNKNOWN
-    ERROR_CONTAINED_IN_ECG_RTR_LIST
+  SUCCESSFUL
+  ERROR_UNKNOWN
+  ERROR_CONTAINED_IN_ECG_RTR_LIST
 }
 
 input BrevoContactInput {
-    email: String!
-    blocked: Boolean!
-    redirectionUrl: String!
+  email: String!
+  blocked: Boolean!
+  redirectionUrl: String!
 }
 
 input SubscribeInput {
-    email: String!
-    redirectionUrl: String!
+  email: String!
+  redirectionUrl: String!
 }
 
 input TargetGroupInput {
-    title: String!
-    filters: BrevoContactFilterAttributesInput
+  title: String!
+  filters: BrevoContactFilterAttributesInput
 }
 
 input BrevoContactFilterAttributesInput {
-    thisFilterHasNoFields____: [String!]
+  thisFilterHasNoFields____: [String!]
 }
 
 input AddBrevoContactsInput {
-    brevoContactIds: [Int!]!
+  brevoContactIds: [Int!]!
 }
 
 input RemoveBrevoContactInput {
-    brevoContactId: Int!
+  brevoContactId: Int!
 }
 
 input TargetGroupUpdateInput {
-    title: String
-    filters: BrevoContactFilterAttributesInput
+  title: String
+  filters: BrevoContactFilterAttributesInput
 }
 
 input EmailCampaignInput {
-    title: String!
-    subject: String!
-    scheduledAt: DateTime
-    targetGroups: [ID!]!
-    content: EmailCampaignContentBlockInput!
+  title: String!
+  subject: String!
+  scheduledAt: DateTime
+  targetGroups: [ID!]!
+  content: EmailCampaignContentBlockInput!
 }
 
-"""
-EmailCampaignContent root block input
-"""
+"""EmailCampaignContent root block input"""
 scalar EmailCampaignContentBlockInput @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
 
 input EmailCampaignUpdateInput {
-    title: String
-    subject: String
-    scheduledAt: DateTime
-    targetGroups: [ID!]
-    content: EmailCampaignContentBlockInput
+  title: String
+  subject: String
+  scheduledAt: DateTime
+  targetGroups: [ID!]
+  content: EmailCampaignContentBlockInput
 }
 
 input SendTestEmailCampaignArgs {
-    emails: [String!]!
+  emails: [String!]!
 }
 
 input BrevoConfigInput {
-    senderMail: String!
-    senderName: String!
-    doiTemplateId: Int
+  senderMail: String!
+  senderName: String!
+  doiTemplateId: Int
 }
 
 input BrevoConfigUpdateInput {
-    senderMail: String
-    senderName: String
-    doiTemplateId: Int
+  senderMail: String
+  senderName: String
+  doiTemplateId: Int
 }

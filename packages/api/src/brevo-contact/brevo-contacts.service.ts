@@ -1,4 +1,7 @@
+import { EntityRepository } from "@mikro-orm/core";
+import { InjectRepository } from "@mikro-orm/nestjs";
 import { Inject, Injectable } from "@nestjs/common";
+import { BrevoConfigInterface } from "src/brevo-config/entities/brevo-config-entity.factory";
 
 import { BrevoApiContactsService } from "../brevo-api/brevo-api-contact.service";
 import { BrevoModuleConfig } from "../config/brevo-module.config";
@@ -14,6 +17,7 @@ import { EcgRtrListService } from "./ecg-rtr-list/ecg-rtr-list.service";
 export class BrevoContactsService {
     constructor(
         @Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig,
+        @InjectRepository("BrevoConfig") private readonly brevoConfigRepository: EntityRepository<BrevoConfigInterface>,
         private readonly brevoContactsApiService: BrevoApiContactsService,
         private readonly ecgRtrListService: EcgRtrListService,
         private readonly targetGroupService: TargetGroupsService,
@@ -88,10 +92,16 @@ export class BrevoContactsService {
             return SubscribeResponse.ERROR_CONTAINED_IN_ECG_RTR_LIST;
         }
 
+        const brevoConfig = await this.brevoConfigRepository.findOneOrFail({ scope });
+
+        if (!brevoConfig.doiTemplateId) {
+            throw new Error("Double opt-in template is not set");
+        }
+
         const created = await this.createDoubleOptInContact({
             ...data,
             scope,
-            templateId: this.config.brevo.resolveConfig(scope).doubleOptInTemplateId,
+            templateId: brevoConfig.doiTemplateId,
         });
 
         if (created) {
