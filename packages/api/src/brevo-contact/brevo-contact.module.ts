@@ -42,7 +42,7 @@ export class BrevoContactModule {
 
         return {
             module: BrevoContactModule,
-            imports: [BrevoApiModule, ConfigModule, MikroOrmModule.forFeature([TargetGroup])],
+            imports: [BrevoApiModule, ConfigModule, MikroOrmModule.forFeature([TargetGroup, "BrevoConfig"])],
             providers: [
                 BrevoContactImportService,
                 BrevoContactsService,
