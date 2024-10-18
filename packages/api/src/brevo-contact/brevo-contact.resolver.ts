@@ -227,7 +227,7 @@ export function createBrevoContactResolver({
         }
 
         @Mutation(() => SubscribeResponse)
-        @RequiredPermission(["brevo-newsletter"], { skipScopeCheck: true })
+        @RequiredPermission(["brevo-newsletter-test-contacts"], { skipScopeCheck: true })
         async createBrevoTestContact(
             @Args("scope", { type: () => Scope }, new DynamicDtoValidationPipe(Scope)) scope: typeof Scope,
             @Args("input", { type: () => BrevoTestContactInput })
