@@ -172,12 +172,22 @@ export function createBrevoContactResolver({
             const mainListIds = (await this.targetGroupRepository.find({ brevoId: { $in: assignedListIds }, isMainList: true })).map(
                 (targetGroup) => targetGroup.brevoId,
             );
-
             const updatedNonMainListIds = await this.brevoContactsService.getTargetGroupIdsForExistingContact({
                 contact,
             });
 
+            const testTargetGroup = await this.targetGroupRepository.findOne({ scope, isMainList: false, isTestList: true });
+            const contactIncludesTestList = testTargetGroup?.brevoId ? contact.listIds.includes(testTargetGroup.brevoId) : false;
+
+            if (testTargetGroup && contactIncludesTestList) {
+                const testListId = testTargetGroup.brevoId;
+                if (!updatedNonMainListIds.includes(testListId)) {
+                    updatedNonMainListIds.push(testListId);
+                }
+            }
+
             // update contact again with updated list ids depending on new attributes
+
             const contactWithUpdatedLists = await this.brevoContactsApiService.updateContact(
                 id,
                 {
