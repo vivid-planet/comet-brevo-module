@@ -77,7 +77,7 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
 
     const senderOptions =
         sendersData?.senders?.map((sender) => ({
-            value: sender.id,
+            value: sender.email,
             label: `${sender.name} (${sender.email})`,
         })) ?? [];
 
@@ -96,7 +96,7 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
         return {
             sender: sender
                 ? {
-                      value: sender.id,
+                      value: sender.email,
                       label: `${sender.name} (${sender.email})`,
                   }
                 : undefined,
@@ -146,13 +146,14 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
 
         const sender = sendersData?.senders?.find((s) => s.email === state.sender.value);
 
-        if (!sender) {
-            throw new Error("No sender selected");
+        if (!sender || !state.doiTemplate) {
+            throw new Error("Not all required fields are set");
         }
 
         const output = {
             senderName: sender?.name,
             senderMail: sender?.email,
+            doiTemplateId: Number(state.doiTemplate.value),
         };
 
         if (mode === "edit") {
