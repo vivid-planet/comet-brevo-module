@@ -163,6 +163,41 @@ type PaginatedUserList {
   totalCount: Int!
 }
 
+type BrevoApiEmailTemplateSender {
+  id: String
+  subject: String
+  email: String
+}
+
+type BrevoApiEmailTemplate {
+  id: ID!
+  name: String!
+  subject: String!
+  isActive: Boolean!
+  testSent: Boolean!
+  replyTo: String!
+  toField: String!
+  tag: String!
+  htmlContent: String!
+  createdAt: String!
+  modifiedAt: String!
+  sender: BrevoApiEmailTemplateSender!
+}
+
+type BrevoApiSender {
+  id: ID!
+  name: String!
+  email: String!
+  active: Boolean!
+  ips: [BrevoIp!]
+}
+
+type BrevoIp {
+  ip: String!
+  domain: String!
+  weight: Int!
+}
+
 type BrevoApiCampaignStatistics {
   """Number of unique clicks for the campaign"""
   uniqueClicks: Int!
@@ -419,6 +454,16 @@ type TargetGroup implements DocumentInterface {
   filters: BrevoContactFilterAttributes
 }
 
+type BrevoConfig implements DocumentInterface {
+  id: ID!
+  updatedAt: DateTime!
+  senderMail: String!
+  senderName: String!
+  doiTemplateId: Int
+  createdAt: DateTime!
+  scope: EmailCampaignContentScope!
+}
+
 type BrevoContact {
   id: Int!
   createdAt: String!
@@ -534,6 +579,9 @@ type Query {
   emailCampaignStatistics(id: ID!): BrevoApiCampaignStatistics
   targetGroup(id: ID!): TargetGroup!
   targetGroups(scope: EmailCampaignContentScopeInput!, search: String, filter: TargetGroupFilter, sort: [TargetGroupSort!], offset: Int! = 0, limit: Int! = 25): PaginatedTargetGroups!
+  senders: [BrevoApiSender!]
+  doiTemplates: [BrevoApiEmailTemplate!]
+  brevoConfig(scope: EmailCampaignContentScopeInput!): BrevoConfig
 }
 
 input UserFilter {
@@ -751,6 +799,8 @@ type Mutation {
   removeBrevoContactFromTargetGroup(id: ID!, input: RemoveBrevoContactInput!): Boolean!
   updateTargetGroup(id: ID!, input: TargetGroupUpdateInput!, lastUpdatedAt: DateTime): TargetGroup!
   deleteTargetGroup(id: ID!): Boolean!
+  createBrevoConfig(scope: EmailCampaignContentScopeInput!, input: BrevoConfigInput!): BrevoConfig!
+  updateBrevoConfig(id: ID!, input: BrevoConfigUpdateInput!, lastUpdatedAt: DateTime): BrevoConfig!
 }
 
 input UserPermissionInput {
@@ -941,4 +991,16 @@ input RemoveBrevoContactInput {
 input TargetGroupUpdateInput {
   title: String
   filters: BrevoContactFilterAttributesInput
+}
+
+input BrevoConfigInput {
+  senderMail: String!
+  senderName: String!
+  doiTemplateId: Int
+}
+
+input BrevoConfigUpdateInput {
+  senderMail: String
+  senderName: String
+  doiTemplateId: Int
 }
