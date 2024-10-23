@@ -201,6 +201,7 @@ type BrevoConfig implements DocumentInterface {
   senderMail: String!
   senderName: String!
   doiTemplateId: Int
+  redirectionUrl: String!
   createdAt: DateTime!
   scope: EmailCampaignContentScope!
 }
@@ -376,10 +377,12 @@ input BrevoConfigInput {
   senderMail: String!
   senderName: String!
   doiTemplateId: Int
+  redirectionUrl: String!
 }
 
 input BrevoConfigUpdateInput {
   senderMail: String
   senderName: String
   doiTemplateId: Int
+  redirectionUrl: String
 }

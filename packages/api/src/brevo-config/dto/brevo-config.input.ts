@@ -1,6 +1,6 @@
 import { PartialType } from "@comet/cms-api";
 import { Field, InputType, Int } from "@nestjs/graphql";
-import { IsEmail, IsInt, IsNotEmpty, IsString, ValidateIf } from "class-validator";
+import { IsEmail, IsInt, IsNotEmpty, IsString, IsUrl, ValidateIf } from "class-validator";
 
 @InputType()
 export class BrevoConfigInput {
@@ -20,6 +20,11 @@ export class BrevoConfigInput {
     @Field(() => Int, { nullable: true })
     @ValidateIf((values) => !values.apiKey)
     doiTemplateId?: number;
+
+    @IsNotEmpty()
+    @Field()
+    @IsUrl({ require_tld: process.env.NODE_ENV === "production" })
+    redirectionUrl: string;
 }
 
 @InputType()
