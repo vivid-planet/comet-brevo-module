@@ -14,6 +14,7 @@ export interface BrevoConfigInterface {
     senderMail: string;
     doubleOptInTemplateId: number;
     folderId: number;
+    redirectionUrl: string;
     createdAt: Date;
     updatedAt: Date;
     scope: EmailCampaignScopeInterface;
