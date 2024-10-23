@@ -37,7 +37,6 @@ export function createBrevoConfigResolver({
             return false;
         }
 
-        @RequiredPermission(["brevo-newsletter-config"])
         @Query(() => [BrevoApiSender], { nullable: true })
         async senders(
             @Args("scope", { type: () => Scope }, new DynamicDtoValidationPipe(Scope))
