@@ -37,10 +37,13 @@ export function createBrevoConfigResolver({
             return false;
         }
 
-        @RequiredPermission(["brevo-newsletter-config"], { skipScopeCheck: true })
+        @RequiredPermission(["brevo-newsletter-config"])
         @Query(() => [BrevoApiSender], { nullable: true })
-        async senders(): Promise<Array<BrevoApiSender> | undefined> {
-            const senders = await this.brevoSenderApiService.getSenders(Scope);
+        async senders(
+            @Args("scope", { type: () => Scope }, new DynamicDtoValidationPipe(Scope))
+            scope: typeof Scope,
+        ): Promise<Array<BrevoApiSender> | undefined> {
+            const senders = await this.brevoSenderApiService.getSenders(scope);
             return senders;
         }
 

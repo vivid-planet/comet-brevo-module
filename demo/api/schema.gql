@@ -557,7 +557,7 @@ type Query {
   emailCampaignStatistics(id: ID!): BrevoApiCampaignStatistics
   targetGroup(id: ID!): TargetGroup!
   targetGroups(scope: EmailCampaignContentScopeInput!, search: String, filter: TargetGroupFilter, sort: [TargetGroupSort!], offset: Int! = 0, limit: Int! = 25): PaginatedTargetGroups!
-  senders: [BrevoApiSender!]
+  senders(scope: EmailCampaignContentScopeInput!): [BrevoApiSender!]
   brevoConfig(scope: EmailCampaignContentScopeInput!): BrevoConfig
 }
 

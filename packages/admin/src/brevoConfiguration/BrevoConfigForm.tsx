@@ -56,7 +56,9 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
         data: sendersData,
         error: senderError,
         loading: senderLoading,
-    } = useQuery<GQLSendersSelectQuery, GQLSendersSelectQueryVariables>(sendersSelectQuery);
+    } = useQuery<GQLSendersSelectQuery, GQLSendersSelectQueryVariables>(sendersSelectQuery, {
+        variables: { scope },
+    });
 
     const senderOptions =
         sendersData?.senders?.map((sender) => ({
