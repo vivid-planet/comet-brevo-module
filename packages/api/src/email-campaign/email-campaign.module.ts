@@ -2,6 +2,7 @@ import { Block } from "@comet/blocks-api";
 import { MikroOrmModule } from "@mikro-orm/nestjs";
 import { HttpModule } from "@nestjs/axios";
 import { DynamicModule, Module, Type } from "@nestjs/common";
+import { BrevoConfigInterface } from "src/brevo-config/entities/brevo-config-entity.factory";
 import { TargetGroupInterface } from "src/target-group/entity/target-group-entity.factory";
 
 import { BrevoApiModule } from "../brevo-api/brevo-api.module";
@@ -17,11 +18,12 @@ interface EmailCampaignModuleConfig {
     Scope: Type<EmailCampaignScopeInterface>;
     EmailCampaignContentBlock: Block;
     TargetGroup: Type<TargetGroupInterface>;
+    BrevoConfig: Type<BrevoConfigInterface>;
 }
 
 @Module({})
 export class EmailCampaignModule {
-    static register({ Scope, EmailCampaignContentBlock, TargetGroup }: EmailCampaignModuleConfig): DynamicModule {
+    static register({ Scope, EmailCampaignContentBlock, TargetGroup, BrevoConfig }: EmailCampaignModuleConfig): DynamicModule {
         const EmailCampaign = EmailCampaignEntityFactory.create({
             Scope,
             EmailCampaignContentBlock,
@@ -44,7 +46,7 @@ export class EmailCampaignModule {
                 HttpModule.register({
                     timeout: 5000,
                 }),
-                MikroOrmModule.forFeature([EmailCampaign, TargetGroup]),
+                MikroOrmModule.forFeature([EmailCampaign, TargetGroup, BrevoConfig]),
             ],
             providers: [EmailCampaignsResolver, EmailCampaignsService, EcgRtrListService],
         };
