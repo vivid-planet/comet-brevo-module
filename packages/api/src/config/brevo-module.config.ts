@@ -8,7 +8,6 @@ export interface BrevoModuleConfig {
     brevo: {
         resolveConfig: (scope: EmailCampaignScopeInterface) => {
             apiKey: string;
-            allowedRedirectUrl: string;
             redirectUrlForImport: string;
         };
         BrevoContactAttributes?: Type<BrevoContactAttributesInterface>;

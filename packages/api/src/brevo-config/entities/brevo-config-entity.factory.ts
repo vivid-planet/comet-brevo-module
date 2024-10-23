@@ -13,6 +13,7 @@ export interface BrevoConfigInterface {
     senderName: string;
     senderMail: string;
     doiTemplateId?: number;
+    redirectionUrl: string;
     createdAt: Date;
     updatedAt: Date;
     scope: EmailCampaignScopeInterface;

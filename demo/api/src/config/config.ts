@@ -57,7 +57,6 @@ export function createConfig(processEnv: NodeJS.ProcessEnv) {
         },
         brevo: {
             apiKey: envVars.BREVO_API_KEY,
-            allowedRedirectUrl: envVars.BREVO_ALLOWED_REDIRECT_URL,
             sender: {
                 name: envVars.BREVO_SENDER_NAME,
                 email: envVars.BREVO_SENDER_EMAIL,
