@@ -35,8 +35,7 @@ The following variables must be set manually
 
 ### Configure brevo sender in the demo admin brevo config page
 
--   Brevo sender name
--   Brevo sender mail
+-   Brevo sender
 
 ### Start development processes
 
