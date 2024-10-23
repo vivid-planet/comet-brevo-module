@@ -53,14 +53,16 @@ export function createBrevoConfigResolver({
             return brevoConfig;
         }
 
-        // TODO: add validation if the input contains a valid sender
-
         @Mutation(() => BrevoConfig)
         async createBrevoConfig(
             @Args("scope", { type: () => Scope }, new DynamicDtoValidationPipe(Scope))
             scope: typeof Scope,
             @Args("input", { type: () => BrevoConfigInput }) input: BrevoConfigInput,
         ): Promise<BrevoConfigInterface> {
+            if (!(await this.isValidSender({ email: input.senderMail, name: input.senderName }))) {
+                throw new Error("Sender not found");
+            }
+
             const brevoConfig = this.repository.create({
                 ...input,
                 scope,
