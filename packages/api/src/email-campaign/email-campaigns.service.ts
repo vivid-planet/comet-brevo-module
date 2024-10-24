@@ -72,6 +72,7 @@ export class EmailCampaignsService {
                 htmlContent,
                 sender: { name: brevoConfig.senderName, mail: brevoConfig.senderMail },
                 scheduledAt,
+                unsubscriptionPageId: brevoConfig.unsubscriptionPageId,
             });
 
             wrap(campaign).assign({ brevoId });

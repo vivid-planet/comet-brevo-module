@@ -22,6 +22,7 @@ export interface EmailCampaignInterface {
     scope: EmailCampaignScopeInterface;
     sendingState: SendingState;
     targetGroups: Collection<TargetGroupInterface, object>;
+    unsubscriptionPageId?: string;
 }
 
 export function createEmailCampaignEntity({
@@ -75,6 +76,10 @@ export function createEmailCampaignEntity({
         @Property({ columnType: "timestamp with time zone", nullable: true })
         @Field(() => Date, { nullable: true })
         scheduledAt?: Date;
+
+        @Property({ columnType: "text", nullable: true })
+        @Field(() => String, { nullable: true })
+        unsubscriptionPageId: string;
 
         @ManyToMany(() => TargetGroup, (targetGroup) => targetGroup.campaigns, { owner: true })
         @Field(() => [TargetGroup])

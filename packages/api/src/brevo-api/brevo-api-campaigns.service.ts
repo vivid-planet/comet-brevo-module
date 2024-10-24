@@ -59,11 +59,13 @@ export class BrevoApiCampaignsService {
         htmlContent,
         sender,
         scheduledAt,
+        unsubscriptionPageId,
     }: {
         campaign: EmailCampaignInterface;
         htmlContent: string;
         sender: { name: string; mail: string };
         scheduledAt?: Date;
+        unsubscriptionPageId?: string;
     }): Promise<number> {
         try {
             const targetGroups = await campaign.targetGroups.loadItems();
@@ -75,6 +77,7 @@ export class BrevoApiCampaignsService {
                 recipients: { listIds: targetGroups.map((targetGroup) => targetGroup.brevoId) },
                 htmlContent,
                 scheduledAt: scheduledAt?.toISOString(),
+                unsubscriptionPageId,
             };
 
             const data = await this.getCampaignsApi(campaign.scope).createEmailCampaign(emailCampaign);
