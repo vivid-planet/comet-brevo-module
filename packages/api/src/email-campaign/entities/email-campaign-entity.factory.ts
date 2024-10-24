@@ -22,6 +22,7 @@ export interface EmailCampaignInterface {
     scope: EmailCampaignScopeInterface;
     sendingState: SendingState;
     targetGroups: Collection<TargetGroupInterface, object>;
+    unsubscriptionPageId?: string;
 }
 
 export class EmailCampaignEntityFactory {
@@ -65,6 +66,10 @@ export class EmailCampaignEntityFactory {
             @Property({ columnType: "text" })
             @Field()
             subject: string;
+
+            @Property({ columnType: "text", nullable: true })
+            @Field(() => String, { nullable: true })
+            unsubscriptionPageId: string;
 
             @Property({ columnType: "int", nullable: true })
             @Field(() => Int, { nullable: true })
