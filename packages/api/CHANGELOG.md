@@ -1,5 +1,11 @@
 # @comet/brevo-api
 
+## 2.1.4
+
+### Patch Changes
+
+-   cc296b4: Remove peerDependency for axios. Axios is not needed anymore.
+
 ## 2.1.3
 
 ### Patch Changes

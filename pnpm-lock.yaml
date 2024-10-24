@@ -1025,9 +1025,6 @@ importers:
       '@types/uuid':
         specifier: ^8.3.0
         version: 8.3.4
-      axios:
-        specifier: ^0.21.0
-        version: 0.21.4
       chokidar-cli:
         specifier: ^2.0.0
         version: 2.1.0
