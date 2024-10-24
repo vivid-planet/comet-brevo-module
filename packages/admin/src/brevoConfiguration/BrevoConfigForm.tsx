@@ -48,6 +48,7 @@ type FormValues = {
     sender: Option;
     doiTemplate?: Option;
     redirectionUrl: string;
+    unsubscriptionPageId: string;
 };
 
 interface FormProps {
@@ -111,12 +112,14 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
                 : undefined,
 
             redirectionUrl: data?.brevoConfig?.redirectionUrl ?? "",
+            unsubscriptionPageId: data?.brevoConfig?.unsubscriptionPageId ?? "",
         };
     }, [
         data?.brevoConfig?.doiTemplateId,
         data?.brevoConfig?.redirectionUrl,
         data?.brevoConfig?.senderMail,
         data?.brevoConfig?.senderName,
+        data?.brevoConfig?.unsubscriptionPageId,
         doiTemplatesData?.doiTemplates,
         sendersData?.senders,
     ]);
@@ -160,6 +163,7 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
             senderMail: sender?.email,
             doiTemplateId: Number(state.doiTemplate.value),
             redirectionUrl: state?.redirectionUrl ?? "",
+            unsubscriptionPageId: state.unsubscriptionPageId,
         };
 
         if (mode === "edit") {
@@ -237,6 +241,16 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
                                     <FormattedMessage
                                         id="cometBrevoModule.brevoConfig.redirectionUrl"
                                         defaultMessage="Redirection Url (Contact will be redirected to this page after the confirmation in the double opt-in email)"
+                                    />
+                                }
+                            />
+                            <TextField
+                                fullWidth
+                                name="unsubscriptionPageId"
+                                label={
+                                    <FormattedMessage
+                                        id="cometBrevoModule.brevoConfig.unsubscriptionPageId"
+                                        defaultMessage="Unsubscription Page ID"
                                     />
                                 }
                             />
