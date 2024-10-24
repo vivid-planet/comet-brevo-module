@@ -461,6 +461,7 @@ type BrevoConfig implements DocumentInterface {
   senderName: String!
   doiTemplateId: Int
   redirectionUrl: String!
+  unsubscriptionPageId: String
   createdAt: DateTime!
   scope: EmailCampaignContentScope!
 }
@@ -488,6 +489,7 @@ type EmailCampaign implements DocumentInterface {
   createdAt: DateTime!
   title: String!
   subject: String!
+  unsubscriptionPageId: String
   brevoId: Int
   scheduledAt: DateTime
   targetGroups: [TargetGroup!]!
@@ -999,6 +1001,7 @@ input BrevoConfigInput {
   senderName: String!
   doiTemplateId: Int
   redirectionUrl: String!
+  unsubscriptionPageId: String!
 }
 
 input BrevoConfigUpdateInput {
@@ -1006,4 +1009,5 @@ input BrevoConfigUpdateInput {
   senderName: String
   doiTemplateId: Int
   redirectionUrl: String
+  unsubscriptionPageId: String
 }
