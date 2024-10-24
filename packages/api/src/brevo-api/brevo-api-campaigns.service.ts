@@ -57,20 +57,21 @@ export class BrevoApiCampaignsService {
     public async createBrevoCampaign({
         campaign,
         htmlContent,
+        sender,
         scheduledAt,
     }: {
         campaign: EmailCampaignInterface;
         htmlContent: string;
+        sender: { name: string; mail: string };
         scheduledAt?: Date;
     }): Promise<number> {
         try {
             const targetGroups = await campaign.targetGroups.loadItems();
-            const { sender } = this.config.brevo.resolveConfig(campaign.scope);
 
             const emailCampaign = {
                 name: campaign.title,
                 subject: campaign.subject,
-                sender: { name: sender.name, email: sender.email },
+                sender: { name: sender.name, email: sender.mail },
                 recipients: { listIds: targetGroups.map((targetGroup) => targetGroup.brevoId) },
                 htmlContent,
                 scheduledAt: scheduledAt?.toISOString(),
@@ -87,21 +88,22 @@ export class BrevoApiCampaignsService {
         id,
         campaign,
         htmlContent,
+        sender,
         scheduledAt,
     }: {
         id: number;
         campaign: EmailCampaignInterface;
         htmlContent: string;
+        sender: { name: string; mail: string };
         scheduledAt?: Date;
     }): Promise<boolean> {
         try {
             const targetGroups = await campaign.targetGroups.loadItems();
-            const { sender } = this.config.brevo.resolveConfig(campaign.scope);
 
             const emailCampaign = {
                 name: campaign.title,
                 subject: campaign.subject,
-                sender: { name: sender.name, mail: sender.email },
+                sender: { name: sender.name, email: sender.mail },
                 recipients: { listIds: targetGroups.map((targetGroup) => targetGroup.brevoId) },
                 htmlContent,
                 scheduledAt: scheduledAt?.toISOString(),
