@@ -52,6 +52,7 @@ type FormValues = {
     doubleOptInTemplate: Option;
     folderId: number;
     allowedRedirectionUrl: string;
+    unsubscriptionPageId: string;
 };
 
 interface FormProps {
@@ -128,6 +129,7 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
                 : undefined,
             allowedRedirectionUrl: data?.brevoConfig?.allowedRedirectionUrl ?? "",
             folderId: data?.brevoConfig?.folderId ?? 1,
+            unsubscriptionPageId: data?.brevoConfig?.unsubscriptionPageId ?? "",
         };
     }, [
         data?.brevoConfig?.folderId,
@@ -137,6 +139,7 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
         data?.brevoConfig?.senderMail,
         data?.brevoConfig?.senderName,
         doubleOptInTemplatesData?.doubleOptInTemplates,
+        data?.brevoConfig?.unsubscriptionPageId,
         sendersData?.senders,
     ]);
 
@@ -180,6 +183,7 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
             doubleOptInTemplateId: Number(state.doubleOptInTemplate.value),
             folderId: state.folderId ?? 1,
             allowedRedirectionUrl: state?.allowedRedirectionUrl ?? "",
+            unsubscriptionPageId: state.unsubscriptionPageId,
         };
 
         if (mode === "edit") {
@@ -302,6 +306,16 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
                                     </>
                                 }
                                 validate={validateUrl}
+                            />
+                            <TextField
+                                fullWidth
+                                name="unsubscriptionPageId"
+                                label={
+                                    <FormattedMessage
+                                        id="cometBrevoModule.brevoConfig.unsubscriptionPageId"
+                                        defaultMessage="Unsubscription Page ID"
+                                    />
+                                }
                             />
                         </MainContent>
                     </>
