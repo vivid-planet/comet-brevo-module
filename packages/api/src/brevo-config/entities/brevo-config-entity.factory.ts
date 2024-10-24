@@ -14,6 +14,7 @@ export interface BrevoConfigInterface {
     senderMail: string;
     doiTemplateId?: number;
     redirectionUrl: string;
+    unsubscriptionPageId?: string;
     createdAt: Date;
     updatedAt: Date;
     scope: EmailCampaignScopeInterface;
@@ -48,6 +49,10 @@ export class BrevoConfigEntityFactory {
             @Field()
             @IsUrl({ require_tld: process.env.NODE_ENV === "production" })
             redirectionUrl: string;
+
+            @Property({ columnType: "text", nullable: true })
+            @Field(() => String, { nullable: true })
+            unsubscriptionPageId?: string;
 
             @Property({
                 columnType: "timestamp with time zone",
