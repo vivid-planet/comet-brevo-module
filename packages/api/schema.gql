@@ -44,6 +44,14 @@ type User {
   language: String!
 }
 
+type CsvImportInformation {
+  created: Int!
+  updated: Int!
+  failed: Int!
+  failedColumns: [[String!]!]
+  errorMessage: String
+}
+
 type BrevoApiCampaignStatistics {
   """Number of unique clicks for the campaign"""
   uniqueClicks: Int!
@@ -254,6 +262,7 @@ type Mutation {
   deleteEmailCampaign(id: ID!): Boolean!
   sendEmailCampaignNow(id: ID!): Boolean!
   sendEmailCampaignToTestEmails(id: ID!, data: SendTestEmailCampaignArgs!): Boolean!
+  startBrevoContactImport(fileId: ID!, targetGroupIds: [ID!], scope: EmailCampaignContentScopeInput!): CsvImportInformation!
 }
 
 input BrevoContactUpdateInput {
