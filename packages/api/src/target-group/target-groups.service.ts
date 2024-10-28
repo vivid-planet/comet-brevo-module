@@ -30,6 +30,10 @@ export class TargetGroupsService {
             andFilters.push(filtersToMikroOrmQuery(options.filter));
         }
 
+        if (!options.filter?.isTestList) {
+            andFilters.push({ isTestList: { $ne: true } });
+        }
+
         return andFilters.length > 0 ? { $and: andFilters } : {};
     }
 
