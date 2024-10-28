@@ -83,6 +83,12 @@ export function createBrevoConfigResolver({
             @Args("lastUpdatedAt", { type: () => Date, nullable: true }) lastUpdatedAt?: Date,
         ): Promise<BrevoConfigInterface> {
             const brevoConfig = await this.repository.findOneOrFail(id);
+            if (input.senderMail && input.senderName) {
+                if (!(await this.isValidSender({ email: input.senderMail, name: input.senderName }))) {
+                    throw new Error("Sender not found");
+                }
+            }
+
             if (lastUpdatedAt) {
                 validateNotModified(brevoConfig, lastUpdatedAt);
             }
