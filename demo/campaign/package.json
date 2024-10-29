@@ -20,6 +20,7 @@
     },
     "dependencies": {
         "@comet/cms-site": "^7.2.1",
+        "@faire/mjml-react": "^3.3.0",
         "@luma-team/mjml-react": "^0.2.1",
         "@next/bundle-analyzer": "^12.3.4",
         "@opentelemetry/api": "^1.7.0",
@@ -34,7 +35,6 @@
         "graphql-tag": "^2.12.6",
         "mjml": "^4.15.3",
         "mjml-browser": "^4.14.1",
-        "@faire/mjml-react": "^3.3.0",
         "next": "^14.0.0",
         "react": "^18.0.0",
         "react-dom": "^18.0.0",

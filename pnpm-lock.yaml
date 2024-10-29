@@ -983,6 +983,9 @@ importers:
       '@types/jest':
         specifier: ^29.5.0
         version: 29.5.11
+      '@types/lodash.isequal':
+        specifier: ^4.0.0
+        version: 4.5.8
       '@types/mime-db':
         specifier: ^1.43.5
         version: 1.43.5
@@ -995,9 +998,6 @@ importers:
       '@types/uuid':
         specifier: ^8.3.0
         version: 8.3.4
-      axios:
-        specifier: ^0.21.0
-        version: 0.21.4
       chokidar-cli:
         specifier: ^2.0.0
         version: 2.1.0
@@ -1022,6 +1022,9 @@ importers:
       jest-junit:
         specifier: ^15.0.0
         version: 15.0.0
+      lodash.isequal:
+        specifier: ^4.5.0
+        version: 4.5.0
       nestjs-console:
         specifier: ^8.0.0
         version: 8.0.0(@nestjs/common@9.4.3)(@nestjs/core@9.4.3)

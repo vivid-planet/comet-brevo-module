@@ -162,6 +162,14 @@ type PaginatedUserList {
   totalCount: Int!
 }
 
+type CsvImportInformation {
+  created: Int!
+  updated: Int!
+  failed: Int!
+  failedColumns: [[String!]!]
+  errorMessage: String
+}
+
 type BrevoApiCampaignStatistics {
   """Number of unique clicks for the campaign"""
   uniqueClicks: Int!
@@ -280,6 +288,7 @@ type BrevoContactAttributes {
   LASTNAME: String!
   FIRSTNAME: String!
   SALUTATION: BrevoContactSalutation
+  BRANCH: [BrevoContactBranch!]
 }
 
 enum BrevoContactSalutation {
@@ -287,8 +296,15 @@ enum BrevoContactSalutation {
   FEMALE
 }
 
+enum BrevoContactBranch {
+  PRODUCTS
+  MARKETING
+  NEWS
+}
+
 type BrevoContactFilterAttributes {
   SALUTATION: [BrevoContactSalutation!]
+  BRANCH: [BrevoContactBranch!]
 }
 
 type DamFolder {
@@ -469,10 +485,12 @@ input BrevoContactAttributesInput {
   LASTNAME: String!
   FIRSTNAME: String!
   SALUTATION: BrevoContactSalutation
+  BRANCH: [BrevoContactBranch!]
 }
 
 input BrevoContactFilterAttributesInput {
   SALUTATION: [BrevoContactSalutation!]
+  BRANCH: [BrevoContactBranch!]
 }
 
 input EmailCampaignContentScopeInput {
@@ -728,6 +746,7 @@ type Mutation {
   createBrevoContact(scope: EmailCampaignContentScopeInput!, input: BrevoContactInput!): SubscribeResponse!
   deleteBrevoContact(id: Int!, scope: EmailCampaignContentScopeInput!): Boolean!
   subscribeBrevoContact(input: SubscribeInput!, scope: EmailCampaignContentScopeInput!): SubscribeResponse!
+  startBrevoContactImport(fileId: ID!, targetGroupIds: [ID!], scope: EmailCampaignContentScopeInput!): CsvImportInformation!
   createEmailCampaign(scope: EmailCampaignContentScopeInput!, input: EmailCampaignInput!): EmailCampaign!
   updateEmailCampaign(id: ID!, input: EmailCampaignUpdateInput!, lastUpdatedAt: DateTime): EmailCampaign!
   deleteEmailCampaign(id: ID!): Boolean!

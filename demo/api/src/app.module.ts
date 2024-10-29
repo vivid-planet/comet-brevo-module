@@ -6,6 +6,7 @@ import {
     BuildsModule,
     DamModule,
     DependenciesModule,
+    FileUploadsModule,
     KubernetesModule,
     PageTreeModule,
     RedirectsModule,
@@ -130,6 +131,11 @@ export class AppModule {
                 StatusModule,
                 MenusModule,
                 DependenciesModule,
+                FileUploadsModule.register({
+                    acceptedMimeTypes: ["text/csv"],
+                    maxFileSize: config.fileUploads.maxFileSize,
+                    directory: `${config.blob.storageDirectoryPrefix}-file-uploads`,
+                }),
                 BrevoModule.register({
                     brevo: {
                         resolveConfig: (scope: EmailCampaignContentScope) => {

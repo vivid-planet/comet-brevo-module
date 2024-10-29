@@ -1,3 +1,7 @@
 dist/
 block-meta.json
+<<<<<<< HEAD
 uploads
+=======
+uploads/
+>>>>>>> next
