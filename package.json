@@ -51,6 +51,11 @@
                     "@types/react": "^18.0.0"
                 }
             },
+            "@faire/mjml-react@3": {
+                "peerDependencies": {
+                    "@types/react": "^18.0.0"
+                }
+            },
             "styled-components": {
                 "peerDependencies": {
                     "@types/react": "^18.0.0"

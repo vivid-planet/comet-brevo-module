@@ -4,7 +4,7 @@ settings:
   autoInstallPeers: false
   excludeLinksFromLockfile: false
 
-packageExtensionsChecksum: dfe8f93dec5506e342bb73a0be665de6
+packageExtensionsChecksum: 8b8792973f669aa2277355fb90c68ff0
 
 importers:
 
@@ -493,8 +493,8 @@ importers:
         specifier: ^7.5.0
         version: 7.5.0(@types/react@18.3.12)(next@14.2.7)(react-dom@18.3.1)(react@18.3.1)(styled-components@6.1.13)
       '@faire/mjml-react':
-        specifier: ^3.3.0
-        version: 3.3.0(mjml@4.15.3)(react-dom@18.3.1)(react@18.3.1)
+        specifier: ^3.4.0
+        version: 3.4.0(@types/react@18.3.12)(mjml@4.15.3)(react-dom@18.3.1)(react@18.3.1)
       '@luma-team/mjml-react':
         specifier: ^0.2.1
         version: 0.2.1(react-dom@18.3.1)(react@18.3.1)
@@ -4438,13 +4438,15 @@ packages:
     resolution: {integrity: sha512-gMsVel9D7f2HLkBma9VbtzZRehRogVRfbr++f06nL2vnCGCNlzOD+/MUov/F4p8myyAHspEhVobgjpX64q5m6A==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
 
-  /@faire/mjml-react@3.3.0(mjml@4.15.3)(react-dom@18.3.1)(react@18.3.1):
-    resolution: {integrity: sha512-Z+PFAMEWrxn/93El9+APabz42GxC21V7Hh6phMa3pBC9Dn21TsukGXi0Gd7Rzs31Rg0o9Nzojq3UE86QZvcBFQ==}
+  /@faire/mjml-react@3.4.0(@types/react@18.3.12)(mjml@4.15.3)(react-dom@18.3.1)(react@18.3.1):
+    resolution: {integrity: sha512-0rfn/ZmF5ve0MV7jq3SjIKlxRhRIVxatzZGURPWKfZTMK4ShStlrzbUSF6mUCF9yAcsTxJdAZlvMz+IkpGWp3Q==}
     peerDependencies:
+      '@types/react': ^18.0.0
       mjml: ^4.13.0
       react: ^16.0.0 || ^17.0.0 || ^18.0.0
       react-dom: ^16.0.0 || ^17.0.0 || ^18.0.0
     dependencies:
+      '@types/react': 18.3.12
       lodash.kebabcase: 4.1.1
       mjml: 4.15.3
       react: 18.3.1
