@@ -151,6 +151,18 @@ type FilenameResponse {
   isOccupied: Boolean!
 }
 
+type FileUpload {
+  id: ID!
+  name: String!
+  size: Int!
+  mimetype: String!
+  contentHash: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  downloadUrl: String
+  imageUrl(resizeWidth: Int!): String
+}
+
 type User {
   id: String!
   name: String!
@@ -533,6 +545,7 @@ type Query {
   damFolder(id: ID!): DamFolder!
   damFolderByNameAndParentId(scope: DamScopeInput! = {}, name: String!, parentId: ID): DamFolder
   mainMenu(scope: PageTreeNodeScopeInput!): [PageTreeNode!]!
+  dontUseFileUploadDummy: FileUpload
   brevoContact(id: Int!, scope: EmailCampaignContentScopeInput!): BrevoContact!
   brevoContacts(targetGroupId: ID, email: String, scope: EmailCampaignContentScopeInput!, offset: Int! = 0, limit: Int! = 25): PaginatedBrevoContacts!
   manuallyAssignedBrevoContacts(offset: Int! = 0, limit: Int! = 25, targetGroupId: ID!, email: String): PaginatedBrevoContacts!

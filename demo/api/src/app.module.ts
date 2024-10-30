@@ -23,6 +23,7 @@ import { Page } from "@src/documents/pages/entities/page.entity";
 import { PagesModule } from "@src/documents/pages/pages.module";
 import { PageTreeNodeScope } from "@src/page-tree/dto/page-tree-node-scope";
 import { PageTreeNode } from "@src/page-tree/entities/page-tree-node.entity";
+import { FileUploadDummyModule } from "@src/workaround-remove-in-future/file-upload/file-upload-dummy.module";
 import { ValidationError } from "apollo-server-express";
 import { Request } from "express";
 
@@ -179,6 +180,7 @@ export class AppModule {
                 }),
                 BrevoContactSubscribeModule,
                 BrevoTransactionalMailsModule,
+                FileUploadDummyModule,
             ],
         };
     }
