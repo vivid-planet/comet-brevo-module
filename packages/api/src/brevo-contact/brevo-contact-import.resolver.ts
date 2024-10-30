@@ -1,5 +1,5 @@
 import { BlobStorageBackendService, FileUpload, RequiredPermission } from "@comet/cms-api";
-import { createHashedPath } from "@comet/cms-api/lib/dam/files/files.utils";
+import { createHashedPath } from "@comet/cms-api/lib/blob-storage/utils/create-hashed-path.util";
 import { FileUploadsConfig } from "@comet/cms-api/lib/file-uploads/file-uploads.config";
 import { FILE_UPLOADS_CONFIG } from "@comet/cms-api/lib/file-uploads/file-uploads.constants";
 import { EntityManager, EntityRepository } from "@mikro-orm/core";
