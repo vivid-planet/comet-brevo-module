@@ -65,6 +65,8 @@ export function App() {
                             return {
                                 ...siteConfig,
                                 previewUrl: `${siteConfig.blockPreviewBaseUrl}/${scope.language}`,
+                                blockPreviewBaseUrl: `${siteConfig.url}/block-preview`,
+                                sitePreviewApiUrl: `${siteConfig.url}/api/site-preview`,
                             };
                         },
                     }}
