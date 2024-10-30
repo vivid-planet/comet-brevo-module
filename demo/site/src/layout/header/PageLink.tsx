@@ -21,7 +21,7 @@ const pageLinkFragment = gql`
 
 interface Props {
     page: GQLPageLinkFragment;
-    children: ((active: boolean) => React.ReactNode) | React.ReactNode;
+    children: ((active: boolean) => React.ReactElement) | React.ReactElement;
 }
 
 function PageLink({ page, children }: Props): JSX.Element | null {
