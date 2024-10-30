@@ -82,7 +82,7 @@ export function App() {
                                                 value={{
                                                     apiUrl: config.apiUrl,
                                                     resolvePreviewUrlForScope: (scope: ContentScope) => {
-                                                        return `${config.campaignUrl}/preview/${scope.domain}/${scope.language}`;
+                                                        return `${config.campaignUrl}/block-preview/${scope.domain}/${scope.language}`;
                                                     },
                                                 }}
                                             >
