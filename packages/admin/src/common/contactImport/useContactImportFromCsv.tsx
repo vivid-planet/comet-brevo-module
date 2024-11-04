@@ -67,7 +67,7 @@ const ContactImportComponent = ({ scope, targetGroupId, fileInputRef, refetchQue
         const formData = new FormData();
         formData.append("file", file);
 
-        const response = await fetch(`${config.apiUrl}/public-upload/files/upload`, {
+        const response = await fetch(`${config.apiUrl}/file-uploads/upload`, {
             method: "POST",
             body: formData,
         });
