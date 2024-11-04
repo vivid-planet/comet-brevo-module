@@ -2,6 +2,7 @@ import * as csv from "@fast-csv/parse";
 import { EntityRepository } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Inject, Injectable } from "@nestjs/common";
+import { Field, Int, ObjectType } from "@nestjs/graphql";
 import { IsEmail, IsNotEmpty, validateSync } from "class-validator";
 import isEqual from "lodash.isequal";
 import { TargetGroupInterface } from "src/target-group/entity/target-group-entity.factory";
@@ -22,11 +23,21 @@ class BasicValidateableRow {
     [key: string]: string | string[];
 }
 
-export interface CsvImportInformation {
+@ObjectType()
+export class CsvImportInformation {
+    @Field(() => Int)
     created: number;
+
+    @Field(() => Int)
     updated: number;
+
+    @Field(() => Int)
     failed: number;
-    failedColumns: unknown[];
+
+    @Field(() => [[String]], { nullable: true })
+    failedColumns: string[][];
+
+    @Field({ nullable: true })
     errorMessage?: string;
 }
 
@@ -55,7 +66,7 @@ export class BrevoContactImportService {
         targetGroupIds = [],
         isAdminImport = false,
     }: ImportContactsFromCsvParams): Promise<CsvImportInformation> {
-        const failedColumns: unknown[] = [];
+        const failedColumns: string[][] = [];
         const targetGroups = await this.targetGroupRepository.find({ id: { $in: targetGroupIds } });
 
         for (const targetGroup of targetGroups) {

@@ -1,4 +1,8 @@
-import { DynamicModule, Global, Module } from "@nestjs/common";
+import { PublicUploadsService } from "@comet/cms-api";
+import { PublicUploadConfig } from "@comet/cms-api/lib/public-upload/public-upload.config";
+import { PUBLIC_UPLOAD_CONFIG } from "@comet/cms-api/lib/public-upload/public-upload.constants";
+import { DynamicModule, Global, Module, Optional } from "@nestjs/common";
+import { ModuleRef } from "@nestjs/core";
 
 import { BrevoApiModule } from "./brevo-api/brevo-api.module";
 import { BrevoConfigModule } from "./brevo-config/brevo-config.module";
@@ -13,6 +17,18 @@ import { TargetGroupModule } from "./target-group/target-group.module";
 @Global()
 @Module({})
 export class BrevoModule {
+    constructor(private readonly moduleRef: ModuleRef, @Optional() private readonly myGlobalService: PublicUploadsService) {
+        let publicUploadsConfig: PublicUploadConfig | undefined;
+        try {
+            publicUploadsConfig = this.moduleRef.get(PUBLIC_UPLOAD_CONFIG, { strict: false });
+        } catch (error) {
+            throw new Error("PublicUploadModule is an required import for BrevoModule");
+        }
+
+        if (publicUploadsConfig && !publicUploadsConfig.acceptedMimeTypes.includes("text/csv")) {
+            throw new Error("BrevoModule requires mime type 'text/csv' in PublicUploadModule's config");
+        }
+    }
     static register(config: BrevoModuleConfig): DynamicModule {
         const TargetGroup = TargetGroupEntityFactory.create({
             Scope: config.emailCampaigns.Scope,
