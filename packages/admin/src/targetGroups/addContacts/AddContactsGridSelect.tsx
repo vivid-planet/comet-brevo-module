@@ -1,9 +1,10 @@
 import { useMutation, useQuery } from "@apollo/client";
 import {
     CancelButton,
+    DataGridToolbar,
     Field,
     FinalForm,
-    Toolbar,
+    GridColDef,
     ToolbarActions,
     ToolbarFillSpace,
     ToolbarItem,
@@ -16,7 +17,7 @@ import { Add, Close, Remove, Save } from "@comet/admin-icons";
 import { ContentScopeInterface } from "@comet/cms-admin";
 import { Button, Dialog, DialogActions, DialogTitle, IconButton, useTheme } from "@mui/material";
 import { Box } from "@mui/system";
-import { DataGrid, GridColDef, GridToolbarQuickFilter } from "@mui/x-data-grid";
+import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import * as React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { MemoryRouter } from "react-router";
@@ -63,7 +64,7 @@ const AssignedContactsGridToolbar = ({
 
     return (
         <>
-            <Toolbar>
+            <DataGridToolbar>
                 <ToolbarTitleItem>
                     <FormattedMessage id="cometBrevoModule.targetGroup.manuallyAssignedContacts.title" defaultMessage="Manually assigned contacts" />
                 </ToolbarTitleItem>
@@ -82,7 +83,7 @@ const AssignedContactsGridToolbar = ({
                         <FormattedMessage id="cometBrevoModule.targetGroup.assignedContacts.addContact" defaultMessage="Add contacts" />
                     </Button>
                 </ToolbarActions>
-            </Toolbar>
+            </DataGridToolbar>
             {component}
         </>
     );
@@ -92,7 +93,7 @@ const AssignableContactsGridToolbar = () => {
     const intl = useIntl();
 
     return (
-        <Toolbar>
+        <DataGridToolbar>
             <ToolbarTitleItem>
                 <FormattedMessage id="cometBrevoModule.targetGroup.assignableContacts.title" defaultMessage="Assignable contacts" />
             </ToolbarTitleItem>
@@ -104,7 +105,7 @@ const AssignableContactsGridToolbar = () => {
                     })}
                 />
             </ToolbarItem>
-        </Toolbar>
+        </DataGridToolbar>
     );
 };
 

@@ -37,11 +37,7 @@ export function Page(props: PropsWithLayout<GQLPageQuery>): JSX.Element {
                     canonicalUrl={`${process.env.NEXT_PUBLIC_CAMPAIGN_URL}${props.pageContent?.path}`}
                 />
             )}
-            {document && document.__typename === "Page" ? (
-                <>
-                    <div>{document.content && <PageContentBlock data={document.content} />}</div>
-                </>
-            ) : null}
+            {document && document.__typename === "Page" ? <div>{document.content && <PageContentBlock data={document.content} />}</div> : null}
         </Layout>
     );
 }

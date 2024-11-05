@@ -1,4 +1,4 @@
-import { PublicUpload } from "@comet/cms-api";
+import { FileUpload } from "@comet/cms-api";
 import { MikroOrmModule } from "@mikro-orm/nestjs";
 import { DynamicModule, Module, Type } from "@nestjs/common";
 
@@ -43,7 +43,7 @@ export class BrevoContactModule {
 
         return {
             module: BrevoContactModule,
-            imports: [BrevoApiModule, ConfigModule, MikroOrmModule.forFeature([TargetGroup, PublicUpload])],
+            imports: [BrevoApiModule, ConfigModule, MikroOrmModule.forFeature([TargetGroup, FileUpload])],
             providers: [
                 BrevoContactImportService,
                 BrevoContactsService,
