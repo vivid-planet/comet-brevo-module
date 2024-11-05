@@ -1,7 +1,7 @@
-import { BlobStorageBackendService, PublicUpload, RequiredPermission } from "@comet/cms-api";
-import { createHashedPath } from "@comet/cms-api/lib/dam/files/files.utils";
-import { PublicUploadConfig } from "@comet/cms-api/lib/public-upload/public-upload.config";
-import { PUBLIC_UPLOAD_CONFIG } from "@comet/cms-api/lib/public-upload/public-upload.constants";
+import { BlobStorageBackendService, FileUpload, RequiredPermission } from "@comet/cms-api";
+import { createHashedPath } from "@comet/cms-api/lib/blob-storage/utils/create-hashed-path.util";
+import { FileUploadsConfig } from "@comet/cms-api/lib/file-uploads/file-uploads.config";
+import { FILE_UPLOADS_CONFIG } from "@comet/cms-api/lib/file-uploads/file-uploads.constants";
 import { EntityManager, EntityRepository } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Inject, Type } from "@nestjs/common";
@@ -29,17 +29,17 @@ export function createBrevoContactImportResolver({
     @Resolver(() => BrevoContact)
     @RequiredPermission(["brevo-newsletter"], { skipScopeCheck: true })
     class BrevoContactImportResolver {
-        private publicUploadsConfig: PublicUploadConfig;
+        private fileUploadsConfig: FileUploadsConfig;
 
         constructor(
             @Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig,
             @Inject(BrevoContactImportService) private readonly brevoContactImportService: BrevoContactImportService,
-            @InjectRepository(PublicUpload) private readonly publicUploadRepository: EntityRepository<PublicUpload>,
+            @InjectRepository(FileUpload) private readonly fileUploadRepository: EntityRepository<FileUpload>,
             private readonly storageService: BlobStorageBackendService,
             private readonly moduleRef: ModuleRef,
             private readonly entityManager: EntityManager,
         ) {
-            this.publicUploadsConfig = this.moduleRef.get(PUBLIC_UPLOAD_CONFIG, { strict: false });
+            this.fileUploadsConfig = this.moduleRef.get(FILE_UPLOADS_CONFIG, { strict: false });
         }
 
         @Mutation(() => CsvImportInformation)
@@ -48,13 +48,13 @@ export function createBrevoContactImportResolver({
             let objectName = null;
 
             try {
-                const publicUpload = await this.publicUploadRepository.findOne(fileId);
+                const fileUpload = await this.fileUploadRepository.findOne(fileId);
 
-                if (publicUpload) {
-                    objectName = createHashedPath(publicUpload.contentHash);
+                if (fileUpload) {
+                    objectName = createHashedPath(fileUpload.contentHash);
 
-                    if (await this.storageService.fileExists(this.publicUploadsConfig.directory, objectName)) {
-                        storageFile = await this.storageService.getFile(this.publicUploadsConfig.directory, objectName);
+                    if (await this.storageService.fileExists(this.fileUploadsConfig.directory, objectName)) {
+                        storageFile = await this.storageService.getFile(this.fileUploadsConfig.directory, objectName);
                     }
                 }
 
@@ -71,9 +71,9 @@ export function createBrevoContactImportResolver({
                     targetGroupIds,
                 });
 
-                if (await this.storageService.fileExists(this.publicUploadsConfig.directory, objectName)) {
-                    await this.storageService.removeFile(this.publicUploadsConfig.directory, objectName);
-                    await this.publicUploadRepository.nativeDelete({ id: fileId });
+                if (await this.storageService.fileExists(this.fileUploadsConfig.directory, objectName)) {
+                    await this.storageService.removeFile(this.fileUploadsConfig.directory, objectName);
+                    await this.fileUploadRepository.nativeDelete({ id: fileId });
                 }
 
                 await this.entityManager.flush();
@@ -81,9 +81,9 @@ export function createBrevoContactImportResolver({
                 return result;
             } catch (error) {
                 // in case of error always delete the uploaded file
-                if (objectName && (await this.storageService.fileExists(this.publicUploadsConfig.directory, objectName))) {
-                    await this.storageService.removeFile(this.publicUploadsConfig.directory, objectName);
-                    await this.publicUploadRepository.nativeDelete({ id: fileId });
+                if (objectName && (await this.storageService.fileExists(this.fileUploadsConfig.directory, objectName))) {
+                    await this.storageService.removeFile(this.fileUploadsConfig.directory, objectName);
+                    await this.fileUploadRepository.nativeDelete({ id: fileId });
                 }
 
                 await this.entityManager.flush();

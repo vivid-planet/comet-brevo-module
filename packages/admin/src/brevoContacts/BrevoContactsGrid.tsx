@@ -1,11 +1,12 @@
 import { DocumentNode, gql, useApolloClient, useQuery } from "@apollo/client";
 import {
+    DataGridToolbar,
+    GridColDef,
     MainContent,
     messages,
     RowActionsItem,
     RowActionsMenu,
     StackLink,
-    Toolbar,
     ToolbarActions,
     ToolbarFillSpace,
     ToolbarItem,
@@ -17,7 +18,7 @@ import {
 import { Add, Block, Check, Delete, Edit } from "@comet/admin-icons";
 import { ContentScopeInterface } from "@comet/cms-admin";
 import { Button, IconButton } from "@mui/material";
-import { DataGrid, GridColDef, GridToolbarQuickFilter } from "@mui/x-data-grid";
+import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import * as React from "react";
 import { FormattedMessage, IntlShape, useIntl } from "react-intl";
 
@@ -68,7 +69,7 @@ function BrevoContactsGridToolbar({ intl, scope }: { intl: IntlShape; scope: GQL
 
     return (
         <>
-            <Toolbar>
+            <DataGridToolbar>
                 <ToolbarTitleItem>
                     <FormattedMessage id="cometBrevoModule.brevoContact.title" defaultMessage="Contacts" />
                 </ToolbarTitleItem>
@@ -84,7 +85,7 @@ function BrevoContactsGridToolbar({ intl, scope }: { intl: IntlShape; scope: GQL
                         <FormattedMessage id="cometBrevoModule.brevoContact.newContact" defaultMessage="New contact" />
                     </Button>
                 </ToolbarActions>
-            </Toolbar>
+            </DataGridToolbar>
             {contactImportComponent}
         </>
     );

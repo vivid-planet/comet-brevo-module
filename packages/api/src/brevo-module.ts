@@ -1,6 +1,6 @@
-import { PublicUploadsService } from "@comet/cms-api";
-import { PublicUploadConfig } from "@comet/cms-api/lib/public-upload/public-upload.config";
-import { PUBLIC_UPLOAD_CONFIG } from "@comet/cms-api/lib/public-upload/public-upload.constants";
+import { FileUploadsService } from "@comet/cms-api";
+import { FileUploadsConfig } from "@comet/cms-api/lib/file-uploads/file-uploads.config";
+import { FILE_UPLOADS_CONFIG } from "@comet/cms-api/lib/file-uploads/file-uploads.constants";
 import { DynamicModule, Global, Module, Optional } from "@nestjs/common";
 import { ModuleRef } from "@nestjs/core";
 
@@ -17,16 +17,16 @@ import { TargetGroupModule } from "./target-group/target-group.module";
 @Global()
 @Module({})
 export class BrevoModule {
-    constructor(private readonly moduleRef: ModuleRef, @Optional() private readonly myGlobalService: PublicUploadsService) {
-        let publicUploadsConfig: PublicUploadConfig | undefined;
+    constructor(private readonly moduleRef: ModuleRef, @Optional() private readonly myGlobalService: FileUploadsService) {
+        let fileUploadsConfig: FileUploadsConfig | undefined;
         try {
-            publicUploadsConfig = this.moduleRef.get(PUBLIC_UPLOAD_CONFIG, { strict: false });
+            fileUploadsConfig = this.moduleRef.get(FILE_UPLOADS_CONFIG, { strict: false });
         } catch (error) {
-            throw new Error("PublicUploadModule is an required import for BrevoModule");
+            throw new Error("FileUploadsModule is an required import for BrevoModule");
         }
 
-        if (publicUploadsConfig && !publicUploadsConfig.acceptedMimeTypes.includes("text/csv")) {
-            throw new Error("BrevoModule requires mime type 'text/csv' in PublicUploadModule's config");
+        if (fileUploadsConfig && !fileUploadsConfig.acceptedMimeTypes.includes("text/csv")) {
+            throw new Error("BrevoModule requires mime type 'text/csv' in FileUploadsModule's config");
         }
     }
     static register(config: BrevoModuleConfig): DynamicModule {

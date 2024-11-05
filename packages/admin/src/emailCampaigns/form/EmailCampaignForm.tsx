@@ -24,8 +24,8 @@ import {
 } from "@comet/blocks-admin";
 import {
     BlockPreviewWithTabs,
+    ContentScopeIndicator,
     ContentScopeInterface,
-    EditPageLayout,
     queryUpdatedAt,
     resolveHasSaveConflict,
     useBlockPreview,
@@ -63,7 +63,7 @@ interface FormProps {
     scope: ContentScopeInterface;
 }
 
-export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope }: FormProps): React.ReactElement {
+export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope }: FormProps) {
     const rootBlocks = {
         content: EmailCampaignContentBlock,
     };
@@ -198,7 +198,7 @@ export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope }: Form
     }
 
     if (!state) {
-        return <></>;
+        return null;
     }
 
     if (error) throw error;
@@ -223,9 +223,9 @@ export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope }: Form
     const isSchedulingDisabled = state.sendingState === "SENT" || mode === "add" || state.targetGroups.length === 0 || isScheduledDateInPast;
 
     return (
-        <EditPageLayout>
+        <>
             {saveConflict.dialogs}
-            <Toolbar>
+            <Toolbar scopeIndicator={<ContentScopeIndicator scope={scope} />}>
                 <ToolbarItem>
                     <IconButton onClick={stackApi?.goBack}>
                         <ArrowLeft />
@@ -309,6 +309,6 @@ export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope }: Form
                     ]}
                 </BlockPreviewWithTabs>
             </MainContent>
-        </EditPageLayout>
+        </>
     );
 }

@@ -14,7 +14,7 @@ import {
     useFormApiRef,
     useStackSwitchApi,
 } from "@comet/admin";
-import { ContentScopeInterface, EditPageLayout, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
+import { ContentScopeIndicator, ContentScopeInterface, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
 import { FormApi } from "final-form";
 import React from "react";
 import { FormattedMessage } from "react-intl";
@@ -153,9 +153,9 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
         <FinalForm<FormValues> apiRef={formApiRef} onSubmit={handleSubmit} mode={mode} initialValues={initialValues}>
             {({ values }) => {
                 return (
-                    <EditPageLayout>
+                    <>
                         {saveConflict.dialogs}
-                        <Toolbar>
+                        <Toolbar scopeIndicator={<ContentScopeIndicator />}>
                             <ToolbarTitleItem>
                                 <FormattedMessage id="cometBrevoModule.brevoConfig.title" defaultMessage="Brevo config" />
                             </ToolbarTitleItem>
@@ -175,7 +175,7 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
                                 fullWidth
                             />
                         </MainContent>
-                    </EditPageLayout>
+                    </>
                 );
             }}
         </FinalForm>

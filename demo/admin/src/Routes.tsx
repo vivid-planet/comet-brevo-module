@@ -1,5 +1,4 @@
 import { MasterLayout, RouteWithErrorBoundary } from "@comet/admin";
-import { Domain } from "@comet/admin-icons";
 import { createBrevoConfigPage, createBrevoContactsPage, createEmailCampaignsPage, createTargetGroupsPage } from "@comet/brevo-admin";
 import { ContentScopeIndicator, createRedirectsPage, DamPage, PagesPage, PublisherPage, SitePreview } from "@comet/cms-admin";
 import { getBrevoContactConfig } from "@src/common/brevoModuleConfig/brevoContactsPageAttributesConfig";
@@ -10,8 +9,7 @@ import { RouteComponentProps } from "react-router";
 import { Redirect, Route, Switch } from "react-router-dom";
 
 import { additionalFormConfig } from "./common/brevoModuleConfig/targetGroupFormConfig";
-import { ContentScopeIndicatorContent, ContentScopeIndicatorDomain, ContentScopeIndicatorLanguage } from "./common/ContentScopeIndicatorStyles";
-import { ContentScopeProvider } from "./common/ContentScopeProvider";
+import { ContentScope, ContentScopeProvider } from "./common/ContentScopeProvider";
 import { MasterHeader } from "./common/MasterHeader";
 import { MasterMenu } from "./common/MasterMenu";
 import { DashboardPage } from "./dashboard/DashboardPage";
@@ -78,20 +76,7 @@ export const Routes: React.FC = () => {
                                                     allCategories={pageTreeCategories}
                                                     path={`/pages/pagetree/${params.category}`}
                                                     documentTypes={{ Page, Link }}
-                                                    renderContentScopeIndicator={(scope) => (
-                                                        <ContentScopeIndicator variant="toolbar">
-                                                            <ContentScopeIndicatorContent>
-                                                                <Domain fontSize="small" />
-                                                                <ContentScopeIndicatorDomain variant="body2" textTransform="uppercase">
-                                                                    {scope.domain}
-                                                                </ContentScopeIndicatorDomain>
-                                                                {" | "}
-                                                                <ContentScopeIndicatorLanguage variant="body2" textTransform="uppercase">
-                                                                    {scope.language}
-                                                                </ContentScopeIndicatorLanguage>
-                                                            </ContentScopeIndicatorContent>
-                                                        </ContentScopeIndicator>
-                                                    )}
+                                                    renderContentScopeIndicator={(scope: ContentScope) => <ContentScopeIndicator scope={scope} />}
                                                 />
                                             );
                                         }}

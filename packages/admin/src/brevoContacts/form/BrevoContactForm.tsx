@@ -2,7 +2,7 @@ import { DocumentNode, gql, useApolloClient, useQuery } from "@apollo/client";
 import {
     Alert,
     FinalForm,
-    FinalFormSaveSplitButton,
+    FinalFormSaveButton,
     FinalFormSubmitEvent,
     FormSection,
     Loading,
@@ -17,7 +17,7 @@ import {
     useStackApi,
 } from "@comet/admin";
 import { ArrowLeft } from "@comet/admin-icons";
-import { ContentScopeInterface, EditPageLayout, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
+import { ContentScopeIndicator, ContentScopeInterface, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
 import { Card, IconButton } from "@mui/material";
 import { Box } from "@mui/system";
 import { FormApi } from "final-form";
@@ -161,9 +161,9 @@ export function BrevoContactForm({ id, scope, input2State, additionalFormFields,
     return (
         <FinalForm<EditBrevoContactFormValues> apiRef={formApiRef} onSubmit={handleSubmit} mode={mode} initialValues={initialValues}>
             {({ values }) => (
-                <EditPageLayout>
+                <>
                     {saveConflict.dialogs}
-                    <Toolbar>
+                    <Toolbar scopeIndicator={<ContentScopeIndicator scope={scope} />}>
                         <ToolbarItem>
                             <IconButton onClick={stackApi?.goBack}>
                                 <ArrowLeft />
@@ -174,7 +174,7 @@ export function BrevoContactForm({ id, scope, input2State, additionalFormFields,
                         </ToolbarTitleItem>
                         <ToolbarFillSpace />
                         <ToolbarActions>
-                            <FinalFormSaveSplitButton hasConflict={saveConflict.hasConflict} />
+                            <FinalFormSaveButton hasConflict={saveConflict.hasConflict} />
                         </ToolbarActions>
                     </Toolbar>
                     <MainContent>
@@ -221,7 +221,7 @@ export function BrevoContactForm({ id, scope, input2State, additionalFormFields,
                             </Card>
                         )}
                     </MainContent>
-                </EditPageLayout>
+                </>
             )}
         </FinalForm>
     );

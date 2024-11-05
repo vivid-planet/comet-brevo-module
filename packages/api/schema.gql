@@ -41,7 +41,6 @@ type User {
   id: String!
   name: String!
   email: String!
-  language: String!
 }
 
 type BrevoApiSender {
@@ -209,14 +208,14 @@ type Query {
 }
 
 input TargetGroupFilter {
-  createdAt: DateFilter
-  updatedAt: DateFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
   title: StringFilter
   and: [TargetGroupFilter!]
   or: [TargetGroupFilter!]
 }
 
-input DateFilter {
+input DateTimeFilter {
   equal: DateTime
   lowerThan: DateTime
   greaterThan: DateTime
@@ -250,11 +249,11 @@ enum SortDirection {
 }
 
 input EmailCampaignFilter {
-  createdAt: DateFilter
-  updatedAt: DateFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
   title: StringFilter
   subject: StringFilter
-  scheduledAt: DateFilter
+  scheduledAt: DateTimeFilter
   and: [EmailCampaignFilter!]
   or: [EmailCampaignFilter!]
 }
