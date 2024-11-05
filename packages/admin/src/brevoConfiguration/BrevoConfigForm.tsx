@@ -201,7 +201,7 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
 
     const validateUnsubscriptionPageId = (value: string) => {
         const validUnsubscriptionPageId = /^[a-zA-Z0-9]{24}$/;
-        if (value && !validUnsubscriptionPageId.test(value)) {
+        if (!validUnsubscriptionPageId.test(value)) {
             return (
                 <FormattedMessage
                     id="cometBrevoModule.brevoConfig.unsubscriptionPageId.validation"
@@ -260,6 +260,7 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
                             <TextField
                                 fullWidth
                                 name="unsubscriptionPageId"
+                                required
                                 label={
                                     <FormattedMessage
                                         id="cometBrevoModule.brevoConfig.unsubscriptionPageId"
