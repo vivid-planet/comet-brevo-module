@@ -173,7 +173,7 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
 
         const sender = sendersData?.senders?.find((s) => s.email === state.sender.value);
 
-        if (!sender || !state.doubleOptInTemplate || !state.allowedRedirectionUrl) {
+        if (!sender || !state.doubleOptInTemplate || !state.allowedRedirectionUrl || !state.unsubscriptionPageId) {
             throw new Error("Not all required fields are set");
         }
 
@@ -221,7 +221,7 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
 
     const validateUnsubscriptionPageId = (value: string) => {
         const validUnsubscriptionPageId = /^[a-zA-Z0-9]{24}$/;
-        if (value && !validUnsubscriptionPageId.test(value)) {
+        if (!validUnsubscriptionPageId.test(value)) {
             return (
                 <FormattedMessage
                     id="cometBrevoModule.brevoConfig.unsubscriptionPageId.validation"
@@ -323,6 +323,7 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
                             <TextField
                                 fullWidth
                                 name="unsubscriptionPageId"
+                                required
                                 label={
                                     <FormattedMessage
                                         id="cometBrevoModule.brevoConfig.unsubscriptionPageId"

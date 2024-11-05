@@ -1,4 +1,4 @@
-import { IsUndefinable, PartialType } from "@comet/cms-api";
+import { PartialType } from "@comet/cms-api";
 import { Field, InputType, Int } from "@nestjs/graphql";
 import { IsEmail, IsInt, IsNotEmpty, IsString, IsUrl } from "class-validator";
 
@@ -28,10 +28,9 @@ export class BrevoConfigInput {
     @IsUrl({ require_tld: process.env.NODE_ENV === "production" })
     allowedRedirectionUrl: string;
 
-    @IsUndefinable()
     @IsString()
     @Field()
-    unsubscriptionPageId?: string;
+    unsubscriptionPageId: string;
 }
 
 @InputType()

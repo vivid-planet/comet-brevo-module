@@ -421,6 +421,7 @@ type EmailCampaign implements DocumentInterface {
   subject: String!
   brevoId: Int
   scheduledAt: DateTime
+  unsubscriptionPageId: String
   targetGroups: [TargetGroup!]!
   content: EmailCampaignContentBlockData!
   scope: EmailCampaignContentScope!
@@ -508,7 +509,7 @@ type BrevoConfig implements DocumentInterface {
   doubleOptInTemplateId: Int!
   folderId: Int!
   allowedRedirectionUrl: String!
-  unsubscriptionPageId: String
+  unsubscriptionPageId: String!
   createdAt: DateTime!
   scope: EmailCampaignContentScope!
 }
