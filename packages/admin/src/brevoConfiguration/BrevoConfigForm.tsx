@@ -219,6 +219,19 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
         return <Loading behavior="fillPageHeight" />;
     }
 
+    const validateUnsubscriptionPageId = (value: string) => {
+        const validUnsubscriptionPageId = /^[a-zA-Z0-9]{24}$/;
+        if (value && !validUnsubscriptionPageId.test(value)) {
+            return (
+                <FormattedMessage
+                    id="cometBrevoModule.brevoConfig.unsubscriptionPageId.validation"
+                    defaultMessage="Must be a 24-digit alphanumeric ID"
+                />
+            );
+        }
+        return undefined;
+    };
+
     return (
         <FinalForm<FormValues> apiRef={formApiRef} onSubmit={handleSubmit} mode={mode} initialValues={initialValues}>
             {({ values }) => {
@@ -316,6 +329,7 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
                                         defaultMessage="Unsubscription Page ID"
                                     />
                                 }
+                                validate={validateUnsubscriptionPageId}
                             />
                         </MainContent>
                     </>
