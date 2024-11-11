@@ -29,7 +29,6 @@
         "@getbrevo/brevo": "^2.2.0",
         "@nestjs/axios": "^1.0.0",
         "@nestjs/cache-manager": "^2.2.2",
-        "@types/multer": "^1.4.11",
         "cache-manager": "^5.7.3",
         "commander": "^7.2.0",
         "node-fetch": "^2.6.1"
@@ -53,6 +52,7 @@
         "@types/jest": "^29.5.0",
         "@types/lodash.isequal": "^4.0.0",
         "@types/mime-db": "^1.43.5",
+        "@types/multer": "^1.4.11",
         "@types/node-fetch": "^2.5.12",
         "@types/rimraf": "^3.0.0",
         "@types/uuid": "^8.3.0",
@@ -85,6 +85,7 @@
         "@mikro-orm/nestjs": "^5.0.0",
         "@mikro-orm/postgresql": "^5.0.4",
         "@nestjs/common": "^9.0.0",
+        "@nestjs/core": "^9.0.0",
         "@nestjs/platform-express": "^9.0.0",
         "reflect-metadata": "^0.1.13",
         "rxjs": "^7.0.0"
