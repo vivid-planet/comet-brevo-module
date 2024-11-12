@@ -1,5 +1,11 @@
 # @comet/brevo-api
 
+## 2.1.5
+
+### Patch Changes
+
+-   54b8858: Add `@nestjs/core` as a peer dependency. It should have been included as a peer dependency from the beginning.
+
 ## 2.1.4
 
 ### Patch Changes
