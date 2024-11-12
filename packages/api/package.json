@@ -28,6 +28,7 @@
         "@fast-csv/parse": "^5.0.0",
         "@getbrevo/brevo": "^2.2.0",
         "@nestjs/axios": "^1.0.0",
+        "axios": "^1.0.0",
         "@nestjs/cache-manager": "^2.2.2",
         "cache-manager": "^5.7.3",
         "commander": "^7.2.0",
@@ -86,9 +87,7 @@
         "@mikro-orm/postgresql": "^5.0.4",
         "@nestjs/common": "^9.0.0",
         "@nestjs/core": "^9.0.0",
-        "@nestjs/platform-express": "^9.0.0",
-        "reflect-metadata": "^0.1.13",
-        "rxjs": "^7.0.0"
+        "@nestjs/platform-express": "^9.0.0"
     },
     "publishConfig": {
         "access": "public",

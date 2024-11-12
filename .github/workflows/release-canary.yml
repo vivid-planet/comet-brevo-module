@@ -3,8 +3,7 @@ name: Release Canary
 on:
   push:
     branches:
-      - main
-      - next
+      - '*' # Matches all branches
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
