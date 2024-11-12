@@ -3,7 +3,7 @@ name: Release Canary
 on:
   push:
     branches:
-      - '*' # Matches all branches
+      - "*" # Matches all branches
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
@@ -32,7 +32,7 @@ jobs:
       - name: Copy schema files
         run: pnpm run copy-schema-files
 
-      - name: Publish Canary release
+      - name: Publish Canary release (main)
         if: ${{ github.ref_name == 'main' }}
         run: |
           echo --- > .changeset/canary.md
@@ -45,7 +45,7 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Publish Canary release
+      - name: Publish Canary release (next)
         if: ${{ github.ref_name == 'next' }}
         run: |
           echo --- > .changeset/canary.md
@@ -55,5 +55,18 @@ jobs:
           echo fake change to always get a canary release >> .changeset/canary.md
           pnpm exec changeset version --snapshot canary
           pnpm run publish --tag next-canary --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish Canary release (other branches)
+        if: ${{ github.ref_name != 'main' && github.ref_name != 'next' }}
+        run: |
+          echo --- > .changeset/canary.md
+          echo '"@comet/brevo-admin": patch' >> .changeset/canary.md
+          echo --- >> .changeset/canary.md
+          echo >> .changeset/canary.md
+          echo fake change to always get a canary release >> .changeset/canary.md
+          pnpm exec changeset version --snapshot canary
+          pnpm run publish --tag ${GITHUB_REF_NAME}-canary --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
