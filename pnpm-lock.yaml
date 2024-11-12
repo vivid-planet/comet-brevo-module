@@ -949,9 +949,6 @@ importers:
       '@nestjs/cache-manager':
         specifier: ^2.2.2
         version: 2.2.2(@nestjs/common@9.4.3)(@nestjs/core@9.4.3)(cache-manager@5.7.3)(rxjs@7.8.1)
-      '@types/multer':
-        specifier: ^1.4.11
-        version: 1.4.11
       cache-manager:
         specifier: ^5.7.3
         version: 5.7.3
@@ -1016,6 +1013,9 @@ importers:
       '@types/mime-db':
         specifier: ^1.43.5
         version: 1.43.5
+      '@types/multer':
+        specifier: ^1.4.11
+        version: 1.4.11
       '@types/node-fetch':
         specifier: ^2.5.12
         version: 2.6.11
@@ -8989,7 +8989,7 @@ packages:
     resolution: {integrity: sha512-svK240gr6LVWvv3YGyhLlA+6LRRWA4mnGIU7RcNmgjBYFl6665wcXrRfxGp5tEPVHUNm5FMcmq7too9bxCwX/w==}
     dependencies:
       '@types/express': 4.17.21
-    dev: false
+    dev: true
 
   /@types/mysql@2.15.22:
     resolution: {integrity: sha512-wK1pzsJVVAjYCSZWQoWHziQZbNggXFDUEIGf54g4ZM/ERuP86uGdWeKZWMYlqTPMZfHJJvLPyogXGvCOg87yLQ==}
