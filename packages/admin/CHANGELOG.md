@@ -1,5 +1,14 @@
 # @comet/brevo-admin
 
+<<<<<<< HEAD
+=======
+## 2.1.6
+
+### Patch Changes
+
+-   be6d19b: Remove the `totalContactsBlocked` field from the `TargetGroup` type, because it is not delivered in the list request in Brevo anymore.
+
+>>>>>>> main
 ## 2.1.5
 
 ## 2.1.4
