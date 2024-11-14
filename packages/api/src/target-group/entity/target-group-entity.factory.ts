@@ -8,7 +8,7 @@ import { EmailCampaignInterface } from "../../email-campaign/entities/email-camp
 import { BrevoContactFilterAttributesInterface, EmailCampaignScopeInterface } from "../../types";
 
 export interface TargetGroupInterface {
-    [OptionalProps]?: "createdAt" | "updatedAt" | "totalSubscribers" | "totalContactsBlocked";
+    [OptionalProps]?: "createdAt" | "updatedAt" | "totalSubscribers";
     id: string;
     createdAt: Date;
     updatedAt: Date;
@@ -16,7 +16,6 @@ export interface TargetGroupInterface {
     isMainList: boolean;
     brevoId: number;
     totalSubscribers: number;
-    totalContactsBlocked: number;
     scope: EmailCampaignScopeInterface;
     filters?: BrevoContactFilterAttributesInterface;
     assignedContactsTargetGroupBrevoId?: number;
@@ -37,7 +36,7 @@ export class TargetGroupEntityFactory {
             isAbstract: true,
         })
         class TargetGroupBase implements TargetGroupInterface, DocumentInterface {
-            [OptionalProps]?: "createdAt" | "updatedAt" | "totalSubscribers" | "totalContactsBlocked";
+            [OptionalProps]?: "createdAt" | "updatedAt" | "totalSubscribers";
 
             @PrimaryKey({ columnType: "uuid" })
             @Field(() => ID)
@@ -65,9 +64,6 @@ export class TargetGroupEntityFactory {
 
             @Field(() => Int)
             totalSubscribers: number;
-
-            @Field(() => Int)
-            totalContactsBlocked: number;
 
             @Embedded(() => Scope)
             @Field(() => Scope)

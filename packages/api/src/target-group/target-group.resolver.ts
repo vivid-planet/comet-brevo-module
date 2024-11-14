@@ -75,8 +75,6 @@ export function createTargetGroupsResolver({
 
                 if (brevoContactList) {
                     contactList.totalSubscribers = brevoContactList.uniqueSubscribers;
-                    // TODO: brevo is returning a wrong value for totalBlacklisted
-                    // contactList.totalContactsBlocked = brevoContactList.totalBlacklisted;
                 }
             }
 
@@ -230,15 +228,6 @@ export function createTargetGroupsResolver({
             const { uniqueSubscribers } = await this.brevoApiContactsService.findBrevoContactListById(targetGroup.brevoId, targetGroup.scope);
 
             return uniqueSubscribers;
-        }
-
-        @ResolveField()
-        async totalContactsBlocked(@Parent() targetGroup: TargetGroupInterface): Promise<number> {
-            if (targetGroup.totalContactsBlocked !== undefined) return targetGroup.totalContactsBlocked;
-
-            const { totalBlacklisted } = await this.brevoApiContactsService.findBrevoContactListById(targetGroup.brevoId, targetGroup.scope);
-
-            return totalBlacklisted;
         }
     }
 
