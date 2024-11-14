@@ -48,7 +48,6 @@ const targetGroupsFragment = gql`
         id
         title
         totalSubscribers
-        totalContactsBlocked
         isMainList
     }
 `;
@@ -208,14 +207,6 @@ export function TargetGroupsGrid({
         {
             field: "totalSubscribers",
             headerName: intl.formatMessage({ id: "cometBrevoModule.targetGroup.totalSubscribers", defaultMessage: "Total subscribers" }),
-            type: "number",
-            filterable: false,
-            sortable: false,
-            width: 200,
-        },
-        {
-            field: "totalContactsBlocked",
-            headerName: intl.formatMessage({ id: "cometBrevoModule.targetGroup.totalContactsBlocked", defaultMessage: "Total contacts blocked" }),
             type: "number",
             filterable: false,
             sortable: false,
