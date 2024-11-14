@@ -119,7 +119,6 @@ type TargetGroup implements DocumentInterface {
   isMainList: Boolean!
   brevoId: Int!
   totalSubscribers: Int!
-  totalContactsBlocked: Int!
   scope: EmailCampaignContentScope!
   assignedContactsTargetGroupBrevoId: Int
 }
