@@ -46,7 +46,7 @@
         "@comet/eslint-config": "^7.5.0",
         "@emotion/react": "^11.9.3",
         "@emotion/styled": "^11.9.3",
-        "@graphql-codegen/cli": "^2.0.0",
+        "@graphql-codegen/cli": "^2.16.5",
         "@mui/icons-material": "^5.8.4",
         "@mui/material": "^5.8.6",
         "@mui/system": "^5.8.6",
