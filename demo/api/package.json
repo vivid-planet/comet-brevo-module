@@ -49,9 +49,9 @@
         }
     },
     "dependencies": {
-        "@comet/blocks-api": "^7.5.0",
+        "@comet/blocks-api": "^7.7.0",
         "@comet/brevo-api": "workspace:*",
-        "@comet/cms-api": "^7.5.0",
+        "@comet/cms-api": "^7.7.0",
         "@faker-js/faker": "^8.3.1",
         "@hapi/accept": "^5.0.0",
         "@kubernetes/client-node": "^0.18.0",
@@ -99,7 +99,7 @@
         "webpack": "^5.64.2"
     },
     "devDependencies": {
-        "@comet/eslint-config": "^7.5.0",
+        "@comet/eslint-config": "^7.7.0",
         "@nestjs/cli": "^9.0.0",
         "@nestjs/schematics": "^9.0.0",
         "@nestjs/testing": "^9.0.0",
