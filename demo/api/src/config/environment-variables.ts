@@ -142,4 +142,8 @@ export class EnvironmentVariables {
 
     @IsString()
     CAMPAIGN_BASIC_AUTH_PASSWORD: string;
+
+    @IsString()
+    @MinLength(16)
+    SITE_PREVIEW_SECRET: string;
 }

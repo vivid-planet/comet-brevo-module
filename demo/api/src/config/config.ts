@@ -75,6 +75,7 @@ export function createConfig(processEnv: NodeJS.ProcessEnv) {
         ecgRtrList: {
             apiKey: envVars.ECG_RTR_LIST_API_KEY,
         },
+        sitePreviewSecret: envVars.SITE_PREVIEW_SECRET,
     };
 }
 
