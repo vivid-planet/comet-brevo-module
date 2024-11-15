@@ -37,7 +37,6 @@ const RedirectsPage = createRedirectsPage({ scopeParts: ["domain"] });
 
 const getMasterMenuData = ({ brevoContactConfig }: { brevoContactConfig: BrevoContactConfig }): MasterMenuData => {
     const BrevoContactsPage = createBrevoContactsPage({
-        scopeParts: ["domain", "language"],
         additionalAttributesFragment: brevoContactConfig.additionalAttributesFragment,
         additionalGridFields: brevoContactConfig.additionalGridFields,
         additionalFormFields: brevoContactConfig.additionalFormFields,
@@ -45,7 +44,6 @@ const getMasterMenuData = ({ brevoContactConfig }: { brevoContactConfig: BrevoCo
     });
 
     const TargetGroupsPage = createTargetGroupsPage({
-        scopeParts: ["domain", "language"],
         additionalFormFields: additionalFormConfig.additionalFormFields,
         exportTargetGroupOptions: {
             additionalAttributesFragment: brevoContactConfig.additionalAttributesFragment,
@@ -56,7 +54,6 @@ const getMasterMenuData = ({ brevoContactConfig }: { brevoContactConfig: BrevoCo
     });
 
     const CampaignsPage = createEmailCampaignsPage({
-        scopeParts: ["domain", "language"],
         EmailCampaignContentBlock,
     });
 
