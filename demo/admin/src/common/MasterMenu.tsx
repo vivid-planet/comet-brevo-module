@@ -1,5 +1,5 @@
 import { Assets, Dashboard, Mail, PageTree, Wrench } from "@comet/admin-icons";
-import { createBrevoContactsPage, createEmailCampaignsPage, createTargetGroupsPage } from "@comet/brevo-admin";
+import { createBrevoContactsPage, createTargetGroupsPage, EmailCampaignsPage } from "@comet/brevo-admin";
 import {
     AllCategories,
     ContentScopeIndicator,
@@ -53,10 +53,6 @@ const getMasterMenuData = ({ brevoContactConfig }: { brevoContactConfig: BrevoCo
         input2State: additionalFormConfig.input2State,
     });
 
-    const CampaignsPage = createEmailCampaignsPage({
-        EmailCampaignContentBlock,
-    });
-
     return [
         {
             type: "route",
@@ -95,7 +91,7 @@ const getMasterMenuData = ({ brevoContactConfig }: { brevoContactConfig: BrevoCo
                     primary: <FormattedMessage id="menu.newsletter.emailCampaigns" defaultMessage="Email campaigns" />,
                     route: {
                         path: "/newsletter/email-campaigns",
-                        component: CampaignsPage,
+                        component: () => <EmailCampaignsPage EmailCampaignContentBlock={EmailCampaignContentBlock} />,
                     },
                 },
                 {
