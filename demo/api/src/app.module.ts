@@ -110,6 +110,7 @@ export class AppModule {
                     PageTreeNode: PageTreeNode,
                     Documents: [Page, Link],
                     Scope: PageTreeNodeScope,
+                    sitePreviewSecret: config.sitePreviewSecret,
                 }),
                 RedirectsModule.register(),
                 BlobStorageModule.register({
