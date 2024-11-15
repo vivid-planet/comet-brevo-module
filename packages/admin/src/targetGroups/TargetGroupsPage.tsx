@@ -4,11 +4,11 @@ import { DocumentNode } from "graphql";
 import * as React from "react";
 import { useIntl } from "react-intl";
 
+import { useBrevoConfig } from "../common/BrevoConfigProvider";
 import { EditTargetGroupFinalFormValues, TargetGroupForm } from "./TargetGroupForm";
 import { AdditionalContactAttributesType, TargetGroupsGrid } from "./TargetGroupsGrid";
 
 interface CreateContactsPageOptions {
-    scopeParts: string[];
     additionalFormFields?: React.ReactNode;
     exportTargetGroupOptions?: {
         additionalAttributesFragment: { name: string; fragment: DocumentNode };
@@ -19,14 +19,9 @@ interface CreateContactsPageOptions {
     valuesToOutput?: (values: EditTargetGroupFinalFormValues) => EditTargetGroupFinalFormValues;
 }
 
-export function createTargetGroupsPage({
-    scopeParts,
-    additionalFormFields,
-    nodeFragment,
-    input2State,
-    exportTargetGroupOptions,
-}: CreateContactsPageOptions) {
+export function createTargetGroupsPage({ additionalFormFields, nodeFragment, input2State, exportTargetGroupOptions }: CreateContactsPageOptions) {
     function TargetGroupsPage(): JSX.Element {
+        const { scopeParts } = useBrevoConfig();
         const { scope: completeScope } = useContentScope();
         const intl = useIntl();
 
