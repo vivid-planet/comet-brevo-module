@@ -2,21 +2,21 @@
     "name": "comet-brevo-module-demo-campaign",
     "private": true,
     "scripts": {
+        "copy-schema-files": "node copy-schema-files.js",
         "dev": "run-s gql:types generate-block-types && NODE_OPTIONS='--inspect=localhost:9230' dotenv -c secrets -- node server.js",
-        "preview-next-build": "next build",
-        "next-build": "next build",
-        "serve": "NODE_ENV=production node server.js",
         "export": "next export",
+        "generate-block-types": "comet generate-block-types",
+        "generate-block-types:watch": "chokidar -s \"**/block-meta.json\" -c \"npm run generate-block-types\"",
         "gql:types": "graphql-codegen",
         "gql:watch": "graphql-codegen --watch",
         "intl:extract": "formatjs extract \"src/**/*.ts*\" --ignore ./**.d.ts --out-file lang-extracted/en.json --format simple",
         "lint": "run-p gql:types generate-block-types && run-p lint:prettier lint:eslint lint:tsc",
-        "lint:prettier": "npx prettier --check './**/*.{js,json,md,yml,yaml}'",
         "lint:eslint": "eslint --max-warnings 0 --config ./.eslintrc.cli.js --ext .ts,.tsx,.js,.jsx,.json,.md src/ package.json",
+        "lint:prettier": "npx prettier --check './**/*.{js,json,md,yml,yaml}'",
         "lint:tsc": "tsc --project .",
-        "generate-block-types": "comet generate-block-types",
-        "generate-block-types:watch": "chokidar -s \"**/block-meta.json\" -c \"npm run generate-block-types\"",
-        "copy-schema-files": "node copy-schema-files.js"
+        "next-build": "next build",
+        "preview-next-build": "next build",
+        "serve": "NODE_ENV=production node server.js"
     },
     "dependencies": {
         "@comet/cms-site": "^7.5.0",
