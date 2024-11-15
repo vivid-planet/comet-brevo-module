@@ -83,7 +83,7 @@ importers:
         specifier: ^11.9.3
         version: 11.11.0(@emotion/react@11.11.3)(@types/react@17.0.75)(react@17.0.2)
       '@fontsource-variable/roboto-flex':
-        specifier: ^5.0.14
+        specifier: ^5.1.0
         version: 5.1.0
       '@mui/icons-material':
         specifier: ^5.8.4
