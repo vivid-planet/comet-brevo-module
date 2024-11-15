@@ -121,6 +121,7 @@ const getMasterMenuData = ({ brevoContactConfig }: { brevoContactConfig: BrevoCo
                         render: () => <TargetGroupsPage />,
                     },
                 },
+<<<<<<< HEAD
                 {
                     type: "route",
                     primary: <FormattedMessage id="menu.newsletter.config" defaultMessage="Config" />,
@@ -129,6 +130,8 @@ const getMasterMenuData = ({ brevoContactConfig }: { brevoContactConfig: BrevoCo
                         render: () => <BrevoConfigPage />,
                     },
                 },
+=======
+>>>>>>> a421c92 (add new master menu logic from comet starter to demo)
             ],
             requiredPermission: "brevo-newsletter",
         },
