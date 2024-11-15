@@ -1,10 +1,6 @@
 {
     "name": "@comet/brevo-admin",
-<<<<<<< HEAD
-    "version": "2.1.5",
-=======
     "version": "2.1.6",
->>>>>>> main
     "repository": {
         "type": "git",
         "url": "https://github.com/vivid-planet/comet-brevo-module/",
