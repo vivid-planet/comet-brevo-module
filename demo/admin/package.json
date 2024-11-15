@@ -8,6 +8,7 @@
         "generate-block-types:watch": "chokidar -s \"**/block-meta.json\" -c \"npm run generate-block-types\"",
         "gql:types": "graphql-codegen",
         "gql:watch": "graphql-codegen --watch",
+        "postinstall": "cd server && npm install",
         "intl:compile": "run-p intl:compile:comet intl:compile:comet-brevo-module-demo intl:compile:comet-brevo-module",
         "intl:compile:comet": "formatjs compile-folder --format simple --ast lang/comet-lang lang-compiled/comet-lang",
         "intl:compile:comet-brevo-module": "formatjs compile-folder --format simple --ast lang/comet-brevo-module-lang lang-compiled/comet-brevo-module-lang",
@@ -18,7 +19,6 @@
         "lint:generated-files-not-modified": "$npm_execpath admin-generator && git diff --exit-code HEAD --",
         "lint:prettier": "npx prettier --check './**/*.{js,json,md,yml,yaml}'",
         "lint:tsc": "tsc --project .",
-        "postinstall": "cd server && npm install",
         "serve": "cd server && npm run serve",
         "start": "npm run intl:compile && run-p gql:types generate-block-types && dotenv -c secrets -- cross-env BABEL_ENV=development webpack serve --config ./webpack.config.ts --mode development"
     },
