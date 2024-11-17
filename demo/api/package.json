@@ -53,7 +53,7 @@
         "@comet/brevo-api": "workspace:*",
         "@comet/cms-api": "^7.7.0",
         "@faker-js/faker": "^8.3.1",
-        "@hapi/accept": "^5.0.0",
+        "@hapi/accept": "^5.0.2",
         "@kubernetes/client-node": "^0.18.0",
         "@mikro-orm/cli": "^5.9.8",
         "@mikro-orm/core": "^5.9.8",
