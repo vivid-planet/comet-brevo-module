@@ -1,6 +1,6 @@
-import { PartialType } from "@comet/cms-api";
-import { Field, InputType } from "@nestjs/graphql";
-import { IsEmail, IsNotEmpty, IsString } from "class-validator";
+import { IsUndefinable, PartialType } from "@comet/cms-api";
+import { Field, InputType, Int } from "@nestjs/graphql";
+import { IsEmail, IsInt, IsNotEmpty, IsString } from "class-validator";
 
 @InputType()
 export class BrevoConfigInput {
@@ -14,6 +14,11 @@ export class BrevoConfigInput {
     @IsString()
     @Field()
     senderName: string;
+
+    @IsUndefinable()
+    @Field(() => Int)
+    @IsInt()
+    folderId?: number;
 }
 
 @InputType()

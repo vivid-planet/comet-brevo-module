@@ -1,7 +1,7 @@
 import { DocumentInterface } from "@comet/cms-api";
 import { Embedded, Entity, OptionalProps, PrimaryKey, Property } from "@mikro-orm/core";
 import { Type } from "@nestjs/common";
-import { Field, ID, ObjectType } from "@nestjs/graphql";
+import { Field, ID, Int, ObjectType } from "@nestjs/graphql";
 import { v4 } from "uuid";
 
 import { EmailCampaignScopeInterface } from "../../types";
@@ -11,6 +11,7 @@ export interface BrevoConfigInterface {
     id: string;
     senderName: string;
     senderMail: string;
+    folderId?: number;
     createdAt: Date;
     updatedAt: Date;
     scope: EmailCampaignScopeInterface;
@@ -36,6 +37,10 @@ export class BrevoConfigEntityFactory {
             @Property({ columnType: "text" })
             @Field()
             senderName: string;
+
+            @Property({ columnType: "int", nullable: true })
+            @Field(() => Int, { nullable: true })
+            folderId?: number;
 
             @Property({
                 columnType: "timestamp with time zone",
