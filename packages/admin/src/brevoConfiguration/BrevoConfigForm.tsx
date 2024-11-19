@@ -7,7 +7,7 @@ import {
     FinalFormSubmitEvent,
     Loading,
     MainContent,
-    TextField,
+    NumberField,
     Toolbar,
     ToolbarActions,
     ToolbarFillSpace,
@@ -38,6 +38,7 @@ interface Option {
 }
 type FormValues = {
     sender: Option;
+    folderId: number;
 };
 
 interface FormProps {
@@ -77,7 +78,7 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
                       value: sender.id,
                       label: `${sender.name} (${sender.email})`,
                   },
-                  folderId: data?.brevoConfig?.folderId,
+                  folderId: data?.brevoConfig?.folderId ?? 1,
               }
             : {};
     }, [data?.brevoConfig?.folderId, data?.brevoConfig?.senderMail, data?.brevoConfig?.senderName, sendersData?.senders]);
@@ -119,7 +120,7 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
         const output = {
             senderName: sender?.name,
             senderMail: sender?.email,
-            folderId: data?.brevoConfig?.folderId ?? 1,
+            folderId: state.folderId ?? 1,
         };
 
         if (mode === "edit") {
@@ -177,7 +178,7 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
                                 label={<FormattedMessage id="cometBrevoModule.brevoConfig.sender" defaultMessage="Sender" />}
                                 fullWidth
                             />
-                            <TextField
+                            <NumberField
                                 name="folderId"
                                 label={<FormattedMessage id="cometBrevoModule.brevoConfig.folderId" defaultMessage="Folder ID" />}
                                 fullWidth
