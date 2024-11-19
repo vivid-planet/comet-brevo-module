@@ -5,6 +5,8 @@ import { DynamicModule, Global, Module, Optional } from "@nestjs/common";
 import { ModuleRef } from "@nestjs/core";
 
 import { BrevoApiModule } from "./brevo-api/brevo-api.module";
+import { BrevoConfigModule } from "./brevo-config/brevo-config.module";
+import { BrevoConfigEntityFactory } from "./brevo-config/entities/brevo-config-entity.factory";
 import { BrevoContactModule } from "./brevo-contact/brevo-contact.module";
 import { BrevoModuleConfig } from "./config/brevo-module.config";
 import { ConfigModule } from "./config/config.module";
@@ -33,6 +35,10 @@ export class BrevoModule {
             BrevoFilterAttributes: config.brevo.BrevoContactFilterAttributes,
         });
 
+        const BrevoConfig = BrevoConfigEntityFactory.create({
+            Scope: config.emailCampaigns.Scope,
+        });
+
         return {
             module: BrevoModule,
             imports: [
@@ -46,12 +52,14 @@ export class BrevoModule {
                     EmailCampaignContentBlock: config.emailCampaigns.EmailCampaignContentBlock,
                     Scope: config.emailCampaigns.Scope,
                     TargetGroup,
+                    BrevoConfig,
                 }),
                 TargetGroupModule.register({
                     Scope: config.emailCampaigns.Scope,
                     BrevoFilterAttributes: config.brevo.BrevoContactFilterAttributes,
                     TargetGroup: TargetGroup,
                 }),
+                BrevoConfigModule.register({ BrevoConfig, Scope: config.emailCampaigns.Scope }),
                 ConfigModule.forRoot(config),
             ],
             exports: [TargetGroupModule, BrevoContactModule, BrevoApiModule],
