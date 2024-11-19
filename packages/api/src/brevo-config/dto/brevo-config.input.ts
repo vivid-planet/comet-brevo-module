@@ -1,4 +1,4 @@
-import { PartialType } from "@comet/cms-api";
+import { IsUndefinable, PartialType } from "@comet/cms-api";
 import { Field, InputType, Int } from "@nestjs/graphql";
 import { IsEmail, IsInt, IsNotEmpty, IsString, ValidateIf } from "class-validator";
 
@@ -15,7 +15,7 @@ export class BrevoConfigInput {
     @Field()
     senderName: string;
 
-    @IsNotEmpty()
+    @IsUndefinable()
     @IsInt()
     @Field(() => Int, { nullable: true })
     @ValidateIf((values) => !values.apiKey)
