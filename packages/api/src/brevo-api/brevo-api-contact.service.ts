@@ -192,12 +192,12 @@ export class BrevoApiContactsService {
     }
 
     public async createBrevoContactList(title: string, scope: EmailCampaignScopeInterface): Promise<number | undefined> {
-        const brevoConfig = await this.brevoConfigRepository.findOneOrFail({ scope });
+        const brevoConfig = await this.brevoConfigRepository.findOne({ scope });
 
         try {
             const contactList = {
                 name: title,
-                folderId: brevoConfig.folderId ?? 1,
+                folderId: brevoConfig?.folderId ?? 1,
             };
 
             const data = await this.getContactsApi(scope).createList(contactList);
