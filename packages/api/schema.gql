@@ -382,7 +382,7 @@ input SendTestEmailCampaignArgs {
 input BrevoConfigInput {
   senderMail: String!
   senderName: String!
-  doiTemplateId: Int!
+  doiTemplateId: Int
 }
 
 input BrevoConfigUpdateInput {
