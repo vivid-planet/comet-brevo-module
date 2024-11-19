@@ -182,6 +182,16 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
                                 name="folderId"
                                 label={<FormattedMessage id="cometBrevoModule.brevoConfig.folderId" defaultMessage="Folder ID" />}
                                 fullWidth
+                                validate={(value) => {
+                                    if (typeof value !== "number") {
+                                        return (
+                                            <FormattedMessage
+                                                id="cometBrevoModule.brevoConfig.folderId.validation"
+                                                defaultMessage="Please enter a number"
+                                            />
+                                        );
+                                    }
+                                }}
                             />
                         </MainContent>
                     </>
