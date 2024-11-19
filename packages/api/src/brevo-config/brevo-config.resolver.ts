@@ -5,6 +5,8 @@ import { Type } from "@nestjs/common";
 import { Args, ID, Mutation, Query, Resolver } from "@nestjs/graphql";
 
 import { BrevoApiSenderService } from "../brevo-api/brevo-api-sender.service";
+import { BrevoTransactionalMailsService } from "../brevo-api/brevo-api-transactional-mails.service";
+import { BrevoApiEmailTemplate } from "../brevo-api/dto/brevo-api-email-templates-list";
 import { BrevoApiSender } from "../brevo-api/dto/brevo-api-sender";
 import { EmailCampaignScopeInterface } from "../types";
 import { DynamicDtoValidationPipe } from "../validation/dynamic-dto-validation.pipe";
@@ -24,6 +26,7 @@ export function createBrevoConfigResolver({
         constructor(
             private readonly entityManager: EntityManager,
             private readonly brevoSenderApiService: BrevoApiSenderService,
+            private readonly brevoTransactionalEmailsApiService: BrevoTransactionalMailsService,
             @InjectRepository(BrevoConfig) private readonly repository: EntityRepository<BrevoConfigInterface>,
         ) {}
 
@@ -37,6 +40,17 @@ export function createBrevoConfigResolver({
             return false;
         }
 
+        private async isValidTemplateId({ templateId }: { templateId: number }): Promise<boolean> {
+            const { templates } = await this.brevoTransactionalEmailsApiService.getEmailTemplates(Scope);
+
+            if (templates && templates.some((template) => template.id === templateId)) {
+                return true;
+            }
+
+            return false;
+        }
+
+        @RequiredPermission(["brevo-newsletter-config"], { skipScopeCheck: true })
         @Query(() => [BrevoApiSender], { nullable: true })
         async senders(
             @Args("scope", { type: () => Scope }, new DynamicDtoValidationPipe(Scope))
@@ -44,6 +58,14 @@ export function createBrevoConfigResolver({
         ): Promise<Array<BrevoApiSender> | undefined> {
             const senders = await this.brevoSenderApiService.getSenders(scope);
             return senders;
+        }
+
+        @RequiredPermission(["brevo-newsletter-config"], { skipScopeCheck: true })
+        @Query(() => [BrevoApiEmailTemplate], { nullable: true })
+        async doiTemplates(): Promise<Array<BrevoApiEmailTemplate> | undefined> {
+            const { templates } = await this.brevoTransactionalEmailsApiService.getEmailTemplates(Scope);
+            const doiTemplates = templates?.filter((template) => template.tag === "optin" && template.isActive);
+            return doiTemplates;
         }
 
         @Query(() => BrevoConfig, { nullable: true })
@@ -93,8 +115,23 @@ export function createBrevoConfigResolver({
                 validateNotModified(brevoConfig, lastUpdatedAt);
             }
 
+            if (!input.senderMail || !input.senderName || !input.doiTemplateId) {
+                throw new Error("Sender mail, sender name and doi template id are required");
+            }
+
+            if (!(await this.isValidSender({ email: input.senderMail, name: input.senderName }))) {
+                throw new Error("Sender not found");
+            }
+
+            if (!(await this.isValidTemplateId({ templateId: input.doiTemplateId }))) {
+                throw new Error("Template not found");
+            }
+
             wrap(brevoConfig).assign({
                 ...input,
+                senderMail: input.senderMail,
+                senderName: input.senderName,
+                doiTemplateId: input.doiTemplateId,
             });
 
             await this.entityManager.flush();
