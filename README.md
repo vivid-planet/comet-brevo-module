@@ -35,6 +35,7 @@ The following variables must be set manually
 ### Configure brevo sender in the demo admin brevo config page
 
 -   Brevo sender
+-   Brevo double opt-in template
 
 ### Start development processes
 
