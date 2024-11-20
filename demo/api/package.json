@@ -78,7 +78,7 @@
         "cli-progress": "^3.9.0",
         "commander": "^7.2.0",
         "compression": "^1.7.4",
-        "cookie-parser": "^1.4.5",
+        "cookie-parser": "^1.4.7",
         "exifr": "^6.0.0",
         "express": "^4.18.2",
         "file-type": "^16.0.0",
