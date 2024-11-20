@@ -9,6 +9,7 @@ Previously the `scopeParts` were passed to the functions:
 -   createBrevoContactsPage
 -   createTargetGroupsPage
 -   createEmailCampaignsPage
+-   createBrevoConfigPage
 
 Now they are defined once in the `BrevoConfig`:
 
