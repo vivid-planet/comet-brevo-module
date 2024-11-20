@@ -107,7 +107,7 @@ importers:
         specifier: ^2.30.0
         version: 2.30.0
       draft-js:
-        specifier: ^0.11.0
+        specifier: ^0.11.7
         version: 0.11.7(react-dom@17.0.2)(react@17.0.2)
       exceljs:
         specifier: ^3.4.0
@@ -865,7 +865,7 @@ importers:
         specifier: ^5.0.3
         version: 5.1.20
       draft-js:
-        specifier: ^0.11.0
+        specifier: ^0.11.7
         version: 0.11.7(react-dom@17.0.2)(react@17.0.2)
       eslint:
         specifier: ^8.0.0
