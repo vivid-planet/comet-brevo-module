@@ -1,73 +1,188 @@
-import { Menu, MenuCollapsibleItem, MenuContext, MenuItemRouterLink, useWindowSize } from "@comet/admin";
 import { Assets, Dashboard, Mail, PageTree, Wrench } from "@comet/admin-icons";
-import * as React from "react";
-import { useIntl } from "react-intl";
-import { useRouteMatch } from "react-router";
+import { createBrevoConfigPage, createBrevoContactsPage, createEmailCampaignsPage, createTargetGroupsPage } from "@comet/brevo-admin";
+import {
+    AllCategories,
+    ContentScopeIndicator,
+    createRedirectsPage,
+    DamPage,
+    DocumentInterface,
+    MasterMenu,
+    MasterMenuData,
+    MasterMenuRoutes,
+    PagesPage,
+    PublisherPage,
+} from "@comet/cms-admin";
+import { BrevoContactConfig, getBrevoContactConfig } from "@src/common/brevoModuleConfig/brevoContactsPageAttributesConfig";
+import { additionalFormConfig } from "@src/common/brevoModuleConfig/targetGroupFormConfig";
+import { DashboardPage } from "@src/dashboard/DashboardPage";
+import { Link } from "@src/documents/links/Link";
+import { Page } from "@src/documents/pages/Page";
+import { EmailCampaignContentBlock } from "@src/emailCampaigns/blocks/EmailCampaignContentBlock";
+import React from "react";
+import { FormattedMessage, useIntl } from "react-intl";
 
-const permanentMenuMinWidth = 1024;
+export const pageTreeCategories: AllCategories = [
+    {
+        category: "MainNavigation",
+        label: <FormattedMessage id="menu.pageTree.mainNavigation" defaultMessage="Main navigation" />,
+    },
+];
 
-export const MasterMenu: React.FC = () => {
-    const { open, toggleOpen } = React.useContext(MenuContext);
-    const windowSize = useWindowSize();
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const pageTreeDocumentTypes: Record<string, DocumentInterface<any, any>> = {
+    Page,
+    Link,
+};
+const RedirectsPage = createRedirectsPage({ scopeParts: ["domain"] });
+
+const getMasterMenuData = ({ brevoContactConfig }: { brevoContactConfig: BrevoContactConfig }): MasterMenuData => {
+    const BrevoContactsPage = createBrevoContactsPage({
+        scopeParts: ["domain", "language"],
+        additionalAttributesFragment: brevoContactConfig.additionalAttributesFragment,
+        additionalGridFields: brevoContactConfig.additionalGridFields,
+        additionalFormFields: brevoContactConfig.additionalFormFields,
+        input2State: brevoContactConfig.input2State,
+    });
+
+    const TargetGroupsPage = createTargetGroupsPage({
+        scopeParts: ["domain", "language"],
+        additionalFormFields: additionalFormConfig.additionalFormFields,
+        exportTargetGroupOptions: {
+            additionalAttributesFragment: brevoContactConfig.additionalAttributesFragment,
+            exportFields: brevoContactConfig.exportFields,
+        },
+        nodeFragment: additionalFormConfig.nodeFragment,
+        input2State: additionalFormConfig.input2State,
+    });
+
+    const CampaignsPage = createEmailCampaignsPage({
+        scopeParts: ["domain", "language"],
+        EmailCampaignContentBlock,
+    });
+
+    const BrevoConfigPage = createBrevoConfigPage({
+        scopeParts: ["domain", "language"],
+    });
+
+    return [
+        {
+            type: "route",
+            primary: <FormattedMessage id="menu.dashboard" defaultMessage="Dashboard" />,
+            icon: <Dashboard />,
+            route: {
+                path: "/dashboard",
+                component: DashboardPage,
+            },
+        },
+        {
+            type: "route",
+            primary: <FormattedMessage id="menu.pageTree" defaultMessage="Page tree" />,
+            icon: <PageTree />,
+            route: {
+                path: "/pages/pagetree/main-navigation",
+                render: () => (
+                    <PagesPage
+                        path="/pages/pagetree/main-navigation"
+                        allCategories={pageTreeCategories}
+                        documentTypes={pageTreeDocumentTypes}
+                        category="MainNavigation"
+                        renderContentScopeIndicator={(scope) => <ContentScopeIndicator scope={scope} />}
+                    />
+                ),
+            },
+            requiredPermission: "pageTree",
+        },
+        {
+            type: "collapsible",
+            primary: <FormattedMessage id="menu.newsletter" defaultMessage="Newsletter" />,
+            icon: <Mail />,
+            items: [
+                {
+                    type: "route",
+                    primary: <FormattedMessage id="menu.newsletter.emailCampaigns" defaultMessage="Email campaigns" />,
+                    route: {
+                        path: "/newsletter/email-campaigns",
+                        component: CampaignsPage,
+                    },
+                },
+                {
+                    type: "route",
+                    primary: <FormattedMessage id="menu.newsletter.emailCampaigns" defaultMessage="Contacts" />,
+                    route: {
+                        path: "/newsletter/contacts",
+                        render: () => <BrevoContactsPage />,
+                    },
+                },
+                {
+                    type: "route",
+                    primary: <FormattedMessage id="menu.newsletter.targetGroups" defaultMessage="Target groups" />,
+                    route: {
+                        path: "/newsletter/target-groups",
+                        render: () => <TargetGroupsPage />,
+                    },
+                },
+                {
+                    type: "route",
+                    primary: <FormattedMessage id="menu.newsletter.config" defaultMessage="Config" />,
+                    route: {
+                        path: "/newsletter/config",
+                        render: () => <BrevoConfigPage />,
+                    },
+                },
+            ],
+            requiredPermission: "brevo-newsletter",
+        },
+        {
+            type: "route",
+            primary: <FormattedMessage id="menu.dam" defaultMessage="Assets" />,
+            icon: <Assets />,
+            route: {
+                path: "/assets",
+                component: DamPage,
+            },
+            requiredPermission: "dam",
+        },
+        {
+            type: "collapsible",
+            primary: <FormattedMessage id="menu.system" defaultMessage="System" />,
+            icon: <Wrench />,
+            items: [
+                {
+                    type: "route",
+                    primary: <FormattedMessage id="menu.publisher" defaultMessage="Publisher" />,
+                    route: {
+                        path: "/system/publisher",
+                        component: PublisherPage,
+                    },
+                    requiredPermission: "builds",
+                },
+                {
+                    type: "route",
+                    primary: <FormattedMessage id="menu.redirects" defaultMessage="Redirects" />,
+                    route: {
+                        path: "/system/redirects",
+                        render: () => <RedirectsPage redirectPathAfterChange="/system/redirects" />,
+                    },
+                    requiredPermission: "pageTree",
+                },
+            ],
+            requiredPermission: "pageTree",
+        },
+    ];
+};
+
+export const AppMasterMenu = () => {
     const intl = useIntl();
-    const match = useRouteMatch();
 
-    const useTemporaryMenu: boolean = windowSize.width < permanentMenuMinWidth;
+    const masterMenuDataForScope = React.useMemo(() => getMasterMenuData({ brevoContactConfig: getBrevoContactConfig(intl) }), [intl]);
 
-    // Open menu when changing to permanent variant and close when changing to temporary variant.
-    React.useEffect(() => {
-        if ((useTemporaryMenu && open) || (!useTemporaryMenu && !open)) {
-            toggleOpen();
-        }
-        // useEffect dependencies must only include `location`, because the function should only be called once after changing the location.
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [location]);
+    return <MasterMenu menu={masterMenuDataForScope} />;
+};
 
-    return (
-        <Menu variant={useTemporaryMenu ? "temporary" : "permanent"}>
-            <MenuItemRouterLink
-                primary={intl.formatMessage({ id: "menu.dashboard", defaultMessage: "Dashboard" })}
-                icon={<Dashboard />}
-                to={`${match.url}/dashboard`}
-            />
-            <MenuItemRouterLink
-                primary={intl.formatMessage({ id: "menu.pageTree", defaultMessage: "Page tree" })}
-                icon={<PageTree />}
-                to={`${match.url}/pages/pagetree/main-navigation`}
-            />
-            <MenuCollapsibleItem primary={intl.formatMessage({ id: "menu.newsletter", defaultMessage: "Newsletter" })} icon={<Mail />}>
-                <MenuItemRouterLink
-                    primary={intl.formatMessage({ id: "menu.newsletter.contacts", defaultMessage: "Contacts" })}
-                    to={`${match.url}/newsletter/contacts`}
-                />
-                <MenuItemRouterLink
-                    primary={intl.formatMessage({ id: "menu.newsletter.targetGroups", defaultMessage: "Target groups" })}
-                    to={`${match.url}/newsletter/target-groups`}
-                />
-                <MenuItemRouterLink
-                    primary={intl.formatMessage({ id: "menu.newsletter.emailCampaigns", defaultMessage: "Email campaigns" })}
-                    to={`${match.url}/newsletter/email-campaigns`}
-                />
-                <MenuItemRouterLink
-                    primary={intl.formatMessage({ id: "menu.newsletter.brevoConfig", defaultMessage: "Brevo config" })}
-                    to={`${match.url}/newsletter/brevo-config`}
-                />
-            </MenuCollapsibleItem>
-            <MenuItemRouterLink
-                primary={intl.formatMessage({ id: "menu.dam", defaultMessage: "Assets" })}
-                icon={<Assets />}
-                to={`${match.url}/assets`}
-            />
-            <MenuCollapsibleItem primary={intl.formatMessage({ id: "menu.system", defaultMessage: "System" })} icon={<Wrench />}>
-                <MenuItemRouterLink
-                    primary={intl.formatMessage({ id: "menu.publisher", defaultMessage: "Publisher" })}
-                    to={`${match.url}/system/publisher`}
-                />
-                <MenuItemRouterLink
-                    primary={intl.formatMessage({ id: "menu.redirects", defaultMessage: "Redirects" })}
-                    to={`${match.url}/system/redirects`}
-                />
-            </MenuCollapsibleItem>
-        </Menu>
-    );
+export const MasterRoutes = () => {
+    const intl = useIntl();
+
+    const masterMenuDataForScope = React.useMemo(() => getMasterMenuData({ brevoContactConfig: getBrevoContactConfig(intl) }), [intl]);
+
+    return <MasterMenuRoutes menu={masterMenuDataForScope} />;
 };

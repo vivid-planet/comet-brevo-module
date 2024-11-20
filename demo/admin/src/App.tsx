@@ -2,7 +2,7 @@ import "@fontsource-variable/roboto-flex/full.css";
 import "material-design-icons/iconfont/material-icons.css";
 
 import { ApolloProvider } from "@apollo/client";
-import { ErrorDialogHandler, MuiThemeProvider, RouterBrowserRouter, SnackbarProvider } from "@comet/admin";
+import { ErrorDialogHandler, MasterLayout, MuiThemeProvider, RouterBrowserRouter, SnackbarProvider } from "@comet/admin";
 import { BrevoConfigProvider } from "@comet/brevo-admin";
 import {
     AllCategories,
@@ -11,22 +11,26 @@ import {
     createHttpClient,
     CurrentUserProvider,
     LocaleProvider,
+    SitePreview,
     SitesConfigProvider,
 } from "@comet/cms-admin";
 import { css, Global } from "@emotion/react";
-import { ContentScope } from "@src/common/ContentScopeProvider";
+import { ContentScope, ContentScopeProvider } from "@src/common/ContentScopeProvider";
+import { MasterRoutes } from "@src/common/MasterMenu";
 import { getMessages } from "@src/lang";
 import { theme } from "@src/theme";
 import * as React from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { FormattedMessage, IntlProvider } from "react-intl";
+import { Route, Switch } from "react-router";
 
 import { createApolloClient } from "./common/apollo/createApolloClient";
+import { MasterHeader } from "./common/MasterHeader";
+import { AppMasterMenu } from "./common/MasterMenu";
 import { createConfig } from "./config";
 import { Link } from "./documents/links/Link";
 import { Page } from "./documents/pages/Page";
-import { Routes } from "./Routes";
 
 const GlobalStyle = () => (
     <Global
@@ -99,7 +103,21 @@ export function App() {
                                                 >
                                                     <RouterBrowserRouter>
                                                         <GlobalStyle />
-                                                        <Routes />
+                                                        <ContentScopeProvider>
+                                                            {({ match }) => (
+                                                                <Switch>
+                                                                    <Route
+                                                                        path={`${match.path}/preview`}
+                                                                        render={(props) => <SitePreview {...props} />}
+                                                                    />
+                                                                    <Route>
+                                                                        <MasterLayout headerComponent={MasterHeader} menuComponent={AppMasterMenu}>
+                                                                            <MasterRoutes />
+                                                                        </MasterLayout>
+                                                                    </Route>
+                                                                </Switch>
+                                                            )}
+                                                        </ContentScopeProvider>
                                                     </RouterBrowserRouter>
                                                 </CmsBlockContextProvider>
                                             </BrevoConfigProvider>
