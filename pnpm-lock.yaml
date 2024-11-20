@@ -354,7 +354,7 @@ importers:
         specifier: ^0.5.0
         version: 0.5.1
       class-validator:
-        specifier: ^0.14.0
+        specifier: ^0.14.1
         version: 0.14.1
       cli-progress:
         specifier: ^3.9.0
@@ -1007,7 +1007,7 @@ importers:
         specifier: ^0.5.0
         version: 0.5.1
       class-validator:
-        specifier: ^0.14.0
+        specifier: ^0.14.1
         version: 0.14.1
       eslint:
         specifier: ^8.0.0
