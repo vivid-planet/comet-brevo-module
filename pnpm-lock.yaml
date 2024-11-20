@@ -348,7 +348,7 @@ importers:
         specifier: ^3.3.0
         version: 3.13.0(express@4.20.0)(graphql@15.8.0)
       class-transformer:
-        specifier: ^0.5.0
+        specifier: ^0.5.1
         version: 0.5.1
       class-validator:
         specifier: ^0.14.1
@@ -1001,7 +1001,7 @@ importers:
         specifier: ^2.1.0
         version: 2.1.0
       class-transformer:
-        specifier: ^0.5.0
+        specifier: ^0.5.1
         version: 0.5.1
       class-validator:
         specifier: ^0.14.1
