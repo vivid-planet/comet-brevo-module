@@ -35,7 +35,7 @@
         "express": "^4.0.0",
         "fs-extra": "^9.0.0",
         "graphql": "^15.0.0",
-        "graphql-request": "^3.0.0",
+        "graphql-request": "^3.7.0",
         "graphql-tag": "^2.12.6",
         "next": "^14.2.0",
         "react": "^18.0.0",
