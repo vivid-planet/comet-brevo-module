@@ -48,7 +48,7 @@
         "final-form": "^4.16.1",
         "graphql": "^15.4.0",
         "graphql-tag": "^2.0.0",
-        "history": "^4.10.0",
+        "history": "^4.10.1",
         "lodash.isequal": "^4.0.0",
         "material-design-icons": "^3.0.1",
         "react": "^17.0.0",
