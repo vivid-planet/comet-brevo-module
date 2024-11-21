@@ -529,7 +529,7 @@ importers:
         specifier: ^4.15.3
         version: 4.15.3
       mjml-browser:
-        specifier: ^4.14.1
+        specifier: ^4.15.3
         version: 4.15.3
       next:
         specifier: ^14.2.0
@@ -13382,6 +13382,7 @@ packages:
   /fill-range@7.1.1:
     resolution: {integrity: sha512-YsGpe3WHLK8ZYi4tWDg2Jy3ebRz2rXowDxnld4bkQB00cc/1Zw9AWnC0i9ztDJitivtQvaI9KaLyKrc+hBW0yg==}
     engines: {node: '>=8'}
+    requiresBuild: true
     dependencies:
       to-regex-range: 5.0.1
 
