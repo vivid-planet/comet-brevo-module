@@ -93,7 +93,7 @@
         "reflect-metadata": "^0.1.13",
         "rimraf": "^3.0.2",
         "rxjs": "^7.2.0",
-        "slugify": "^1.0.0",
+        "slugify": "^1.6.6",
         "uuid": "^8.3.2",
         "webpack": "^5.64.2"
     },
