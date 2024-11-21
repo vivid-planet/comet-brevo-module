@@ -26,7 +26,7 @@ importers:
         specifier: ^6.0.0
         version: 6.0.0
       husky:
-        specifier: ^7.0.1
+        specifier: ^7.0.4
         version: 7.0.4
       lint-staged:
         specifier: ^12.3.7
