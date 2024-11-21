@@ -33,7 +33,7 @@
         "dotenv-cli": "^6.0.0",
         "husky": "^7.0.4",
         "lint-staged": "^12.5.0",
-        "npm-run-all2": "^5.0.0",
+        "npm-run-all2": "^5.0.2",
         "open-cli": "^7.0.0",
         "prettier": "^2.3.2",
         "ts-node": "^10.5.0",
