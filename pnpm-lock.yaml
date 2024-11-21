@@ -390,7 +390,7 @@ importers:
         specifier: ^5.1.2
         version: 5.1.2
       node-fetch:
-        specifier: ^2.6.1
+        specifier: ^2.7.0
         version: 2.7.0
       passport:
         specifier: ^0.6.0
@@ -931,7 +931,7 @@ importers:
         specifier: ^7.2.0
         version: 7.2.0
       node-fetch:
-        specifier: ^2.6.1
+        specifier: ^2.7.0
         version: 2.7.0
     devDependencies:
       '@comet/blocks-api':
