@@ -31,7 +31,7 @@
         "@formatjs/cli": "^4.8.3",
         "@types/node": "^18.0.0",
         "dotenv-cli": "^6.0.0",
-        "husky": "^7.0.1",
+        "husky": "^7.0.4",
         "lint-staged": "^12.3.7",
         "npm-run-all2": "^5.0.0",
         "open-cli": "^7.0.0",
