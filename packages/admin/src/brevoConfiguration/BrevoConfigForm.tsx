@@ -12,9 +12,11 @@ import {
     ToolbarActions,
     ToolbarFillSpace,
     ToolbarTitleItem,
+    Tooltip,
     useFormApiRef,
     useStackSwitchApi,
 } from "@comet/admin";
+import { Info } from "@comet/admin-icons";
 import { ContentScopeIndicator, ContentScopeInterface, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
 import { FormApi } from "final-form";
 import React from "react";
@@ -180,7 +182,22 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
                             />
                             <NumberField
                                 name="folderId"
-                                label={<FormattedMessage id="cometBrevoModule.brevoConfig.folderId" defaultMessage="Folder ID" />}
+                                label={
+                                    <>
+                                        <FormattedMessage id="cometBrevoModule.brevoConfig.folderId" defaultMessage="Folder ID" />
+                                        <Tooltip
+                                            title={
+                                                <FormattedMessage
+                                                    id="cometBrevoModule.brevoConfig.folderId.info"
+                                                    defaultMessage="By default, the folder ID should be set to 1 unless you have specifically configured another folder in Brevo."
+                                                />
+                                            }
+                                            sx={{ marginLeft: "5px" }}
+                                        >
+                                            <Info />
+                                        </Tooltip>
+                                    </>
+                                }
                                 fullWidth
                                 validate={(value) => {
                                     if (typeof value !== "number") {
