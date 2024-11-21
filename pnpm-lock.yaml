@@ -252,7 +252,7 @@ importers:
         specifier: ^3.0.0
         version: 3.0.2
       style-loader:
-        specifier: ^3.0.0
+        specifier: ^3.3.4
         version: 3.3.4(webpack@5.94.0)
       ts-node:
         specifier: ^10.0.0
