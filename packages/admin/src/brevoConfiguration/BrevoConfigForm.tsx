@@ -182,6 +182,7 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
                             />
                             <NumberField
                                 name="folderId"
+                                defaultValue={1}
                                 label={
                                     <>
                                         <FormattedMessage id="cometBrevoModule.brevoConfig.folderId" defaultMessage="Folder ID" />
