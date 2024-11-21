@@ -5,6 +5,7 @@ import { isUUID, validateSync } from "class-validator";
 import { InvalidOptionArgumentError } from "commander";
 import * as fs from "fs";
 import { Command, Console } from "nestjs-console";
+import { BrevoConfigInterface } from "src/brevo-config/entities/brevo-config-entity.factory";
 
 import { BrevoContactImportService } from "../brevo-contact/brevo-contact-import.service";
 import { BrevoModuleConfig } from "../config/brevo-module.config";
@@ -29,6 +30,7 @@ export function createBrevoContactImportConsole({ Scope }: { Scope: Type<EmailCa
             @Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig,
             private readonly brevoContactImportService: BrevoContactImportService,
             @InjectRepository("TargetGroup") private readonly targetGroupRepository: EntityRepository<TargetGroupInterface>,
+            @InjectRepository("BrevoConfig") private readonly brevoConfigRepository: EntityRepository<BrevoConfigInterface>,
         ) {}
 
         @Command({
@@ -99,13 +101,13 @@ export function createBrevoContactImportConsole({ Scope }: { Scope: Type<EmailCa
         }
 
         async validateRedirectUrl(urlToValidate: string, scope: Type<EmailCampaignScopeInterface>): Promise<boolean> {
-            const configForScope = this.config.brevo.resolveConfig(scope);
+            const configForScope = await this.brevoConfigRepository.findOneOrFail({ scope });
 
             if (!configForScope) {
                 throw Error("Scope does not exist");
             }
 
-            if (urlToValidate?.startsWith(configForScope.allowedRedirectUrl)) {
+            if (urlToValidate?.startsWith(configForScope.redirectionUrl)) {
                 return true;
             }
 

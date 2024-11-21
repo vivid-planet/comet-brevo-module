@@ -44,6 +44,41 @@ type User {
   language: String!
 }
 
+type BrevoApiEmailTemplateSender {
+  id: String
+  subject: String
+  email: String
+}
+
+type BrevoApiEmailTemplate {
+  id: ID!
+  name: String!
+  subject: String!
+  isActive: Boolean!
+  testSent: Boolean!
+  replyTo: String!
+  toField: String!
+  tag: String!
+  htmlContent: String!
+  createdAt: String!
+  modifiedAt: String!
+  sender: BrevoApiEmailTemplateSender!
+}
+
+type BrevoApiSender {
+  id: ID!
+  name: String!
+  email: String!
+  active: Boolean!
+  ips: [BrevoIp!]
+}
+
+type BrevoIp {
+  ip: String!
+  domain: String!
+  weight: Int!
+}
+
 type BrevoApiCampaignStatistics {
   """Number of unique clicks for the campaign"""
   uniqueClicks: Int!
@@ -159,6 +194,17 @@ type PaginatedEmailCampaigns {
   totalCount: Int!
 }
 
+type BrevoConfig implements DocumentInterface {
+  id: ID!
+  updatedAt: DateTime!
+  senderMail: String!
+  senderName: String!
+  doiTemplateId: Int
+  redirectionUrl: String!
+  createdAt: DateTime!
+  scope: EmailCampaignContentScope!
+}
+
 input EmailCampaignContentScopeInput {
   thisScopeHasNoFields____: String
 }
@@ -172,6 +218,9 @@ type Query {
   emailCampaign(id: ID!): EmailCampaign!
   emailCampaigns(scope: EmailCampaignContentScopeInput!, search: String, filter: EmailCampaignFilter, sort: [EmailCampaignSort!], offset: Int! = 0, limit: Int! = 25): PaginatedEmailCampaigns!
   emailCampaignStatistics(id: ID!): BrevoApiCampaignStatistics
+  senders: [BrevoApiSender!]
+  doiTemplates: [BrevoApiEmailTemplate!]
+  brevoConfig(scope: EmailCampaignContentScopeInput!): BrevoConfig
 }
 
 input TargetGroupFilter {
@@ -253,6 +302,8 @@ type Mutation {
   deleteEmailCampaign(id: ID!): Boolean!
   sendEmailCampaignNow(id: ID!): Boolean!
   sendEmailCampaignToTestEmails(id: ID!, data: SendTestEmailCampaignArgs!): Boolean!
+  createBrevoConfig(scope: EmailCampaignContentScopeInput!, input: BrevoConfigInput!): BrevoConfig!
+  updateBrevoConfig(id: ID!, input: BrevoConfigUpdateInput!, lastUpdatedAt: DateTime): BrevoConfig!
 }
 
 input BrevoContactUpdateInput {
@@ -319,4 +370,18 @@ input EmailCampaignUpdateInput {
 
 input SendTestEmailCampaignArgs {
   emails: [String!]!
+}
+
+input BrevoConfigInput {
+  senderMail: String!
+  senderName: String!
+  doiTemplateId: Int
+  redirectionUrl: String!
+}
+
+input BrevoConfigUpdateInput {
+  senderMail: String
+  senderName: String
+  doiTemplateId: Int
+  redirectionUrl: String
 }
