@@ -35,7 +35,7 @@ importers:
         specifier: ^5.0.2
         version: 5.0.2
       open-cli:
-        specifier: ^7.0.0
+        specifier: ^7.2.0
         version: 7.2.0
       prettier:
         specifier: ^2.3.2
