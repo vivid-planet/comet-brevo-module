@@ -547,7 +547,7 @@ importers:
         specifier: ^17.0.2
         version: 17.0.2
       redraft:
-        specifier: ^0.10.0
+        specifier: ^0.10.2
         version: 0.10.2
       sitemap:
         specifier: ^6.0.0
@@ -692,7 +692,7 @@ importers:
         specifier: ^17.0.2
         version: 17.0.2
       redraft:
-        specifier: ^0.10.0
+        specifier: ^0.10.2
         version: 0.10.2
       sitemap:
         specifier: ^6.0.0
