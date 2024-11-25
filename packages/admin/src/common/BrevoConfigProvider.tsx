@@ -3,6 +3,7 @@ import React from "react";
 
 export interface BrevoConfig {
     apiUrl: string;
+    scopeParts: string[];
     resolvePreviewUrlForScope: (scope: ContentScopeInterface) => string;
 }
 
@@ -19,6 +20,7 @@ export const BrevoConfigProvider = ({ children, value }: React.PropsWithChildren
 interface UseBrevoConfigReturn {
     apiUrl: string;
     previewUrl: string;
+    scopeParts: string[];
 }
 
 export const useBrevoConfig = (): UseBrevoConfigReturn => {

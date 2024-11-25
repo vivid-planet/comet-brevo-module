@@ -1,3 +1,9 @@
+type User {
+  id: String!
+  name: String!
+  email: String!
+}
+
 type CurrentUserPermission {
   permission: String!
   contentScopes: [JSONObject!]!
@@ -35,12 +41,6 @@ enum FocalPoint {
   NORTHEAST
   SOUTHWEST
   SOUTHEAST
-}
-
-type User {
-  id: String!
-  name: String!
-  email: String!
 }
 
 type BrevoApiSender {

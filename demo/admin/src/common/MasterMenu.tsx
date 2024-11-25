@@ -1,5 +1,5 @@
 import { Assets, Dashboard, Mail, PageTree, Wrench } from "@comet/admin-icons";
-import { createBrevoConfigPage, createBrevoContactsPage, createEmailCampaignsPage, createTargetGroupsPage } from "@comet/brevo-admin";
+import { BrevoConfigPage, createBrevoContactsPage, createEmailCampaignsPage, createTargetGroupsPage } from "@comet/brevo-admin";
 import {
     AllCategories,
     ContentScopeIndicator,
@@ -37,7 +37,6 @@ const RedirectsPage = createRedirectsPage({ scopeParts: ["domain"] });
 
 const getMasterMenuData = ({ brevoContactConfig }: { brevoContactConfig: BrevoContactConfig }): MasterMenuData => {
     const BrevoContactsPage = createBrevoContactsPage({
-        scopeParts: ["domain", "language"],
         additionalAttributesFragment: brevoContactConfig.additionalAttributesFragment,
         additionalGridFields: brevoContactConfig.additionalGridFields,
         additionalFormFields: brevoContactConfig.additionalFormFields,
@@ -45,7 +44,6 @@ const getMasterMenuData = ({ brevoContactConfig }: { brevoContactConfig: BrevoCo
     });
 
     const TargetGroupsPage = createTargetGroupsPage({
-        scopeParts: ["domain", "language"],
         additionalFormFields: additionalFormConfig.additionalFormFields,
         exportTargetGroupOptions: {
             additionalAttributesFragment: brevoContactConfig.additionalAttributesFragment,
@@ -56,12 +54,7 @@ const getMasterMenuData = ({ brevoContactConfig }: { brevoContactConfig: BrevoCo
     });
 
     const CampaignsPage = createEmailCampaignsPage({
-        scopeParts: ["domain", "language"],
         EmailCampaignContentBlock,
-    });
-
-    const BrevoConfigPage = createBrevoConfigPage({
-        scopeParts: ["domain", "language"],
     });
 
     return [

@@ -84,6 +84,7 @@ export function App() {
                                         <SnackbarProvider>
                                             <BrevoConfigProvider
                                                 value={{
+                                                    scopeParts: ["domain", "language"],
                                                     apiUrl: config.apiUrl,
                                                     resolvePreviewUrlForScope: (scope: ContentScope) => {
                                                         return `${config.campaignUrl}/block-preview/${scope.domain}/${scope.language}`;

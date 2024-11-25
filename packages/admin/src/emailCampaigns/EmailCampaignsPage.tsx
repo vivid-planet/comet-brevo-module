@@ -4,18 +4,19 @@ import { ContentScopeIndicator, useContentScope } from "@comet/cms-admin";
 import * as React from "react";
 import { useIntl } from "react-intl";
 
+import { useBrevoConfig } from "../common/BrevoConfigProvider";
 import { EmailCampaignsGrid } from "./EmailCampaignsGrid";
 import { EmailCampaignForm } from "./form/EmailCampaignForm";
 import { EmailCampaignStatistics } from "./statistics/EmailCampaignStatistics";
 import { EmailCampaignView } from "./view/EmailCampaignView";
 
 interface CreateEmailCampaignsPageOptions {
-    scopeParts: string[];
     EmailCampaignContentBlock: BlockInterface;
 }
 
-export function createEmailCampaignsPage({ scopeParts, EmailCampaignContentBlock }: CreateEmailCampaignsPageOptions) {
+export function createEmailCampaignsPage({ EmailCampaignContentBlock }: CreateEmailCampaignsPageOptions) {
     function EmailCampaignsPage(): JSX.Element {
+        const { scopeParts } = useBrevoConfig();
         const { scope: completeScope } = useContentScope();
         const intl = useIntl();
 
