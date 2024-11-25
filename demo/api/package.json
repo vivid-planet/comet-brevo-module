@@ -102,7 +102,7 @@
         "@nestjs/cli": "^9.5.0",
         "@nestjs/schematics": "^9.2.0",
         "@nestjs/testing": "^9.4.3",
-        "@types/async": "^3.2.5",
+        "@types/async": "^3.2.24",
         "@types/cli-progress": "^3.8.0",
         "@types/compression": "^1.7.0",
         "@types/cookie-parser": "^1.4.2",
