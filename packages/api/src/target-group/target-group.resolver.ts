@@ -52,6 +52,7 @@ export function createTargetGroupsResolver({
         async targetGroups(@Args() { search, filter, sort, offset, limit, scope }: TargetGroupsArgs): Promise<PaginatedTargetGroups> {
             const where = this.targetGroupsService.getFindCondition({ search, filter });
             where.scope = scope;
+            where.isTestList = false;
 
             const options: FindOptions<TargetGroupInterface> = { offset, limit };
 
