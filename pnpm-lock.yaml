@@ -983,8 +983,8 @@ importers:
         specifier: ^1.43.5
         version: 1.43.5
       '@types/multer':
-        specifier: ^1.4.11
-        version: 1.4.11
+        specifier: ^1.4.12
+        version: 1.4.12
       '@types/node-fetch':
         specifier: ^2.5.12
         version: 2.6.11
@@ -9084,8 +9084,8 @@ packages:
     resolution: {integrity: sha512-hov8bUuiLiyFPGyFPE1lwWhmzYbirOXQNNo40+y3zow8aFVTeyn3VWL0VFFfdNddA8S4Vf0Tc062rzyNr7Paag==}
     dev: true
 
-  /@types/multer@1.4.11:
-    resolution: {integrity: sha512-svK240gr6LVWvv3YGyhLlA+6LRRWA4mnGIU7RcNmgjBYFl6665wcXrRfxGp5tEPVHUNm5FMcmq7too9bxCwX/w==}
+  /@types/multer@1.4.12:
+    resolution: {integrity: sha512-pQ2hoqvXiJt2FP9WQVLPRO+AmiIm/ZYkavPlIQnx282u4ZrVdztx0pkh3jjpQt0Kz+YI0YhSG264y08UJKoUQg==}
     dependencies:
       '@types/express': 4.17.21
     dev: true
