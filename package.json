@@ -29,7 +29,7 @@
         "@comet/dev-process-manager": "^2.7.0",
         "@changesets/cli": "^2.27.10",
         "@formatjs/cli": "^4.8.3",
-        "@types/node": "^18.0.0",
+        "@types/node": "^18.19.65",
         "dotenv-cli": "^6.0.0",
         "husky": "^7.0.4",
         "lint-staged": "^12.5.0",
