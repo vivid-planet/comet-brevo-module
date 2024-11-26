@@ -433,7 +433,7 @@ importers:
         specifier: ^3.11.6
         version: 3.11.6
       '@types/compression':
-        specifier: ^1.7.0
+        specifier: ^1.7.5
         version: 1.7.5
       '@types/cookie-parser':
         specifier: ^1.4.8
