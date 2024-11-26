@@ -448,8 +448,8 @@ importers:
         specifier: ^18.0.6
         version: 18.19.8
       '@types/node-fetch':
-        specifier: ^2.5.12
-        version: 2.6.11
+        specifier: ^2.6.12
+        version: 2.6.12
       '@types/uuid':
         specifier: ^8.3.0
         version: 8.3.4
@@ -986,8 +986,8 @@ importers:
         specifier: ^1.4.12
         version: 1.4.12
       '@types/node-fetch':
-        specifier: ^2.5.12
-        version: 2.6.11
+        specifier: ^2.6.12
+        version: 2.6.12
       '@types/rimraf':
         specifier: ^3.0.0
         version: 3.0.2
@@ -9096,8 +9096,8 @@ packages:
       '@types/node': 18.19.8
     dev: false
 
-  /@types/node-fetch@2.6.11:
-    resolution: {integrity: sha512-24xFj9R5+rfQJLRyM56qh+wnVSYhyXC2tkoBndtY0U+vubqNsYXGjufB2nn8Q6gt0LrARwL6UBtMCSVCwl4B1g==}
+  /@types/node-fetch@2.6.12:
+    resolution: {integrity: sha512-8nneRWKCg3rMtF69nLQJnOYUcbafYeFSjqkw3jCRLsqkWFlHaoQrr5mXmofFGOx3DKn7UfmBMyov8ySvLRVldA==}
     dependencies:
       '@types/node': 18.19.8
       form-data: 4.0.0
