@@ -989,7 +989,7 @@ importers:
         specifier: ^2.6.12
         version: 2.6.12
       '@types/rimraf':
-        specifier: ^3.0.0
+        specifier: ^3.0.2
         version: 3.0.2
       '@types/uuid':
         specifier: ^8.3.0
