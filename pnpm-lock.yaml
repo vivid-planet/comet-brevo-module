@@ -210,7 +210,7 @@ importers:
         specifier: ^17.0.0
         version: 17.0.25
       '@types/react-router':
-        specifier: ^5.0.3
+        specifier: ^5.1.20
         version: 5.1.20
       '@types/react-router-dom':
         specifier: ^5.1.7
@@ -859,7 +859,7 @@ importers:
         specifier: ^17.0.0
         version: 17.0.25
       '@types/react-router':
-        specifier: ^5.0.3
+        specifier: ^5.1.20
         version: 5.1.20
       draft-js:
         specifier: ^0.11.7

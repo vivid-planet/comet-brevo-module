@@ -55,7 +55,7 @@
         "@types/lodash.isequal": "^4.5.8",
         "@types/react": "^17.0",
         "@types/react-dom": "^17.0.0",
-        "@types/react-router": "^5.0.3",
+        "@types/react-router": "^5.1.20",
         "draft-js": "^0.11.7",
         "eslint": "^8.0.0",
         "final-form": "^4.16.1",
