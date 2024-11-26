@@ -599,7 +599,7 @@ importers:
         specifier: ^0.11.9
         version: 0.11.17
       '@types/fs-extra':
-        specifier: ^9.0.0
+        specifier: ^9.0.13
         version: 9.0.13
       '@types/node':
         specifier: ^18.0.0
@@ -741,7 +741,7 @@ importers:
         specifier: ^0.11.9
         version: 0.11.17
       '@types/fs-extra':
-        specifier: ^9.0.0
+        specifier: ^9.0.13
         version: 9.0.13
       '@types/node':
         specifier: ^18.0.0
