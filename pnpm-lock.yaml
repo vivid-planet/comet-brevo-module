@@ -152,10 +152,10 @@ importers:
         specifier: ^5.25.1
         version: 5.25.1(@types/react@17.0.75)(react@17.0.2)(typescript@4.9.5)
       react-router:
-        specifier: ^5.1.2
+        specifier: ^5.3.4
         version: 5.3.4(react@17.0.2)
       react-router-dom:
-        specifier: ^5.1.2
+        specifier: ^5.3.4
         version: 5.3.4(react@17.0.2)
     devDependencies:
       '@comet/cli':
@@ -898,10 +898,10 @@ importers:
         specifier: ^5.25.1
         version: 5.25.1(@types/react@17.0.75)(react@17.0.2)(typescript@4.9.5)
       react-router:
-        specifier: ^5.1.2
+        specifier: ^5.3.4
         version: 5.3.4(react@17.0.2)
       react-router-dom:
-        specifier: ^5.1.2
+        specifier: ^5.3.4
         version: 5.3.4(react@17.0.2)
       rimraf:
         specifier: ^3.0.2
@@ -18853,7 +18853,7 @@ packages:
     peerDependencies:
       react: '>=15'
     dependencies:
-      '@babel/runtime': 7.23.8
+      '@babel/runtime': 7.24.5
       history: 4.10.1
       loose-envify: 1.4.0
       prop-types: 15.8.1
@@ -18867,7 +18867,7 @@ packages:
     peerDependencies:
       react: '>=15'
     dependencies:
-      '@babel/runtime': 7.23.8
+      '@babel/runtime': 7.24.5
       history: 4.10.1
       hoist-non-react-statics: 3.3.2
       loose-envify: 1.4.0
