@@ -596,8 +596,8 @@ importers:
         specifier: ^2.5.13
         version: 2.5.13(graphql@15.8.0)
       '@types/draft-js':
-        specifier: ^0.11.9
-        version: 0.11.17
+        specifier: ^0.11.18
+        version: 0.11.18
       '@types/fs-extra':
         specifier: ^9.0.13
         version: 9.0.13
@@ -738,8 +738,8 @@ importers:
         specifier: ^2.5.13
         version: 2.5.13(graphql@15.8.0)
       '@types/draft-js':
-        specifier: ^0.11.9
-        version: 0.11.17
+        specifier: ^0.11.18
+        version: 0.11.18
       '@types/fs-extra':
         specifier: ^9.0.13
         version: 9.0.13
@@ -8791,8 +8791,8 @@ packages:
     resolution: {integrity: sha512-vt+kDhq/M2ayberEtJcIN/hxXy1Pk+59g2FV/ZQceeaTyCtCucjL2Q7FXlFjtWn4n15KCr1NE2lNNFhp0lEThw==}
     dev: false
 
-  /@types/draft-js@0.11.17:
-    resolution: {integrity: sha512-th0OwSPftG2r5rvGxS7nt8I7hcWMlrQ9OJcNx6MdXAwO797W78IGEsGWonO+turVBWEd3qylZRGBVtpEX9vSYQ==}
+  /@types/draft-js@0.11.18:
+    resolution: {integrity: sha512-lP6yJ+EKv5tcG1dflWgDKeezdwBa8wJ7KkiNrrHqXuXhl/VGes1SKjEfKHDZqOz19KQbrAhFvNhDPWwnQXYZGQ==}
     dependencies:
       '@types/react': 17.0.75
       immutable: 3.7.6
