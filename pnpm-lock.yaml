@@ -451,7 +451,7 @@ importers:
         specifier: ^2.6.12
         version: 2.6.12
       '@types/uuid':
-        specifier: ^8.3.0
+        specifier: ^8.3.4
         version: 8.3.4
       eslint:
         specifier: ^8.19.0
@@ -992,7 +992,7 @@ importers:
         specifier: ^3.0.2
         version: 3.0.2
       '@types/uuid':
-        specifier: ^8.3.0
+        specifier: ^8.3.4
         version: 8.3.4
       chokidar-cli:
         specifier: ^2.1.0
