@@ -430,8 +430,8 @@ importers:
         specifier: ^3.2.24
         version: 3.2.24
       '@types/cli-progress':
-        specifier: ^3.8.0
-        version: 3.11.5
+        specifier: ^3.11.6
+        version: 3.11.6
       '@types/compression':
         specifier: ^1.7.0
         version: 1.7.5
@@ -8739,8 +8739,8 @@ packages:
   /@types/chroma-js@2.4.3:
     resolution: {integrity: sha512-1ly5ly/7S/YF8aD7MxUQnFOZxdegimuOunJl0xDsLlguu5JrwuSTVGVH3UpIUlh6YauI0RMNT4cqjBonhgbdIQ==}
 
-  /@types/cli-progress@3.11.5:
-    resolution: {integrity: sha512-D4PbNRbviKyppS5ivBGyFO29POlySLmA2HyUFE4p5QGazAMM3CwkKWcvTl8gvElSuxRh6FPKL8XmidX873ou4g==}
+  /@types/cli-progress@3.11.6:
+    resolution: {integrity: sha512-cE3+jb9WRlu+uOSAugewNpITJDt1VF8dHOopPO4IABFc3SXYL5WE/+PTz/FCdZRRfIujiWW3n3aMbv1eIGVRWA==}
     dependencies:
       '@types/node': 18.19.8
     dev: true
