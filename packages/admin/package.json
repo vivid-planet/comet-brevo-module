@@ -35,8 +35,8 @@
     },
     "devDependencies": {
         "@apollo/client": "^3.11.8",
-        "@babel/cli": "^7.17.6",
-        "@babel/core": "^7.20.12",
+        "@babel/cli": "^7.25.9",
+        "@babel/core": "^7.26.0",
         "@comet/admin": "^7.7.0",
         "@comet/admin-babel-preset": "^7.7.0",
         "@comet/admin-date-time": "^7.7.0",
