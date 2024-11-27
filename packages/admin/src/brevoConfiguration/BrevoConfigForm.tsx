@@ -155,6 +155,12 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
         return <Loading behavior="fillPageHeight" />;
     }
 
+    const validateFolderId = (value: number) => {
+        if (typeof value !== "number") {
+            return <FormattedMessage id="cometBrevoModule.brevoConfig.folderId.validation" defaultMessage="Please enter a number" />;
+        }
+    };
+
     return (
         <FinalForm<FormValues> apiRef={formApiRef} onSubmit={handleSubmit} mode={mode} initialValues={initialValues}>
             {({ values }) => {
@@ -200,16 +206,7 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
                                     </>
                                 }
                                 fullWidth
-                                validate={(value) => {
-                                    if (typeof value !== "number") {
-                                        return (
-                                            <FormattedMessage
-                                                id="cometBrevoModule.brevoConfig.folderId.validation"
-                                                defaultMessage="Please enter a number"
-                                            />
-                                        );
-                                    }
-                                }}
+                                validate={validateFolderId}
                             />
                         </MainContent>
                     </>
