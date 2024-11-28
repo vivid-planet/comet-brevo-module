@@ -94,10 +94,6 @@ export class BrevoContactsService {
 
         const brevoConfig = await this.brevoConfigRepository.findOneOrFail({ scope });
 
-        if (!brevoConfig.doiTemplateId) {
-            throw new Error("Double opt-in template is not set");
-        }
-
         const created = await this.createDoubleOptInContact({
             ...data,
             scope,
