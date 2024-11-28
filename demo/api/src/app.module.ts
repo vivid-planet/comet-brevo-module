@@ -148,6 +148,7 @@ export class AppModule {
                                     sender: { name: config.brevo.sender.name, email: config.brevo.sender.email },
                                     allowedRedirectUrl: config.brevo.allowedRedirectUrl,
                                     redirectUrlForImport: config.brevo.redirectUrlForImport,
+                                    folderId: config.brevo.folderId,
                                 };
                             } else {
                                 return {
@@ -156,6 +157,7 @@ export class AppModule {
                                     sender: { name: config.brevo.sender.name, email: config.brevo.sender.email },
                                     allowedRedirectUrl: config.brevo.allowedRedirectUrl,
                                     redirectUrlForImport: config.brevo.redirectUrlForImport,
+                                    folderId: config.brevo.folderId,
                                 };
                             }
                         },
