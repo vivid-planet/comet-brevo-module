@@ -45,7 +45,7 @@ interface Option {
 }
 type FormValues = {
     sender: Option;
-    doiTemplate?: Option;
+    doiTemplate: Option;
 };
 
 interface FormProps {
@@ -211,6 +211,7 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
                                 name="sender"
                                 label={<FormattedMessage id="cometBrevoModule.brevoConfig.sender" defaultMessage="Sender" />}
                                 fullWidth
+                                required
                             />
 
                             <Field
@@ -221,6 +222,7 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
                                 name="doiTemplate"
                                 label={<FormattedMessage id="cometBrevoModule.brevoConfig.doiTemplate" defaultMessage="Double opt-in template id" />}
                                 fullWidth
+                                required
                             />
                         </MainContent>
                     </>
