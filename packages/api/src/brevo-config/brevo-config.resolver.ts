@@ -115,16 +115,12 @@ export function createBrevoConfigResolver({
                 validateNotModified(brevoConfig, lastUpdatedAt);
             }
 
-            if (!input.senderMail || !input.senderName || !input.doiTemplateId) {
-                throw new Error("Sender mail, sender name and doi template id are required");
+            if (!input.senderMail || !input.senderName) {
+                throw new Error("Sender mail, sender name are required");
             }
 
             if (!(await this.isValidSender({ email: input.senderMail, name: input.senderName }))) {
                 throw new Error("Sender not found");
-            }
-
-            if (!(await this.isValidTemplateId({ templateId: input.doiTemplateId }))) {
-                throw new Error("Template not found");
             }
 
             wrap(brevoConfig).assign({
