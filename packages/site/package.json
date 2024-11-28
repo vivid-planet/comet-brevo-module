@@ -1,0 +1,85 @@
+{
+    "name": "@comet/brevo-site",
+    "version": "1.0.0",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/vivid-planet/comet",
+        "directory": "packages/site"
+    },
+    "license": "BSD-2-Clause",
+    "main": "lib/index.js",
+    "types": "lib/index.d.ts",
+    "files": [
+        "lib/*"
+    ],
+    "scripts": {
+        "build": "$npm_execpath run clean && tsc -p tsconfig.build.json",
+        "clean": "rimraf lib",
+        "dev": "tsc --watch --preserveWatchOutput -p tsconfig.build.json",
+        "generate-schema": "ts-node generate-schema.ts",
+        "generate-schema:watch": "chokidar \"src/\" -c \"$npm_execpath generate-schema\"",
+        "lint": "run-p lint:eslint lint:tsc",
+        "lint:eslint": "eslint --max-warnings 0 src/ package.json",
+        "lint:prettier": "npx prettier --check './**/*.{js,json,md,yml,yaml}'",
+        "lint:tsc": "tsc --noEmit"
+    },
+    "dependencies": {
+        "@comet/cms-site": "^7.7.0",
+        "@fontsource/roboto": "^5.1.0",
+        "@next/bundle-analyzer": "^14.2.18",
+        "@opentelemetry/api": "^1.9.0",
+        "@opentelemetry/auto-instrumentations-node": "^0.53.0",
+        "@opentelemetry/exporter-trace-otlp-http": "^0.55.0",
+        "@opentelemetry/sdk-node": "^0.55.0",
+        "cache-manager": "^5.7.6",
+        "graphql": "^15.9.0",
+        "ioredis": "^5.4.1",
+        "lru-cache": "^11.0.2",
+        "next": "^14.2.18",
+        "react": "^18.0.0",
+        "react-dom": "^18.0.0",
+        "react-intl": "^6.8.9",
+        "redraft": "^0.10.2",
+        "rimraf": "^3.0.0",
+        "styled-components": "^6.1.13",
+        "swiper": "^11.1.15",
+        "ts-node": "^10.9.2"
+    },
+    "devDependencies": {
+        "@comet/cli": "^7.7.0",
+        "@comet/eslint-config": "^7.7.0",
+        "@comet/eslint-plugin": "^7.7.0",
+        "@cspell/eslint-plugin": "^8.16.0",
+        "@formatjs/cli": "^6.3.11",
+        "@graphql-codegen/add": "^5.0.3",
+        "@graphql-codegen/cli": "^5.0.3",
+        "@graphql-codegen/named-operations-object": "^3.1.0",
+        "@graphql-codegen/near-operation-file-preset": "^3.0.0",
+        "@graphql-codegen/typescript": "^4.1.1",
+        "@graphql-codegen/typescript-operations": "^4.3.1",
+        "@parcel/watcher": "^2.5.0",
+        "@types/node": "^22.10.0",
+        "@types/react": "^18.0.0",
+        "@types/react-dom": "^18.0.0",
+        "chokidar-cli": "^3.0.0",
+        "cspell": "^8.16.0",
+        "dotenv-cli": "^7.4.4",
+        "eslint": "^8.57.1",
+        "npm-run-all2": "^5.0.2",
+        "postcss-styled-syntax": "^0.7.0",
+        "prettier": "^2.8.8",
+        "stylelint": "^16.10.0",
+        "stylelint-config-standard": "^36.0.1",
+        "tsconfig-paths": "^3.15.0",
+        "typescript": "^5.7.2"
+    },
+    "peerDependencies": {
+        "react": "^18.0.0",
+        "react-dom": "^18.0.0",
+        "styled-components": "^6.0.0"
+    },
+    "publishConfig": {
+        "access": "public",
+        "registry": "https://registry.npmjs.org"
+    }
+}

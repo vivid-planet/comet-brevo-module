@@ -5,8 +5,10 @@
         "build": "pnpm recursive run build",
         "build:api": "pnpm recursive --filter '@comet/brevo-api' run build",
         "build:admin": "pnpm recursive --filter '@comet/brevo-admin' run build",
+        "build:site": "pnpm recursive --filter '@comet/brevo-site' run build",
         "build:api:skippable": "test -f packages/api/lib/index.d.ts && echo 'Skipping API build' || $npm_execpath build:api",
         "build:admin:skippable": "test -f packages/admin/lib/index.d.ts && echo 'Skipping Admin build' || $npm_execpath build:admin",
+        "build:site:skippable": "test -f packages/site/lib/index.d.ts && echo 'Skipping Site build' || $npm_execpath build:site",
         "build:lib": "pnpm recursive --filter '@comet/*' run build",
         "clean": "pnpm recursive run clean",
         "copy-schema-files": "node copy-schema-files.js",
@@ -16,6 +18,7 @@
         "dev:demo:site": "dotenv -c -- dev-pm start @demo-site",
         "dev:api": "pnpm recursive --filter '@comet/brevo-api' run clean && dotenv -c -- dev-pm start @api",
         "dev:admin": "pnpm recursive --filter '@comet/brevo-admin' run clean && dotenv -c -- dev-pm start @admin",
+        "dev:site": "pnpm recursive --filter '@comet/brevo-site' run clean && dotenv -c -- dev-pm start @site",
         "postinstall": "husky install",
         "lint": "pnpm lint:root && pnpm recursive run lint",
         "lint:root": "$npm_execpath prettier --check './!(demo|packages)/**/*.{js,json,md,yml,yaml}'",
@@ -67,5 +70,6 @@
                 }
             }
         }
-    }
+    },
+    "packageManager": "pnpm@9.14.2+sha512.6e2baf77d06b9362294152c851c4f278ede37ab1eba3a55fda317a4a17b209f4dbb973fb250a77abc463a341fcb1f17f17cfa24091c4eb319cda0d9b84278387"
 }
