@@ -11,7 +11,7 @@ export interface BrevoConfigInterface {
     id: string;
     senderName: string;
     senderMail: string;
-    doiTemplateId?: number;
+    doiTemplateId: number;
     createdAt: Date;
     updatedAt: Date;
     scope: EmailCampaignScopeInterface;
@@ -38,9 +38,9 @@ export class BrevoConfigEntityFactory {
             @Field()
             senderName: string;
 
-            @Property({ columnType: "number", nullable: true })
-            @Field(() => Int, { nullable: true })
-            doiTemplateId?: number;
+            @Property({ columnType: "number" })
+            @Field(() => Int)
+            doiTemplateId: number;
 
             @Property({
                 columnType: "timestamp with time zone",

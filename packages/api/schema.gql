@@ -206,7 +206,7 @@ type BrevoConfig implements DocumentInterface {
   updatedAt: DateTime!
   senderMail: String!
   senderName: String!
-  doiTemplateId: Int
+  doiTemplateId: Int!
   createdAt: DateTime!
   scope: EmailCampaignContentScope!
 }
