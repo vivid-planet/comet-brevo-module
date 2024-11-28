@@ -59,9 +59,7 @@ export const additionalFormConfig = {
     nodeFragment: attributesFragment,
 };
 
-export const getBrevoContactConfig = (
-    intl: IntlShape,
-): {
+export interface BrevoContactConfig {
     additionalGridFields: GridColDef<GQLBrevoContactAttributesFragmentFragment>[];
     additionalFormFields: React.ReactNode;
     additionalAttributesFragment: {
@@ -77,7 +75,9 @@ export const getBrevoContactConfig = (
         renderValue: (row: GQLBrevoContactAttributesFragmentFragment) => string;
         headerName: string;
     }[];
-} => {
+}
+
+export const getBrevoContactConfig = (intl: IntlShape): BrevoContactConfig => {
     return {
         additionalGridFields: [
             {
