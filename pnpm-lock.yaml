@@ -86,8 +86,8 @@ importers:
         specifier: ^5.1.0
         version: 5.1.0
       '@mui/icons-material':
-        specifier: ^5.8.4
-        version: 5.14.5(@mui/material@5.16.7)(@types/react@17.0.75)(react@17.0.2)
+        specifier: ^5.16.8
+        version: 5.16.8(@mui/material@5.16.7)(@types/react@17.0.75)(react@17.0.2)
       '@mui/lab':
         specifier: ^5.0.0-alpha.173
         version: 5.0.0-alpha.173(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@mui/material@5.16.7)(@types/react@17.0.75)(react-dom@17.0.2)(react@17.0.2)
@@ -835,8 +835,8 @@ importers:
         specifier: ^2.16.5
         version: 2.16.5(@babel/core@7.23.7)(@types/node@18.19.8)(graphql@15.8.0)(typescript@4.9.5)
       '@mui/icons-material':
-        specifier: ^5.8.4
-        version: 5.14.5(@mui/material@5.16.7)(@types/react@17.0.75)(react@17.0.2)
+        specifier: ^5.16.8
+        version: 5.16.8(@mui/material@5.16.7)(@types/react@17.0.75)(react@17.0.2)
       '@mui/material':
         specifier: ^5.16.7
         version: 5.16.7(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@types/react@17.0.75)(react-dom@17.0.2)(react@17.0.2)
@@ -6374,18 +6374,18 @@ packages:
   /@mui/core-downloads-tracker@5.16.7:
     resolution: {integrity: sha512-RtsCt4Geed2/v74sbihWzzRs+HsIQCfclHeORh5Ynu2fS4icIKozcSubwuG7vtzq2uW3fOR1zITSP84TNt2GoQ==}
 
-  /@mui/icons-material@5.14.5(@mui/material@5.16.7)(@types/react@17.0.75)(react@17.0.2):
-    resolution: {integrity: sha512-OLvC3JKtBj1PO4QWVxOqULcq/oQP9SRw2SD+G5IXnthcFG0ZCFPIgAe1TI3Lo9N+96R0jRDI0plRc/unubjWHA==}
+  /@mui/icons-material@5.16.8(@mui/material@5.16.7)(@types/react@17.0.75)(react@17.0.2):
+    resolution: {integrity: sha512-2HKzTsCPbNgJq2z4tI6sLDwxKXqiiPh6L3IhuB8w+ypShE/qAI4FZQfI2o93vysQnkPB4Rw3FKSwAJWTThhHQA==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
       '@mui/material': ^5.0.0
-      '@types/react': ^17.0.0 || ^18.0.0
-      react: ^17.0.0 || ^18.0.0
+      '@types/react': ^17.0.0 || ^18.0.0 || ^19.0.0
+      react: ^17.0.0 || ^18.0.0 || ^19.0.0
     peerDependenciesMeta:
       '@types/react':
         optional: true
     dependencies:
-      '@babel/runtime': 7.23.8
+      '@babel/runtime': 7.24.5
       '@mui/material': 5.16.7(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@types/react@17.0.75)(react-dom@17.0.2)(react@17.0.2)
       '@types/react': 17.0.75
       react: 17.0.2
