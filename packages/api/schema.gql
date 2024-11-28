@@ -185,7 +185,7 @@ type BrevoConfig implements DocumentInterface {
   updatedAt: DateTime!
   senderMail: String!
   senderName: String!
-  folderId: Int
+  folderId: Int!
   createdAt: DateTime!
   scope: EmailCampaignContentScope!
 }

@@ -207,6 +207,7 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
                                 }
                                 fullWidth
                                 validate={validateFolderId}
+                                required
                             />
                         </MainContent>
                     </>
