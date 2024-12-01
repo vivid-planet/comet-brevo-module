@@ -47,7 +47,7 @@
         "zod": "^3.23.8"
     },
     "devDependencies": {
-        "@babel/core": "^7.16.0",
+        "@babel/core": "^7.26.0",
         "@comet/cli": "^7.7.0",
         "@comet/eslint-config": "^7.7.0",
         "@formatjs/cli": "^4.8.4",
