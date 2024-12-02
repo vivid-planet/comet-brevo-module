@@ -113,7 +113,7 @@ importers:
         specifier: ^2.0.5
         version: 2.0.5
       final-form:
-        specifier: ^4.16.1
+        specifier: ^4.20.10
         version: 4.20.10
       graphql:
         specifier: ^15.4.0
@@ -868,7 +868,7 @@ importers:
         specifier: ^8.0.0
         version: 8.56.0
       final-form:
-        specifier: ^4.16.1
+        specifier: ^4.20.10
         version: 4.20.10
       graphql:
         specifier: ^15.4.0
@@ -13502,7 +13502,7 @@ packages:
     resolution: {integrity: sha512-TL48Pi1oNHeMOHrKv1bCJUrWZDcD3DIG6AGYVNOnyZPr7Bd/pStN0pL+lfzF5BNoj/FclaoiaLenk4XUIFVYng==}
     engines: {node: '>=8'}
     dependencies:
-      '@babel/runtime': 7.23.8
+      '@babel/runtime': 7.24.5
 
   /finalhandler@1.2.0:
     resolution: {integrity: sha512-5uXcUVftlQMFnWC9qu/svkWv3GTd2PfUhK/3PLkYNAe7FbqJMt3515HaxE6eRL74GdsriiwujiawdaB1BpEISg==}
