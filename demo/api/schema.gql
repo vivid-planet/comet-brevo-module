@@ -178,6 +178,27 @@ type PaginatedUserList {
   totalCount: Int!
 }
 
+type BrevoApiEmailTemplateSender {
+  id: String
+  subject: String
+  email: String
+}
+
+type BrevoApiEmailTemplate {
+  id: ID!
+  name: String!
+  subject: String!
+  isActive: Boolean!
+  testSent: Boolean!
+  replyTo: String!
+  toField: String!
+  tag: String!
+  htmlContent: String!
+  createdAt: String!
+  modifiedAt: String!
+  sender: BrevoApiEmailTemplateSender!
+}
+
 type BrevoApiSender {
   id: ID!
   name: String!
@@ -460,6 +481,7 @@ type BrevoConfig implements DocumentInterface {
   updatedAt: DateTime!
   senderMail: String!
   senderName: String!
+  doiTemplateId: Int!
   createdAt: DateTime!
   scope: EmailCampaignContentScope!
 }
@@ -583,6 +605,7 @@ type Query {
   targetGroup(id: ID!): TargetGroup!
   targetGroups(scope: EmailCampaignContentScopeInput!, search: String, filter: TargetGroupFilter, sort: [TargetGroupSort!], offset: Int! = 0, limit: Int! = 25): PaginatedTargetGroups!
   senders(scope: EmailCampaignContentScopeInput!): [BrevoApiSender!]
+  doiTemplates: [BrevoApiEmailTemplate!]
   brevoConfig(scope: EmailCampaignContentScopeInput!): BrevoConfig
 }
 
@@ -997,9 +1020,11 @@ input TargetGroupUpdateInput {
 input BrevoConfigInput {
   senderMail: String!
   senderName: String!
+  doiTemplateId: Int!
 }
 
 input BrevoConfigUpdateInput {
   senderMail: String
   senderName: String
+  doiTemplateId: Int
 }
