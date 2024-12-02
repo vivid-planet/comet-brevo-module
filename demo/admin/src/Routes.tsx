@@ -1,6 +1,6 @@
 import { MasterLayout, RouteWithErrorBoundary } from "@comet/admin";
 import { Domain } from "@comet/admin-icons";
-import { createBrevoContactsPage, createEmailCampaignsPage, createTargetGroupsPage } from "@comet/brevo-admin";
+import { createBrevoContactsPage, createBrevoTestContactsPage, createEmailCampaignsPage, createTargetGroupsPage } from "@comet/brevo-admin";
 import { ContentScopeIndicator, createRedirectsPage, DamPage, PagesPage, PublisherPage, SitePreview } from "@comet/cms-admin";
 import { getBrevoContactConfig } from "@src/common/brevoModuleConfig/brevoContactsPageAttributesConfig";
 import { pageTreeCategories, urlParamToCategory } from "@src/pageTree/pageTreeCategories";
@@ -26,6 +26,14 @@ export const Routes: React.FC = () => {
     const brevoContactConfig = getBrevoContactConfig(intl);
 
     const BrevoContactsPage = createBrevoContactsPage({
+        scopeParts: ["domain", "language"],
+        additionalAttributesFragment: brevoContactConfig.additionalAttributesFragment,
+        additionalGridFields: brevoContactConfig.additionalGridFields,
+        additionalFormFields: brevoContactConfig.additionalFormFields,
+        input2State: brevoContactConfig.input2State,
+    });
+
+    const BrevoTestContactsPage = createBrevoTestContactsPage({
         scopeParts: ["domain", "language"],
         additionalAttributesFragment: brevoContactConfig.additionalAttributesFragment,
         additionalGridFields: brevoContactConfig.additionalGridFields,
@@ -94,6 +102,7 @@ export const Routes: React.FC = () => {
                                     />
 
                                     <RouteWithErrorBoundary path={`${match.path}/newsletter/contacts`} component={BrevoContactsPage} />
+                                    <RouteWithErrorBoundary path={`${match.path}/newsletter/test-contacts`} component={BrevoTestContactsPage} />
                                     <RouteWithErrorBoundary path={`${match.path}/newsletter/target-groups`} component={TargetGroupsPage} />
                                     <RouteWithErrorBoundary path={`${match.path}/newsletter/email-campaigns`} component={EmailCampaignsPage} />
 

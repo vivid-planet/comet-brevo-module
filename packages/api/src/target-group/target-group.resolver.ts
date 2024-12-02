@@ -52,6 +52,7 @@ export function createTargetGroupsResolver({
         async targetGroups(@Args() { search, filter, sort, offset, limit, scope }: TargetGroupsArgs): Promise<PaginatedTargetGroups> {
             const where = this.targetGroupsService.getFindCondition({ search, filter });
             where.scope = scope;
+            where.isTestList = false;
 
             const options: FindOptions<TargetGroupInterface> = { offset, limit };
 
@@ -90,7 +91,7 @@ export function createTargetGroupsResolver({
             const brevoId = await this.brevoApiContactsService.createBrevoContactList(input.title, scope);
 
             if (brevoId) {
-                const targetGroup = this.repository.create({ ...input, brevoId, scope, isMainList: false });
+                const targetGroup = this.repository.create({ ...input, brevoId, scope, isMainList: false, isTestList: false });
 
                 await this.entityManager.flush();
 
@@ -142,7 +143,7 @@ export function createTargetGroupsResolver({
                 throw new Error(`Brevo contact with id ${input.brevoContactId} not found`);
             }
 
-            const contactIsInTargetGroupByAttributes = this.targetGroupsService.checkIfContactIsInTargetGroup(
+            const contactIsInTargetGroupByAttributes = this.targetGroupsService.checkIfContactIsInTargetGroupByAttributes(
                 brevoContact.attributes,
                 targetGroup.filters,
             );

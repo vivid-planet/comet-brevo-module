@@ -41,6 +41,10 @@ export const MasterMenu: React.FC = () => {
                     to={`${match.url}/newsletter/contacts`}
                 />
                 <MenuItemRouterLink
+                    primary={intl.formatMessage({ id: "menu.newsletter.testContacts", defaultMessage: "Test contacts" })}
+                    to={`${match.url}/newsletter/test-contacts`}
+                />
+                <MenuItemRouterLink
                     primary={intl.formatMessage({ id: "menu.newsletter.targetGroups", defaultMessage: "Target groups" })}
                     to={`${match.url}/newsletter/target-groups`}
                 />

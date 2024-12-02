@@ -70,8 +70,6 @@ export const getBrevoContactConfig = (
         name: string;
     };
     input2State: (values?: AdditionalFormConfigInputProps) => {
-        email: string;
-        redirectionUrl: string;
         attributes: { BRANCH?: Array<GQLBrevoContactBranch>; SALUTATION?: GQLBrevoContactSalutation; FIRSTNAME?: string; LASTNAME?: string };
     };
     exportFields: {
@@ -140,8 +138,6 @@ export const getBrevoContactConfig = (
         ),
         input2State: (values?: AdditionalFormConfigInputProps) => {
             return {
-                email: values?.email ?? "",
-                redirectionUrl: values?.redirectionUrl ?? "",
                 attributes: {
                     BRANCH: values?.attributes?.BRANCH ?? [],
                     SALUTATION: values?.attributes?.SALUTATION,
