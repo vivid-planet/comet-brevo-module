@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { DateTimeFilter, StringFilter } from "@comet/cms-api";
+=======
+import { BooleanFilter, DateFilter, StringFilter } from "@comet/cms-api";
+>>>>>>> main
 import { Field, InputType } from "@nestjs/graphql";
 import { Type } from "class-transformer";
 import { IsOptional, ValidateNested } from "class-validator";
@@ -22,6 +26,12 @@ export class TargetGroupFilter {
     @IsOptional()
     @Type(() => StringFilter)
     title?: StringFilter;
+
+    @Field(() => BooleanFilter, { nullable: true })
+    @ValidateNested()
+    @IsOptional()
+    @Type(() => BooleanFilter)
+    isTestList?: BooleanFilter;
 
     @Field(() => [TargetGroupFilter], { nullable: true })
     @Type(() => TargetGroupFilter)
