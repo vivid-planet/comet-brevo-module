@@ -14,6 +14,7 @@ import { createBrevoContactImportResolver } from "./brevo-contact-import.resolve
 import { BrevoContactsService } from "./brevo-contacts.service";
 import { BrevoContactFactory } from "./dto/brevo-contact.factory";
 import { BrevoContactInputFactory } from "./dto/brevo-contact-input.factory";
+import { BrevoTestContactInputFactory } from "./dto/brevo-test-contact-input.factory";
 import { SubscribeInputFactory } from "./dto/subscribe-input.factory";
 import { EcgRtrListService } from "./ecg-rtr-list/ecg-rtr-list.service";
 import { IsValidRedirectURLConstraint } from "./validator/redirect-url.validator";
@@ -30,12 +31,15 @@ export class BrevoContactModule {
         const BrevoContact = BrevoContactFactory.create({ BrevoContactAttributes });
         const BrevoContactSubscribeInput = SubscribeInputFactory.create({ BrevoContactAttributes, Scope });
         const [BrevoContactInput, BrevoContactUpdateInput] = BrevoContactInputFactory.create({ BrevoContactAttributes, Scope });
+        const [BrevoTestContactInput] = BrevoTestContactInputFactory.create({ BrevoContactAttributes, Scope });
+
         const BrevoContactResolver = createBrevoContactResolver({
             BrevoContact,
             BrevoContactSubscribeInput,
             Scope,
             BrevoContactInput,
             BrevoContactUpdateInput,
+            BrevoTestContactInput,
         });
 
         const BrevoContactImportResolver = createBrevoContactImportResolver({ Scope, BrevoContact });

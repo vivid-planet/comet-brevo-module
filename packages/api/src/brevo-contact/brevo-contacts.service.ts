@@ -53,6 +53,21 @@ export class BrevoContactsService {
         return created;
     }
 
+    public async createTestContact({
+        email,
+        attributes,
+        scope,
+    }: {
+        email: string;
+        attributes?: BrevoContactAttributesInterface;
+        scope: EmailCampaignScopeInterface;
+    }): Promise<boolean> {
+        const testTargetGroupForScope = await this.targetGroupService.createIfNotExistTestTargetGroupForScope(scope);
+
+        const created = await this.brevoContactsApiService.createTestContact({ email, attributes }, [testTargetGroupForScope.brevoId], scope);
+        return created;
+    }
+
     public async getTargetGroupIdsForNewContact({
         contactAttributes,
         scope,
@@ -72,7 +87,10 @@ export class BrevoContactsService {
             offset += targetGroups.length;
 
             for (const targetGroup of targetGroups) {
-                const contactIsInTargetGroup = this.targetGroupService.checkIfContactIsInTargetGroup(contactAttributes, targetGroup.filters);
+                const contactIsInTargetGroup = this.targetGroupService.checkIfContactIsInTargetGroupByAttributes(
+                    contactAttributes,
+                    targetGroup.filters,
+                );
 
                 if (contactIsInTargetGroup) {
                     targetGroupIds.push(targetGroup.brevoId);
@@ -114,7 +132,7 @@ export class BrevoContactsService {
             offset += targetGroups.length;
 
             for (const targetGroup of targetGroups) {
-                const contactIsInTargetGroupByAttributes = this.targetGroupService.checkIfContactIsInTargetGroup(
+                const contactIsInTargetGroupByAttributes = this.targetGroupService.checkIfContactIsInTargetGroupByAttributes(
                     contact?.attributes,
                     targetGroup.filters,
                 );
