@@ -299,7 +299,7 @@ export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope }: Form
                                         isSendable={!hasChanges && state.targetGroups != undefined}
                                         id={id}
                                     />
-                                    <TestEmailCampaignForm id={id} isSendable={!hasChanges && state.targetGroups != undefined} />
+                                    <TestEmailCampaignForm id={id} isSendable={!hasChanges && state.targetGroups != undefined} scope={scope} />
                                 </BlocksFinalForm>
                             ),
                         },

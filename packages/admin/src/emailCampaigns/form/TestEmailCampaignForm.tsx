@@ -1,37 +1,63 @@
-import { useApolloClient } from "@apollo/client";
-import { Field, FinalForm, FinalFormInput, SaveButton } from "@comet/admin";
+import { gql, useApolloClient, useQuery } from "@apollo/client";
+import { Field, FinalForm, FinalFormSelect, SaveButton } from "@comet/admin";
 import { Newsletter } from "@comet/admin-icons";
 import { AdminComponentPaper, AdminComponentSectionGroup } from "@comet/blocks-admin";
-import { Card, FormHelperText, Typography } from "@mui/material";
+import { Card } from "@mui/material";
 import React from "react";
 import { FormattedMessage } from "react-intl";
 
+import { GQLEmailCampaignContentScopeInput } from "../../graphql.generated";
+import { GQLBrevoTestContactsSelectListFragment } from "./TestEmailCampaignForm.generated";
 import { SendEmailCampaignToTestEmailsMutation } from "./TestEmailCampaignForm.gql";
 import { GQLSendEmailCampaignToTestEmailsMutation, GQLSendEmailCampaignToTestEmailsMutationVariables } from "./TestEmailCampaignForm.gql.generated";
 
 interface FormProps {
-    testEmails: string;
+    testEmails: string[];
 }
 
 interface TestEmailCampaignFormProps {
     id?: string;
     isSendable?: boolean;
+    scope: GQLEmailCampaignContentScopeInput;
 }
 
-export const TestEmailCampaignForm = ({ id, isSendable = false }: TestEmailCampaignFormProps) => {
+const brevoTestContactsSelectFragment = gql`
+    fragment BrevoTestContactsSelectList on BrevoContact {
+        id
+        email
+    }
+`;
+
+const brevoTestContactsSelectQuery = gql`
+    query BrevoTestContactsGridSelect($offset: Int, $limit: Int, $email: String, $scope: EmailCampaignContentScopeInput!) {
+        brevoTestContacts(offset: $offset, limit: $limit, email: $email, scope: $scope) {
+            nodes {
+                ...BrevoTestContactsSelectList
+            }
+            totalCount
+        }
+    }
+    ${brevoTestContactsSelectFragment}
+`;
+
+export const TestEmailCampaignForm = ({ id, isSendable = false, scope }: TestEmailCampaignFormProps) => {
     const client = useApolloClient();
 
-    async function submitTestEmails({ testEmails }: FormProps) {
-        const emailsArray = testEmails.trim().split("\n");
+    const { data, loading, error } = useQuery(brevoTestContactsSelectQuery, {
+        variables: { offset: 0, limit: 50, email: "", scope },
+    });
 
+    async function submitTestEmails({ testEmails }: FormProps) {
         if (id) {
             const { data } = await client.mutate<GQLSendEmailCampaignToTestEmailsMutation, GQLSendEmailCampaignToTestEmailsMutationVariables>({
                 mutation: SendEmailCampaignToTestEmailsMutation,
-                variables: { id, data: { emails: emailsArray } },
+                variables: { id, data: { emails: testEmails } },
             });
             return data?.sendEmailCampaignToTestEmails;
         }
     }
+
+    const emailOptions: string[] = data?.brevoTestContacts?.nodes?.map((contact: GQLBrevoTestContactsSelectListFragment) => contact.email) || [];
 
     return (
         <Card sx={{ mt: 4 }}>
@@ -41,11 +67,12 @@ export const TestEmailCampaignForm = ({ id, isSendable = false }: TestEmailCampa
                         <FormattedMessage id="cometBrevoModule.emailCampaigns.testEmailCampaign.title" defaultMessage="Send test email campaign" />
                     }
                 >
-                    <FinalForm<FormProps> mode="edit" onSubmit={submitTestEmails}>
+                    <FinalForm<FormProps> mode="edit" onSubmit={submitTestEmails} initialValues={{ testEmails: [] }}>
                         {({ handleSubmit, submitting, values }) => {
                             return (
                                 <>
                                     <Field
+                                        component={FinalFormSelect}
                                         name="testEmails"
                                         label={
                                             <FormattedMessage
@@ -53,21 +80,13 @@ export const TestEmailCampaignForm = ({ id, isSendable = false }: TestEmailCampa
                                                 defaultMessage="Email addresses"
                                             />
                                         }
-                                        component={FinalFormInput}
-                                        multiline
-                                        placeholder={["First test email address", "Second test email address"].join("\n")}
                                         fullWidth
-                                        minRows={4}
+                                        options={emailOptions}
+                                        isLoading={loading}
+                                        error={!!error}
+                                        value={values.testEmails || []}
+                                        getOptionLabel={(option: string) => option}
                                     />
-                                    <FormHelperText sx={{ marginTop: -2, marginBottom: 4 }}>
-                                        <Typography sx={{ display: "flex", alignItems: "center" }}>
-                                            <FormattedMessage
-                                                id="cometBrevoModule.emailCampaigns.testEmailCampaign.oneEmailAddressEachLine"
-                                                defaultMessage="One email address each line"
-                                            />
-                                        </Typography>
-                                        <Typography />
-                                    </FormHelperText>
                                     <SaveButton
                                         disabled={!values.testEmails || !isSendable || !id}
                                         saveIcon={<Newsletter />}
