@@ -4,6 +4,7 @@ export const brevoConfigFormFragment = gql`
     fragment BrevoConfigForm on BrevoConfig {
         senderMail
         senderName
+        folderId
     }
 `;
 
