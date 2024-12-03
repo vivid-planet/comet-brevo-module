@@ -15,9 +15,9 @@ import { BrevoContactInputFactory } from "./src/brevo-contact/dto/brevo-contact-
 import { SubscribeInputFactory } from "./src/brevo-contact/dto/subscribe-input.factory";
 import { EmailCampaignInputFactory } from "./src/email-campaign/dto/email-campaign-input.factory";
 import { createEmailCampaignsResolver } from "./src/email-campaign/email-campaign.resolver";
-import { EmailCampaignEntityFactory } from "./src/email-campaign/entities/email-campaign-entity.factory";
+import { createEmailCampaignEntity } from "./src/email-campaign/entities/email-campaign-entity.factory";
 import { TargetGroupInputFactory } from "./src/target-group/dto/target-group-input.factory";
-import { TargetGroupEntityFactory } from "./src/target-group/entity/target-group-entity.factory";
+import { createTargetGroupEntity } from "./src/target-group/entity/target-group-entity.factory";
 import { createTargetGroupsResolver } from "./src/target-group/target-group.resolver";
 import { BrevoContactFilterAttributesInterface, EmailCampaignScopeInterface } from "./src/types";
 
@@ -77,11 +77,11 @@ async function generateSchema(): Promise<void> {
         Scope: EmailCampaignScope,
     });
 
-    const TargetGroup = TargetGroupEntityFactory.create({ Scope: EmailCampaignScope });
+    const TargetGroup = createTargetGroupEntity({ Scope: EmailCampaignScope });
     const [TargetGroupInput, TargetGroupUpdateInput] = TargetGroupInputFactory.create({ BrevoFilterAttributes: BrevoContactFilterAttributes });
     const TargetGroupResolver = createTargetGroupsResolver({ TargetGroup, TargetGroupInput, TargetGroupUpdateInput, Scope: EmailCampaignScope });
 
-    const EmailCampaign = EmailCampaignEntityFactory.create({ Scope: EmailCampaignScope, TargetGroup: TargetGroup, EmailCampaignContentBlock });
+    const EmailCampaign = createEmailCampaignEntity({ Scope: EmailCampaignScope, TargetGroup: TargetGroup, EmailCampaignContentBlock });
     const [EmailCampaignInput, EmailCampaignUpdateInput] = EmailCampaignInputFactory.create({ EmailCampaignContentBlock });
     const EmailCampaignResolver = createEmailCampaignsResolver({
         EmailCampaign,
