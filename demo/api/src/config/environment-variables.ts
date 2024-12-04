@@ -142,4 +142,8 @@ export class EnvironmentVariables {
 
     @IsString()
     CAMPAIGN_BASIC_AUTH_PASSWORD: string;
+
+    @IsNumber()
+    @Type(() => Number)
+    BREVO_FOLDER_ID: number;
 }
