@@ -11,7 +11,7 @@ jobs:
     steps:
       - run: echo "${{ github.actor }}"
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
       - run: |
@@ -19,21 +19,21 @@ jobs:
           git config user.email github-actions@github.com
 
       - name: "COMET Library: Clone translations"
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: vivid-planet/comet-lang
           token: ${{ secrets.VIVID_PLANET_BOT_TOKEN }}
           path: "demo/admin/lang/comet-lang"
 
       - name: "COMET Brevo Library: Clone translations"
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: vivid-planet/comet-brevo-module-lang
           token: ${{ secrets.VIVID_PLANET_BOT_TOKEN }}
           path: "demo/admin/lang/comet-brevo-module-lang"
 
       - name: "Demo: Clone translations"
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: vivid-planet/comet-brevo-module-demo-lang
           token: ${{ secrets.VIVID_PLANET_BOT_TOKEN }}
