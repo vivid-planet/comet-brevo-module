@@ -125,9 +125,6 @@ export function createBrevoConfigResolver({
                 validateNotModified(brevoConfig, lastUpdatedAt);
             }
 
-            if (!input.senderMail || !input.senderName) {
-                throw new Error("Sender mail, sender name are required");
-            }
             wrap(brevoConfig).assign({
                 ...input,
                 senderMail: input.senderMail,
