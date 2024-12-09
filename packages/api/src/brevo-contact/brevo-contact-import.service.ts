@@ -5,6 +5,7 @@ import { Inject, Injectable } from "@nestjs/common";
 import { Field, Int, ObjectType } from "@nestjs/graphql";
 import { IsEmail, IsNotEmpty, validateSync } from "class-validator";
 import isEqual from "lodash.isequal";
+import { BrevoConfigInterface } from "src/brevo-config/entities/brevo-config-entity.factory";
 import { TargetGroupInterface } from "src/target-group/entity/target-group-entity.factory";
 import { Readable } from "stream";
 
@@ -57,6 +58,7 @@ export class BrevoContactImportService {
         private readonly brevoContactsService: BrevoContactsService,
         private readonly targetGroupsService: TargetGroupsService,
         @InjectRepository("TargetGroup") private readonly targetGroupRepository: EntityRepository<TargetGroupInterface>,
+        @InjectRepository("BrevoConfig") private readonly brevoConfigRepository: EntityRepository<BrevoConfigInterface>,
     ) {}
 
     async importContactsFromCsv({
@@ -150,10 +152,12 @@ export class BrevoContactImportService {
                 );
                 if (updatedBrevoContact) return "updated";
             } else if (!brevoContact) {
+                const brevoConfig = await this.brevoConfigRepository.findOneOrFail({ scope });
+
                 const success = await this.brevoContactsService.createDoubleOptInContact({
                     ...contact,
                     scope,
-                    templateId: this.config.brevo.resolveConfig(scope).doubleOptInTemplateId,
+                    templateId: brevoConfig.doubleOptInTemplateId,
                     listIds: [mainTargetGroupForScope.brevoId, ...targetGroupBrevoIds],
                 });
                 if (success) return "created";
