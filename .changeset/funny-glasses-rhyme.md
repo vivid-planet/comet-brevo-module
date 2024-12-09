@@ -5,4 +5,4 @@
 
 Add field for `doiTemplateId` to `BrevoConfigPage`
 
-Env var `BREVO_DOUBLE_OPT_IN_TEMPLATE_ID` can be removed
+The environment variable BREVO_DOUBLE_OPT_IN_TEMPLATE_ID can be removed, as it is now available as a maintainable variable in the admin interface.
