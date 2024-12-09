@@ -87,6 +87,10 @@ export function createBrevoConfigResolver({
                 throw new Error("Sender not found");
             }
 
+            if (!(await this.isValidTemplateId({ templateId: input.doiTemplateId }))) {
+                throw new Error("Template ID is not valid. ");
+            }
+
             const brevoConfig = this.repository.create({
                 ...input,
                 scope,
@@ -111,6 +115,12 @@ export function createBrevoConfigResolver({
                 }
             }
 
+            if (input.doiTemplateId) {
+                if (!(await this.isValidTemplateId({ templateId: input.doiTemplateId }))) {
+                    throw new Error("Template ID is not valid. ");
+                }
+            }
+
             if (lastUpdatedAt) {
                 validateNotModified(brevoConfig, lastUpdatedAt);
             }
@@ -118,11 +128,6 @@ export function createBrevoConfigResolver({
             if (!input.senderMail || !input.senderName) {
                 throw new Error("Sender mail, sender name are required");
             }
-
-            if (!(await this.isValidSender({ email: input.senderMail, name: input.senderName }))) {
-                throw new Error("Sender not found");
-            }
-
             wrap(brevoConfig).assign({
                 ...input,
                 senderMail: input.senderMail,
