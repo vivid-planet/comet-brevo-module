@@ -12,7 +12,7 @@ import { EmailCampaignScopeInterface } from "../types";
 import { EmailCampaignInputFactory } from "./dto/email-campaign-input.factory";
 import { createEmailCampaignsResolver } from "./email-campaign.resolver";
 import { EmailCampaignsService } from "./email-campaigns.service";
-import { EmailCampaignEntityFactory } from "./entities/email-campaign-entity.factory";
+import { createEmailCampaignEntity } from "./entities/email-campaign-entity.factory";
 
 interface EmailCampaignModuleConfig {
     Scope: Type<EmailCampaignScopeInterface>;
@@ -24,7 +24,7 @@ interface EmailCampaignModuleConfig {
 @Module({})
 export class EmailCampaignModule {
     static register({ Scope, EmailCampaignContentBlock, TargetGroup, BrevoConfig }: EmailCampaignModuleConfig): DynamicModule {
-        const EmailCampaign = EmailCampaignEntityFactory.create({
+        const EmailCampaign = createEmailCampaignEntity({
             Scope,
             EmailCampaignContentBlock,
             TargetGroup,
