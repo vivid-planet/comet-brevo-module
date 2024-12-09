@@ -15,7 +15,7 @@ export class BrevoApiEmailTemplateSender {
     id?: string;
 
     @Field(() => String, { nullable: true })
-    subject: string;
+    subject?: string;
 
     @Field(() => String, { nullable: true })
     email: string;
