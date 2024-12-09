@@ -59,9 +59,9 @@ export const sendersSelectQuery = gql`
     }
 `;
 
-export const doiTemplatesSelectQuery = gql`
-    query DoiTemplatesSelect {
-        doiTemplates {
+export const doubleOptInTemplatesSelectQuery = gql`
+    query DoubleOptInTemplatesSelect {
+        doubleOptInTemplates {
             id
             name
         }

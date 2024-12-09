@@ -225,7 +225,7 @@ type Query {
   emailCampaigns(scope: EmailCampaignContentScopeInput!, search: String, filter: EmailCampaignFilter, sort: [EmailCampaignSort!], offset: Int! = 0, limit: Int! = 25): PaginatedEmailCampaigns!
   emailCampaignStatistics(id: ID!): BrevoApiCampaignStatistics
   senders(scope: EmailCampaignContentScopeInput!): [BrevoApiSender!]
-  doiTemplates: [BrevoApiEmailTemplate!]
+  doubleOptInTemplates: [BrevoApiEmailTemplate!]
   brevoConfig(scope: EmailCampaignContentScopeInput!): BrevoConfig
 }
 

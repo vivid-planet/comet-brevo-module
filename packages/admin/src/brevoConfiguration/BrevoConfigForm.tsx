@@ -22,7 +22,7 @@ import { FormattedMessage } from "react-intl";
 import {
     brevoConfigFormQuery,
     createBrevoConfigMutation,
-    doiTemplatesSelectQuery,
+    doubleOptInTemplatesSelectQuery,
     sendersSelectQuery,
     updateBrevoConfigMutation,
 } from "./BrevoConfigForm.gql";
@@ -31,8 +31,8 @@ import {
     GQLBrevoConfigFormQueryVariables,
     GQLCreateBrevoConfigMutation,
     GQLCreateBrevoConfigMutationVariables,
-    GQLDoiTemplatesSelectQuery,
-    GQLDoiTemplatesSelectQueryVariables,
+    GQLDoubleOptInTemplatesSelectQuery,
+    GQLDoubleOptInTemplatesSelectQueryVariables,
     GQLSendersSelectQuery,
     GQLSendersSelectQueryVariables,
     GQLUpdateBrevoConfigMutation,
@@ -72,10 +72,10 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
     });
 
     const {
-        data: doiTemplatesData,
-        error: doiTemplatesError,
-        loading: doiTemplatesLoading,
-    } = useQuery<GQLDoiTemplatesSelectQuery, GQLDoiTemplatesSelectQueryVariables>(doiTemplatesSelectQuery);
+        data: doubleOptInTemplatesData,
+        error: doubleOptInTemplatesError,
+        loading: doubleOptInTemplatesLoading,
+    } = useQuery<GQLDoubleOptInTemplatesSelectQuery, GQLDoubleOptInTemplatesSelectQueryVariables>(doubleOptInTemplatesSelectQuery);
 
     const senderOptions =
         sendersData?.senders?.map((sender) => ({
@@ -83,16 +83,18 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
             label: `${sender.name} (${sender.email})`,
         })) ?? [];
 
-    const doiTemplateOptions =
-        doiTemplatesData?.doiTemplates?.map((doiTemplate) => ({
-            value: doiTemplate.id,
-            label: `${doiTemplate.id}: ${doiTemplate.name}`,
+    const doubleOptInTemplateOptions =
+        doubleOptInTemplatesData?.doubleOptInTemplates?.map((doubleOptInTemplate) => ({
+            value: doubleOptInTemplate.id,
+            label: `${doubleOptInTemplate.id}: ${doubleOptInTemplate.name}`,
         })) ?? [];
 
     const initialValues = React.useMemo<Partial<FormValues>>(() => {
         const sender = sendersData?.senders?.find((s) => s.email === data?.brevoConfig?.senderMail && s.name === data?.brevoConfig?.senderName);
 
-        const doiTemplate = doiTemplatesData?.doiTemplates?.find((template) => template.id === data?.brevoConfig?.doubleOptInTemplateId?.toString());
+        const doubleOptInTemplate = doubleOptInTemplatesData?.doubleOptInTemplates?.find(
+            (template) => template.id === data?.brevoConfig?.doubleOptInTemplateId?.toString(),
+        );
 
         return {
             sender: sender
@@ -102,10 +104,10 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
                   }
                 : undefined,
 
-            doiTemplate: doiTemplate
+            doubleOptInTemplate: doubleOptInTemplate
                 ? {
-                      value: doiTemplate?.id,
-                      label: `${doiTemplate?.id}: ${doiTemplate?.name}`,
+                      value: doubleOptInTemplate?.id,
+                      label: `${doubleOptInTemplate?.id}: ${doubleOptInTemplate?.name}`,
                   }
                 : undefined,
         };
@@ -113,7 +115,7 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
         data?.brevoConfig?.doubleOptInTemplateId,
         data?.brevoConfig?.senderMail,
         data?.brevoConfig?.senderName,
-        doiTemplatesData?.doiTemplates,
+        doubleOptInTemplatesData?.doubleOptInTemplates,
         sendersData?.senders,
     ]);
 
@@ -181,9 +183,9 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
         }
     };
 
-    if (error || senderError || doiTemplatesError) throw error ?? senderError ?? doiTemplatesError;
+    if (error || senderError || doubleOptInTemplatesError) throw error ?? senderError ?? doubleOptInTemplatesError;
 
-    if (loading || senderLoading || doiTemplatesLoading) {
+    if (loading || senderLoading || doubleOptInTemplatesLoading) {
         return <Loading behavior="fillPageHeight" />;
     }
 
@@ -218,7 +220,7 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
                                 component={FinalFormAutocomplete}
                                 getOptionLabel={(option: Option) => option.label}
                                 isOptionEqualToValue={(option: Option, value: Option) => option.value === value.value}
-                                options={doiTemplateOptions}
+                                options={doubleOptInTemplateOptions}
                                 name="doiTemplate"
                                 label={<FormattedMessage id="cometBrevoModule.brevoConfig.doiTemplate" defaultMessage="Double Opt-in template id" />}
                                 fullWidth
