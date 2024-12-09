@@ -220,7 +220,7 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
                                 isOptionEqualToValue={(option: Option, value: Option) => option.value === value.value}
                                 options={doiTemplateOptions}
                                 name="doiTemplate"
-                                label={<FormattedMessage id="cometBrevoModule.brevoConfig.doiTemplate" defaultMessage="Double opt-in template id" />}
+                                label={<FormattedMessage id="cometBrevoModule.brevoConfig.doiTemplate" defaultMessage="Double Opt-in template id" />}
                                 fullWidth
                                 required
                             />
