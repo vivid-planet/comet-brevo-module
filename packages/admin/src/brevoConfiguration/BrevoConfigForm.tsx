@@ -92,7 +92,7 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
     const initialValues = React.useMemo<Partial<FormValues>>(() => {
         const sender = sendersData?.senders?.find((s) => s.email === data?.brevoConfig?.senderMail && s.name === data?.brevoConfig?.senderName);
 
-        const doiTemplate = doiTemplatesData?.doiTemplates?.find((template) => template.id === data?.brevoConfig?.doiTemplateId?.toString());
+        const doiTemplate = doiTemplatesData?.doiTemplates?.find((template) => template.id === data?.brevoConfig?.doubleOptInTemplateId?.toString());
 
         return {
             sender: sender
@@ -110,7 +110,7 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
                 : undefined,
         };
     }, [
-        data?.brevoConfig?.doiTemplateId,
+        data?.brevoConfig?.doubleOptInTemplateId,
         data?.brevoConfig?.senderMail,
         data?.brevoConfig?.senderName,
         doiTemplatesData?.doiTemplates,
@@ -154,7 +154,7 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
         const output = {
             senderName: sender?.name,
             senderMail: sender?.email,
-            doiTemplateId: Number(state.doiTemplate.value),
+            doubleOptInTemplateId: Number(state.doiTemplate.value),
         };
 
         if (mode === "edit") {

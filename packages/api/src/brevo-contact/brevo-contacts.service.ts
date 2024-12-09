@@ -97,7 +97,7 @@ export class BrevoContactsService {
         const created = await this.createDoubleOptInContact({
             ...data,
             scope,
-            templateId: brevoConfig.doiTemplateId,
+            templateId: brevoConfig.doubleOptInTemplateId,
         });
 
         if (created) {

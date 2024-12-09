@@ -157,7 +157,7 @@ export class BrevoContactImportService {
                 const success = await this.brevoContactsService.createDoubleOptInContact({
                     ...contact,
                     scope,
-                    templateId: brevoConfig.doiTemplateId,
+                    templateId: brevoConfig.doubleOptInTemplateId,
                     listIds: [mainTargetGroupForScope.brevoId, ...targetGroupBrevoIds],
                 });
                 if (success) return "created";

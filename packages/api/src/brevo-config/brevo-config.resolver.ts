@@ -87,7 +87,7 @@ export function createBrevoConfigResolver({
                 throw new Error("Sender not found");
             }
 
-            if (!(await this.isValidTemplateId({ templateId: input.doiTemplateId }))) {
+            if (!(await this.isValidTemplateId({ templateId: input.doubleOptInTemplateId }))) {
                 throw new Error("Template ID is not valid. ");
             }
 
@@ -115,8 +115,8 @@ export function createBrevoConfigResolver({
                 }
             }
 
-            if (input.doiTemplateId) {
-                if (!(await this.isValidTemplateId({ templateId: input.doiTemplateId }))) {
+            if (input.doubleOptInTemplateId) {
+                if (!(await this.isValidTemplateId({ templateId: input.doubleOptInTemplateId }))) {
                     throw new Error("Template ID is not valid. ");
                 }
             }
@@ -129,7 +129,7 @@ export function createBrevoConfigResolver({
                 ...input,
                 senderMail: input.senderMail,
                 senderName: input.senderName,
-                doiTemplateId: input.doiTemplateId,
+                doubleOptInTemplateId: input.doubleOptInTemplateId,
             });
 
             await this.entityManager.flush();

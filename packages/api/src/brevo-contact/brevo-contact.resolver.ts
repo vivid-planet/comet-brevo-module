@@ -184,7 +184,7 @@ export function createBrevoContactResolver({
                 attributes: input.attributes,
                 redirectionUrl: input.redirectionUrl,
                 scope,
-                templateId: brevoConfig.doiTemplateId,
+                templateId: brevoConfig.doubleOptInTemplateId,
             });
 
             if (created) {

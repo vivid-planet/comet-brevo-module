@@ -17,7 +17,7 @@ export class BrevoConfigInput {
 
     @IsInt()
     @Field(() => Int)
-    doiTemplateId: number;
+    doubleOptInTemplateId: number;
 }
 
 @InputType()
