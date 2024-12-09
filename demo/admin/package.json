@@ -23,7 +23,7 @@
         "start": "npm run intl:compile && run-p gql:types generate-block-types && dotenv -c secrets -- cross-env BABEL_ENV=development webpack serve --config ./webpack.config.ts --mode development"
     },
     "dependencies": {
-        "@apollo/client": "^3.11.8",
+        "@apollo/client": "^3.12.2",
         "@babel/core": "^7.26.0",
         "@comet/admin": "^7.7.0",
         "@comet/admin-icons": "^7.7.0",
@@ -46,7 +46,7 @@
         "file-saver": "^2.0.5",
         "final-form": "^4.16.1",
         "graphql": "^15.4.0",
-        "graphql-tag": "^2.0.0",
+        "graphql-tag": "^2.12.6",
         "history": "^4.10.1",
         "lodash.isequal": "^4.5.0",
         "material-design-icons": "^3.0.1",
