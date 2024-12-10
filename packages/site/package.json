@@ -3,7 +3,7 @@
     "version": "2.1.6",
     "repository": {
         "type": "git",
-        "url": "https://github.com/vivid-planet/comet",
+        "url": "https://github.com/vivid-planet/comet-brevo-module/",
         "directory": "packages/site"
     },
     "license": "BSD-2-Clause",
