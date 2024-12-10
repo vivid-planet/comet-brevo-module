@@ -1053,6 +1053,10 @@ importers:
         version: 8.3.2
 
   packages/site:
+    dependencies:
+      rimraf:
+        specifier: ^3.0.0
+        version: 3.0.2
     devDependencies:
       '@cspell/eslint-plugin':
         specifier: ^8.16.0
@@ -4314,7 +4318,7 @@ packages:
       eslint-config-next: 14.2.16(eslint@8.56.0)(typescript@4.9.5)
       eslint-config-prettier: 8.10.0(eslint@8.56.0)
       eslint-import-resolver-typescript: 3.6.1(@typescript-eslint/parser@5.62.0)(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.29.1)(eslint@8.56.0)
-      eslint-plugin-formatjs: 4.12.1(eslint@8.56.0)(ts-jest@27.1.5)
+      eslint-plugin-formatjs: 4.12.1(eslint@8.56.0)(ts-jest@29.1.1)
       eslint-plugin-import: 2.29.1(@typescript-eslint/parser@5.62.0)(eslint-import-resolver-typescript@3.6.1)(eslint@8.56.0)
       eslint-plugin-json-files: 2.2.0(eslint@8.56.0)
       eslint-plugin-prettier: 4.2.1(eslint-config-prettier@8.10.0)(eslint@8.56.0)(prettier@2.8.8)

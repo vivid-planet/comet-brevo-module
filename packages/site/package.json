@@ -23,6 +23,9 @@
         "lint:prettier": "npx prettier --check './**/*.{js,json,md,yml,yaml}'",
         "lint:tsc": "tsc --noEmit"
     },
+    "dependencies": {
+        "rimraf": "^3.0.0"
+    },
     "devDependencies": {
         "@cspell/eslint-plugin": "^8.16.0",
         "eslint": "^8.0.0"
