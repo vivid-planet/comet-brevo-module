@@ -1,9 +1,15 @@
 {
-    "extends": "./tsconfig.base.json",
+    "extends": "../../tsconfig.core.json",
     "compilerOptions": {
-        "jsx": "react",
-        "outDir": "lib/",
-        "rootDir": "src"
+        "target": "ES2015",
+        "module": "ESNext",
+        "moduleResolution": "Node",
+        "noImplicitAny": true,
+        "jsx": "react-jsx",
+        "noEmitOnError": true,
+        "strict": true,
+        "declarationMap": true,
+        "outDir": "lib/"
     },
     "include": ["src/**/*"],
     "exclude": []
