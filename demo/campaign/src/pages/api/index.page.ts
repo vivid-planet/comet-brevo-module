@@ -1,5 +1,7 @@
 import { generateMjmlMailContent } from "@src/components/RenderedMail";
 import { getMessages } from "@src/lang";
+import { getPreparedHtml } from "@src/util/getPreparedHtml";
+import { replaceMailHtmlPlaceholders } from "@src/util/replaceMailHtmlPlaceholders";
 import mjml2html from "mjml";
 import { NextApiRequest, NextApiResponse } from "next";
 import { z } from "zod";
@@ -25,7 +27,9 @@ export default async function getMailHtml(request: NextApiRequest, response: Nex
 
     const [messages] = await Promise.all([getMessages(scope.language)]);
     const mjmlContent = generateMjmlMailContent(content, { locale: scope.language, messages, defaultLocale: scope.language });
-    const { html } = mjml2html(mjmlContent);
+    const { html: escapedHtml } = mjml2html(mjmlContent);
+    const preparedHtml = getPreparedHtml(escapedHtml);
+    const html = replaceMailHtmlPlaceholders(preparedHtml, "mail");
 
     response.setHeader("Content-Type", "text/html; charset=utf-8");
     response.write(html);
