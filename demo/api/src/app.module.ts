@@ -39,8 +39,10 @@ import { DamFile } from "./dam/entities/dam-file.entity";
 import { DamFolder } from "./dam/entities/dam-folder.entity";
 import { EmailCampaignContentBlock } from "./email-campaign/blocks/email-campaign-content.block";
 import { EmailCampaignContentScope } from "./email-campaign/email-campaign-content-scope";
+import { EmailCampaign } from "./email-campaign/entities/email-campaign.entity";
 import { MenusModule } from "./menus/menus.module";
 import { StatusModule } from "./status/status.module";
+import { TargetGroup } from "./target-group/entity/target-group.entity";
 
 @Module({})
 export class AppModule {
@@ -161,6 +163,8 @@ export class AppModule {
                         },
                         BrevoContactAttributes,
                         BrevoContactFilterAttributes,
+                        EmailCampaign,
+                        TargetGroup,
                     },
                     ecgRtrList: {
                         apiKey: config.ecgRtrList.apiKey,
