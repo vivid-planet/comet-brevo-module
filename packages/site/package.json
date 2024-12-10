@@ -18,7 +18,7 @@
         "dev": "tsc --watch --preserveWatchOutput -p tsconfig.build.json",
         "generate-schema": "ts-node generate-schema.ts",
         "generate-schema:watch": "chokidar \"src/\" -c \"$npm_execpath generate-schema\"",
-        "lint": "run-p lint:eslint lint:tsc",
+        "lint": "run-p lint:eslint lint:prettier lint:tsc",
         "lint:eslint": "eslint --max-warnings 0 src/ package.json",
         "lint:prettier": "npx prettier --check './**/*.{js,json,md,yml,yaml}'",
         "lint:tsc": "tsc --noEmit"
