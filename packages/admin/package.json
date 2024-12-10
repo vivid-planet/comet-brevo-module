@@ -34,7 +34,7 @@
         "react-dropzone": "^14.2.3"
     },
     "devDependencies": {
-        "@apollo/client": "^3.11.8",
+        "@apollo/client": "^3.12.2",
         "@babel/cli": "^7.25.9",
         "@babel/core": "^7.26.0",
         "@comet/admin": "^7.7.0",
@@ -58,7 +58,7 @@
         "@types/react-router": "^5.1.20",
         "draft-js": "^0.11.7",
         "eslint": "^8.0.0",
-        "final-form": "^4.16.1",
+        "final-form": "^4.20.10",
         "graphql": "^15.4.0",
         "history": "^4.10.1",
         "prettier": "^2.0.0",
@@ -74,7 +74,7 @@
         "typescript": "^4.9.5"
     },
     "peerDependencies": {
-        "@apollo/client": "^3.2.5",
+        "@apollo/client": "^3.12.2",
         "@comet/admin": "^7.7.0",
         "@comet/admin-date-time": "^7.7.0",
         "@comet/admin-icons": "^7.7.0",
@@ -87,7 +87,7 @@
         "@mui/system": "^5.16.7",
         "@mui/x-data-grid": "^5.17.26",
         "draft-js": "^0.11.7",
-        "final-form": "^4.16.1",
+        "final-form": "^4.20.10",
         "graphql": "^15.4.0",
         "history": "^4.10.1",
         "react": "^17.0",
