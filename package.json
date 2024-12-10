@@ -68,6 +68,16 @@
                 "peerDependencies": {
                     "@types/react": "*"
                 }
+            },
+            "@types/hoist-non-react-statics": {
+                "peerDependencies": {
+                    "@types/react": "*"
+                }
+            },
+            "@types/react-transition-group": {
+                "peerDependencies": {
+                    "@types/react": "^17.0.0"
+                }
             }
         }
     }

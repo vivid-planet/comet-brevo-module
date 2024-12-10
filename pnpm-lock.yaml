@@ -4,7 +4,7 @@ settings:
   autoInstallPeers: false
   excludeLinksFromLockfile: false
 
-packageExtensionsChecksum: 8b8792973f669aa2277355fb90c68ff0
+packageExtensionsChecksum: 1765bd3cc36f4272c47f92ca9277c87a
 
 importers:
 
@@ -6581,7 +6581,7 @@ packages:
       '@mui/utils': 5.16.6(@types/react@17.0.75)(react@17.0.2)
       '@popperjs/core': 2.11.8
       '@types/react': 17.0.75
-      '@types/react-transition-group': 4.4.10
+      '@types/react-transition-group': 4.4.10(@types/react@17.0.75)
       clsx: 2.1.0
       csstype: 3.1.3
       prop-types: 15.8.1
@@ -9056,11 +9056,22 @@ packages:
     resolution: {integrity: sha512-qjDJRrmvBMiTx+jyLxvLfJU7UznFuokDv4f3WRuriHKERccVpFU+8XMQUAbDzoiJCsmexxRExQeMwwCdamSKDA==}
     dev: true
 
-  /@types/hoist-non-react-statics@3.3.5:
+  /@types/hoist-non-react-statics@3.3.5(@types/react@17.0.75):
     resolution: {integrity: sha512-SbcrWzkKBw2cdwRTwQAswfpB9g9LJWfjtUeW/jvNwbhC8cpmmNYVePa+ncbUe0rGTQ7G3Ff6mYUN2VMfLVr+Sg==}
+    peerDependencies:
+      '@types/react': '*'
+    dependencies:
+      '@types/react': 17.0.75
+      hoist-non-react-statics: 3.3.2
+
+  /@types/hoist-non-react-statics@3.3.5(@types/react@18.3.12):
+    resolution: {integrity: sha512-SbcrWzkKBw2cdwRTwQAswfpB9g9LJWfjtUeW/jvNwbhC8cpmmNYVePa+ncbUe0rGTQ7G3Ff6mYUN2VMfLVr+Sg==}
+    peerDependencies:
+      '@types/react': '*'
     dependencies:
       '@types/react': 18.3.12
       hoist-non-react-statics: 3.3.2
+    dev: false
 
   /@types/html-minifier-terser@6.1.0:
     resolution: {integrity: sha512-oh/6byDPnL1zeNXFrDXFLyZjkr1MsBG667IM792caf1L2UPOOMf65NFzjUH/ltyfwjAGfs1rsX1eftK0jC/KIg==}
@@ -9331,10 +9342,12 @@ packages:
       '@types/react': 17.0.75
     dev: true
 
-  /@types/react-transition-group@4.4.10:
+  /@types/react-transition-group@4.4.10(@types/react@17.0.75):
     resolution: {integrity: sha512-hT/+s0VQs2ojCX823m60m5f0sL5idt9SO6Tj6Dg+rdphGPIeJbJ6CxvBYkgkGKrYeDjvIpKTR38UzmtHJOGW3Q==}
+    peerDependencies:
+      '@types/react': ^17.0.0
     dependencies:
-      '@types/react': 18.3.12
+      '@types/react': 17.0.75
 
   /@types/react@17.0.75:
     resolution: {integrity: sha512-MSA+NzEzXnQKrqpO63CYqNstFjsESgvJAdAyyJ1n6ZQq/GLgf6nOfIKwk+Twuz0L1N6xPe+qz5xRCJrbhMaLsw==}
@@ -9419,7 +9432,7 @@ packages:
   /@types/styled-components@5.1.34:
     resolution: {integrity: sha512-mmiVvwpYklFIv9E8qfxuPyIt/OuyIrn6gMOAMOFUO3WJfSrSE+sGUoa4PiZj77Ut7bKZpaa6o1fBKS/4TOEvnA==}
     dependencies:
-      '@types/hoist-non-react-statics': 3.3.5
+      '@types/hoist-non-react-statics': 3.3.5(@types/react@17.0.75)
       '@types/react': 17.0.75
       csstype: 3.1.3
     dev: true
@@ -19046,7 +19059,7 @@ packages:
       '@formatjs/intl': 2.2.1(typescript@4.9.5)
       '@formatjs/intl-displaynames': 5.4.3
       '@formatjs/intl-listformat': 6.5.3
-      '@types/hoist-non-react-statics': 3.3.5
+      '@types/hoist-non-react-statics': 3.3.5(@types/react@17.0.75)
       '@types/react': 17.0.75
       hoist-non-react-statics: 3.3.2
       intl-messageformat: 9.13.0
@@ -19069,7 +19082,7 @@ packages:
       '@formatjs/intl': 2.2.1(typescript@4.9.5)
       '@formatjs/intl-displaynames': 5.4.3
       '@formatjs/intl-listformat': 6.5.3
-      '@types/hoist-non-react-statics': 3.3.5
+      '@types/hoist-non-react-statics': 3.3.5(@types/react@18.3.12)
       '@types/react': 18.3.12
       hoist-non-react-statics: 3.3.2
       intl-messageformat: 9.13.0
