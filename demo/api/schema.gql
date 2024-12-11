@@ -376,7 +376,6 @@ type DamFile {
 type EmailCampaignContentScope {
   domain: String!
   language: String!
-  test: String!
 }
 
 type TargetGroup implements DocumentInterface {
@@ -535,7 +534,6 @@ input BrevoContactFilterAttributesInput {
 input EmailCampaignContentScopeInput {
   domain: String!
   language: String!
-  test: String!
 }
 
 type Query {

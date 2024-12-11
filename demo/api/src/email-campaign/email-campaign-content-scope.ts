@@ -15,9 +15,4 @@ export class EmailCampaignContentScope {
     @Field()
     @IsString()
     language: string;
-
-    @Property({ columnType: "text" })
-    @Field()
-    @IsString()
-    test: string;
 }
