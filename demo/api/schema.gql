@@ -378,6 +378,19 @@ type EmailCampaignContentScope {
   language: String!
 }
 
+type TargetGroup implements DocumentInterface {
+  id: ID!
+  updatedAt: DateTime!
+  createdAt: DateTime!
+  title: String!
+  isMainList: Boolean!
+  brevoId: Int!
+  totalSubscribers: Int!
+  scope: EmailCampaignContentScope!
+  assignedContactsTargetGroupBrevoId: Int
+  filters: BrevoContactFilterAttributes
+}
+
 type PaginatedPageTreeNodes {
   nodes: [PageTreeNode!]!
   totalCount: Int!
@@ -440,19 +453,6 @@ type PaginatedDamFiles {
 type PaginatedDamFolders {
   nodes: [DamFolder!]!
   totalCount: Int!
-}
-
-type TargetGroup implements DocumentInterface {
-  id: ID!
-  updatedAt: DateTime!
-  createdAt: DateTime!
-  title: String!
-  isMainList: Boolean!
-  brevoId: Int!
-  totalSubscribers: Int!
-  scope: EmailCampaignContentScope!
-  assignedContactsTargetGroupBrevoId: Int
-  filters: BrevoContactFilterAttributes
 }
 
 type BrevoConfig implements DocumentInterface {
