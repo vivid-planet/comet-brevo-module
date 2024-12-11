@@ -29,11 +29,6 @@ export class BrevoModule {
         }
     }
     static register(config: BrevoModuleConfig): DynamicModule {
-        // const TargetGroup = createTargetGroupEntity({
-        //     Scope: config.emailCampaigns.Scope,
-        //     BrevoFilterAttributes: config.brevo.BrevoContactFilterAttributes,
-        // });
-
         const BrevoConfig = BrevoConfigEntityFactory.create({
             Scope: config.emailCampaigns.Scope,
         });
