@@ -1,7 +1,7 @@
 const packageFolderMapping = {
     "@comet/brevo-api": "packages/api",
     "@comet/brevo-admin": "packages/admin",
-    "@comet/brevo-email-frontend": "packages/site",
+    "@comet/brevo-email-frontend": "packages/email-frontend",
 };
 
 const waitOnPackages = (...packages) => {
