@@ -1,5 +1,5 @@
 {
-    "name": "@comet/brevo-site",
+    "name": "@comet/brevo-email-frontend",
     "version": "2.1.6",
     "repository": {
         "type": "git",
