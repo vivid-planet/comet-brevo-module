@@ -448,6 +448,7 @@ type TargetGroup implements DocumentInterface {
   createdAt: DateTime!
   title: String!
   isMainList: Boolean!
+  isTestList: Boolean!
   brevoId: Int!
   totalSubscribers: Int!
   scope: EmailCampaignContentScope!
@@ -576,6 +577,7 @@ type Query {
   dontUseFileUploadDummy: FileUpload
   brevoContact(id: Int!, scope: EmailCampaignContentScopeInput!): BrevoContact!
   brevoContacts(targetGroupId: ID, email: String, scope: EmailCampaignContentScopeInput!, offset: Int! = 0, limit: Int! = 25): PaginatedBrevoContacts!
+  brevoTestContacts(targetGroupId: ID, email: String, scope: EmailCampaignContentScopeInput!, offset: Int! = 0, limit: Int! = 25): PaginatedBrevoContacts!
   manuallyAssignedBrevoContacts(offset: Int! = 0, limit: Int! = 25, targetGroupId: ID!, email: String): PaginatedBrevoContacts!
   emailCampaign(id: ID!): EmailCampaign!
   emailCampaigns(scope: EmailCampaignContentScopeInput!, search: String, filter: EmailCampaignFilter, sort: [EmailCampaignSort!], offset: Int! = 0, limit: Int! = 25): PaginatedEmailCampaigns!
@@ -735,6 +737,7 @@ input TargetGroupFilter {
   createdAt: DateTimeFilter
   updatedAt: DateTimeFilter
   title: StringFilter
+  isTestList: BooleanFilter
   and: [TargetGroupFilter!]
   or: [TargetGroupFilter!]
 }
@@ -787,7 +790,9 @@ type Mutation {
   deleteDamFolder(id: ID!): Boolean!
   updateBrevoContact(id: Int!, scope: EmailCampaignContentScopeInput!, input: BrevoContactUpdateInput!): BrevoContact!
   createBrevoContact(scope: EmailCampaignContentScopeInput!, input: BrevoContactInput!): SubscribeResponse!
+  createBrevoTestContact(scope: EmailCampaignContentScopeInput!, input: BrevoTestContactInput!): SubscribeResponse!
   deleteBrevoContact(id: Int!, scope: EmailCampaignContentScopeInput!): Boolean!
+  deleteBrevoTestContact(id: Int!, scope: EmailCampaignContentScopeInput!): Boolean!
   subscribeBrevoContact(input: SubscribeInput!, scope: EmailCampaignContentScopeInput!): SubscribeResponse!
   startBrevoContactImport(fileId: ID!, targetGroupIds: [ID!], scope: EmailCampaignContentScopeInput!): CsvImportInformation!
   createEmailCampaign(scope: EmailCampaignContentScopeInput!, input: EmailCampaignInput!): EmailCampaign!
@@ -944,6 +949,12 @@ input BrevoContactInput {
   email: String!
   blocked: Boolean!
   redirectionUrl: String!
+  attributes: BrevoContactAttributesInput
+}
+
+input BrevoTestContactInput {
+  email: String!
+  blocked: Boolean!
   attributes: BrevoContactAttributesInput
 }
 

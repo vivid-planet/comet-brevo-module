@@ -20,6 +20,7 @@ export interface TargetGroupInterface {
     filters?: BrevoContactFilterAttributesInterface;
     assignedContactsTargetGroupBrevoId?: number;
     campaigns: Collection<EmailCampaignInterface, object>;
+    isTestList: boolean;
 }
 
 export class TargetGroupEntityFactory {
@@ -57,6 +58,10 @@ export class TargetGroupEntityFactory {
             @Property({ columnType: "boolean" })
             @Field()
             isMainList: boolean;
+
+            @Property({ columnType: "boolean" })
+            @Field()
+            isTestList: boolean;
 
             @Property({ columnType: "int" })
             @Field(() => Int)
