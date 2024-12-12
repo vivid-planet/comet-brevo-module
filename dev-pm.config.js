@@ -27,11 +27,11 @@ module.exports = {
             script: "pnpm --filter @comet/brevo-admin run start",
             group: ["admin"],
         },
-        //group site
+        //group email-frontend
         {
-            name: "site",
+            name: "email-frontend",
             script: "pnpm --filter @comet/brevo-email-frontend run dev",
-            group: ["site"],
+            group: ["email-frontend"],
         },
         //group demo admin
         {
