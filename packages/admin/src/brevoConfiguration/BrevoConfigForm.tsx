@@ -45,7 +45,7 @@ interface Option {
 }
 type FormValues = {
     sender: Option;
-    doiTemplate: Option;
+    doubleOptInTemplate: Option;
 };
 
 interface FormProps {
@@ -149,14 +149,14 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
 
         const sender = sendersData?.senders?.find((s) => s.email === state.sender.value);
 
-        if (!sender || !state.doiTemplate) {
+        if (!sender || !state.doubleOptInTemplate) {
             throw new Error("Not all required fields are set");
         }
 
         const output = {
             senderName: sender?.name,
             senderMail: sender?.email,
-            doubleOptInTemplateId: Number(state.doiTemplate.value),
+            doubleOptInTemplateId: Number(state.doubleOptInTemplate.value),
         };
 
         if (mode === "edit") {
@@ -221,8 +221,13 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
                                 getOptionLabel={(option: Option) => option.label}
                                 isOptionEqualToValue={(option: Option, value: Option) => option.value === value.value}
                                 options={doubleOptInTemplateOptions}
-                                name="doiTemplate"
-                                label={<FormattedMessage id="cometBrevoModule.brevoConfig.doiTemplate" defaultMessage="Double Opt-in template id" />}
+                                name="doubleOptInTemplate"
+                                label={
+                                    <FormattedMessage
+                                        id="cometBrevoModule.brevoConfig.doubleOptInTemplate"
+                                        defaultMessage="Double Opt-in template id"
+                                    />
+                                }
                                 fullWidth
                                 required
                             />
