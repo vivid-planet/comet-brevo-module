@@ -237,6 +237,12 @@ export function createBrevoContactResolver({
             const targetGroup = await this.targetGroupRepository.findOne(where);
             const contact = await this.brevoContactsApiService.getContactInfoByEmail(input.email, scope);
 
+            if (targetGroup) {
+                const numberOfContacts = await this.brevoContactsApiService.getContactCountByListId(targetGroup.brevoId, Scope);
+                if (numberOfContacts >= 100) {
+                    return SubscribeResponse.ERROR_UNKNOWN;
+                }
+            }
             if (contact && targetGroup) {
                 const listIds: number[] = contact.listIds ? [...contact.listIds] : [];
                 listIds.push(targetGroup.brevoId);
