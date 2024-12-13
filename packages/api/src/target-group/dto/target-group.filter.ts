@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import { DateTimeFilter, StringFilter } from "@comet/cms-api";
-=======
-import { BooleanFilter, DateFilter, StringFilter } from "@comet/cms-api";
->>>>>>> main
+import { BooleanFilter, DateTimeFilter, StringFilter } from "@comet/cms-api";
 import { Field, InputType } from "@nestjs/graphql";
 import { Type } from "class-transformer";
 import { IsOptional, ValidateNested } from "class-validator";
