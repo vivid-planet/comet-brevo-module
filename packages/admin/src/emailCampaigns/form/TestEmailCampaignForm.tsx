@@ -44,7 +44,7 @@ export const TestEmailCampaignForm = ({ id, isSendable = false, scope }: TestEma
     const client = useApolloClient();
 
     const { data, loading, error } = useQuery(brevoTestContactsSelectQuery, {
-        variables: { offset: 0, limit: 50, email: "", scope },
+        variables: { offset: 0, limit: 100, email: "", scope },
     });
 
     async function submitTestEmails({ testEmails }: FormProps) {
