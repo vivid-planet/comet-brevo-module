@@ -1,10 +1,10 @@
 {
-    "name": "@comet/brevo-email-frontend",
+    "name": "@comet/brevo-mail-rendering",
     "version": "2.1.6",
     "repository": {
         "type": "git",
         "url": "https://github.com/vivid-planet/comet-brevo-module/",
-        "directory": "packages/email-frontend"
+        "directory": "packages/mail-rendering"
     },
     "license": "BSD-2-Clause",
     "main": "lib/index.js",

@@ -483,9 +483,9 @@ importers:
 
   demo/campaign:
     dependencies:
-      '@comet/brevo-email-frontend':
+      '@comet/brevo-mail-rendering':
         specifier: workspace:*
-        version: link:../../packages/email-frontend
+        version: link:../../packages/mail-rendering
       '@comet/cms-site':
         specifier: ^7.7.0
         version: 7.7.0(@types/react@18.3.12)(next@14.2.18)(react-dom@18.3.1)(react@18.3.1)(styled-components@6.1.13)
@@ -1052,7 +1052,7 @@ importers:
         specifier: ^8.3.2
         version: 8.3.2
 
-  packages/email-frontend:
+  packages/mail-rendering:
     devDependencies:
       '@comet/eslint-config':
         specifier: ^7.7.0
