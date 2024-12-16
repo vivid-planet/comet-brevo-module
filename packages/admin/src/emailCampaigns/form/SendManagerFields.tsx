@@ -1,7 +1,7 @@
 import { useApolloClient, useMutation } from "@apollo/client";
-import { Field, FinalFormSelect, SaveButton, useAsyncOptionsProps, useStackSwitchApi } from "@comet/admin";
+import { Field, FinalFormSelect, SaveButton, Tooltip, useAsyncOptionsProps, useStackSwitchApi } from "@comet/admin";
 import { FinalFormDateTimePicker } from "@comet/admin-date-time";
-import { Newsletter } from "@comet/admin-icons";
+import { Info, Newsletter } from "@comet/admin-icons";
 import { AdminComponentPaper, AdminComponentSectionGroup } from "@comet/blocks-admin";
 import { ContentScopeInterface } from "@comet/cms-admin";
 import { Card } from "@mui/material";
@@ -22,7 +22,7 @@ interface SendManagerFieldsProps {
     scope: ContentScopeInterface;
     id?: string;
     isSendable: boolean;
-    isSchedulingDisabled?: boolean;
+    isCampaignCreated?: boolean;
 }
 
 const validateScheduledAt = (value: Date, now: Date) => {
@@ -38,7 +38,7 @@ const validateScheduledAt = (value: Date, now: Date) => {
     }
 };
 
-export const SendManagerFields = ({ isSchedulingDisabled, scope, id, isSendable }: SendManagerFieldsProps) => {
+export const SendManagerFields = ({ isCampaignCreated, scope, id, isSendable }: SendManagerFieldsProps) => {
     const stackSwitchApi = useStackSwitchApi();
     const apolloClient = useApolloClient();
 
@@ -67,17 +67,6 @@ export const SendManagerFields = ({ isSchedulingDisabled, scope, id, isSendable 
                     title={<FormattedMessage id="cometBrevoModule.emailCampaigns.sendManager.title" defaultMessage="Send Manager" />}
                 >
                     <Field
-                        name="scheduledAt"
-                        disabled={isSchedulingDisabled}
-                        fullWidth
-                        clearable
-                        label={<FormattedMessage id="cometBrevoModule.emailCampaigns.scheduledAt" defaultMessage="Schedule date and time" />}
-                        component={FinalFormDateTimePicker}
-                        validate={(value) => (isSchedulingDisabled ? undefined : validateScheduledAt(value, now))}
-                        componentsProps={{ datePicker: { placeholder: "DD.MM.YYYY", minDate: now }, timePicker: { placeholder: "HH:mm" } }}
-                    />
-
-                    <Field
                         component={FinalFormSelect}
                         getOptionLabel={(option: GQLTargetGroupSelectFragment) => option.title}
                         getOptionSelected={(option: GQLTargetGroupSelectFragment, value: string) => {
@@ -89,10 +78,39 @@ export const SendManagerFields = ({ isSchedulingDisabled, scope, id, isSendable 
                         multiple
                         fullWidth
                     />
+                    <Field
+                        name="scheduledAt"
+                        disabled={isCampaignCreated}
+                        fullWidth
+                        clearable
+                        label={
+                            <>
+                                <FormattedMessage id="cometBrevoModule.emailCampaigns.scheduledAt" defaultMessage="Schedule date and time" />{" "}
+                                {isCampaignCreated && (
+                                    <Tooltip
+                                        title={
+                                            <FormattedMessage
+                                                id="cometBrevoModule.emailCampaigns.scheduledAt.info"
+                                                defaultMessage="Please select a target group and save the campaign before scheduling."
+                                            />
+                                        }
+                                    >
+                                        <Info />
+                                    </Tooltip>
+                                )}
+                            </>
+                        }
+                        component={FinalFormDateTimePicker}
+                        validate={(value) => (isCampaignCreated ? undefined : validateScheduledAt(value, now))}
+                        componentsProps={{
+                            datePicker: { placeholder: "DD.MM.YYYY", minDate: now },
+                            timePicker: { placeholder: "HH:mm" },
+                        }}
+                    />
 
                     <SaveButton
                         variant="contained"
-                        disabled={!isSendable || isSchedulingDisabled}
+                        disabled={!isSendable || isCampaignCreated}
                         saveIcon={<Newsletter />}
                         saving={sendEmailCampaignNowLoading}
                         hasErrors={!!sendEmailCampaignNowError}
