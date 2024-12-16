@@ -219,7 +219,7 @@ export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope }: Form
     };
 
     const isScheduledDateInPast = state.scheduledAt != undefined && isBefore(new Date(state.scheduledAt), new Date());
-    const isSchedulingDisabled = state.sendingState === "SENT" || mode === "add" || state.targetGroups.length === 0 || isScheduledDateInPast;
+    const isCampaignCreated = state.sendingState === "SENT" || mode === "add" || state.targetGroups.length === 0 || isScheduledDateInPast;
 
     return (
         <EditPageLayout>
@@ -295,11 +295,16 @@ export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope }: Form
                                 >
                                     <SendManagerFields
                                         scope={scope}
-                                        isSchedulingDisabled={isSchedulingDisabled}
+                                        isCampaignCreated={isCampaignCreated}
                                         isSendable={!hasChanges && state.targetGroups != undefined}
                                         id={id}
                                     />
-                                    <TestEmailCampaignForm id={id} isSendable={!hasChanges && state.targetGroups != undefined} scope={scope} />
+                                    <TestEmailCampaignForm
+                                        id={id}
+                                        isSendable={!hasChanges && state.targetGroups != undefined}
+                                        scope={scope}
+                                        isCampaignCreated={isCampaignCreated}
+                                    />
                                 </BlocksFinalForm>
                             ),
                         },

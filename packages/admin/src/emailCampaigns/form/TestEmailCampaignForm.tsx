@@ -1,6 +1,6 @@
 import { gql, useApolloClient, useQuery } from "@apollo/client";
-import { Field, FinalForm, FinalFormSelect, SaveButton } from "@comet/admin";
-import { Newsletter } from "@comet/admin-icons";
+import { Field, FinalForm, FinalFormSelect, SaveButton, Tooltip } from "@comet/admin";
+import { Info, Newsletter } from "@comet/admin-icons";
 import { AdminComponentPaper, AdminComponentSectionGroup } from "@comet/blocks-admin";
 import { Card } from "@mui/material";
 import React from "react";
@@ -19,6 +19,7 @@ interface TestEmailCampaignFormProps {
     id?: string;
     isSendable?: boolean;
     scope: GQLEmailCampaignContentScopeInput;
+    isCampaignCreated: boolean;
 }
 
 const brevoTestContactsSelectFragment = gql`
@@ -40,7 +41,7 @@ const brevoTestContactsSelectQuery = gql`
     ${brevoTestContactsSelectFragment}
 `;
 
-export const TestEmailCampaignForm = ({ id, isSendable = false, scope }: TestEmailCampaignFormProps) => {
+export const TestEmailCampaignForm = ({ id, isSendable = false, scope, isCampaignCreated }: TestEmailCampaignFormProps) => {
     const client = useApolloClient();
 
     const { data, loading, error } = useQuery(brevoTestContactsSelectQuery, {
@@ -75,10 +76,24 @@ export const TestEmailCampaignForm = ({ id, isSendable = false, scope }: TestEma
                                         component={FinalFormSelect}
                                         name="testEmails"
                                         label={
-                                            <FormattedMessage
-                                                id="cometBrevoModule.emailCampaigns.testEmailCampaign.testEmails"
-                                                defaultMessage="Email addresses"
-                                            />
+                                            <>
+                                                <FormattedMessage
+                                                    id="cometBrevoModule.emailCampaigns.testEmailCampaign.testEmails"
+                                                    defaultMessage="Email addresses"
+                                                />{" "}
+                                                {isCampaignCreated && (
+                                                    <Tooltip
+                                                        title={
+                                                            <FormattedMessage
+                                                                id="cometBrevoModule.emailCampaigns.testEmails.info"
+                                                                defaultMessage="Please select a target group and save the campaign before you can send test emails."
+                                                            />
+                                                        }
+                                                    >
+                                                        <Info />
+                                                    </Tooltip>
+                                                )}
+                                            </>
                                         }
                                         fullWidth
                                         options={emailOptions}
@@ -86,9 +101,10 @@ export const TestEmailCampaignForm = ({ id, isSendable = false, scope }: TestEma
                                         error={!!error}
                                         value={values.testEmails || []}
                                         getOptionLabel={(option: string) => option}
+                                        disabled={isCampaignCreated}
                                     />
                                     <SaveButton
-                                        disabled={!values.testEmails || !isSendable || !id}
+                                        disabled={!values.testEmails || !isSendable || !id || isCampaignCreated}
                                         saveIcon={<Newsletter />}
                                         onClick={handleSubmit}
                                         saving={submitting}
