@@ -43,6 +43,7 @@ export const TestEmailCampaignForm = ({ id, isSendable = false }: TestEmailCampa
     const client = useApolloClient();
     const scope = useContentScope();
 
+    // Contact creation is limited to 100 at a time. Therefore, 100 contacts are queried without using pagination.
     const { data, loading, error } = useQuery(brevoTestContactsSelectQuery, {
         variables: { offset: 0, limit: 100, scope },
     });
