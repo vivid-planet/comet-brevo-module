@@ -1,5 +1,11 @@
 import { Assets, Dashboard, Mail, PageTree, Wrench } from "@comet/admin-icons";
-import { BrevoConfigPage, createBrevoContactsPage, createEmailCampaignsPage, createTargetGroupsPage } from "@comet/brevo-admin";
+import {
+    BrevoConfigPage,
+    createBrevoContactsPage,
+    createBrevoTestContactsPage,
+    createEmailCampaignsPage,
+    createTargetGroupsPage,
+} from "@comet/brevo-admin";
 import {
     AllCategories,
     ContentScopeIndicator,
@@ -57,6 +63,14 @@ const getMasterMenuData = ({ brevoContactConfig }: { brevoContactConfig: BrevoCo
         EmailCampaignContentBlock,
     });
 
+    const BrevoTestContactsPage = createBrevoTestContactsPage({
+        scopeParts: ["domain", "language"],
+        additionalAttributesFragment: brevoContactConfig.additionalAttributesFragment,
+        additionalGridFields: brevoContactConfig.additionalGridFields,
+        additionalFormFields: brevoContactConfig.additionalFormFields,
+        input2State: brevoContactConfig.input2State,
+    });
+
     return [
         {
             type: "route",
@@ -104,6 +118,14 @@ const getMasterMenuData = ({ brevoContactConfig }: { brevoContactConfig: BrevoCo
                     route: {
                         path: "/newsletter/contacts",
                         render: () => <BrevoContactsPage />,
+                    },
+                },
+                {
+                    type: "route",
+                    primary: <FormattedMessage id="menu.newsletter.testContacts" defaultMessage="Test contacts" />,
+                    route: {
+                        path: "/newsletter/test-contacts",
+                        render: () => <BrevoTestContactsPage />,
                     },
                 },
                 {

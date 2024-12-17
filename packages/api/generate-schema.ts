@@ -12,6 +12,7 @@ import { createBrevoContactResolver } from "./src/brevo-contact/brevo-contact.re
 import { createBrevoContactImportResolver } from "./src/brevo-contact/brevo-contact-import.resolver";
 import { BrevoContactFactory } from "./src/brevo-contact/dto/brevo-contact.factory";
 import { BrevoContactInputFactory } from "./src/brevo-contact/dto/brevo-contact-input.factory";
+import { BrevoTestContactInputFactory } from "./src/brevo-contact/dto/brevo-test-contact-input.factory";
 import { SubscribeInputFactory } from "./src/brevo-contact/dto/subscribe-input.factory";
 import { EmailCampaignInputFactory } from "./src/email-campaign/dto/email-campaign-input.factory";
 import { createEmailCampaignsResolver } from "./src/email-campaign/email-campaign.resolver";
@@ -64,6 +65,8 @@ async function generateSchema(): Promise<void> {
 
     const BrevoContact = BrevoContactFactory.create({});
     const [BrevoContactInput, BrevoContactUpdateInput] = BrevoContactInputFactory.create({ Scope: EmailCampaignScope });
+    const [BrevoTestContactInput, BrevoTestContactUpdateInput] = BrevoTestContactInputFactory.create({ Scope: EmailCampaignScope });
+
     const BrevoContactSubscribeInput = SubscribeInputFactory.create({ Scope: EmailCampaignScope });
     const BrevoContactResolver = createBrevoContactResolver({
         BrevoContact,
@@ -71,6 +74,8 @@ async function generateSchema(): Promise<void> {
         Scope: EmailCampaignScope,
         BrevoContactInput,
         BrevoContactUpdateInput,
+        BrevoTestContactInput,
+        BrevoTestContactUpdateInput,
     });
     const BrevoContactImportResolver = createBrevoContactImportResolver({
         BrevoContact,
