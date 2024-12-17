@@ -2,11 +2,11 @@ import { gql, useApolloClient, useQuery } from "@apollo/client";
 import { Field, FinalForm, FinalFormSelect, SaveButton } from "@comet/admin";
 import { Newsletter } from "@comet/admin-icons";
 import { AdminComponentPaper, AdminComponentSectionGroup } from "@comet/blocks-admin";
+import { useContentScope } from "@comet/cms-admin";
 import { Card } from "@mui/material";
 import React from "react";
 import { FormattedMessage } from "react-intl";
 
-import { GQLEmailCampaignContentScopeInput } from "../../graphql.generated";
 import { GQLBrevoTestContactsSelectListFragment } from "./TestEmailCampaignForm.generated";
 import { SendEmailCampaignToTestEmailsMutation } from "./TestEmailCampaignForm.gql";
 import { GQLSendEmailCampaignToTestEmailsMutation, GQLSendEmailCampaignToTestEmailsMutationVariables } from "./TestEmailCampaignForm.gql.generated";
@@ -18,7 +18,6 @@ interface FormProps {
 interface TestEmailCampaignFormProps {
     id?: string;
     isSendable?: boolean;
-    scope: GQLEmailCampaignContentScopeInput;
 }
 
 const brevoTestContactsSelectFragment = gql`
@@ -40,8 +39,9 @@ const brevoTestContactsSelectQuery = gql`
     ${brevoTestContactsSelectFragment}
 `;
 
-export const TestEmailCampaignForm = ({ id, isSendable = false, scope }: TestEmailCampaignFormProps) => {
+export const TestEmailCampaignForm = ({ id, isSendable = false }: TestEmailCampaignFormProps) => {
     const client = useApolloClient();
+    const scope = useContentScope();
 
     const { data, loading, error } = useQuery(brevoTestContactsSelectQuery, {
         variables: { offset: 0, limit: 100, scope },
