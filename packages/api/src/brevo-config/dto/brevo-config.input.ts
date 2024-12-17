@@ -15,7 +15,6 @@ export class BrevoConfigInput {
     @Field()
     senderName: string;
 
-    @IsNotEmpty()
     @Field(() => Int)
     @IsInt()
     folderId: number;
