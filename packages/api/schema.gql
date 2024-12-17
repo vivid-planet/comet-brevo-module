@@ -46,7 +46,7 @@ enum FocalPoint {
 type BrevoApiEmailTemplateSender {
   id: String
   subject: String
-  email: String
+  email: String!
 }
 
 type BrevoApiEmailTemplate {
