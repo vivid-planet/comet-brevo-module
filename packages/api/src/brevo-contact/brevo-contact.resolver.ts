@@ -240,7 +240,7 @@ export function createBrevoContactResolver({
             if (targetGroup) {
                 const numberOfContacts = await this.brevoContactsApiService.getContactCountByListId(targetGroup.brevoId, Scope);
                 if (numberOfContacts >= 2) {
-                    return SubscribeResponse.ERROR_MAXIMAL_NUMBER_OF_CONTACTS_REACHED;
+                    return SubscribeResponse.ERROR_MAXIMAL_NUMBER_OF_TEST_CONTACTS_REACHED;
                 }
             }
             if (contact && targetGroup) {
