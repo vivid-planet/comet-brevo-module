@@ -23,84 +23,82 @@ export interface TargetGroupInterface {
     isTestList: boolean;
 }
 
-export class TargetGroupEntityFactory {
-    static create({
-        Scope,
-        BrevoFilterAttributes,
-    }: {
-        Scope: Type<EmailCampaignScopeInterface>;
-        BrevoFilterAttributes?: Type<BrevoContactFilterAttributesInterface>;
-    }): Type<TargetGroupInterface> {
-        @Entity({ abstract: true })
-        @ObjectType({
-            implements: () => [DocumentInterface],
-            isAbstract: true,
-        })
-        class TargetGroupBase implements TargetGroupInterface, DocumentInterface {
-            [OptionalProps]?: "createdAt" | "updatedAt" | "totalSubscribers";
+export function createTargetGroupEntity({
+    Scope,
+    BrevoFilterAttributes,
+}: {
+    Scope: Type<EmailCampaignScopeInterface>;
+    BrevoFilterAttributes?: Type<BrevoContactFilterAttributesInterface>;
+}): Type<TargetGroupInterface> {
+    @Entity({ abstract: true })
+    @ObjectType({
+        implements: () => [DocumentInterface],
+        isAbstract: true,
+    })
+    class TargetGroupBase implements TargetGroupInterface, DocumentInterface {
+        [OptionalProps]?: "createdAt" | "updatedAt" | "totalSubscribers";
 
-            @PrimaryKey({ columnType: "uuid" })
-            @Field(() => ID)
-            id: string = v4();
+        @PrimaryKey({ columnType: "uuid" })
+        @Field(() => ID)
+        id: string = v4();
 
-            @Property({ columnType: "timestamp with time zone" })
-            @Field()
-            createdAt: Date = new Date();
+        @Property({ columnType: "timestamp with time zone" })
+        @Field()
+        createdAt: Date = new Date();
 
-            @Property({ columnType: "timestamp with time zone", onUpdate: () => new Date() })
-            @Field()
-            updatedAt: Date = new Date();
+        @Property({ columnType: "timestamp with time zone", onUpdate: () => new Date() })
+        @Field()
+        updatedAt: Date = new Date();
 
-            @Property({ columnType: "text" })
-            @Field()
-            title: string;
+        @Property({ columnType: "text" })
+        @Field()
+        title: string;
 
-            @Property({ columnType: "boolean" })
-            @Field()
-            isMainList: boolean;
+        @Property({ columnType: "boolean" })
+        @Field()
+        isMainList: boolean;
 
-            @Property({ columnType: "boolean" })
-            @Field()
-            isTestList: boolean;
+        @Property({ columnType: "boolean" })
+        @Field()
+        isTestList: boolean;
 
-            @Property({ columnType: "int" })
-            @Field(() => Int)
-            brevoId: number;
+        @Property({ columnType: "int" })
+        @Field(() => Int)
+        brevoId: number;
 
-            @Field(() => Int)
-            totalSubscribers: number;
+        @Field(() => Int)
+        totalSubscribers: number;
 
-            @Embedded(() => Scope)
-            @Field(() => Scope)
-            scope: typeof Scope;
+        @Embedded(() => Scope)
+        @Field(() => Scope)
+        scope: typeof Scope;
 
-            @Property({ columnType: "int", nullable: true })
-            @Field(() => Int, { nullable: true })
-            assignedContactsTargetGroupBrevoId?: number;
+        @Property({ columnType: "int", nullable: true })
+        @Field(() => Int, { nullable: true })
+        assignedContactsTargetGroupBrevoId?: number;
 
-            @ManyToMany("EmailCampaign", "targetGroups")
-            campaigns = new Collection<EmailCampaignInterface>(this);
-        }
-        if (BrevoFilterAttributes) {
-            @Entity()
-            @ObjectType({
-                implements: () => [DocumentInterface],
-            })
-            class TargetGroup extends TargetGroupBase {
-                @Embedded(() => BrevoFilterAttributes, { nullable: true })
-                @Field(() => BrevoFilterAttributes, { nullable: true })
-                filters?: BrevoContactFilterAttributesInterface;
-            }
-
-            return TargetGroup;
-        }
-
+        @ManyToMany("EmailCampaign", "targetGroups")
+        campaigns = new Collection<EmailCampaignInterface>(this);
+    }
+    if (BrevoFilterAttributes) {
         @Entity()
         @ObjectType({
             implements: () => [DocumentInterface],
         })
-        class TargetGroup extends TargetGroupBase {}
+        class TargetGroup extends TargetGroupBase {
+            @Embedded(() => BrevoFilterAttributes, { nullable: true })
+            @Field(() => BrevoFilterAttributes, { nullable: true })
+            filters?: BrevoContactFilterAttributesInterface;
+        }
 
         return TargetGroup;
     }
+
+    @Entity()
+    @ObjectType({
+        implements: () => [DocumentInterface],
+    })
+    class TargetGroup extends TargetGroupBase {}
+
+    return TargetGroup;
 }

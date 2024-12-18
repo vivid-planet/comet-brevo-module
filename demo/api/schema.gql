@@ -378,6 +378,43 @@ type EmailCampaignContentScope {
   language: String!
 }
 
+type TargetGroup implements DocumentInterface {
+  id: ID!
+  updatedAt: DateTime!
+  createdAt: DateTime!
+  title: String!
+  isMainList: Boolean!
+  isTestList: Boolean!
+  brevoId: Int!
+  totalSubscribers: Int!
+  scope: EmailCampaignContentScope!
+  assignedContactsTargetGroupBrevoId: Int
+  filters: BrevoContactFilterAttributes
+}
+
+type EmailCampaign implements DocumentInterface {
+  id: ID!
+  updatedAt: DateTime!
+  createdAt: DateTime!
+  title: String!
+  subject: String!
+  brevoId: Int
+  scheduledAt: DateTime
+  targetGroups: [TargetGroup!]!
+  content: EmailCampaignContentBlockData!
+  scope: EmailCampaignContentScope!
+  sendingState: SendingState!
+}
+
+"""EmailCampaignContent root block data"""
+scalar EmailCampaignContentBlockData @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
+
+enum SendingState {
+  DRAFT
+  SENT
+  SCHEDULED
+}
+
 type PaginatedPageTreeNodes {
   nodes: [PageTreeNode!]!
   totalCount: Int!
@@ -442,20 +479,6 @@ type PaginatedDamFolders {
   totalCount: Int!
 }
 
-type TargetGroup implements DocumentInterface {
-  id: ID!
-  updatedAt: DateTime!
-  createdAt: DateTime!
-  title: String!
-  isMainList: Boolean!
-  isTestList: Boolean!
-  brevoId: Int!
-  totalSubscribers: Int!
-  scope: EmailCampaignContentScope!
-  assignedContactsTargetGroupBrevoId: Int
-  filters: BrevoContactFilterAttributes
-}
-
 type BrevoConfig implements DocumentInterface {
   id: ID!
   updatedAt: DateTime!
@@ -481,29 +504,6 @@ type BrevoContact {
 type PaginatedBrevoContacts {
   nodes: [BrevoContact!]!
   totalCount: Int!
-}
-
-type EmailCampaign implements DocumentInterface {
-  id: ID!
-  updatedAt: DateTime!
-  createdAt: DateTime!
-  title: String!
-  subject: String!
-  brevoId: Int
-  scheduledAt: DateTime
-  targetGroups: [TargetGroup!]!
-  content: EmailCampaignContentBlockData!
-  scope: EmailCampaignContentScope!
-  sendingState: SendingState!
-}
-
-"""EmailCampaignContent root block data"""
-scalar EmailCampaignContentBlockData @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
-
-enum SendingState {
-  DRAFT
-  SENT
-  SCHEDULED
 }
 
 type PaginatedEmailCampaigns {

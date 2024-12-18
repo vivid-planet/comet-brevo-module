@@ -11,7 +11,6 @@ import { BrevoContactModule } from "./brevo-contact/brevo-contact.module";
 import { BrevoModuleConfig } from "./config/brevo-module.config";
 import { ConfigModule } from "./config/config.module";
 import { EmailCampaignModule } from "./email-campaign/email-campaign.module";
-import { TargetGroupEntityFactory } from "./target-group/entity/target-group-entity.factory";
 import { TargetGroupModule } from "./target-group/target-group.module";
 
 @Global()
@@ -30,11 +29,6 @@ export class BrevoModule {
         }
     }
     static register(config: BrevoModuleConfig): DynamicModule {
-        const TargetGroup = TargetGroupEntityFactory.create({
-            Scope: config.emailCampaigns.Scope,
-            BrevoFilterAttributes: config.brevo.BrevoContactFilterAttributes,
-        });
-
         const BrevoConfig = BrevoConfigEntityFactory.create({
             Scope: config.emailCampaigns.Scope,
         });
@@ -46,18 +40,19 @@ export class BrevoModule {
                 BrevoContactModule.register({
                     BrevoContactAttributes: config.brevo.BrevoContactAttributes,
                     Scope: config.emailCampaigns.Scope,
-                    TargetGroup,
+                    TargetGroup: config.brevo.TargetGroup,
                 }),
                 EmailCampaignModule.register({
                     EmailCampaignContentBlock: config.emailCampaigns.EmailCampaignContentBlock,
                     Scope: config.emailCampaigns.Scope,
-                    TargetGroup,
+                    TargetGroup: config.brevo.TargetGroup,
+                    EmailCampaign: config.brevo.EmailCampaign,
                     BrevoConfig,
                 }),
                 TargetGroupModule.register({
                     Scope: config.emailCampaigns.Scope,
                     BrevoFilterAttributes: config.brevo.BrevoContactFilterAttributes,
-                    TargetGroup: TargetGroup,
+                    TargetGroup: config.brevo.TargetGroup,
                 }),
                 BrevoConfigModule.register({ BrevoConfig, Scope: config.emailCampaigns.Scope }),
                 ConfigModule.forRoot(config),
