@@ -28,7 +28,6 @@ The attribute naming must be identical to the naming in brevo
 The following variables must be set manually
 
 -   `BREVO_API_KEY`
--   `BREVO_DOUBLE_OPT_IN_TEMPLATE_ID`
 -   `ECG_RTR_LIST_API_KEY`
 -   `CAMPAIGN_BASIC_AUTH_USERNAME`
 -   `CAMPAIGN_BASIC_AUTH_PASSWORD`
@@ -36,6 +35,7 @@ The following variables must be set manually
 ### Configure brevo sender in the demo admin brevo config page
 
 -   Brevo sender
+-   Brevo double opt-in template
 
 ### Start development processes
 

@@ -22,12 +22,20 @@ import { FormApi } from "final-form";
 import React from "react";
 import { FormattedMessage } from "react-intl";
 
-import { brevoConfigFormQuery, createBrevoConfigMutation, sendersSelectQuery, updateBrevoConfigMutation } from "./BrevoConfigForm.gql";
+import {
+    brevoConfigFormQuery,
+    createBrevoConfigMutation,
+    doubleOptInTemplatesSelectQuery,
+    sendersSelectQuery,
+    updateBrevoConfigMutation,
+} from "./BrevoConfigForm.gql";
 import {
     GQLBrevoConfigFormQuery,
     GQLBrevoConfigFormQueryVariables,
     GQLCreateBrevoConfigMutation,
     GQLCreateBrevoConfigMutationVariables,
+    GQLDoubleOptInTemplatesSelectQuery,
+    GQLDoubleOptInTemplatesSelectQueryVariables,
     GQLSendersSelectQuery,
     GQLSendersSelectQueryVariables,
     GQLUpdateBrevoConfigMutation,
@@ -40,6 +48,7 @@ interface Option {
 }
 type FormValues = {
     sender: Option;
+    doubleOptInTemplate: Option;
     folderId: number;
 };
 
@@ -56,6 +65,8 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
         variables: { scope },
     });
 
+    const mode = data?.brevoConfig?.id ? "edit" : "add";
+
     const {
         data: sendersData,
         error: senderError,
@@ -64,26 +75,55 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
         variables: { scope },
     });
 
+    const {
+        data: doubleOptInTemplatesData,
+        error: doubleOptInTemplatesError,
+        loading: doubleOptInTemplatesLoading,
+    } = useQuery<GQLDoubleOptInTemplatesSelectQuery, GQLDoubleOptInTemplatesSelectQueryVariables>(doubleOptInTemplatesSelectQuery);
+
     const senderOptions =
         sendersData?.senders?.map((sender) => ({
             value: sender.email,
             label: `${sender.name} (${sender.email})`,
         })) ?? [];
 
-    const mode = data?.brevoConfig?.id ? "edit" : "add";
+    const doubleOptInTemplateOptions =
+        doubleOptInTemplatesData?.doubleOptInTemplates?.map((doubleOptInTemplate) => ({
+            value: doubleOptInTemplate.id,
+            label: `${doubleOptInTemplate.id}: ${doubleOptInTemplate.name}`,
+        })) ?? [];
 
     const initialValues = React.useMemo<Partial<FormValues>>(() => {
         const sender = sendersData?.senders?.find((s) => s.email === data?.brevoConfig?.senderMail && s.name === data?.brevoConfig?.senderName);
-        return sender
-            ? {
-                  sender: {
-                      value: sender.id,
+
+        const doubleOptInTemplate = doubleOptInTemplatesData?.doubleOptInTemplates?.find(
+            (template) => template.id === data?.brevoConfig?.doubleOptInTemplateId?.toString(),
+        );
+
+        return {
+            sender: sender
+                ? {
+                      value: sender.email,
                       label: `${sender.name} (${sender.email})`,
-                  },
-                  folderId: data?.brevoConfig?.folderId ?? 1,
-              }
-            : {};
-    }, [data?.brevoConfig?.folderId, data?.brevoConfig?.senderMail, data?.brevoConfig?.senderName, sendersData?.senders]);
+                  }
+                : undefined,
+
+            doubleOptInTemplate: doubleOptInTemplate
+                ? {
+                      value: doubleOptInTemplate?.id,
+                      label: `${doubleOptInTemplate?.id}: ${doubleOptInTemplate?.name}`,
+                  }
+                : undefined,
+            folderId: data?.brevoConfig?.folderId ?? 1,
+        };
+    }, [
+        data?.brevoConfig?.folderId,
+        data?.brevoConfig?.doubleOptInTemplateId,
+        data?.brevoConfig?.senderMail,
+        data?.brevoConfig?.senderName,
+        doubleOptInTemplatesData?.doubleOptInTemplates,
+        sendersData?.senders,
+    ]);
 
     const saveConflict = useFormSaveConflict({
         checkConflict: async () => {
@@ -115,13 +155,14 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
 
         const sender = sendersData?.senders?.find((s) => s.email === state.sender.value);
 
-        if (!sender) {
-            throw new Error("No sender selected");
+        if (!sender || !state.doubleOptInTemplate) {
+            throw new Error("Not all required fields are set");
         }
 
         const output = {
             senderName: sender?.name,
             senderMail: sender?.email,
+            doubleOptInTemplateId: Number(state.doubleOptInTemplate.value),
             folderId: state.folderId ?? 1,
         };
 
@@ -149,9 +190,9 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
         }
     };
 
-    if (error || senderError) throw error ?? senderError;
+    if (error || senderError || doubleOptInTemplatesError) throw error ?? senderError ?? doubleOptInTemplatesError;
 
-    if (loading || senderLoading) {
+    if (loading || senderLoading || doubleOptInTemplatesLoading) {
         return <Loading behavior="fillPageHeight" />;
     }
 
@@ -179,6 +220,23 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
                                 name="sender"
                                 label={<FormattedMessage id="cometBrevoModule.brevoConfig.sender" defaultMessage="Sender" />}
                                 fullWidth
+                                required
+                            />
+
+                            <Field
+                                component={FinalFormAutocomplete}
+                                getOptionLabel={(option: Option) => option.label}
+                                isOptionEqualToValue={(option: Option, value: Option) => option.value === value.value}
+                                options={doubleOptInTemplateOptions}
+                                name="doubleOptInTemplate"
+                                label={
+                                    <FormattedMessage
+                                        id="cometBrevoModule.brevoConfig.doubleOptInTemplate"
+                                        defaultMessage="Double Opt-in template id"
+                                    />
+                                }
+                                fullWidth
+                                required
                             />
                             <NumberField
                                 name="folderId"

@@ -4,6 +4,7 @@ export const brevoConfigFormFragment = gql`
     fragment BrevoConfigForm on BrevoConfig {
         senderMail
         senderName
+        doubleOptInTemplateId
         folderId
     }
 `;
@@ -55,6 +56,15 @@ export const sendersSelectQuery = gql`
             id
             name
             email
+        }
+    }
+`;
+
+export const doubleOptInTemplatesSelectQuery = gql`
+    query DoubleOptInTemplatesSelect {
+        doubleOptInTemplates {
+            id
+            name
         }
     }
 `;

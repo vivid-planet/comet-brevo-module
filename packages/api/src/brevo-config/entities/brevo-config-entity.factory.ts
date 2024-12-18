@@ -11,6 +11,7 @@ export interface BrevoConfigInterface {
     id: string;
     senderName: string;
     senderMail: string;
+    doubleOptInTemplateId: number;
     folderId: number;
     createdAt: Date;
     updatedAt: Date;
@@ -37,6 +38,10 @@ export class BrevoConfigEntityFactory {
             @Property({ columnType: "text" })
             @Field()
             senderName: string;
+
+            @Property({ columnType: "number" })
+            @Field(() => Int)
+            doubleOptInTemplateId: number;
 
             @Property({ columnType: "int" })
             @Field(() => Int)

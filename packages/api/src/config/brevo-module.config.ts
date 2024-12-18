@@ -10,7 +10,6 @@ export interface BrevoModuleConfig {
     brevo: {
         resolveConfig: (scope: EmailCampaignScopeInterface) => {
             apiKey: string;
-            doubleOptInTemplateId: number;
             allowedRedirectUrl: string;
             redirectUrlForImport: string;
         };
