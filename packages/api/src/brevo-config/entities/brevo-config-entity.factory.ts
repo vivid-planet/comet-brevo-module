@@ -12,6 +12,7 @@ export interface BrevoConfigInterface {
     senderName: string;
     senderMail: string;
     doubleOptInTemplateId: number;
+    folderId: number;
     createdAt: Date;
     updatedAt: Date;
     scope: EmailCampaignScopeInterface;
@@ -41,6 +42,10 @@ export class BrevoConfigEntityFactory {
             @Property({ columnType: "number" })
             @Field(() => Int)
             doubleOptInTemplateId: number;
+
+            @Property({ columnType: "int" })
+            @Field(() => Int)
+            folderId: number;
 
             @Property({
                 columnType: "timestamp with time zone",

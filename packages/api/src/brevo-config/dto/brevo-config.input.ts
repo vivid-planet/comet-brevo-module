@@ -18,6 +18,10 @@ export class BrevoConfigInput {
     @IsInt()
     @Field(() => Int)
     doubleOptInTemplateId: number;
+
+    @Field(() => Int)
+    @IsInt()
+    folderId: number;
 }
 
 @InputType()

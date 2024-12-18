@@ -2,7 +2,7 @@ import { DocumentNode, gql, useApolloClient, useQuery } from "@apollo/client";
 import {
     Alert,
     FinalForm,
-    FinalFormSaveButton,
+    FinalFormSaveSplitButton,
     FinalFormSubmitEvent,
     FormSection,
     Loading,
@@ -17,7 +17,7 @@ import {
     useStackApi,
 } from "@comet/admin";
 import { ArrowLeft } from "@comet/admin-icons";
-import { ContentScopeIndicator, ContentScopeInterface, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
+import { ContentScopeInterface, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
 import { Card, IconButton } from "@mui/material";
 import { Box } from "@mui/system";
 import { FormApi } from "final-form";
@@ -27,19 +27,19 @@ import { FormattedMessage } from "react-intl";
 import {
     brevoContactFormCheckForChangesQuery,
     brevoContactFormQuery,
-    createBrevoContactMutation,
+    createBrevoTestContactMutation,
     updateBrevoContactMutation,
-} from "./BrevoContactForm.gql";
+} from "./BrevoTestContactForm.gql";
 import {
     GQLBrevoContactFormCheckForChangesQuery,
     GQLBrevoContactFormCheckForChangesQueryVariables,
     GQLBrevoContactFormQuery,
     GQLBrevoContactFormQueryVariables,
-    GQLCreateBrevoContactMutation,
-    GQLCreateBrevoContactMutationVariables,
+    GQLCreateBrevoTestContactMutation,
+    GQLCreateBrevoTestContactMutationVariables,
     GQLUpdateBrevoContactMutation,
     GQLUpdateBrevoContactMutationVariables,
-} from "./BrevoContactForm.gql.generated";
+} from "./BrevoTestContactForm.gql.generated";
 
 export type EditBrevoContactFormValues = {
     [key: string]: unknown;
@@ -47,7 +47,6 @@ export type EditBrevoContactFormValues = {
 
 type EditBrevoContactFormValuesWithAttributes = EditBrevoContactFormValues & {
     email: string;
-    redirectionUrl: string;
 };
 
 interface FormProps {
@@ -58,28 +57,30 @@ interface FormProps {
     input2State?: (values?: EditBrevoContactFormValues) => EditBrevoContactFormValues;
 }
 
-export function BrevoContactForm({ id, scope, input2State, additionalFormFields, additionalAttributesFragment }: FormProps): React.ReactElement {
+export function BrevoTestContactForm({ id, scope, input2State, additionalFormFields, additionalAttributesFragment }: FormProps): React.ReactElement {
     const stackApi = useStackApi();
     const client = useApolloClient();
     const mode = id ? "edit" : "add";
     const formApiRef = useFormApiRef<EditBrevoContactFormValuesWithAttributes>();
 
-    const brevoContactFormFragment = gql`
-        fragment BrevoContactForm on BrevoContact {
+    const brevoTestContactFormFragment = gql`
+        fragment BrevoTestContactForm on BrevoContact {
             email
+            createdAt
+            emailBlacklisted
+            smsBlacklisted
             ${additionalAttributesFragment ? "...".concat(additionalAttributesFragment?.name) : ""}
         }
         ${additionalAttributesFragment?.fragment ?? ""}
 `;
     const { data, error, loading, refetch } = useQuery<GQLBrevoContactFormQuery, GQLBrevoContactFormQueryVariables>(
-        brevoContactFormQuery(brevoContactFormFragment),
+        brevoContactFormQuery(brevoTestContactFormFragment),
         id ? { variables: { id, scope } } : { skip: true },
     );
 
     const initialValues = React.useMemo<Partial<EditBrevoContactFormValuesWithAttributes>>(() => {
         let baseInitialValues = {
             email: "",
-            redirectionUrl: "",
         };
 
         if (input2State) {
@@ -132,18 +133,18 @@ export function BrevoContactForm({ id, scope, input2State, additionalFormFields,
             if (!id) {
                 throw new Error("Missing id in edit mode");
             }
-            const { email, redirectionUrl, ...rest } = output;
+            const { email, ...rest } = output;
             await client.mutate<GQLUpdateBrevoContactMutation, GQLUpdateBrevoContactMutationVariables>({
-                mutation: updateBrevoContactMutation(brevoContactFormFragment),
+                mutation: updateBrevoContactMutation(brevoTestContactFormFragment),
                 variables: { id, input: rest, scope },
             });
         } else {
-            const { data: mutationResponse } = await client.mutate<GQLCreateBrevoContactMutation, GQLCreateBrevoContactMutationVariables>({
-                mutation: createBrevoContactMutation,
+            const { data: mutationResponse } = await client.mutate<GQLCreateBrevoTestContactMutation, GQLCreateBrevoTestContactMutationVariables>({
+                mutation: createBrevoTestContactMutation,
                 variables: { scope, input: output },
             });
             if (!event.navigatingBack) {
-                const response = mutationResponse?.createBrevoContact;
+                const response = mutationResponse?.createBrevoTestContact;
 
                 if (response === "SUCCESSFUL") {
                     setTimeout(() => {
@@ -166,69 +167,50 @@ export function BrevoContactForm({ id, scope, input2State, additionalFormFields,
 
     return (
         <FinalForm<EditBrevoContactFormValuesWithAttributes> apiRef={formApiRef} onSubmit={handleSubmit} mode={mode} initialValues={initialValues}>
-            {({ values }) => (
-                <>
-                    {saveConflict.dialogs}
-                    <Toolbar scopeIndicator={<ContentScopeIndicator scope={scope} />}>
-                        <ToolbarItem>
-                            <IconButton onClick={stackApi?.goBack}>
-                                <ArrowLeft />
-                            </IconButton>
-                        </ToolbarItem>
-                        <ToolbarTitleItem>
-                            <FormattedMessage id="cometBrevoModule.brevoContacts.brevoContact" defaultMessage="Contact" />
-                        </ToolbarTitleItem>
-                        <ToolbarFillSpace />
-                        <ToolbarActions>
-                            <FinalFormSaveButton hasConflict={saveConflict.hasConflict} />
-                        </ToolbarActions>
-                    </Toolbar>
-                    <MainContent>
+            <>
+                {saveConflict.dialogs}
+                <Toolbar>
+                    <ToolbarItem>
+                        <IconButton onClick={stackApi?.goBack}>
+                            <ArrowLeft />
+                        </IconButton>
+                    </ToolbarItem>
+                    <ToolbarTitleItem>
+                        <FormattedMessage id="cometBrevoModule.brevoTestContacts.brevoTestContact" defaultMessage="Test contact" />
+                    </ToolbarTitleItem>
+                    <ToolbarFillSpace />
+                    <ToolbarActions>
+                        <FinalFormSaveSplitButton hasConflict={saveConflict.hasConflict} />
+                    </ToolbarActions>
+                </Toolbar>
+                <MainContent>
+                    {mode === "edit" && (
                         <Box sx={{ marginBottom: 4 }}>
                             <Alert severity="warning">
-                                {mode === "edit" ? (
-                                    <FormattedMessage
-                                        id="cometBrevoModule.brevoContact.contactEditAlert"
-                                        defaultMessage="Editing a contact will affect all scopes and the target groups within those scopes."
-                                    />
-                                ) : (
-                                    <FormattedMessage
-                                        id="cometBrevoModule.brevoContact.contactAddAlert"
-                                        defaultMessage="The contact will get a double opt-in email to confirm the subscription. After the contact's confirmation, the contact will be added to the corresponding target groups in this scope depending on the contact's attributes. Before the confirmation the contact will not be shown on the contacts page."
-                                    />
-                                )}
+                                <FormattedMessage
+                                    id="cometBrevoModule.brevoContact.contactEditAlert"
+                                    defaultMessage="Editing a contact will affect all scopes and the target groups within those scopes."
+                                />
                             </Alert>
                         </Box>
-                        <TextField
-                            required
-                            fullWidth
-                            name="email"
-                            label={<FormattedMessage id="cometBrevoModule.brevoContact.email" defaultMessage="Email" />}
-                            disabled={mode === "edit"}
-                        />
-                        {mode === "add" && (
-                            <TextField
-                                required
-                                fullWidth
-                                name="redirectionUrl"
-                                label={
-                                    <FormattedMessage
-                                        id="cometBrevoModule.brevoContact.redirectionUrl"
-                                        defaultMessage="Redirection Url (Contact will be redirected to this page after the confirmation in the double opt-in email)"
-                                    />
-                                }
-                            />
-                        )}
-                        {additionalFormFields && (
-                            <Card sx={{ padding: 4 }}>
-                                <FormSection title={<FormattedMessage id="cometBrevoModule.brevoContact.attributes" defaultMessage="Attributes" />}>
-                                    {additionalFormFields}
-                                </FormSection>
-                            </Card>
-                        )}
-                    </MainContent>
-                </>
-            )}
+                    )}
+                    <TextField
+                        required
+                        fullWidth
+                        name="email"
+                        label={<FormattedMessage id="cometBrevoModule.brevoTestContact.email" defaultMessage="Email" />}
+                        disabled={mode === "edit"}
+                    />
+
+                    {additionalFormFields && (
+                        <Card sx={{ padding: 4 }}>
+                            <FormSection title={<FormattedMessage id="cometBrevoModule.brevoTestContact.attributes" defaultMessage="Attributes" />}>
+                                {additionalFormFields}
+                            </FormSection>
+                        </Card>
+                    )}
+                </MainContent>
+            </>
         </FinalForm>
     );
 }

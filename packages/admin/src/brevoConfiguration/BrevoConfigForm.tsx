@@ -7,13 +7,16 @@ import {
     FinalFormSubmitEvent,
     Loading,
     MainContent,
+    NumberField,
     Toolbar,
     ToolbarActions,
     ToolbarFillSpace,
     ToolbarTitleItem,
+    Tooltip,
     useFormApiRef,
     useStackSwitchApi,
 } from "@comet/admin";
+import { Info } from "@comet/admin-icons";
 import { ContentScopeIndicator, ContentScopeInterface, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
 import { FormApi } from "final-form";
 import React from "react";
@@ -46,6 +49,7 @@ interface Option {
 type FormValues = {
     sender: Option;
     doubleOptInTemplate: Option;
+    folderId: number;
 };
 
 interface FormProps {
@@ -110,8 +114,10 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
                       label: `${doubleOptInTemplate?.id}: ${doubleOptInTemplate?.name}`,
                   }
                 : undefined,
+            folderId: data?.brevoConfig?.folderId ?? 1,
         };
     }, [
+        data?.brevoConfig?.folderId,
         data?.brevoConfig?.doubleOptInTemplateId,
         data?.brevoConfig?.senderMail,
         data?.brevoConfig?.senderName,
@@ -157,6 +163,7 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
             senderName: sender?.name,
             senderMail: sender?.email,
             doubleOptInTemplateId: Number(state.doubleOptInTemplate.value),
+            folderId: state.folderId ?? 1,
         };
 
         if (mode === "edit") {
@@ -227,6 +234,28 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
                                         id="cometBrevoModule.brevoConfig.doubleOptInTemplate"
                                         defaultMessage="Double Opt-in template id"
                                     />
+                                }
+                                fullWidth
+                                required
+                            />
+                            <NumberField
+                                name="folderId"
+                                defaultValue={1}
+                                label={
+                                    <>
+                                        <FormattedMessage id="cometBrevoModule.brevoConfig.folderId" defaultMessage="Folder ID" />
+                                        <Tooltip
+                                            title={
+                                                <FormattedMessage
+                                                    id="cometBrevoModule.brevoConfig.folderId.info"
+                                                    defaultMessage="By default, the folder ID should be set to 1 unless you have specifically configured another folder in Brevo."
+                                                />
+                                            }
+                                            sx={{ marginLeft: "5px" }}
+                                        >
+                                            <Info />
+                                        </Tooltip>
+                                    </>
                                 }
                                 fullWidth
                                 required
