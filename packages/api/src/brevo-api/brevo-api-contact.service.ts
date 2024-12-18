@@ -1,5 +1,8 @@
 import * as Brevo from "@getbrevo/brevo";
+import { EntityRepository } from "@mikro-orm/core";
+import { InjectRepository } from "@mikro-orm/nestjs";
 import { Inject, Injectable } from "@nestjs/common";
+import { BrevoConfigInterface } from "src/brevo-config/entities/brevo-config-entity.factory";
 import { BrevoContactAttributesInterface, EmailCampaignScopeInterface } from "src/types";
 
 import { BrevoContactInterface } from "../brevo-contact/dto/brevo-contact.factory";
@@ -18,7 +21,10 @@ export interface CreateDoubleOptInContactData {
 export class BrevoApiContactsService {
     private readonly contactsApis = new Map<string, Brevo.ContactsApi>();
 
-    constructor(@Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig) {}
+    constructor(
+        @Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig,
+        @InjectRepository("BrevoConfig") private readonly brevoConfigRepository: EntityRepository<BrevoConfigInterface>,
+    ) {}
 
     private getContactsApi(scope: EmailCampaignScopeInterface): Brevo.ContactsApi {
         try {
@@ -201,10 +207,12 @@ export class BrevoApiContactsService {
     }
 
     public async createBrevoContactList(title: string, scope: EmailCampaignScopeInterface): Promise<number | undefined> {
+        const brevoConfig = await this.brevoConfigRepository.findOne({ scope });
+
         try {
             const contactList = {
                 name: title,
-                folderId: 1, // folderId is required, folder #1 is created by default
+                folderId: brevoConfig?.folderId ?? 1,
             };
 
             const data = await this.getContactsApi(scope).createList(contactList);
