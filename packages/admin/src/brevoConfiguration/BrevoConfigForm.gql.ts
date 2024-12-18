@@ -6,6 +6,7 @@ export const brevoConfigFormFragment = gql`
         senderName
         doubleOptInTemplateId
         folderId
+        redirectionUrl
     }
 `;
 

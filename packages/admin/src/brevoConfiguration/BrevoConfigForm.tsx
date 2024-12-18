@@ -8,6 +8,7 @@ import {
     Loading,
     MainContent,
     NumberField,
+    TextField,
     Toolbar,
     ToolbarActions,
     ToolbarFillSpace,
@@ -50,6 +51,7 @@ type FormValues = {
     sender: Option;
     doubleOptInTemplate: Option;
     folderId: number;
+    redirectionUrl: string;
 };
 
 interface FormProps {
@@ -114,10 +116,13 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
                       label: `${doubleOptInTemplate?.id}: ${doubleOptInTemplate?.name}`,
                   }
                 : undefined,
+            // redirectionUrl: data?.brevoConfig?.redirectionUrl ?? "",
             folderId: data?.brevoConfig?.folderId ?? 1,
         };
     }, [
         data?.brevoConfig?.folderId,
+        // data?.brevoConfig?.redirectionUrl,
+
         data?.brevoConfig?.doubleOptInTemplateId,
         data?.brevoConfig?.senderMail,
         data?.brevoConfig?.senderName,
@@ -155,7 +160,7 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
 
         const sender = sendersData?.senders?.find((s) => s.email === state.sender.value);
 
-        if (!sender || !state.doubleOptInTemplate) {
+        if (!sender || !state.doubleOptInTemplate || !state.redirectionUrl) {
             throw new Error("Not all required fields are set");
         }
 
@@ -164,6 +169,7 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
             senderMail: sender?.email,
             doubleOptInTemplateId: Number(state.doubleOptInTemplate.value),
             folderId: state.folderId ?? 1,
+            redirectionUrl: state?.redirectionUrl ?? "",
         };
 
         if (mode === "edit") {
@@ -177,7 +183,10 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
         } else {
             const { data: mutationResponse } = await client.mutate<GQLCreateBrevoConfigMutation, GQLCreateBrevoConfigMutationVariables>({
                 mutation: createBrevoConfigMutation,
-                variables: { scope, input: output },
+                variables: {
+                    scope,
+                    input: output,
+                },
             });
             if (!event.navigatingBack) {
                 const id = mutationResponse?.createBrevoConfig.id;
@@ -222,7 +231,6 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
                                 fullWidth
                                 required
                             />
-
                             <Field
                                 component={FinalFormAutocomplete}
                                 getOptionLabel={(option: Option) => option.label}
@@ -259,6 +267,17 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
                                 }
                                 fullWidth
                                 required
+                            />
+                            <TextField
+                                required
+                                fullWidth
+                                name="redirectionUrl"
+                                label={
+                                    <FormattedMessage
+                                        id="cometBrevoModule.brevoConfig.redirectionUrl"
+                                        defaultMessage="Redirection Url (Contact will be redirected to this page after the confirmation in the double opt-in email)"
+                                    />
+                                }
                             />
                         </MainContent>
                     </>
