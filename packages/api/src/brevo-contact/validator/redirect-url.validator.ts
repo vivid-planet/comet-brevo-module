@@ -1,5 +1,8 @@
+import { EntityRepository } from "@mikro-orm/core";
+import { InjectRepository } from "@mikro-orm/nestjs";
 import { Inject, Injectable } from "@nestjs/common";
 import { registerDecorator, ValidationArguments, ValidationOptions, ValidatorConstraint, ValidatorConstraintInterface } from "class-validator";
+import { BrevoConfigInterface } from "src/brevo-config/entities/brevo-config-entity.factory";
 import { EmailCampaignScopeInterface } from "src/types";
 
 import { BrevoModuleConfig } from "../../config/brevo-module.config";
@@ -21,17 +24,20 @@ export const IsValidRedirectURL = (scope: EmailCampaignScopeInterface, validatio
 @ValidatorConstraint({ name: "IsValidRedirectURL", async: true })
 @Injectable()
 export class IsValidRedirectURLConstraint implements ValidatorConstraintInterface {
-    constructor(@Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig) {}
+    constructor(
+        @Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig,
+        @InjectRepository("BrevoConfig") private readonly brevoConfigRepository: EntityRepository<BrevoConfigInterface>,
+    ) {}
 
     async validate(urlToValidate: string, args: ValidationArguments): Promise<boolean> {
         const [scope] = args.constraints;
-        const configForScope = this.config.brevo.resolveConfig(scope);
+        const configForScope = await this.brevoConfigRepository.findOneOrFail({ scope });
 
         if (!configForScope) {
             throw Error("Scope does not exist");
         }
 
-        if (urlToValidate?.startsWith(configForScope.allowedRedirectUrl)) {
+        if (urlToValidate?.startsWith(configForScope.allowedRedirectionUrl)) {
             return true;
         }
 

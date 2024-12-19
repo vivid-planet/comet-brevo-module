@@ -148,13 +148,11 @@ export class AppModule {
                             if (scope.domain === "main") {
                                 return {
                                     apiKey: config.brevo.apiKey,
-                                    allowedRedirectUrl: config.brevo.allowedRedirectUrl,
                                     redirectUrlForImport: config.brevo.redirectUrlForImport,
                                 };
                             } else {
                                 return {
                                     apiKey: config.brevo.apiKey,
-                                    allowedRedirectUrl: config.brevo.allowedRedirectUrl,
                                     redirectUrlForImport: config.brevo.redirectUrlForImport,
                                 };
                             }
