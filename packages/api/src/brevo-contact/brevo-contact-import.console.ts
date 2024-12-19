@@ -107,7 +107,7 @@ export function createBrevoContactImportConsole({ Scope }: { Scope: Type<EmailCa
                 throw Error("Scope does not exist");
             }
 
-            if (urlToValidate?.startsWith(configForScope.redirectionUrl)) {
+            if (urlToValidate?.startsWith(configForScope.allowedRedirectionUrl)) {
                 return true;
             }
 

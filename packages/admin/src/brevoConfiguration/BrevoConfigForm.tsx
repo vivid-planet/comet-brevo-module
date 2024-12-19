@@ -51,7 +51,7 @@ type FormValues = {
     sender: Option;
     doubleOptInTemplate: Option;
     folderId: number;
-    redirectionUrl: string;
+    allowedRedirectionUrl: string;
 };
 
 interface FormProps {
@@ -61,7 +61,9 @@ interface FormProps {
 function validateUrl(value: string): React.ReactNode | undefined {
     const urlPattern = /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d{1,5})?(\/[^\s]*)?$/;
     if (!urlPattern.test(value)) {
-        return <FormattedMessage id="cometBrevoModule.brevoConfig.redirectionUrl.validationError" defaultMessage="Please enter a valid URL." />;
+        return (
+            <FormattedMessage id="cometBrevoModule.brevoConfig.allowedRedirectionUrl.validationError" defaultMessage="Please enter a valid URL." />
+        );
     }
     return undefined;
 }
@@ -124,12 +126,12 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
                       label: `${doubleOptInTemplate?.id}: ${doubleOptInTemplate?.name}`,
                   }
                 : undefined,
-            redirectionUrl: data?.brevoConfig?.redirectionUrl ?? "",
+            allowedRedirectionUrl: data?.brevoConfig?.allowedRedirectionUrl ?? "",
             folderId: data?.brevoConfig?.folderId ?? 1,
         };
     }, [
         data?.brevoConfig?.folderId,
-        data?.brevoConfig?.redirectionUrl,
+        data?.brevoConfig?.allowedRedirectionUrl,
 
         data?.brevoConfig?.doubleOptInTemplateId,
         data?.brevoConfig?.senderMail,
@@ -168,7 +170,7 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
 
         const sender = sendersData?.senders?.find((s) => s.email === state.sender.value);
 
-        if (!sender || !state.doubleOptInTemplate || !state.redirectionUrl) {
+        if (!sender || !state.doubleOptInTemplate || !state.allowedRedirectionUrl) {
             throw new Error("Not all required fields are set");
         }
 
@@ -177,7 +179,7 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
             senderMail: sender?.email,
             doubleOptInTemplateId: Number(state.doubleOptInTemplate.value),
             folderId: state.folderId ?? 1,
-            redirectionUrl: state?.redirectionUrl ?? "",
+            allowedRedirectionUrl: state?.allowedRedirectionUrl ?? "",
         };
 
         if (mode === "edit") {
@@ -279,10 +281,10 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
                             <TextField
                                 required
                                 fullWidth
-                                name="redirectionUrl"
+                                name="allowedRedirectionUrl"
                                 label={
                                     <FormattedMessage
-                                        id="cometBrevoModule.brevoConfig.redirectionUrl"
+                                        id="cometBrevoModule.brevoConfig.allowedRedirectionUrl"
                                         defaultMessage="Redirection URL (Contact will be redirected to this page after the confirmation in the double opt-in email)"
                                     />
                                 }

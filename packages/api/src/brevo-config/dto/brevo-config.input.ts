@@ -26,7 +26,7 @@ export class BrevoConfigInput {
     @IsNotEmpty()
     @Field()
     @IsUrl({ require_tld: process.env.NODE_ENV === "production" })
-    redirectionUrl: string;
+    allowedRedirectionUrl: string;
 }
 
 @InputType()

@@ -3,7 +3,7 @@
 "@comet/brevo-admin": minor
 ---
 
-Add a brevo configuration field for `redirectionUrl`
+Add a brevo configuration field for `allowedRedirectionUrl`
 Env vars containing this information can be removed and must be removed from the brevo module configuration.
 
 ```diff
