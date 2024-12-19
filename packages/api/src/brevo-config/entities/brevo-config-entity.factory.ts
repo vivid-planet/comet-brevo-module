@@ -2,7 +2,6 @@ import { DocumentInterface } from "@comet/cms-api";
 import { Embedded, Entity, OptionalProps, PrimaryKey, Property } from "@mikro-orm/core";
 import { Type } from "@nestjs/common";
 import { Field, ID, Int, ObjectType } from "@nestjs/graphql";
-import { IsUrl } from "class-validator";
 import { v4 } from "uuid";
 
 import { EmailCampaignScopeInterface } from "../../types";
@@ -51,7 +50,6 @@ export class BrevoConfigEntityFactory {
 
             @Property({ columnType: "text" })
             @Field()
-            @IsUrl({ require_tld: process.env.NODE_ENV === "production" })
             allowedRedirectionUrl: string;
 
             @Property({
