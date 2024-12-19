@@ -292,7 +292,7 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
                                             title={
                                                 <FormattedMessage
                                                     id="cometBrevoModule.brevoConfig.allowedRedirectionUrl.info"
-                                                    defaultMessage="Defines the schema of a valid redirection URL that is set when creating contact. "
+                                                    defaultMessage="Defines the schema of a valid redirection URL that is set when creating or importing contacts."
                                                 />
                                             }
                                             sx={{ marginLeft: "5px" }}
