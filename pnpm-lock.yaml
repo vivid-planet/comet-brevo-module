@@ -1053,6 +1053,13 @@ importers:
         version: 8.3.2
 
   packages/mail-rendering:
+    dependencies:
+      '@comet/cli':
+        specifier: ^7.7.0
+        version: 7.7.0(ts-node@10.9.2)
+      '@comet/cms-site':
+        specifier: ^7.7.0
+        version: 7.7.0(@types/react@18.3.12)(next@14.2.18)(react-dom@18.3.1)(react@18.3.1)(styled-components@6.1.13)
     devDependencies:
       '@comet/eslint-config':
         specifier: ^7.7.0
@@ -1063,6 +1070,9 @@ importers:
       '@types/react-dom':
         specifier: ^18.3.1
         version: 18.3.1
+      chokidar-cli:
+        specifier: ^2.0.0
+        version: 2.1.0
       eslint:
         specifier: ^8.0.0
         version: 8.56.0
@@ -4094,7 +4104,6 @@ packages:
       commander: 9.5.0
       prettier: 2.8.8
       ts-node: 10.9.2(@types/node@18.19.8)(typescript@4.9.5)
-    dev: true
 
   /@comet/cms-admin@7.7.0(@apollo/client@3.12.2)(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@mui/material@5.16.7)(@mui/system@5.16.7)(@mui/x-data-grid@5.17.26)(@types/react@17.0.75)(draft-js@0.11.7)(final-form@4.20.10)(graphql@15.9.0)(history@4.10.1)(react-dnd-html5-backend@16.0.1)(react-dnd@16.0.1)(react-dom@17.0.2)(react-final-form@6.5.9)(react-intl@5.25.1)(react-router-dom@5.3.4)(react-router@5.3.4)(react@17.0.2):
     resolution: {integrity: sha512-FARsHyD2+c6ba1yObRG4yosJ7eJPT1Tnx6vLrdriCcsy6T5rGZLr1oJKT5rNKkb/Yw+SbNXrqEvIes+8jpBVHw==}
@@ -18653,7 +18662,6 @@ packages:
     resolution: {integrity: sha512-tdN8qQGvNjw4CHbY+XXk0JgCXn9QiF21a55rBe5LJAU+kDyC4WQn4+awm2Xfk2lQMk5fKup9XgzTZtGkjBdP9Q==}
     engines: {node: '>=10.13.0'}
     hasBin: true
-    dev: true
 
   /pretty-bytes@5.6.0:
     resolution: {integrity: sha512-FFw039TmrBqFK8ma/7OL3sDz/VytdtJr044/QUJtH0wK9lb9jLq9tJyIxUwtQJHwar2BqtiA4iCWSwo9JLkzFg==}

@@ -1,5 +1,5 @@
 import { createBlocksBlock } from "@comet/blocks-admin";
-import { PixelImageBlock } from "@comet/cms-admin";
+import { NewsletterImageBlock } from "@comet/brevo-admin";
 import { RichTextBlock } from "@src/common/blocks/RichTextBlock";
 
 import { DividerBlock } from "./DividerBlock";
@@ -11,6 +11,6 @@ export const EmailCampaignContentBlock = createBlocksBlock({
         divider: DividerBlock,
         text: RichTextBlock,
         salutation: EmailCampaignSalutationBlock,
-        image: PixelImageBlock,
+        image: NewsletterImageBlock,
     },
 });
