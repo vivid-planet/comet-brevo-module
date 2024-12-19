@@ -116,12 +116,12 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
                       label: `${doubleOptInTemplate?.id}: ${doubleOptInTemplate?.name}`,
                   }
                 : undefined,
-            // redirectionUrl: data?.brevoConfig?.redirectionUrl ?? "",
+            redirectionUrl: data?.brevoConfig?.redirectionUrl ?? "",
             folderId: data?.brevoConfig?.folderId ?? 1,
         };
     }, [
         data?.brevoConfig?.folderId,
-        // data?.brevoConfig?.redirectionUrl,
+        data?.brevoConfig?.redirectionUrl,
 
         data?.brevoConfig?.doubleOptInTemplateId,
         data?.brevoConfig?.senderMail,
