@@ -58,6 +58,14 @@ interface FormProps {
     scope: ContentScopeInterface;
 }
 
+function validateUrl(value: string): React.ReactNode | undefined {
+    const urlPattern = /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d{1,5})?(\/[^\s]*)?$/;
+    if (!urlPattern.test(value)) {
+        return <FormattedMessage id="cometBrevoModule.brevoConfig.redirectionUrl.validationError" defaultMessage="Please enter a valid URL." />;
+    }
+    return undefined;
+}
+
 export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
     const client = useApolloClient();
     const formApiRef = useFormApiRef<FormValues>();
@@ -275,9 +283,10 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
                                 label={
                                     <FormattedMessage
                                         id="cometBrevoModule.brevoConfig.redirectionUrl"
-                                        defaultMessage="Redirection Url (Contact will be redirected to this page after the confirmation in the double opt-in email)"
+                                        defaultMessage="Redirection URL (Contact will be redirected to this page after the confirmation in the double opt-in email)"
                                     />
                                 }
+                                validate={validateUrl}
                             />
                         </MainContent>
                     </>
