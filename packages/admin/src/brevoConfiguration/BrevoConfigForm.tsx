@@ -283,10 +283,23 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
                                 fullWidth
                                 name="allowedRedirectionUrl"
                                 label={
-                                    <FormattedMessage
-                                        id="cometBrevoModule.brevoConfig.allowedRedirectionUrl"
-                                        defaultMessage="Redirection URL (Contact will be redirected to this page after the confirmation in the double opt-in email)"
-                                    />
+                                    <>
+                                        <FormattedMessage
+                                            id="cometBrevoModule.brevoConfig.allowedRedirectionUrl"
+                                            defaultMessage="Allowed redirection URL"
+                                        />
+                                        <Tooltip
+                                            title={
+                                                <FormattedMessage
+                                                    id="cometBrevoModule.brevoConfig.allowedRedirectionUrl.info"
+                                                    defaultMessage="Defines the schema of a valid redirection URL that is set when creating contact. "
+                                                />
+                                            }
+                                            sx={{ marginLeft: "5px" }}
+                                        >
+                                            <Info />
+                                        </Tooltip>
+                                    </>
                                 }
                                 validate={validateUrl}
                             />
