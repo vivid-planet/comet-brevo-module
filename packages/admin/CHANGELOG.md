@@ -1,5 +1,13 @@
 # @comet/brevo-admin
 
+## 2.2.0
+
+### Minor Changes
+
+-   f07d79a: Adds `createBrevoTestContactsPage` for creating a test contacts page, that is indepent from the main list.
+
+    Remove `email` and `redirectionUrl` from `brevoContactsPageAttributesConfig`
+
 ## 2.1.6
 
 ### Patch Changes
