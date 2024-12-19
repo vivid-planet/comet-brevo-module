@@ -19,6 +19,7 @@
         "serve": "NODE_ENV=production node server.js"
     },
     "dependencies": {
+        "@comet/brevo-mail-rendering": "workspace:*",
         "@comet/cms-site": "^7.7.0",
         "@faire/mjml-react": "^3.4.0",
         "@luma-team/mjml-react": "^0.2.1",

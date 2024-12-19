@@ -1,6 +1,7 @@
 const packageFolderMapping = {
     "@comet/brevo-api": "packages/api",
     "@comet/brevo-admin": "packages/admin",
+    "@comet/brevo-mail-rendering": "packages/brevo-mail-rendering",
 };
 
 const waitOnPackages = (...packages) => {
@@ -25,6 +26,12 @@ module.exports = {
             name: "admin",
             script: "pnpm --filter @comet/brevo-admin run start",
             group: ["admin"],
+        },
+        //group mail-rendering
+        {
+            name: "mail-rendering",
+            script: "pnpm --filter @comet/brevo-mail-rendering run dev",
+            group: ["mail-rendering"],
         },
         //group demo admin
         {
