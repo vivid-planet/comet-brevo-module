@@ -227,9 +227,16 @@ input EmailCampaignFilter {
   updatedAt: DateFilter
   title: StringFilter
   subject: StringFilter
+  sendingState: SendingStateEnumFilter
   scheduledAt: DateFilter
   and: [EmailCampaignFilter!]
   or: [EmailCampaignFilter!]
+}
+
+input SendingStateEnumFilter {
+  isAnyOf: [SendingState!]
+  equal: SendingState
+  notEqual: SendingState
 }
 
 input EmailCampaignSort {
