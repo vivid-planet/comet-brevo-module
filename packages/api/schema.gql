@@ -169,6 +169,7 @@ type PaginatedBrevoContacts {
 }
 
 type TargetGroup implements DocumentInterface {
+<<<<<<< HEAD
     id: ID!
     updatedAt: DateTime!
     createdAt: DateTime!
@@ -179,6 +180,18 @@ type TargetGroup implements DocumentInterface {
     totalSubscribers: Int!
     scope: EmailCampaignContentScope!
     assignedContactsTargetGroupBrevoId: Int
+=======
+  id: ID!
+  updatedAt: DateTime!
+  createdAt: DateTime!
+  title: String!
+  isMainList: Boolean!
+  isTestList: Boolean!
+  brevoId: Int!
+  totalSubscribers: Int!
+  scope: EmailCampaignContentScope!
+  assignedContactsTargetGroupBrevoId: Int
+>>>>>>> main
 }
 
 interface DocumentInterface {
