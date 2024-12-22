@@ -28,7 +28,7 @@
         "@comet/cms-site": "^7.7.0",
         "@next/bundle-analyzer": "^12.3.4",
         "@opentelemetry/api": "^1.7.0",
-        "@opentelemetry/auto-instrumentations-node": "^0.40.0",
+        "@opentelemetry/auto-instrumentations-node": "^0.55.0",
         "@opentelemetry/exporter-trace-otlp-http": "^0.46.0",
         "@opentelemetry/sdk-node": "^0.46.0",
         "draft-js": "^0.11.7",
