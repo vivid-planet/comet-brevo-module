@@ -47,6 +47,8 @@ export class AppModule {
     static forRoot(config: Config): DynamicModule {
         const authModule = config.auth.useAuthProxy ? AuthModule.forRoot(config) : AuthLocalModule.forRoot(config);
 
+        console.log(config.dam);
+
         return {
             module: AppModule,
             imports: [

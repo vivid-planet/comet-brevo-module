@@ -24,15 +24,15 @@
         "lint:tsc": "tsc --noEmit"
     },
     "dependencies": {
-        "@comet/cli": "^7.7.0",
-        "@comet/cms-site": "^7.7.0",
+        "@comet/cli": "^7.10.0",
+        "@comet/cms-site": "^7.10.0",
         "mjml": "^4.15.3",
         "mjml-browser": "^4.15.3",
         "next": "^14.2.18",
         "styled-components": "^6.1.13"
     },
     "devDependencies": {
-        "@comet/eslint-config": "^7.7.0",
+        "@comet/eslint-config": "^7.10.0",
         "@faire/mjml-react": "^3.4.0",
         "@luma-team/mjml-react": "^0.2.1",
         "@types/react": "^18.3.12",
