@@ -8,6 +8,7 @@ import {
     Loading,
     MainContent,
     NumberField,
+    TextField,
     Toolbar,
     ToolbarActions,
     ToolbarFillSpace,
@@ -50,10 +51,21 @@ type FormValues = {
     sender: Option;
     doubleOptInTemplate: Option;
     folderId: number;
+    allowedRedirectionUrl: string;
 };
 
 interface FormProps {
     scope: ContentScopeInterface;
+}
+
+function validateUrl(value: string): React.ReactNode | undefined {
+    const urlPattern = /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d{1,5})?(\/[^\s]*)?$/;
+    if (!urlPattern.test(value)) {
+        return (
+            <FormattedMessage id="cometBrevoModule.brevoConfig.allowedRedirectionUrl.validationError" defaultMessage="Please enter a valid URL." />
+        );
+    }
+    return undefined;
 }
 
 export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
@@ -114,10 +126,13 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
                       label: `${doubleOptInTemplate?.id}: ${doubleOptInTemplate?.name}`,
                   }
                 : undefined,
+            allowedRedirectionUrl: data?.brevoConfig?.allowedRedirectionUrl ?? "",
             folderId: data?.brevoConfig?.folderId ?? 1,
         };
     }, [
         data?.brevoConfig?.folderId,
+        data?.brevoConfig?.allowedRedirectionUrl,
+
         data?.brevoConfig?.doubleOptInTemplateId,
         data?.brevoConfig?.senderMail,
         data?.brevoConfig?.senderName,
@@ -155,7 +170,7 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
 
         const sender = sendersData?.senders?.find((s) => s.email === state.sender.value);
 
-        if (!sender || !state.doubleOptInTemplate) {
+        if (!sender || !state.doubleOptInTemplate || !state.allowedRedirectionUrl) {
             throw new Error("Not all required fields are set");
         }
 
@@ -164,6 +179,7 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
             senderMail: sender?.email,
             doubleOptInTemplateId: Number(state.doubleOptInTemplate.value),
             folderId: state.folderId ?? 1,
+            allowedRedirectionUrl: state?.allowedRedirectionUrl ?? "",
         };
 
         if (mode === "edit") {
@@ -177,7 +193,10 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
         } else {
             const { data: mutationResponse } = await client.mutate<GQLCreateBrevoConfigMutation, GQLCreateBrevoConfigMutationVariables>({
                 mutation: createBrevoConfigMutation,
-                variables: { scope, input: output },
+                variables: {
+                    scope,
+                    input: output,
+                },
             });
             if (!event.navigatingBack) {
                 const id = mutationResponse?.createBrevoConfig.id;
@@ -222,7 +241,6 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
                                 fullWidth
                                 required
                             />
-
                             <Field
                                 component={FinalFormAutocomplete}
                                 getOptionLabel={(option: Option) => option.label}
@@ -259,6 +277,31 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
                                 }
                                 fullWidth
                                 required
+                            />
+                            <TextField
+                                required
+                                fullWidth
+                                name="allowedRedirectionUrl"
+                                label={
+                                    <>
+                                        <FormattedMessage
+                                            id="cometBrevoModule.brevoConfig.allowedRedirectionUrl"
+                                            defaultMessage="Allowed redirection URL"
+                                        />
+                                        <Tooltip
+                                            title={
+                                                <FormattedMessage
+                                                    id="cometBrevoModule.brevoConfig.allowedRedirectionUrl.info"
+                                                    defaultMessage="Defines the schema of a valid redirection URL that is set when creating or importing contacts."
+                                                />
+                                            }
+                                            sx={{ marginLeft: "5px" }}
+                                        >
+                                            <Info />
+                                        </Tooltip>
+                                    </>
+                                }
+                                validate={validateUrl}
                             />
                         </MainContent>
                     </>
