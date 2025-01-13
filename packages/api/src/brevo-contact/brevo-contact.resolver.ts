@@ -239,7 +239,7 @@ export function createBrevoContactResolver({
 
             if (targetGroup) {
                 const numberOfContacts = await this.brevoContactsApiService.getContactCountByListId(targetGroup.brevoId, Scope);
-                if (numberOfContacts >= 2) {
+                if (numberOfContacts >= 100) {
                     return SubscribeResponse.ERROR_MAXIMAL_NUMBER_OF_TEST_CONTACTS_REACHED;
                 }
             }
