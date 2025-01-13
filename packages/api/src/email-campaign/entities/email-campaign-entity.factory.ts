@@ -77,10 +77,6 @@ export function createEmailCampaignEntity({
         @Field(() => Date, { nullable: true })
         scheduledAt?: Date;
 
-        @Property({ columnType: "text", nullable: true })
-        @Field(() => String, { nullable: true })
-        unsubscriptionPageId: string;
-
         @ManyToMany(() => TargetGroup, (targetGroup) => targetGroup.campaigns, { owner: true })
         @Field(() => [TargetGroup])
         targetGroups = new Collection<TargetGroupInterface>(this);
