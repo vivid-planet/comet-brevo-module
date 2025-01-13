@@ -35,7 +35,7 @@ ln -sf ../api/schema.gql ./demo/admin/
 ln -sf ../api/block-meta.json ./demo/admin/
 ln -sf ../api/src/comet-config.json ./demo/admin/
 
-# create demo mail-rendering symlinks
+# create demo site symlinks
 ln -sf ../../.env ./demo/site/.env
 ln -sf ../api/schema.gql ./demo/site/
 ln -sf ../api/block-meta.json ./demo/site/
