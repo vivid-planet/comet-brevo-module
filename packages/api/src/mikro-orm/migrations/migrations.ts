@@ -13,7 +13,6 @@ import { Migration20241016123307 } from "./Migration20241016123307";
 import { Migration20241018110515 } from "./Migration20241018110515";
 import { Migration20241022144400 } from "./Migration20241022144400";
 import { Migration20241024071748 } from "./Migration20241024071748";
-import { Migration20241024075236 } from "./Migration20241024075236";
 import { Migration20241119101706 } from "./Migration20241119101706";
 
 export const migrationsList: MigrationObject[] = [
@@ -31,5 +30,4 @@ export const migrationsList: MigrationObject[] = [
     { name: "Migration20241119101706", class: Migration20241119101706 },
     { name: "Migration20241022144400", class: Migration20241022144400 },
     { name: "Migration20241024071748", class: Migration20241024071748 },
-    { name: "Migration20241024075236", class: Migration20241024075236 },
 ];
