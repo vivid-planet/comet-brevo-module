@@ -202,7 +202,6 @@ type EmailCampaign implements DocumentInterface {
     createdAt: DateTime!
     title: String!
     subject: String!
-    unsubscriptionPageId: String
     brevoId: Int
     scheduledAt: DateTime
     targetGroups: [TargetGroup!]!
