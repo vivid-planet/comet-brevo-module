@@ -204,7 +204,7 @@ export class BrevoApiContactsService {
         try {
             const contactList = {
                 name: title,
-                folderId: 457, // folderId is required, folder #1 is created by default
+                folderId: 1, // folderId is required, folder #1 is created by default
             };
 
             const data = await this.getContactsApi(scope).createList(contactList);
