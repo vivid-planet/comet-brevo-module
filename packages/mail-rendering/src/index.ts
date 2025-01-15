@@ -1,1 +1,1 @@
-export { ImageBlock } from "./blocks/ImageBlock";
+export { NewsletterImageBlock } from "./blocks/NewsletterImageBlock";

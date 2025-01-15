@@ -22,6 +22,9 @@ pnpm install
 # create admin symlinks
 ln -sf ../api/schema.gql ./packages/admin/schema.gql
 
+# create mail-rendering symlinks
+ln -sf ../api/block-meta.json ./packages/mail-rendering/block-meta.json
+
 # create demo api symlinks
 ln -sf ../../.env ./demo/api/.env
 ln -sf ../../.env.local ./demo/api
