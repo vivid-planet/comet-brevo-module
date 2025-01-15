@@ -64,6 +64,7 @@ export function createConfig(processEnv: NodeJS.ProcessEnv) {
                 email: envVars.BREVO_SENDER_EMAIL,
             },
             redirectUrlForImport: envVars.REDIRECT_URL_FOR_IMPORT,
+            folderId: envVars.BREVO_FOLDER_ID,
         },
         campaign: {
             url: envVars.CAMPAIGN_URL,

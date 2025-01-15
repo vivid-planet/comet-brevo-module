@@ -12,11 +12,6 @@ export interface BrevoTestContactInputInterface {
     attributes?: BrevoContactAttributesInterface;
 }
 
-export interface BrevoTestContactUpdateInputInterface {
-    blocked?: boolean;
-    attributes?: BrevoContactAttributesInterface;
-}
-
 export class BrevoTestContactInputFactory {
     static create({
         BrevoContactAttributes,
