@@ -65,7 +65,7 @@ async function generateSchema(): Promise<void> {
 
     const BrevoContact = BrevoContactFactory.create({});
     const [BrevoContactInput, BrevoContactUpdateInput] = BrevoContactInputFactory.create({ Scope: EmailCampaignScope });
-    const [BrevoTestContactInput] = BrevoTestContactInputFactory.create({ Scope: EmailCampaignScope });
+    const [BrevoTestContactInput, BrevoTestContactUpdateInput] = BrevoTestContactInputFactory.create({ Scope: EmailCampaignScope });
 
     const BrevoContactSubscribeInput = SubscribeInputFactory.create({ Scope: EmailCampaignScope });
     const BrevoContactResolver = createBrevoContactResolver({
@@ -75,6 +75,7 @@ async function generateSchema(): Promise<void> {
         BrevoContactInput,
         BrevoContactUpdateInput,
         BrevoTestContactInput,
+        BrevoTestContactUpdateInput,
     });
     const BrevoContactImportResolver = createBrevoContactImportResolver({
         BrevoContact,
