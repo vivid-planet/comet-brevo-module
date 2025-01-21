@@ -22,6 +22,7 @@ export interface EmailCampaignInterface {
     scope: EmailCampaignScopeInterface;
     sendingState: SendingState;
     targetGroups: Collection<TargetGroupInterface, object>;
+    unsubscriptionPageId?: string;
 }
 
 export function createEmailCampaignEntity({

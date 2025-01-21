@@ -52,6 +52,7 @@ type FormValues = {
     doubleOptInTemplate: Option;
     folderId: number;
     allowedRedirectionUrl: string;
+    unsubscriptionPageId: string;
 };
 
 interface FormProps {
@@ -128,6 +129,7 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
                 : undefined,
             allowedRedirectionUrl: data?.brevoConfig?.allowedRedirectionUrl ?? "",
             folderId: data?.brevoConfig?.folderId ?? 1,
+            unsubscriptionPageId: data?.brevoConfig?.unsubscriptionPageId ?? "",
         };
     }, [
         data?.brevoConfig?.folderId,
@@ -137,6 +139,7 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
         data?.brevoConfig?.senderMail,
         data?.brevoConfig?.senderName,
         doubleOptInTemplatesData?.doubleOptInTemplates,
+        data?.brevoConfig?.unsubscriptionPageId,
         sendersData?.senders,
     ]);
 
@@ -170,7 +173,7 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
 
         const sender = sendersData?.senders?.find((s) => s.email === state.sender.value);
 
-        if (!sender || !state.doubleOptInTemplate || !state.allowedRedirectionUrl) {
+        if (!sender || !state.doubleOptInTemplate || !state.allowedRedirectionUrl || !state.unsubscriptionPageId) {
             throw new Error("Not all required fields are set");
         }
 
@@ -180,6 +183,7 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
             doubleOptInTemplateId: Number(state.doubleOptInTemplate.value),
             folderId: state.folderId ?? 1,
             allowedRedirectionUrl: state?.allowedRedirectionUrl ?? "",
+            unsubscriptionPageId: state.unsubscriptionPageId,
         };
 
         if (mode === "edit") {
@@ -214,6 +218,19 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
     if (loading || senderLoading || doubleOptInTemplatesLoading) {
         return <Loading behavior="fillPageHeight" />;
     }
+
+    const validateUnsubscriptionPageId = (value: string) => {
+        const validUnsubscriptionPageId = /^[a-zA-Z0-9]{24}$/;
+        if (!validUnsubscriptionPageId.test(value)) {
+            return (
+                <FormattedMessage
+                    id="cometBrevoModule.brevoConfig.unsubscriptionPageId.validation"
+                    defaultMessage="Must be a 24-digit alphanumeric ID"
+                />
+            );
+        }
+        return undefined;
+    };
 
     return (
         <FinalForm<FormValues> apiRef={formApiRef} onSubmit={handleSubmit} mode={mode} initialValues={initialValues}>
@@ -302,6 +319,18 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
                                     </>
                                 }
                                 validate={validateUrl}
+                            />
+                            <TextField
+                                fullWidth
+                                name="unsubscriptionPageId"
+                                required
+                                label={
+                                    <FormattedMessage
+                                        id="cometBrevoModule.brevoConfig.unsubscriptionPageId"
+                                        defaultMessage="Unsubscription Page ID"
+                                    />
+                                }
+                                validate={validateUnsubscriptionPageId}
                             />
                         </MainContent>
                     </>

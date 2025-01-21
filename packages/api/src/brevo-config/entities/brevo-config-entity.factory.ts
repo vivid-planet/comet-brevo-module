@@ -14,6 +14,7 @@ export interface BrevoConfigInterface {
     doubleOptInTemplateId: number;
     folderId: number;
     allowedRedirectionUrl: string;
+    unsubscriptionPageId: string;
     createdAt: Date;
     updatedAt: Date;
     scope: EmailCampaignScopeInterface;
@@ -51,6 +52,10 @@ export class BrevoConfigEntityFactory {
             @Property({ columnType: "text" })
             @Field()
             allowedRedirectionUrl: string;
+
+            @Property({ columnType: "text" })
+            @Field(() => String)
+            unsubscriptionPageId: string;
 
             @Property({
                 columnType: "timestamp with time zone",
