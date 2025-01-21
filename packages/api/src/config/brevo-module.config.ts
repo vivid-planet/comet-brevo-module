@@ -11,7 +11,6 @@ export interface BrevoModuleConfig {
         resolveConfig: (scope: EmailCampaignScopeInterface) => {
             apiKey: string;
             redirectUrlForImport: string;
-            folderId?: number;
         };
         BrevoContactAttributes?: Type<BrevoContactAttributesInterface>;
         BrevoContactFilterAttributes?: Type<BrevoContactFilterAttributesInterface>;

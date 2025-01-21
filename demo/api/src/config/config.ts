@@ -58,7 +58,6 @@ export function createConfig(processEnv: NodeJS.ProcessEnv) {
         brevo: {
             apiKey: envVars.BREVO_API_KEY,
             redirectUrlForImport: envVars.REDIRECT_URL_FOR_IMPORT,
-            folderId: envVars.BREVO_FOLDER_ID,
         },
         campaign: {
             url: envVars.CAMPAIGN_URL,

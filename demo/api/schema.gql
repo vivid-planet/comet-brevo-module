@@ -741,12 +741,8 @@ input EmailCampaignFilter {
   updatedAt: DateTimeFilter
   title: StringFilter
   subject: StringFilter
-<<<<<<< HEAD
-  scheduledAt: DateTimeFilter
-=======
   sendingState: SendingStateEnumFilter
-  scheduledAt: DateFilter
->>>>>>> main
+  scheduledAt: DateTimeFilter
   and: [EmailCampaignFilter!]
   or: [EmailCampaignFilter!]
 }

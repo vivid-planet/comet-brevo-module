@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import { DateTimeFilter, StringFilter } from "@comet/cms-api";
-=======
-import { createEnumFilter, DateFilter, StringFilter } from "@comet/cms-api";
->>>>>>> main
+import { createEnumFilter, DateTimeFilter, StringFilter } from "@comet/cms-api";
 import { Field, InputType } from "@nestjs/graphql";
 import { Type } from "class-transformer";
 import { IsOptional, ValidateNested } from "class-validator";
@@ -38,17 +34,13 @@ export class EmailCampaignFilter {
     @Type(() => StringFilter)
     subject?: StringFilter;
 
-<<<<<<< HEAD
-    @Field(() => DateTimeFilter, { nullable: true })
-=======
     @Field(() => SendingStateEnumFilter, { nullable: true })
     @ValidateNested()
     @IsOptional()
     @Type(() => SendingStateEnumFilter)
     sendingState?: SendingStateEnumFilter;
 
-    @Field(() => DateFilter, { nullable: true })
->>>>>>> main
+    @Field(() => DateTimeFilter, { nullable: true })
     @ValidateNested()
     @IsOptional()
     @Type(() => DateTimeFilter)
