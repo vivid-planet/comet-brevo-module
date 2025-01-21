@@ -1,5 +1,97 @@
 # @comet/brevo-api
 
+## 3.0.0
+
+### Major Changes
+
+-   0db9f4a: Make this package compatible with [COMET v7](https://docs.comet-dxp.com/docs/migration/migration-from-v6-to-v7)
+
+    **Breaking Changes**:
+
+    -   Now requires >= v7.5.0 for `@comet` packages
+    -   Now requires >= 5.9.8 for `@mikro-orm` packages (except `@mikro-orm/nestjs` where >= 5.2.3 is required)
+
+-   8ef6341: Refactor `email-campaign` and `target-group` entity
+
+    Use `createEmailCampaignEntity` for creating `email-campaign` entity. Pass `EmailCampaignContentBlock`, `Scope` and `TargetGroup`.
+
+    Use `createTargetGroupEntity` for creating `target-group` entity. Pass `Scope` and optional `BrevoFilterAttributes`
+
+    Pass both to the `AppModule`:
+
+    ````diff
+          BrevoModule.register({
+            brevo: {
+                  //...
+      +        EmailCampaign
+      +        TargetGroup
+               }
+            //...
+          });
+      ```
+    ````
+
+-   adb69fd: Refactor brevo contact import to upload files to public uploads temporarily
+
+    The files for the brevo contact import now get temporarily stored in the public uploads until the import is concluded.
+    This change prepares for future imports to be handled in a separate job, allowing more than 100 contacts to be imported without exhausting api resources or blocking the event loop.
+
+    It is now necessary to import the `PublicUploadsModule` in the project's `AppModule` and configure it to accept csv files.
+
+    ```ts
+            PublicUploadModule.register({
+                acceptedMimeTypes: ["text/csv"],
+                maxFileSize: config.publicUploads.maxFileSize,
+                directory: `${config.blob.storageDirectoryPrefix}-public-uploads`,
+            }),
+    ```
+
+-   d5319bc: Add `mail-rendering` package for providing reuseable components for rendering emails
+
+    Add new `NewsletterImageBlock`
+
+-   cc4bd07: Add a brevo configuration field for `allowedRedirectionUrl`
+    Env vars containing this information can be removed and must be removed from the brevo module configuration.
+
+    ```diff
+    BrevoModule.register({
+        brevo: {
+    -       allowedRedirectionUrl: config.brevo.allowedRedirectionUrl,
+            //...
+        },
+        //..
+    })
+    ```
+
+### Minor Changes
+
+-   e931996: Add field for `doubleOptInTemplateId` to `BrevoConfigPage`
+
+    The environment variable BREVO_DOUBLE_OPT_IN_TEMPLATE_ID can be removed, as it is now available as a maintainable variable in the admin interface.
+
+-   7215ec1: Add `folderId` to `BrevoConfig` to allow overwriting the default folderId `1`
+-   4fb6b8f: A required brevo config page must now be generated with `createBrevoConfigPage`.
+    All necessary brevo configuration (for each scope) must be configured within this page for emails campaigns to be sent.
+
+    ```diff
+    + const BrevoConfigPage = createBrevoConfigPage({
+    +        scopeParts: ["domain", "language"],
+    + });
+    ```
+
+    Env vars containing the brevo sender information can be removed.
+
+    ```diff
+    - BREVO_SENDER_NAME=senderName
+    - BREVO_SENDER_EMAIL=senderEmail
+    ```
+
+-   ea503b9: Add a brevo configuration field for `unsubscriptionPageId`
+
+### Patch Changes
+
+-   a605a42: Remove the `totalContactsBlocked` field from the `TargetGroup` type, because it is not delivered in the list request in Brevo anymore.
+
 ## 2.2.0
 
 ### Minor Changes
