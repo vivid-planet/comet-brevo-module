@@ -2,8 +2,10 @@ import * as csv from "@fast-csv/parse";
 import { EntityRepository } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Inject, Injectable } from "@nestjs/common";
+import { Field, Int, ObjectType } from "@nestjs/graphql";
 import { IsEmail, IsNotEmpty, validateSync } from "class-validator";
 import isEqual from "lodash.isequal";
+import { BrevoConfigInterface } from "src/brevo-config/entities/brevo-config-entity.factory";
 import { TargetGroupInterface } from "src/target-group/entity/target-group-entity.factory";
 import { Readable } from "stream";
 
@@ -22,11 +24,21 @@ class BasicValidateableRow {
     [key: string]: string | string[];
 }
 
-export interface CsvImportInformation {
+@ObjectType()
+export class CsvImportInformation {
+    @Field(() => Int)
     created: number;
+
+    @Field(() => Int)
     updated: number;
+
+    @Field(() => Int)
     failed: number;
-    failedColumns: unknown[];
+
+    @Field(() => [[String]], { nullable: true })
+    failedColumns: string[][];
+
+    @Field({ nullable: true })
     errorMessage?: string;
 }
 
@@ -46,6 +58,7 @@ export class BrevoContactImportService {
         private readonly brevoContactsService: BrevoContactsService,
         private readonly targetGroupsService: TargetGroupsService,
         @InjectRepository("TargetGroup") private readonly targetGroupRepository: EntityRepository<TargetGroupInterface>,
+        @InjectRepository("BrevoConfig") private readonly brevoConfigRepository: EntityRepository<BrevoConfigInterface>,
     ) {}
 
     async importContactsFromCsv({
@@ -55,7 +68,7 @@ export class BrevoContactImportService {
         targetGroupIds = [],
         isAdminImport = false,
     }: ImportContactsFromCsvParams): Promise<CsvImportInformation> {
-        const failedColumns: unknown[] = [];
+        const failedColumns: string[][] = [];
         const targetGroups = await this.targetGroupRepository.find({ id: { $in: targetGroupIds } });
 
         for (const targetGroup of targetGroups) {
@@ -139,10 +152,12 @@ export class BrevoContactImportService {
                 );
                 if (updatedBrevoContact) return "updated";
             } else if (!brevoContact) {
+                const brevoConfig = await this.brevoConfigRepository.findOneOrFail({ scope });
+
                 const success = await this.brevoContactsService.createDoubleOptInContact({
                     ...contact,
                     scope,
-                    templateId: this.config.brevo.resolveConfig(scope).doubleOptInTemplateId,
+                    templateId: brevoConfig.doubleOptInTemplateId,
                     listIds: [mainTargetGroupForScope.brevoId, ...targetGroupBrevoIds],
                 });
                 if (success) return "created";

@@ -1,10 +1,14 @@
 import * as Brevo from "@getbrevo/brevo";
+import { EntityRepository } from "@mikro-orm/core";
+import { InjectRepository } from "@mikro-orm/nestjs";
 import { Inject, Injectable } from "@nestjs/common";
+import { BrevoConfigInterface } from "src/brevo-config/entities/brevo-config-entity.factory";
 import { EmailCampaignScopeInterface } from "src/types";
 
 import { BrevoModuleConfig } from "../config/brevo-module.config";
 import { BREVO_MODULE_CONFIG } from "../config/brevo-module.constants";
 import { handleBrevoError } from "./brevo-api.utils";
+import { BrevoApiEmailTemplateList } from "./dto/brevo-api-email-templates-list";
 
 type SendTransacEmailResponse = ReturnType<Brevo.TransactionalEmailsApi["sendTransacEmail"]>;
 
@@ -12,7 +16,10 @@ type SendTransacEmailResponse = ReturnType<Brevo.TransactionalEmailsApi["sendTra
 export class BrevoTransactionalMailsService {
     private readonly transactionalEmailsApi = new Map<string, Brevo.TransactionalEmailsApi>();
 
-    constructor(@Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig) {}
+    constructor(
+        @Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig,
+        @InjectRepository("BrevoConfig") private readonly brevoConfigRepository: EntityRepository<BrevoConfigInterface>,
+    ) {}
 
     private getTransactionalEmailsApi(scope: EmailCampaignScopeInterface): Brevo.TransactionalEmailsApi {
         try {
@@ -36,8 +43,27 @@ export class BrevoTransactionalMailsService {
 
     async send(options: Omit<Brevo.SendSmtpEmail, "sender">, scope: EmailCampaignScopeInterface): SendTransacEmailResponse {
         try {
-            const config = this.config.brevo.resolveConfig(scope);
-            return this.getTransactionalEmailsApi(scope).sendTransacEmail({ ...options, sender: config.sender });
+            const brevoConfig = await this.brevoConfigRepository.findOneOrFail({ scope });
+
+            return this.getTransactionalEmailsApi(scope).sendTransacEmail({
+                ...options,
+                sender: { name: brevoConfig.senderName, email: brevoConfig.senderMail },
+            });
+        } catch (error) {
+            handleBrevoError(error);
+        }
+    }
+
+    public async getEmailTemplates(scope: EmailCampaignScopeInterface): Promise<BrevoApiEmailTemplateList> {
+        try {
+            const transactionalEmailsApi = this.getTransactionalEmailsApi(scope);
+            const { response, body } = await transactionalEmailsApi.getSmtpTemplates(true);
+
+            if (response.statusCode !== 200) {
+                throw new Error("Failed to get templates");
+            }
+
+            return body as BrevoApiEmailTemplateList;
         } catch (error) {
             handleBrevoError(error);
         }

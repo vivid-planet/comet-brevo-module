@@ -1,0 +1,57 @@
+{
+    "name": "@comet/brevo-mail-rendering",
+    "version": "2.1.6",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/vivid-planet/comet-brevo-module/",
+        "directory": "packages/mail-rendering"
+    },
+    "license": "BSD-2-Clause",
+    "main": "lib/index.js",
+    "types": "lib/index.d.ts",
+    "files": [
+        "lib/*"
+    ],
+    "scripts": {
+        "build": "$npm_execpath run clean && npm run generate-block-types && tsc -p tsconfig.build.json",
+        "clean": "rimraf lib 'src/**/*.generated.ts'",
+        "dev": "$npm_execpath generate-block-types && tsc --watch --preserveWatchOutput -p tsconfig.build.json",
+        "generate-block-types": "comet generate-block-types",
+        "generate-block-types:watch": "chokidar -s \"**/block-meta.json\" -c \"$npm_execpath generate-block-types\"",
+        "lint": "$npm_execpath generate-block-types && run-p lint:eslint lint:prettier lint:tsc",
+        "lint:eslint": "eslint --max-warnings 0 src/ package.json",
+        "lint:prettier": "npx prettier --check './**/*.{js,json,md,yml,yaml}'",
+        "lint:tsc": "tsc --noEmit"
+    },
+    "devDependencies": {
+        "@comet/cli": "^7.10.0",
+        "@comet/cms-site": "^7.10.0",
+        "@comet/eslint-config": "^7.10.0",
+        "@luma-team/mjml-react": "^0.2.1",
+        "@types/react": "^18.3.12",
+        "@types/react-dom": "^18.3.1",
+        "chokidar-cli": "^2.0.0",
+        "eslint": "^8.0.0",
+        "mjml": "^4.15.3",
+        "next": "^14.2.18",
+        "npm-run-all2": "^5.0.2",
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1",
+        "rimraf": "^6.0.1",
+        "styled-components": "^6.1.13",
+        "typescript": "^4.9.5"
+    },
+    "peerDependencies": {
+        "@comet/cms-site": "^7.10.0",
+        "@luma-team/mjml-react": "^0.2.1",
+        "mjml": "^4.7.0",
+        "next": "^14.2.18",
+        "react": "^18.0.0",
+        "react-dom": "^18.0.0",
+        "styled-components": "^6.1.13"
+    },
+    "publishConfig": {
+        "access": "public",
+        "registry": "https://registry.npmjs.org"
+    }
+}

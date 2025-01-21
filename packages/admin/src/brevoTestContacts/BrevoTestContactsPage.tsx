@@ -1,6 +1,5 @@
-import { Stack, StackPage, StackSwitch } from "@comet/admin";
-import { useContentScope } from "@comet/cms-admin";
-import { GridColDef } from "@mui/x-data-grid";
+import { GridColDef, Stack, StackPage, StackSwitch, StackToolbar } from "@comet/admin";
+import { ContentScopeIndicator, useContentScope } from "@comet/cms-admin";
 import { DocumentNode } from "graphql";
 import * as React from "react";
 import { useIntl } from "react-intl";
@@ -33,9 +32,10 @@ function createBrevoTestContactsPage({
         }, {} as { [key: string]: unknown });
 
         return (
-            <Stack topLevelTitle={intl.formatMessage({ id: "cometBrevoModule.brevoContacts.brevoContacts", defaultMessage: "Contacts" })}>
+            <Stack topLevelTitle={intl.formatMessage({ id: "cometBrevoModule.brevoContacts.brevoTestContacts", defaultMessage: "Test Contacts" })}>
                 <StackSwitch>
                     <StackPage name="grid">
+                        <StackToolbar scopeIndicator={<ContentScopeIndicator scope={scope} />} />
                         <BrevoTestContactsGrid
                             scope={scope}
                             additionalAttributesFragment={additionalAttributesFragment}

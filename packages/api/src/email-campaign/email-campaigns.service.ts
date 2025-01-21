@@ -4,6 +4,7 @@ import { EntityManager, EntityRepository, ObjectQuery, wrap } from "@mikro-orm/c
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { HttpService } from "@nestjs/axios";
 import { Inject, Injectable } from "@nestjs/common";
+import { BrevoConfigInterface } from "src/brevo-config/entities/brevo-config-entity.factory";
 import { EmailCampaignScopeInterface } from "src/types";
 
 import { BrevoApiCampaignsService } from "../brevo-api/brevo-api-campaigns.service";
@@ -20,6 +21,7 @@ export class EmailCampaignsService {
     constructor(
         @Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig,
         @InjectRepository("EmailCampaign") private readonly repository: EntityRepository<EmailCampaignInterface>,
+        @InjectRepository("BrevoConfig") private readonly brevoConfigRepository: EntityRepository<BrevoConfigInterface>,
         private readonly httpService: HttpService,
         private readonly brevoApiCampaignService: BrevoApiCampaignsService,
         private readonly brevoApiContactsService: BrevoApiContactsService,
@@ -43,10 +45,9 @@ export class EmailCampaignsService {
     }
 
     async saveEmailCampaignInBrevo(campaign: EmailCampaignInterface, scheduledAt?: Date): Promise<EmailCampaignInterface> {
-        const content = await this.blockTransformerService.transformToPlain(campaign.content, {
-            includeInvisibleContent: false,
-            previewDamUrls: false,
-        });
+        const content = await this.blockTransformerService.transformToPlain(campaign.content);
+
+        const brevoConfig = await this.brevoConfigRepository.findOneOrFail({ scope: campaign.scope });
 
         const { data: htmlContent, status } = await this.httpService.axiosRef.post(
             this.config.emailCampaigns.frontend.url,
@@ -69,7 +70,9 @@ export class EmailCampaignsService {
             brevoId = await this.brevoApiCampaignService.createBrevoCampaign({
                 campaign,
                 htmlContent,
+                sender: { name: brevoConfig.senderName, mail: brevoConfig.senderMail },
                 scheduledAt,
+                unsubscriptionPageId: brevoConfig.unsubscriptionPageId,
             });
 
             wrap(campaign).assign({ brevoId });
@@ -80,6 +83,7 @@ export class EmailCampaignsService {
                 id: brevoId,
                 campaign,
                 htmlContent,
+                sender: { name: brevoConfig.senderName, mail: brevoConfig.senderMail },
                 scheduledAt,
             });
         }

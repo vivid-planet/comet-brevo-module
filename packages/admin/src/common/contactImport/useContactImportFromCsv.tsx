@@ -9,9 +9,11 @@ import * as React from "react";
 import { useDropzone } from "react-dropzone";
 import { FormattedMessage, useIntl } from "react-intl";
 
-import { GQLEmailCampaignContentScopeInput } from "../../graphql.generated";
+import { GQLCsvImportInformation, GQLEmailCampaignContentScopeInput } from "../../graphql.generated";
 import { CrudMoreActionsItem } from "../../temp/CrudMoreActionsMenu";
 import { useBrevoConfig } from "../BrevoConfigProvider";
+import { startBrevoContactImportMutation } from "./useContactImportFromCsv.gql";
+import { GQLStartBrevoContactImportMutation, GQLStartBrevoContactImportMutationVariables } from "./useContactImportFromCsv.gql.generated";
 
 interface UseContactImportProps {
     scope: GQLEmailCampaignContentScopeInput;
@@ -51,34 +53,51 @@ interface ComponentProps extends UseContactImportProps {
     fileInputRef: React.RefObject<HTMLInputElement>;
 }
 
-interface ImportInformation {
-    failed: number;
-    created: number;
-    updated: number;
-    failedColumns: Record<string, string>[];
-    errorMessage?: string;
-}
-
 const ContactImportComponent = ({ scope, targetGroupId, fileInputRef, refetchQueries }: ComponentProps) => {
     const apolloClient = useApolloClient();
     const [importingCsv, setImportingCsv] = React.useState(false);
-    const [importInformation, setImportInformation] = React.useState<ImportInformation | null>(null);
+    const [importInformation, setImportInformation] = React.useState<GQLCsvImportInformation | null>(null);
     const dialogOpen = importingCsv || !!importInformation;
     const errorDialog = useErrorDialog();
     const config = useBrevoConfig();
     const intl = useIntl();
+    const client = useApolloClient();
 
-    function upload(file: File, scope: GQLEmailCampaignContentScopeInput, listIds?: string[]): Promise<Response> {
+    async function upload(file: File, scope: GQLEmailCampaignContentScopeInput, listIds?: string[]): Promise<GQLCsvImportInformation> {
         const formData = new FormData();
         formData.append("file", file);
-        formData.append("scope", JSON.stringify(scope));
 
-        if (listIds) formData.append("listIds", JSON.stringify(listIds));
-
-        return fetch(`${config.apiUrl}/brevo-contacts-csv/upload`, {
+        const response = await fetch(`${config.apiUrl}/file-uploads/upload`, {
             method: "POST",
             body: formData,
         });
+
+        if (!response.ok) {
+            throw new Error(
+                intl.formatMessage({ id: "cometBrevoModule.useContactImport.error.fileUpload", defaultMessage: "Could not upload file" }),
+            );
+        }
+
+        const fileUploadId = (await response.json()).id;
+
+        const { data } = await client.mutate<GQLStartBrevoContactImportMutation, GQLStartBrevoContactImportMutationVariables>({
+            mutation: startBrevoContactImportMutation,
+            variables: {
+                fileId: fileUploadId,
+                scope,
+            },
+        });
+
+        if (!data) {
+            throw new Error(
+                intl.formatMessage({
+                    id: "cometBrevoModule.useContactImport.error.defaultMessage",
+                    defaultMessage:
+                        "An error occured during the import. Please try again in a while or contact your administrator if the error persists.",
+                }),
+            );
+        }
+        return data.startBrevoContactImport;
     }
 
     const saveErrorFile = () => {
@@ -117,12 +136,10 @@ const ContactImportComponent = ({ scope, targetGroupId, fileInputRef, refetchQue
 
             try {
                 const file = acceptedFiles[0];
-                const response = await upload(file, scope, targetGroupId ? [targetGroupId] : []);
+                const data = await upload(file, scope, targetGroupId ? [targetGroupId] : []);
                 apolloClient.refetchQueries({ include: refetchQueries });
 
-                const data = (await response.json()) as ImportInformation;
-
-                if (response.ok) {
+                if (data) {
                     setImportingCsv(false);
 
                     if (data.errorMessage) {

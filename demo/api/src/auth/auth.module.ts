@@ -14,6 +14,7 @@ export class AuthModule {
                 createStaticCredentialsBasicStrategy({
                     username: "vivid",
                     password: config.auth.basicAuthPassword,
+                    strategyName: "system-user",
                 }),
                 createAuthProxyJwtStrategy({
                     jwksUri: config.auth.idpJwksUri,
@@ -24,7 +25,7 @@ export class AuthModule {
                 }),
                 {
                     provide: APP_GUARD,
-                    useClass: createCometAuthGuard(["auth-proxy-jwt", "static-credentials-basic"]),
+                    useClass: createCometAuthGuard(["auth-proxy-jwt", "system-user"]),
                 },
                 AccessControlService,
             ],

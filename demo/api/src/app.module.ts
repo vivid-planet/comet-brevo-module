@@ -1,22 +1,20 @@
 import { BrevoModule } from "@comet/brevo-api";
 import {
     BlobStorageModule,
-    BLOCKS_MODULE_TRANSFORMER_DEPENDENCIES,
     BlocksModule,
     BlocksTransformerMiddlewareFactory,
     BuildsModule,
     DamModule,
     DependenciesModule,
-    FilesService,
-    ImagesService,
+    FileUploadsModule,
     KubernetesModule,
     PageTreeModule,
-    PageTreeService,
     RedirectsModule,
     UserPermissionsModule,
 } from "@comet/cms-api";
-import { ApolloDriver } from "@nestjs/apollo";
+import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo";
 import { DynamicModule, Module } from "@nestjs/common";
+import { ModuleRef } from "@nestjs/core";
 import { Enhancer, GraphQLModule } from "@nestjs/graphql";
 import { DbModule } from "@src/db/db.module";
 import { Link } from "@src/documents/links/entities/link.entity";
@@ -25,6 +23,8 @@ import { Page } from "@src/documents/pages/entities/page.entity";
 import { PagesModule } from "@src/documents/pages/pages.module";
 import { PageTreeNodeScope } from "@src/page-tree/dto/page-tree-node-scope";
 import { PageTreeNode } from "@src/page-tree/entities/page-tree-node.entity";
+import { FileUploadDummyModule } from "@src/workaround-remove-in-future/file-upload/file-upload-dummy.module";
+import { ValidationError } from "apollo-server-express";
 import { Request } from "express";
 
 import { AccessControlService } from "./auth/access-control.service";
@@ -39,8 +39,10 @@ import { DamFile } from "./dam/entities/dam-file.entity";
 import { DamFolder } from "./dam/entities/dam-folder.entity";
 import { EmailCampaignContentBlock } from "./email-campaign/blocks/email-campaign-content.block";
 import { EmailCampaignContentScope } from "./email-campaign/email-campaign-content-scope";
+import { EmailCampaign } from "./email-campaign/entities/email-campaign.entity";
 import { MenusModule } from "./menus/menus.module";
 import { StatusModule } from "./status/status.module";
+import { TargetGroup } from "./target-group/entity/target-group.entity";
 
 @Module({})
 export class AppModule {
@@ -52,13 +54,22 @@ export class AppModule {
             imports: [
                 ConfigModule.forRoot(config),
                 DbModule,
-                GraphQLModule.forRootAsync({
+                GraphQLModule.forRootAsync<ApolloDriverConfig>({
                     driver: ApolloDriver,
                     imports: [BlocksModule],
-                    useFactory: (dependencies: Record<string, unknown>) => ({
+                    useFactory: (moduleRef: ModuleRef) => ({
                         debug: config.debug,
                         playground: config.debug,
                         autoSchemaFile: "schema.gql",
+                        formatError: (error) => {
+                            // Disable GraphQL field suggestions in production
+                            if (process.env.NODE_ENV !== "development") {
+                                if (error instanceof ValidationError) {
+                                    return new ValidationError("Invalid request.");
+                                }
+                            }
+                            return error;
+                        },
                         context: ({ req }: { req: Request }) => ({ ...req }),
                         cors: {
                             origin: config.corsAllowedOrigin,
@@ -70,14 +81,15 @@ export class AppModule {
                         // See https://docs.nestjs.com/graphql/other-features#execute-enhancers-at-the-field-resolver-level
                         fieldResolverEnhancers: ["guards", "interceptors", "filters"] as Enhancer[],
                         buildSchemaOptions: {
-                            fieldMiddleware: [BlocksTransformerMiddlewareFactory.create(dependencies)],
+                            fieldMiddleware: [BlocksTransformerMiddlewareFactory.create(moduleRef)],
                         },
                     }),
-                    inject: [BLOCKS_MODULE_TRANSFORMER_DEPENDENCIES],
+                    inject: [ModuleRef],
                 }),
                 authModule,
                 UserPermissionsModule.forRootAsync({
                     useFactory: (accessControlService: AccessControlService) => ({
+                        systemUsers: ["system-user"],
                         availableContentScopes: [
                             { domain: "main", language: "en" },
                             { domain: "main", language: "de" },
@@ -89,19 +101,7 @@ export class AppModule {
                     inject: [AccessControlService],
                     imports: [authModule],
                 }),
-                BlocksModule.forRoot({
-                    imports: [PageTreeModule, DamModule],
-                    useFactory: (pageTreeService: PageTreeService, filesService: FilesService, imagesService: ImagesService) => {
-                        return {
-                            transformerDependencies: {
-                                pageTreeService,
-                                filesService,
-                                imagesService,
-                            },
-                        };
-                    },
-                    inject: [PageTreeService, FilesService, ImagesService],
-                }),
+                BlocksModule,
                 KubernetesModule.register({
                     helmRelease: config.helmRelease,
                 }),
@@ -112,6 +112,7 @@ export class AppModule {
                     PageTreeNode: PageTreeNode,
                     Documents: [Page, Link],
                     Scope: PageTreeNodeScope,
+                    sitePreviewSecret: config.sitePreviewSecret,
                 }),
                 RedirectsModule.register(),
                 BlobStorageModule.register({
@@ -121,12 +122,10 @@ export class AppModule {
                     File: DamFile,
                     Folder: DamFolder,
                     damConfig: {
-                        filesBaseUrl: `${config.apiUrl}/dam/files`,
-                        imagesBaseUrl: `${config.apiUrl}/dam/images`,
+                        apiUrl: config.apiUrl,
                         secret: config.dam.secret,
                         allowedImageSizes: config.dam.allowedImageSizes,
                         allowedAspectRatios: config.dam.allowedImageAspectRatios,
-                        additionalMimeTypes: config.dam.additionalMimeTypes,
                         filesDirectory: `${config.blob.storageDirectoryPrefix}-files`,
                         cacheDirectory: `${config.blob.storageDirectoryPrefix}-cache`,
                         maxFileSize: config.dam.uploadsMaxFileSize,
@@ -136,6 +135,11 @@ export class AppModule {
                 StatusModule,
                 MenusModule,
                 DependenciesModule,
+                FileUploadsModule.register({
+                    acceptedMimeTypes: ["text/csv"],
+                    maxFileSize: config.fileUploads.maxFileSize,
+                    directory: `${config.blob.storageDirectoryPrefix}-file-uploads`,
+                }),
                 BrevoModule.register({
                     brevo: {
                         resolveConfig: (scope: EmailCampaignContentScope) => {
@@ -144,25 +148,19 @@ export class AppModule {
                             if (scope.domain === "main") {
                                 return {
                                     apiKey: config.brevo.apiKey,
-                                    doubleOptInTemplateId: config.brevo.doubleOptInTemplateId,
-                                    sender: { name: config.brevo.sender.name, email: config.brevo.sender.email },
-                                    allowedRedirectUrl: config.brevo.allowedRedirectUrl,
                                     redirectUrlForImport: config.brevo.redirectUrlForImport,
-                                    folderId: config.brevo.folderId ?? 1, // folderId is required, folder #1 is created by default
                                 };
                             } else {
                                 return {
                                     apiKey: config.brevo.apiKey,
-                                    doubleOptInTemplateId: config.brevo.doubleOptInTemplateId,
-                                    sender: { name: config.brevo.sender.name, email: config.brevo.sender.email },
-                                    allowedRedirectUrl: config.brevo.allowedRedirectUrl,
                                     redirectUrlForImport: config.brevo.redirectUrlForImport,
-                                    folderId: config.brevo.folderId ?? 1, // folderId is required, folder #1 is created by default
                                 };
                             }
                         },
                         BrevoContactAttributes,
                         BrevoContactFilterAttributes,
+                        EmailCampaign,
+                        TargetGroup,
                     },
                     ecgRtrList: {
                         apiKey: config.ecgRtrList.apiKey,
@@ -181,6 +179,7 @@ export class AppModule {
                 }),
                 BrevoContactSubscribeModule,
                 BrevoTransactionalMailsModule,
+                FileUploadDummyModule,
             ],
         };
     }

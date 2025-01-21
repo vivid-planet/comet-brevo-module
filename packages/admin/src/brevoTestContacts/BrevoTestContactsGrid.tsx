@@ -1,12 +1,13 @@
 import { DocumentNode, gql, useApolloClient, useQuery } from "@apollo/client";
 import {
     Alert,
+    DataGridToolbar,
+    GridColDef,
     MainContent,
     messages,
     RowActionsItem,
     RowActionsMenu,
     StackLink,
-    Toolbar,
     ToolbarActions,
     ToolbarFillSpace,
     ToolbarItem,
@@ -19,7 +20,7 @@ import {
 import { Add, Delete, Edit } from "@comet/admin-icons";
 import { ContentScopeInterface } from "@comet/cms-admin";
 import { Box, Button, IconButton } from "@mui/material";
-import { DataGrid, GridColDef, GridToolbarQuickFilter } from "@mui/x-data-grid";
+import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import * as React from "react";
 import { FormattedMessage, IntlShape, useIntl } from "react-intl";
 
@@ -64,39 +65,37 @@ function BrevoTestContactsGridToolbar({
         defaultMessage: "Contact limit of 100 reached. You cannot add more contacts.",
     });
     return (
-        <>
-            <Toolbar>
-                <ToolbarTitleItem>
-                    <FormattedMessage id="cometBrevoModule.brevoTestContact.title" defaultMessage="Test contacts" />
-                </ToolbarTitleItem>
-                <ToolbarItem>
-                    <GridToolbarQuickFilter
-                        placeholder={intl.formatMessage({
-                            id: "cometBrevoModule.brevoTestContact.searchEmail",
-                            defaultMessage: "Search email address",
-                        })}
-                    />
-                </ToolbarItem>
-                <ToolbarFillSpace />
-                <ToolbarActions>
-                    <Tooltip title={disableButton ? tooltipMessage : ""}>
-                        <span>
-                            <Button
-                                startIcon={<Add />}
-                                component={StackLink}
-                                pageName="add"
-                                payload="add"
-                                variant="contained"
-                                color="primary"
-                                disabled={disableButton}
-                            >
-                                <FormattedMessage id="cometBrevoModule.brevoTestContact.newContact" defaultMessage="New test contact" />
-                            </Button>
-                        </span>
-                    </Tooltip>
-                </ToolbarActions>
-            </Toolbar>
-        </>
+        <DataGridToolbar>
+            <ToolbarTitleItem>
+                <FormattedMessage id="cometBrevoModule.brevoTestContact.title" defaultMessage="Test contacts" />
+            </ToolbarTitleItem>
+            <ToolbarItem>
+                <GridToolbarQuickFilter
+                    placeholder={intl.formatMessage({
+                        id: "cometBrevoModule.brevoTestContact.searchEmail",
+                        defaultMessage: "Search email address",
+                    })}
+                />
+            </ToolbarItem>
+            <ToolbarFillSpace />
+            <ToolbarActions>
+                <Tooltip title={disableButton ? tooltipMessage : ""}>
+                    <span>
+                        <Button
+                            startIcon={<Add />}
+                            component={StackLink}
+                            pageName="add"
+                            payload="add"
+                            variant="contained"
+                            color="primary"
+                            disabled={disableButton}
+                        >
+                            <FormattedMessage id="cometBrevoModule.brevoTestContact.newContact" defaultMessage="New test contact" />
+                        </Button>
+                    </span>
+                </Tooltip>
+            </ToolbarActions>
+        </DataGridToolbar>
     );
 }
 

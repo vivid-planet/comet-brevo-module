@@ -6,8 +6,10 @@
         "build:packages": "pnpm run build",
         "build:api": "pnpm recursive --filter '@comet/brevo-api' run build",
         "build:admin": "pnpm recursive --filter '@comet/brevo-admin' run build",
+        "build:mail-rendering": "pnpm recursive --filter '@comet/brevo-mail-rendering' run build",
         "build:api:skippable": "test -f packages/api/lib/index.d.ts && echo 'Skipping API build' || $npm_execpath build:api",
         "build:admin:skippable": "test -f packages/admin/lib/index.d.ts && echo 'Skipping Admin build' || $npm_execpath build:admin",
+        "build:mail-rendering:skippable": "test -f packages/mail-rendering/lib/index.d.ts && echo 'Skipping Mail-Rendering build' || $npm_execpath build:mail-rendering",
         "build:lib": "pnpm recursive --filter '@comet/*' run build",
         "clean": "pnpm recursive run clean",
         "copy-schema-files": "node copy-schema-files.js",
@@ -17,6 +19,7 @@
         "dev:demo:site": "dotenv -c -- dev-pm start @demo-site",
         "dev:api": "pnpm recursive --filter '@comet/brevo-api' run clean && dotenv -c -- dev-pm start @api",
         "dev:admin": "pnpm recursive --filter '@comet/brevo-admin' run clean && dotenv -c -- dev-pm start @admin",
+        "dev:mail-rendering": "pnpm recursive --filter '@comet/brevo-mail-rendering' run clean && dotenv -c -- dev-pm start @mail-rendering",
         "postinstall": "husky install",
         "lint": "pnpm lint:root && pnpm recursive run lint",
         "lint:root": "$npm_execpath prettier --check './!(demo|packages)/**/*.{js,json,md,yml,yaml}'",
@@ -27,17 +30,56 @@
         "publish": "pnpm run build:lib && $npm_execpath changeset publish"
     },
     "devDependencies": {
-        "@comet/dev-process-manager": "^2.0.0",
-        "@changesets/cli": "^2.27.1",
-        "@formatjs/cli": "^4.8.3",
+        "@comet/dev-process-manager": "^2.7.0",
+        "@changesets/cli": "^2.27.11",
+        "@formatjs/cli": "^4.8.4",
         "@types/node": "^18.0.0",
         "dotenv-cli": "^6.0.0",
-        "husky": "^7.0.1",
-        "lint-staged": "^12.3.7",
-        "npm-run-all": "^4.1.5",
-        "open-cli": "^7.0.0",
+        "husky": "^7.0.4",
+        "lint-staged": "^12.5.0",
+        "npm-run-all2": "^5.0.2",
+        "open-cli": "^7.2.0",
         "prettier": "^2.3.2",
-        "ts-node": "^10.5.0",
-        "typescript": "^4.2.2"
+        "ts-node": "^10.9.2",
+        "typescript": "^4.9.5"
+    },
+    "pnpm": {
+        "packageExtensions": {
+            "next@14": {
+                "peerDependencies": {
+                    "@types/react": "^18.0.0"
+                }
+            },
+            "@comet/cms-site@7": {
+                "peerDependencies": {
+                    "@types/react": "^18.0.0"
+                }
+            },
+            "@faire/mjml-react@3": {
+                "peerDependencies": {
+                    "@types/react": "^18.0.0"
+                }
+            },
+            "styled-components": {
+                "peerDependencies": {
+                    "@types/react": "^18.0.0"
+                }
+            },
+            "react-intl": {
+                "peerDependencies": {
+                    "@types/react": "*"
+                }
+            },
+            "@types/hoist-non-react-statics": {
+                "peerDependencies": {
+                    "@types/react": "*"
+                }
+            },
+            "@types/react-transition-group": {
+                "peerDependencies": {
+                    "@types/react": "^17.0.0"
+                }
+            }
+        }
     }
 }
