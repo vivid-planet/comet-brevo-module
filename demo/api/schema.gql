@@ -2,7 +2,7 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type User {
+type UserPermissionsUser {
   id: String!
   name: String!
   email: String!
@@ -26,7 +26,7 @@ type CurrentUser {
   email: String!
   permissions: [CurrentUserPermission!]!
   impersonated: Boolean
-  authenticatedUser: User
+  authenticatedUser: UserPermissionsUser
   permissionsForScope(scope: JSONObject!): [String!]!
 }
 
@@ -169,12 +169,10 @@ type FileUpload {
   contentHash: String!
   createdAt: DateTime!
   updatedAt: DateTime!
-  downloadUrl: String
-  imageUrl(resizeWidth: Int!): String
 }
 
-type PaginatedUserList {
-  nodes: [User!]!
+type UserPermissionPaginatedUserList {
+  nodes: [UserPermissionsUser!]!
   totalCount: Int!
 }
 
@@ -539,8 +537,8 @@ input EmailCampaignContentScopeInput {
 
 type Query {
   currentUser: CurrentUser!
-  userPermissionsUserById(id: String!): User!
-  userPermissionsUsers(offset: Int! = 0, limit: Int! = 25, search: String, filter: UserFilter, sort: [UserSort!]): PaginatedUserList!
+  userPermissionsUserById(id: String!): UserPermissionsUser!
+  userPermissionsUsers(offset: Int! = 0, limit: Int! = 25, search: String, filter: UserPermissionsUserFilter, sort: [UserPermissionsUserSort!]): UserPermissionPaginatedUserList!
   userPermissionsPermissionList(userId: String!): [UserPermission!]!
   userPermissionsPermission(id: ID!, userId: String): UserPermission!
   userPermissionsAvailablePermissions: [String!]!
@@ -588,12 +586,12 @@ type Query {
   brevoConfig(scope: EmailCampaignContentScopeInput!): BrevoConfig
 }
 
-input UserFilter {
+input UserPermissionsUserFilter {
   name: StringFilter
   email: StringFilter
   status: StringFilter
-  and: [UserFilter!]
-  or: [UserFilter!]
+  and: [UserPermissionsUserFilter!]
+  or: [UserPermissionsUserFilter!]
 }
 
 input StringFilter {
@@ -604,12 +602,12 @@ input StringFilter {
   notEqual: String
 }
 
-input UserSort {
-  field: UserSortField!
+input UserPermissionsUserSort {
+  field: UserPermissionsUserSortField!
   direction: SortDirection! = ASC
 }
 
-enum UserSortField {
+enum UserPermissionsUserSortField {
   name
   email
   status

@@ -54,4 +54,3 @@ sh ./demo/site/intl-update.sh
 sh ./demo/campaign/intl-update.sh
 
 mkdir -p ./demo/api/uploads
-
