@@ -1,7 +1,12 @@
-import { DateTimeFilter, StringFilter } from "@comet/cms-api";
+import { createEnumFilter, DateTimeFilter, StringFilter } from "@comet/cms-api";
 import { Field, InputType } from "@nestjs/graphql";
 import { Type } from "class-transformer";
 import { IsOptional, ValidateNested } from "class-validator";
+
+import { SendingState } from "../sending-state.enum";
+
+@InputType()
+class SendingStateEnumFilter extends createEnumFilter(SendingState) {}
 
 @InputType()
 export class EmailCampaignFilter {
@@ -28,6 +33,12 @@ export class EmailCampaignFilter {
     @IsOptional()
     @Type(() => StringFilter)
     subject?: StringFilter;
+
+    @Field(() => SendingStateEnumFilter, { nullable: true })
+    @ValidateNested()
+    @IsOptional()
+    @Type(() => SendingStateEnumFilter)
+    sendingState?: SendingStateEnumFilter;
 
     @Field(() => DateTimeFilter, { nullable: true })
     @ValidateNested()
