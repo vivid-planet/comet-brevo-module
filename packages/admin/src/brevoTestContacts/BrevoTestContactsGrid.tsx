@@ -12,6 +12,7 @@ import {
     ToolbarFillSpace,
     ToolbarItem,
     ToolbarTitleItem,
+    Tooltip,
     useBufferedRowCount,
     useDataGridRemote,
     usePersistentColumnState,
@@ -49,8 +50,22 @@ const deleteBrevoTestContactMutation = gql`
     }
 `;
 
-function BrevoTestContactsGridToolbar({ intl, scope }: { intl: IntlShape; scope: GQLEmailCampaignContentScopeInput }) {
+function BrevoTestContactsGridToolbar({
+    intl,
+    scope,
+    totalCount,
+}: {
+    intl: IntlShape;
+    scope: GQLEmailCampaignContentScopeInput;
+    totalCount: number;
+}) {
+    const disableButton = totalCount >= 100;
+    const tooltipMessage = intl.formatMessage({
+        id: "cometBrevoModule.brevoTestContact.contactLimitReached",
+        defaultMessage: "Contact limit of 100 reached. You cannot add more contacts.",
+    });
     return (
+<<<<<<< HEAD
         <DataGridToolbar>
             <ToolbarTitleItem>
                 <FormattedMessage id="cometBrevoModule.brevoTestContact.title" defaultMessage="Test contacts" />
@@ -70,6 +85,41 @@ function BrevoTestContactsGridToolbar({ intl, scope }: { intl: IntlShape; scope:
                 </Button>
             </ToolbarActions>
         </DataGridToolbar>
+=======
+        <>
+            <Toolbar>
+                <ToolbarTitleItem>
+                    <FormattedMessage id="cometBrevoModule.brevoTestContact.title" defaultMessage="Test contacts" />
+                </ToolbarTitleItem>
+                <ToolbarItem>
+                    <GridToolbarQuickFilter
+                        placeholder={intl.formatMessage({
+                            id: "cometBrevoModule.brevoTestContact.searchEmail",
+                            defaultMessage: "Search email address",
+                        })}
+                    />
+                </ToolbarItem>
+                <ToolbarFillSpace />
+                <ToolbarActions>
+                    <Tooltip title={disableButton ? tooltipMessage : ""}>
+                        <span>
+                            <Button
+                                startIcon={<Add />}
+                                component={StackLink}
+                                pageName="add"
+                                payload="add"
+                                variant="contained"
+                                color="primary"
+                                disabled={disableButton}
+                            >
+                                <FormattedMessage id="cometBrevoModule.brevoTestContact.newContact" defaultMessage="New test contact" />
+                            </Button>
+                        </span>
+                    </Tooltip>
+                </ToolbarActions>
+            </Toolbar>
+        </>
+>>>>>>> main
     );
 }
 
@@ -171,6 +221,7 @@ export function BrevoTestContactsGrid({
     const rowCount = useBufferedRowCount(data?.brevoTestContacts.totalCount);
     if (error) throw error;
     const rows = data?.brevoTestContacts.nodes ?? [];
+    const totalCount = data?.brevoTestContacts.totalCount || 0;
 
     return (
         <MainContent fullHeight>
@@ -196,6 +247,7 @@ export function BrevoTestContactsGrid({
                     toolbar: {
                         intl,
                         scope,
+                        totalCount,
                     },
                 }}
             />

@@ -741,9 +741,20 @@ input EmailCampaignFilter {
   updatedAt: DateTimeFilter
   title: StringFilter
   subject: StringFilter
+<<<<<<< HEAD
   scheduledAt: DateTimeFilter
+=======
+  sendingState: SendingStateEnumFilter
+  scheduledAt: DateFilter
+>>>>>>> main
   and: [EmailCampaignFilter!]
   or: [EmailCampaignFilter!]
+}
+
+input SendingStateEnumFilter {
+  isAnyOf: [SendingState!]
+  equal: SendingState
+  notEqual: SendingState
 }
 
 input EmailCampaignSort {
@@ -969,6 +980,7 @@ enum SubscribeResponse {
   SUCCESSFUL
   ERROR_UNKNOWN
   ERROR_CONTAINED_IN_ECG_RTR_LIST
+  ERROR_MAXIMAL_NUMBER_OF_TEST_CONTACTS_REACHED
 }
 
 input BrevoContactInput {

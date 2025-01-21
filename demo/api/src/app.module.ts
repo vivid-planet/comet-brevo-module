@@ -149,11 +149,13 @@ export class AppModule {
                                 return {
                                     apiKey: config.brevo.apiKey,
                                     redirectUrlForImport: config.brevo.redirectUrlForImport,
+                                    folderId: config.brevo.folderId ?? 1, // folderId is required, folder #1 is created by default
                                 };
                             } else {
                                 return {
                                     apiKey: config.brevo.apiKey,
                                     redirectUrlForImport: config.brevo.redirectUrlForImport,
+                                    folderId: config.brevo.folderId ?? 1, // folderId is required, folder #1 is created by default
                                 };
                             }
                         },

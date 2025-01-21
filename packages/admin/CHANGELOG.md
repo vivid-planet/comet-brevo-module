@@ -1,5 +1,16 @@
 # @comet/brevo-admin
 
+## 2.2.0
+
+### Minor Changes
+
+-   f07d79a: Adds `createBrevoTestContactsPage` for creating a test contacts page, that is indepent from the main list.
+
+    Remove `email` and `redirectionUrl` from `brevoContactsPageAttributesConfig`
+
+-   d32e9e8: Replace the `TextField` with a `FinalFormSelect` component in the `TestEmailCampaignForm`, allowing users to choose contacts directly from the `TestContactList`
+-   ada83cf: Add filter for `sendingState` in `EmailCampaignsGrid`
+
 ## 2.1.6
 
 ### Patch Changes

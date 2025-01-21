@@ -1,5 +1,16 @@
 # @comet/brevo-api
 
+## 2.2.0
+
+### Minor Changes
+
+-   f07d79a: Adds `createBrevoTestContactsPage` for creating a test contacts page, that is indepent from the main list.
+
+    Remove `email` and `redirectionUrl` from `brevoContactsPageAttributesConfig`
+
+-   ada83cf: Add filter for `sendingState` in `EmailCampaignsGrid`
+-   dd93185: Add `BREVO_FOLDER_ID` to environment variables to allow overwriting default value `1`
+
 ## 2.1.6
 
 ### Patch Changes

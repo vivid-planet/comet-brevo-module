@@ -121,6 +121,15 @@ export function EmailCampaignsGrid({
         ...usePersistentColumnState("EmailCampaignsGrid"),
     };
 
+    const sendingStateOptions: { label: string; value: string }[] = [
+        {
+            value: "SENT",
+            label: intl.formatMessage({ id: "cometBrevoModule.emailCampaign.sent", defaultMessage: "Sent" }),
+        },
+        { value: "DRAFT", label: intl.formatMessage({ id: "cometBrevoModule.emailCampaign.draft", defaultMessage: "Draft" }) },
+        { value: "SCHEDULED", label: intl.formatMessage({ id: "cometBrevoModule.emailCampaign.scheduled", defaultMessage: "Scheduled" }) },
+    ];
+
     const columns: GridColDef<GQLEmailCampaignsListFragment>[] = [
         {
             field: "updatedAt",
@@ -145,8 +154,9 @@ export function EmailCampaignsGrid({
             headerName: intl.formatMessage({ id: "cometBrevoModule.emailCampaign.sendingState", defaultMessage: "Sending State" }),
             renderCell: ({ value }) => <SendingStateColumn sendingState={value} />,
             width: 150,
-            filterable: false,
             sortable: false,
+            type: "singleSelect",
+            valueOptions: sendingStateOptions,
         },
         {
             field: "scheduledAt",

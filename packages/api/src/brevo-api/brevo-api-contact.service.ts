@@ -175,6 +175,15 @@ export class BrevoApiContactsService {
         }
     }
 
+    public async getContactCountByListId(id: number, scope: EmailCampaignScopeInterface): Promise<number> {
+        try {
+            const data = await this.getContactsApi(scope).getContactsFromList(id);
+            return data.body.count;
+        } catch (error) {
+            handleBrevoError(error);
+        }
+    }
+
     public async findContacts(limit: number, offset: number, scope: EmailCampaignScopeInterface): Promise<BrevoContactInterface[]> {
         try {
             const data = await this.getContactsApi(scope).getContacts(limit, offset);
@@ -207,12 +216,20 @@ export class BrevoApiContactsService {
     }
 
     public async createBrevoContactList(title: string, scope: EmailCampaignScopeInterface): Promise<number | undefined> {
+<<<<<<< HEAD
         const brevoConfig = await this.brevoConfigRepository.findOne({ scope });
+=======
+        const folderId = this.config.brevo.resolveConfig(scope).folderId;
+>>>>>>> main
 
         try {
             const contactList = {
                 name: title,
+<<<<<<< HEAD
                 folderId: brevoConfig?.folderId ?? 1,
+=======
+                folderId: folderId ?? 1,
+>>>>>>> main
             };
 
             const data = await this.getContactsApi(scope).createList(contactList);
