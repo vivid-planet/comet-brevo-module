@@ -4,6 +4,7 @@ import { DocumentNode } from "graphql";
 import * as React from "react";
 import { useIntl } from "react-intl";
 
+import { ConfigVerification } from "../configVerification/ConfigVerification";
 import { BrevoTestContactsGrid } from "./BrevoTestContactsGrid";
 import { BrevoTestContactForm, EditBrevoContactFormValues } from "./form/BrevoTestContactForm";
 
@@ -32,43 +33,47 @@ function createBrevoTestContactsPage({
         }, {} as { [key: string]: unknown });
 
         return (
-            <Stack topLevelTitle={intl.formatMessage({ id: "cometBrevoModule.brevoContacts.brevoTestContacts", defaultMessage: "Test Contacts" })}>
-                <StackSwitch>
-                    <StackPage name="grid">
-                        <StackToolbar scopeIndicator={<ContentScopeIndicator scope={scope} />} />
-                        <BrevoTestContactsGrid
-                            scope={scope}
-                            additionalAttributesFragment={additionalAttributesFragment}
-                            additionalGridFields={additionalGridFields}
-                        />
-                    </StackPage>
-                    <StackPage
-                        name="edit"
-                        title={intl.formatMessage({ id: "cometBrevoModule.brevoContacts.editBrevoContact", defaultMessage: "Edit contact" })}
-                    >
-                        {(selectedId) => (
+            <ConfigVerification scope={scope}>
+                <Stack
+                    topLevelTitle={intl.formatMessage({ id: "cometBrevoModule.brevoContacts.brevoTestContacts", defaultMessage: "Test Contacts" })}
+                >
+                    <StackSwitch>
+                        <StackPage name="grid">
+                            <StackToolbar scopeIndicator={<ContentScopeIndicator scope={scope} />} />
+                            <BrevoTestContactsGrid
+                                scope={scope}
+                                additionalAttributesFragment={additionalAttributesFragment}
+                                additionalGridFields={additionalGridFields}
+                            />
+                        </StackPage>
+                        <StackPage
+                            name="edit"
+                            title={intl.formatMessage({ id: "cometBrevoModule.brevoContacts.editBrevoContact", defaultMessage: "Edit contact" })}
+                        >
+                            {(selectedId) => (
+                                <BrevoTestContactForm
+                                    additionalFormFields={additionalFormFields}
+                                    additionalAttributesFragment={additionalAttributesFragment}
+                                    input2State={input2State}
+                                    id={Number(selectedId)}
+                                    scope={scope}
+                                />
+                            )}
+                        </StackPage>
+                        <StackPage
+                            name="add"
+                            title={intl.formatMessage({ id: "cometBrevoModule.brevoContacts.addBrevoContact", defaultMessage: "Add contact" })}
+                        >
                             <BrevoTestContactForm
                                 additionalFormFields={additionalFormFields}
                                 additionalAttributesFragment={additionalAttributesFragment}
                                 input2State={input2State}
-                                id={Number(selectedId)}
                                 scope={scope}
                             />
-                        )}
-                    </StackPage>
-                    <StackPage
-                        name="add"
-                        title={intl.formatMessage({ id: "cometBrevoModule.brevoContacts.addBrevoContact", defaultMessage: "Add contact" })}
-                    >
-                        <BrevoTestContactForm
-                            additionalFormFields={additionalFormFields}
-                            additionalAttributesFragment={additionalAttributesFragment}
-                            input2State={input2State}
-                            scope={scope}
-                        />
-                    </StackPage>
-                </StackSwitch>
-            </Stack>
+                        </StackPage>
+                    </StackSwitch>
+                </Stack>
+            </ConfigVerification>
         );
     }
 

@@ -5,6 +5,7 @@ import * as React from "react";
 import { useIntl } from "react-intl";
 
 import { useBrevoConfig } from "../common/BrevoConfigProvider";
+import { ConfigVerification } from "../configVerification/ConfigVerification";
 import { EditTargetGroupFinalFormValues, TargetGroupForm } from "./TargetGroupForm";
 import { AdditionalContactAttributesType, TargetGroupsGrid } from "./TargetGroupsGrid";
 
@@ -31,28 +32,30 @@ export function createTargetGroupsPage({ additionalFormFields, nodeFragment, inp
         }, {} as { [key: string]: unknown });
 
         return (
-            <Stack topLevelTitle={intl.formatMessage({ id: "cometBrevoModule.targetGroups.targetGroups", defaultMessage: "Target groups" })}>
-                <StackSwitch>
-                    <StackPage name="grid">
-                        <Toolbar scopeIndicator={<ContentScopeIndicator scope={scope} />} />
-                        <TargetGroupsGrid scope={scope} exportTargetGroupOptions={exportTargetGroupOptions} />
-                    </StackPage>
-                    <StackPage
-                        name="edit"
-                        title={intl.formatMessage({ id: "cometBrevoModule.targetGroups.editTargetGroup", defaultMessage: "Edit target group" })}
-                    >
-                        {(selectedId) => (
-                            <TargetGroupForm
-                                id={selectedId}
-                                scope={scope}
-                                additionalFormFields={additionalFormFields}
-                                nodeFragment={nodeFragment}
-                                input2State={input2State}
-                            />
-                        )}
-                    </StackPage>
-                </StackSwitch>
-            </Stack>
+            <ConfigVerification scope={scope}>
+                <Stack topLevelTitle={intl.formatMessage({ id: "cometBrevoModule.targetGroups.targetGroups", defaultMessage: "Target groups" })}>
+                    <StackSwitch>
+                        <StackPage name="grid">
+                            <Toolbar scopeIndicator={<ContentScopeIndicator scope={scope} />} />
+                            <TargetGroupsGrid scope={scope} exportTargetGroupOptions={exportTargetGroupOptions} />
+                        </StackPage>
+                        <StackPage
+                            name="edit"
+                            title={intl.formatMessage({ id: "cometBrevoModule.targetGroups.editTargetGroup", defaultMessage: "Edit target group" })}
+                        >
+                            {(selectedId) => (
+                                <TargetGroupForm
+                                    id={selectedId}
+                                    scope={scope}
+                                    additionalFormFields={additionalFormFields}
+                                    nodeFragment={nodeFragment}
+                                    input2State={input2State}
+                                />
+                            )}
+                        </StackPage>
+                    </StackSwitch>
+                </Stack>
+            </ConfigVerification>
         );
     }
 
