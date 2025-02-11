@@ -9,7 +9,7 @@ import { LinkBlock } from "./LinkBlock";
 const placeholders = [
     {
         placeholder: "{{SALUTATION}}",
-        helper: <FormattedMessage id="newsletter.richText.placeholder.salutation" defaultMessage="Dear Mr./Ms.LASTNAME" />,
+        helper: <FormattedMessage id="cometBrevoModule.richText.placeholder.salutation" defaultMessage="Dear Mr./Ms. LASTNAME" />,
     },
 ];
 
