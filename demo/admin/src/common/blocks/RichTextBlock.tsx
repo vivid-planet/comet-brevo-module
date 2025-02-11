@@ -27,7 +27,7 @@ export function createNewsletterRichTextBlock(): ReturnType<typeof createRichTex
                     <RichTextBlock.AdminComponent {...rteAdminComponentProps} />
                 </Box>
                 <FormLabel>
-                    <FormattedMessage id="newsletter.richText.placeholder.info" defaultMessage="Placeholders available in the text" />
+                    <FormattedMessage id="cometBrevoModule.richText.placeholder.info" defaultMessage="Placeholders available in the text" />
                 </FormLabel>
                 <Paper variant="outlined">
                     <List>
