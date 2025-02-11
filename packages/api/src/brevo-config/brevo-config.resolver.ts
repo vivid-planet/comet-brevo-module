@@ -53,12 +53,13 @@ export function createBrevoConfigResolver({
         }
 
         private async isValidFolderId({ folderId }: { folderId: number }): Promise<boolean> {
-            const folders = await this.brevoFolderIdService.getFolders(Scope);
-
-            if (folders && folders.some((folder) => folder.id === folderId)) {
-                return true;
+            for await (const folder of this.brevoFolderIdService.getAllBrevoFolders(Scope)) {
+                if (folder.id === folderId) {
+                    return true;
+                } else {
+                    throw new Error("Folder id is not valid. ");
+                }
             }
-
             return false;
         }
 
