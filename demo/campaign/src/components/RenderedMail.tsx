@@ -1,7 +1,6 @@
 import { renderToMjml } from "@luma-team/mjml-react";
 import { EmailCampaignContentBlockData } from "@src/blocks.generated";
 import { ContentBlock } from "@src/blocks/ContentBlock";
-import { getPreparedHtml } from "@src/util/getPreparedHtml";
 import { replaceMailHtmlPlaceholders } from "@src/util/replaceMailHtmlPlaceholders";
 import * as React from "react";
 import { IntlConfig, IntlProvider } from "react-intl";
@@ -36,10 +35,8 @@ export const RenderedMail: React.FC<Props> = ({ mjmlContent }) => {
     React.useEffect(() => {
         // eslint-disable-next-line @typescript-eslint/no-var-requires
         const mjml2htmlBrowser = require("mjml-browser");
-        const { html: escapedHtml, errors } = mjml2htmlBrowser(mjmlContent);
-
-        const preparedHtml = getPreparedHtml(escapedHtml);
-        const html = replaceMailHtmlPlaceholders(preparedHtml, "preview");
+        const { html: mjmlHtml, errors } = mjml2htmlBrowser(mjmlContent);
+        const html = replaceMailHtmlPlaceholders(mjmlHtml, "preview");
 
         if (errors.length) {
             // eslint-disable-next-line no-console
