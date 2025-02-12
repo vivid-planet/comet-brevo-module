@@ -1,5 +1,103 @@
 # @comet/brevo-admin
 
+## 3.0.0
+
+### Major Changes
+
+-   adb69fd: Refactor brevo contact import to upload files to public uploads temporarily
+
+    The files for the brevo contact import now get temporarily stored in the public uploads until the import is concluded.
+    This change prepares for future imports to be handled in a separate job, allowing more than 100 contacts to be imported without exhausting api resources or blocking the event loop.
+
+    It is now necessary to import the `PublicUploadsModule` in the project's `AppModule` and configure it to accept csv files.
+
+    ```ts
+            PublicUploadModule.register({
+                acceptedMimeTypes: ["text/csv"],
+                maxFileSize: config.publicUploads.maxFileSize,
+                directory: `${config.blob.storageDirectoryPrefix}-public-uploads`,
+            }),
+    ```
+
+-   d5319bc: Add `mail-rendering` package for providing reuseable components for rendering emails
+
+    Add new `NewsletterImageBlock`
+
+-   4fb6b8f: A required brevo config page must now be generated with `createBrevoConfigPage`.
+    All necessary brevo configuration (for each scope) must be configured within this page for emails campaigns to be sent.
+
+    ```diff
+    + const BrevoConfigPage = createBrevoConfigPage({
+    +        scopeParts: ["domain", "language"],
+    + });
+    ```
+
+    Env vars containing the brevo sender information can be removed.
+
+    ```diff
+    - BREVO_SENDER_NAME=senderName
+    - BREVO_SENDER_EMAIL=senderEmail
+    ```
+
+-   aa75e4c: Define `scopeParts` in `BrevoConfig`
+
+    Previously the `scopeParts` were passed to the functions:
+
+    -   createBrevoContactsPage
+    -   createTargetGroupsPage
+    -   createEmailCampaignsPage
+    -   createBrevoConfigPage
+
+    Now they are defined once in the `BrevoConfig`:
+
+    ```tsx
+    <BrevoConfigProvider
+        value={{
+            scopeParts: ["domain", "language"],
+            ...otherProps,
+        }}
+    >
+        {children}
+    </BrevoConfigProvider>
+    ```
+
+### Minor Changes
+
+-   e931996: Add field for `doubleOptInTemplateId` to `BrevoConfigPage`
+
+    The environment variable BREVO_DOUBLE_OPT_IN_TEMPLATE_ID can be removed, as it is now available as a maintainable variable in the admin interface.
+
+-   7215ec1: Add `folderId` to `BrevoConfig` to allow overwriting the default folderId `1`
+-   cc4bd07: Add a brevo configuration field for `allowedRedirectionUrl`
+    Env vars containing this information can be removed and must be removed from the brevo module configuration.
+
+    ```diff
+    BrevoModule.register({
+        brevo: {
+    -       allowedRedirectionUrl: config.brevo.allowedRedirectionUrl,
+            //...
+        },
+        //..
+    })
+    ```
+
+-   ea503b9: Add a brevo configuration field for `unsubscriptionPageId`
+
+### Patch Changes
+
+-   a605a42: Remove the `totalContactsBlocked` field from the `TargetGroup` type, because it is not delivered in the list request in Brevo anymore.
+
+## 2.2.0
+
+### Minor Changes
+
+-   f07d79a: Adds `createBrevoTestContactsPage` for creating a test contacts page, that is indepent from the main list.
+
+    Remove `email` and `redirectionUrl` from `brevoContactsPageAttributesConfig`
+
+-   d32e9e8: Replace the `TextField` with a `FinalFormSelect` component in the `TestEmailCampaignForm`, allowing users to choose contacts directly from the `TestContactList`
+-   ada83cf: Add filter for `sendingState` in `EmailCampaignsGrid`
+
 ## 2.1.6
 
 ### Patch Changes

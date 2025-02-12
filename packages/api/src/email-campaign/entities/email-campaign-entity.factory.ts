@@ -22,75 +22,74 @@ export interface EmailCampaignInterface {
     scope: EmailCampaignScopeInterface;
     sendingState: SendingState;
     targetGroups: Collection<TargetGroupInterface, object>;
+    unsubscriptionPageId?: string;
 }
 
-export class EmailCampaignEntityFactory {
-    static create({
-        EmailCampaignContentBlock,
-        Scope,
-        TargetGroup,
-    }: {
-        EmailCampaignContentBlock: Block;
-        Scope: EmailCampaignScopeInterface;
-        TargetGroup: Type<TargetGroupInterface>;
-    }): Type<EmailCampaignInterface> {
-        @Entity()
-        @ObjectType({
-            implements: () => [DocumentInterface],
+export function createEmailCampaignEntity({
+    EmailCampaignContentBlock,
+    Scope,
+    TargetGroup,
+}: {
+    EmailCampaignContentBlock: Block;
+    Scope: EmailCampaignScopeInterface;
+    TargetGroup: Type<TargetGroupInterface>;
+}): Type<EmailCampaignInterface> {
+    @Entity()
+    @ObjectType({
+        implements: () => [DocumentInterface],
+    })
+    class EmailCampaign implements EmailCampaignInterface, DocumentInterface {
+        [OptionalProps]?: "createdAt" | "updatedAt";
+
+        @PrimaryKey({ columnType: "uuid" })
+        @Field(() => ID)
+        id: string = v4();
+
+        @Property({
+            columnType: "timestamp with time zone",
         })
-        class EmailCampaign implements EmailCampaignInterface, DocumentInterface {
-            [OptionalProps]?: "createdAt" | "updatedAt";
+        @Field()
+        createdAt: Date = new Date();
 
-            @PrimaryKey({ columnType: "uuid" })
-            @Field(() => ID)
-            id: string = v4();
+        @Property({
+            columnType: "timestamp with time zone",
+            onUpdate: () => new Date(),
+        })
+        @Field()
+        updatedAt: Date = new Date();
 
-            @Property({
-                columnType: "timestamp with time zone",
-            })
-            @Field()
-            createdAt: Date = new Date();
+        @Property({ columnType: "text" })
+        @Field()
+        title: string;
 
-            @Property({
-                columnType: "timestamp with time zone",
-                onUpdate: () => new Date(),
-            })
-            @Field()
-            updatedAt: Date = new Date();
+        @Property({ columnType: "text" })
+        @Field()
+        subject: string;
 
-            @Property({ columnType: "text" })
-            @Field()
-            title: string;
+        @Property({ columnType: "int", nullable: true })
+        @Field(() => Int, { nullable: true })
+        brevoId?: number;
 
-            @Property({ columnType: "text" })
-            @Field()
-            subject: string;
+        @Enum(() => SendingState)
+        sendingState: SendingState;
 
-            @Property({ columnType: "int", nullable: true })
-            @Field(() => Int, { nullable: true })
-            brevoId?: number;
+        @Property({ columnType: "timestamp with time zone", nullable: true })
+        @Field(() => Date, { nullable: true })
+        scheduledAt?: Date;
 
-            @Enum(() => SendingState)
-            sendingState: SendingState;
+        @ManyToMany(() => TargetGroup, (targetGroup) => targetGroup.campaigns, { owner: true })
+        @Field(() => [TargetGroup])
+        targetGroups = new Collection<TargetGroupInterface>(this);
 
-            @Property({ columnType: "timestamp with time zone", nullable: true })
-            @Field(() => Date, { nullable: true })
-            scheduledAt?: Date;
+        @RootBlock(EmailCampaignContentBlock)
+        @Property({ customType: new RootBlockType(EmailCampaignContentBlock) })
+        @Field(() => RootBlockDataScalar(EmailCampaignContentBlock))
+        content: BlockDataInterface;
 
-            @ManyToMany(() => TargetGroup, (targetGroup) => targetGroup.campaigns, { owner: true })
-            @Field(() => [TargetGroup])
-            targetGroups = new Collection<TargetGroupInterface>(this);
-
-            @RootBlock(EmailCampaignContentBlock)
-            @Property({ customType: new RootBlockType(EmailCampaignContentBlock) })
-            @Field(() => RootBlockDataScalar(EmailCampaignContentBlock))
-            content: BlockDataInterface;
-
-            @Embedded(() => Scope)
-            @Field(() => Scope)
-            scope: typeof Scope;
-        }
-
-        return EmailCampaign;
+        @Embedded(() => Scope)
+        @Field(() => Scope)
+        scope: typeof Scope;
     }
+
+    return EmailCampaign;
 }

@@ -1,3 +1,4 @@
+export { NewsletterImageBlock } from "./blocks/newsletter-image.block";
 export { BrevoTransactionalMailsService } from "./brevo-api/brevo-api-transactional-mails.service";
 export { BrevoContactsService } from "./brevo-contact/brevo-contacts.service";
 export { SubscribeResponse } from "./brevo-contact/dto/subscribe-response.enum";

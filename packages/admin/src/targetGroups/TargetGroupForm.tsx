@@ -4,7 +4,7 @@ import {
     FieldSet,
     FinalForm,
     FinalFormInput,
-    FinalFormSaveSplitButton,
+    FinalFormSaveButton,
     FinalFormSubmitEvent,
     Loading,
     MainContent,
@@ -17,7 +17,7 @@ import {
     useStackApi,
 } from "@comet/admin";
 import { ArrowLeft } from "@comet/admin-icons";
-import { ContentScopeInterface, EditPageLayout, queryUpdatedAt, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
+import { ContentScopeIndicator, ContentScopeInterface, queryUpdatedAt, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
 import { IconButton } from "@mui/material";
 import { FormApi } from "final-form";
 import React from "react";
@@ -118,9 +118,9 @@ export function TargetGroupForm({ id, scope, additionalFormFields, input2State, 
     return (
         <FinalForm<EditTargetGroupFinalFormValues> apiRef={formApiRef} onSubmit={handleSubmit} mode={mode} initialValues={initialValues}>
             {({ values }) => (
-                <EditPageLayout>
+                <>
                     {saveConflict.dialogs}
-                    <Toolbar>
+                    <Toolbar scopeIndicator={<ContentScopeIndicator scope={scope} />}>
                         <ToolbarItem>
                             <IconButton onClick={stackApi?.goBack}>
                                 <ArrowLeft />
@@ -131,7 +131,7 @@ export function TargetGroupForm({ id, scope, additionalFormFields, input2State, 
                         </ToolbarTitleItem>
                         <ToolbarFillSpace />
                         <ToolbarActions>
-                            <FinalFormSaveSplitButton hasConflict={saveConflict.hasConflict} />
+                            <FinalFormSaveButton hasConflict={saveConflict.hasConflict} />
                         </ToolbarActions>
                     </Toolbar>
                     <MainContent>
@@ -182,7 +182,7 @@ export function TargetGroupForm({ id, scope, additionalFormFields, input2State, 
                             </FieldSet>
                         </>
                     </MainContent>
-                </EditPageLayout>
+                </>
             )}
         </FinalForm>
     );

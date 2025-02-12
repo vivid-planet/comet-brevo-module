@@ -31,11 +31,7 @@ const getHeadlineRenderers = (level: HeadlineBlockData["level"]) => {
 
 export const HeadlineBlock = withPreview(
     ({ data: { headline, level } }: PropsWithData<HeadlineBlockData>) => {
-        return (
-            <>
-                <RichTextBlock data={headline} renderers={getHeadlineRenderers(level)} />
-            </>
-        );
+        return <RichTextBlock data={headline} renderers={getHeadlineRenderers(level)} />;
     },
     { label: "Headline" },
 );

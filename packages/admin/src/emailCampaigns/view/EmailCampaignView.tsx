@@ -2,7 +2,7 @@ import { useQuery } from "@apollo/client";
 import { Loading, MainContent, Toolbar, ToolbarFillSpace, ToolbarItem, ToolbarTitleItem, useStackApi } from "@comet/admin";
 import { ArrowLeft } from "@comet/admin-icons";
 import { BlockInterface, IFrameBridgeProvider } from "@comet/blocks-admin";
-import { BlockPreview, EditPageLayout, useBlockPreview, useCmsBlockContext, useContentScope } from "@comet/cms-admin";
+import { BlockPreview, ContentScopeIndicator, useBlockPreview, useCmsBlockContext, useContentScope } from "@comet/cms-admin";
 import { IconButton } from "@mui/material";
 import React from "react";
 import { FormattedMessage } from "react-intl";
@@ -17,7 +17,7 @@ interface EmailCampaignViewProps {
     EmailCampaignContentBlock: BlockInterface;
 }
 
-export function EmailCampaignView({ id, EmailCampaignContentBlock }: EmailCampaignViewProps): React.ReactElement {
+export function EmailCampaignView({ id, EmailCampaignContentBlock }: EmailCampaignViewProps) {
     const stackApi = useStackApi();
     const previewApi = useBlockPreview();
     const blockContext = useCmsBlockContext();
@@ -36,7 +36,7 @@ export function EmailCampaignView({ id, EmailCampaignContentBlock }: EmailCampai
     }
 
     if (!data) {
-        return <></>;
+        return null;
     }
 
     const previewContext = {
@@ -52,8 +52,8 @@ export function EmailCampaignView({ id, EmailCampaignContentBlock }: EmailCampai
     };
 
     return (
-        <EditPageLayout>
-            <Toolbar>
+        <>
+            <Toolbar scopeIndicator={<ContentScopeIndicator />}>
                 <ToolbarItem>
                     <IconButton onClick={stackApi?.goBack}>
                         <ArrowLeft />
@@ -69,6 +69,6 @@ export function EmailCampaignView({ id, EmailCampaignContentBlock }: EmailCampai
                     <BlockPreview url={previewUrl} previewState={previewState} previewApi={previewApi} />
                 </IFrameBridgeProvider>
             </MainContent>
-        </EditPageLayout>
+        </>
     );
 }

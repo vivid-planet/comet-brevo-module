@@ -1,12 +1,13 @@
 import { gql, useApolloClient, useQuery } from "@apollo/client";
 import {
     CrudContextMenu,
+    DataGridToolbar,
+    GridColDef,
     GridFilterButton,
     MainContent,
     muiGridFilterToGql,
     muiGridSortToGql,
     StackLink,
-    Toolbar,
     ToolbarActions,
     ToolbarAutomaticTitleItem,
     ToolbarFillSpace,
@@ -19,7 +20,7 @@ import { Add as AddIcon, Edit, Statistics, Visible } from "@comet/admin-icons";
 import { BlockInterface } from "@comet/blocks-admin";
 import { ContentScopeInterface } from "@comet/cms-admin";
 import { Button, IconButton } from "@mui/material";
-import { DataGrid, GridColDef, GridToolbarQuickFilter } from "@mui/x-data-grid";
+import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import { isBefore } from "date-fns";
 import * as React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -88,7 +89,7 @@ const createEmailCampaignMutation = gql`
 
 function EmailCampaignsGridToolbar() {
     return (
-        <Toolbar>
+        <DataGridToolbar>
             <ToolbarAutomaticTitleItem />
             <ToolbarItem>
                 <GridToolbarQuickFilter />
@@ -102,7 +103,7 @@ function EmailCampaignsGridToolbar() {
                     <FormattedMessage id="cometBrevoModule.emailCampaign.newEmailCampaign" defaultMessage="New email campaign" />
                 </Button>
             </ToolbarActions>
-        </Toolbar>
+        </DataGridToolbar>
     );
 }
 
@@ -119,6 +120,15 @@ export function EmailCampaignsGrid({
         ...useDataGridRemote({ initialSort: [{ field: "updatedAt", sort: "desc" }] }),
         ...usePersistentColumnState("EmailCampaignsGrid"),
     };
+
+    const sendingStateOptions: { label: string; value: string }[] = [
+        {
+            value: "SENT",
+            label: intl.formatMessage({ id: "cometBrevoModule.emailCampaign.sent", defaultMessage: "Sent" }),
+        },
+        { value: "DRAFT", label: intl.formatMessage({ id: "cometBrevoModule.emailCampaign.draft", defaultMessage: "Draft" }) },
+        { value: "SCHEDULED", label: intl.formatMessage({ id: "cometBrevoModule.emailCampaign.scheduled", defaultMessage: "Scheduled" }) },
+    ];
 
     const columns: GridColDef<GQLEmailCampaignsListFragment>[] = [
         {
@@ -144,8 +154,9 @@ export function EmailCampaignsGrid({
             headerName: intl.formatMessage({ id: "cometBrevoModule.emailCampaign.sendingState", defaultMessage: "Sending State" }),
             renderCell: ({ value }) => <SendingStateColumn sendingState={value} />,
             width: 150,
-            filterable: false,
             sortable: false,
+            type: "singleSelect",
+            valueOptions: sendingStateOptions,
         },
         {
             field: "scheduledAt",

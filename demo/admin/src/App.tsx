@@ -1,11 +1,8 @@
-import "@fontsource/roboto/300.css";
-import "@fontsource/roboto/400.css";
-import "@fontsource/roboto/500.css";
-import "@fontsource/roboto/700.css";
+import "@fontsource-variable/roboto-flex/full.css";
 import "material-design-icons/iconfont/material-icons.css";
 
 import { ApolloProvider } from "@apollo/client";
-import { ErrorDialogHandler, MuiThemeProvider, RouterBrowserRouter, SnackbarProvider } from "@comet/admin";
+import { ErrorDialogHandler, MasterLayout, MuiThemeProvider, RouterBrowserRouter, SnackbarProvider } from "@comet/admin";
 import { BrevoConfigProvider } from "@comet/brevo-admin";
 import {
     AllCategories,
@@ -14,22 +11,26 @@ import {
     createHttpClient,
     CurrentUserProvider,
     LocaleProvider,
+    SitePreview,
     SitesConfigProvider,
 } from "@comet/cms-admin";
 import { css, Global } from "@emotion/react";
-import { ContentScope } from "@src/common/ContentScopeProvider";
+import { ContentScope, ContentScopeProvider } from "@src/common/ContentScopeProvider";
+import { MasterRoutes } from "@src/common/MasterMenu";
 import { getMessages } from "@src/lang";
 import { theme } from "@src/theme";
 import * as React from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { FormattedMessage, IntlProvider } from "react-intl";
+import { Route, Switch } from "react-router";
 
 import { createApolloClient } from "./common/apollo/createApolloClient";
+import { MasterHeader } from "./common/MasterHeader";
+import { AppMasterMenu } from "./common/MasterMenu";
 import { createConfig } from "./config";
 import { Link } from "./documents/links/Link";
 import { Page } from "./documents/pages/Page";
-import { Routes } from "./Routes";
 
 const GlobalStyle = () => (
     <Global
@@ -59,30 +60,34 @@ const pageTreeDocumentTypes = {
 export function App() {
     return (
         <ApolloProvider client={apolloClient}>
-            <CurrentUserProvider>
-                <BuildInformationProvider value={{ date: config.buildDate, number: config.buildNumber, commitHash: config.commitSha }}>
-                    <SitesConfigProvider
-                        value={{
-                            configs: config.sitesConfig,
-                            resolveSiteConfigForScope: (configs, scope: ContentScope) => {
-                                const siteConfig = configs[scope.domain];
-                                return {
-                                    ...siteConfig,
-                                    previewUrl: `${siteConfig.previewUrl}/${scope.language}`,
-                                };
-                            },
-                        }}
-                    >
-                        <IntlProvider locale="en" defaultLocale="en" messages={getMessages()}>
-                            <LocaleProvider resolveLocaleForScope={(scope: ContentScope) => scope.domain}>
-                                <MuiThemeProvider theme={theme}>
+            <BuildInformationProvider value={{ date: config.buildDate, number: config.buildNumber, commitHash: config.commitSha }}>
+                <SitesConfigProvider
+                    value={{
+                        configs: config.sitesConfig,
+                        resolveSiteConfigForScope: (configs, scope: ContentScope) => {
+                            const siteConfig = configs[scope.domain];
+                            return {
+                                ...siteConfig,
+                                previewUrl: `${siteConfig.blockPreviewBaseUrl}/${scope.language}`,
+                                blockPreviewBaseUrl: `${siteConfig.url}/block-preview`,
+                                sitePreviewApiUrl: `${siteConfig.url}/api/site-preview`,
+                            };
+                        },
+                    }}
+                >
+                    <IntlProvider locale="en" defaultLocale="en" messages={getMessages()}>
+                        <LocaleProvider resolveLocaleForScope={(scope: ContentScope) => scope.domain}>
+                            <MuiThemeProvider theme={theme}>
+                                <ErrorDialogHandler />
+                                <CurrentUserProvider>
                                     <DndProvider backend={HTML5Backend}>
                                         <SnackbarProvider>
                                             <BrevoConfigProvider
                                                 value={{
+                                                    scopeParts: ["domain", "language"],
                                                     apiUrl: config.apiUrl,
                                                     resolvePreviewUrlForScope: (scope: ContentScope) => {
-                                                        return `${config.campaignUrl}/preview/${scope.domain}/${scope.language}`;
+                                                        return `${config.campaignUrl}/block-preview/${scope.domain}/${scope.language}`;
                                                     },
                                                 }}
                                             >
@@ -99,19 +104,32 @@ export function App() {
                                                 >
                                                     <RouterBrowserRouter>
                                                         <GlobalStyle />
-                                                        <Routes />
-                                                        <ErrorDialogHandler />
+                                                        <ContentScopeProvider>
+                                                            {({ match }) => (
+                                                                <Switch>
+                                                                    <Route
+                                                                        path={`${match.path}/preview`}
+                                                                        render={(props) => <SitePreview {...props} />}
+                                                                    />
+                                                                    <Route>
+                                                                        <MasterLayout headerComponent={MasterHeader} menuComponent={AppMasterMenu}>
+                                                                            <MasterRoutes />
+                                                                        </MasterLayout>
+                                                                    </Route>
+                                                                </Switch>
+                                                            )}
+                                                        </ContentScopeProvider>
                                                     </RouterBrowserRouter>
                                                 </CmsBlockContextProvider>
                                             </BrevoConfigProvider>
                                         </SnackbarProvider>
                                     </DndProvider>
-                                </MuiThemeProvider>
-                            </LocaleProvider>
-                        </IntlProvider>
-                    </SitesConfigProvider>
-                </BuildInformationProvider>
-            </CurrentUserProvider>
+                                </CurrentUserProvider>
+                            </MuiThemeProvider>
+                        </LocaleProvider>
+                    </IntlProvider>
+                </SitesConfigProvider>
+            </BuildInformationProvider>
         </ApolloProvider>
     );
 }

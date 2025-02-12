@@ -1,15 +1,16 @@
+import { FileUpload } from "@comet/cms-api";
 import { MikroOrmModule } from "@mikro-orm/nestjs";
 import { DynamicModule, Module, Type } from "@nestjs/common";
 
 import { BrevoApiModule } from "../brevo-api/brevo-api.module";
 import { createBrevoContactImportConsole } from "../brevo-contact/brevo-contact-import.console";
-import { createBrevoContactImportController } from "../brevo-contact/brevo-contact-import.controller";
 import { BrevoContactImportService } from "../brevo-contact/brevo-contact-import.service";
 import { ConfigModule } from "../config/config.module";
 import { TargetGroupInterface } from "../target-group/entity/target-group-entity.factory";
 import { BrevoContactAttributesInterface, EmailCampaignScopeInterface } from "../types";
 import { DeleteUnsubscribedBrevoContactsConsole } from "./brevo-contact.console";
 import { createBrevoContactResolver } from "./brevo-contact.resolver";
+import { createBrevoContactImportResolver } from "./brevo-contact-import.resolver";
 import { BrevoContactsService } from "./brevo-contacts.service";
 import { BrevoContactFactory } from "./dto/brevo-contact.factory";
 import { BrevoContactInputFactory } from "./dto/brevo-contact-input.factory";
@@ -41,22 +42,22 @@ export class BrevoContactModule {
             BrevoTestContactInput,
         });
 
+        const BrevoContactImportResolver = createBrevoContactImportResolver({ Scope, BrevoContact });
         const BrevoContactImportConsole = createBrevoContactImportConsole({ Scope });
-        const BrevoContactImportController = createBrevoContactImportController({ Scope });
 
         return {
             module: BrevoContactModule,
-            imports: [BrevoApiModule, ConfigModule, MikroOrmModule.forFeature([TargetGroup])],
+            imports: [BrevoApiModule, ConfigModule, MikroOrmModule.forFeature([TargetGroup, FileUpload, "BrevoConfig"])],
             providers: [
                 BrevoContactImportService,
                 BrevoContactsService,
                 BrevoContactResolver,
+                BrevoContactImportResolver,
                 EcgRtrListService,
                 IsValidRedirectURLConstraint,
                 DeleteUnsubscribedBrevoContactsConsole,
                 BrevoContactImportConsole,
             ],
-            controllers: [BrevoContactImportController],
             exports: [BrevoContactsService, BrevoContactImportService],
         };
     }

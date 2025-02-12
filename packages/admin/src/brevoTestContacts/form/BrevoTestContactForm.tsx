@@ -17,7 +17,7 @@ import {
     useStackApi,
 } from "@comet/admin";
 import { ArrowLeft } from "@comet/admin-icons";
-import { ContentScopeInterface, EditPageLayout, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
+import { ContentScopeInterface, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
 import { Card, IconButton } from "@mui/material";
 import { Box } from "@mui/system";
 import { FormApi } from "final-form";
@@ -167,54 +167,50 @@ export function BrevoTestContactForm({ id, scope, input2State, additionalFormFie
 
     return (
         <FinalForm<EditBrevoContactFormValuesWithAttributes> apiRef={formApiRef} onSubmit={handleSubmit} mode={mode} initialValues={initialValues}>
-            {({ values }) => (
-                <EditPageLayout>
-                    {saveConflict.dialogs}
-                    <Toolbar>
-                        <ToolbarItem>
-                            <IconButton onClick={stackApi?.goBack}>
-                                <ArrowLeft />
-                            </IconButton>
-                        </ToolbarItem>
-                        <ToolbarTitleItem>
-                            <FormattedMessage id="cometBrevoModule.brevoTestContacts.brevoTestContact" defaultMessage="Test contact" />
-                        </ToolbarTitleItem>
-                        <ToolbarFillSpace />
-                        <ToolbarActions>
-                            <FinalFormSaveSplitButton hasConflict={saveConflict.hasConflict} />
-                        </ToolbarActions>
-                    </Toolbar>
-                    <MainContent>
-                        {mode === "edit" && (
-                            <Box sx={{ marginBottom: 4 }}>
-                                <Alert severity="warning">
-                                    <FormattedMessage
-                                        id="cometBrevoModule.brevoContact.contactEditAlert"
-                                        defaultMessage="Editing a contact will affect all scopes and the target groups within those scopes."
-                                    />
-                                </Alert>
-                            </Box>
-                        )}
-                        <TextField
-                            required
-                            fullWidth
-                            name="email"
-                            label={<FormattedMessage id="cometBrevoModule.brevoTestContact.email" defaultMessage="Email" />}
-                            disabled={mode === "edit"}
-                        />
+            <>
+                {saveConflict.dialogs}
+                <Toolbar>
+                    <ToolbarItem>
+                        <IconButton onClick={stackApi?.goBack}>
+                            <ArrowLeft />
+                        </IconButton>
+                    </ToolbarItem>
+                    <ToolbarTitleItem>
+                        <FormattedMessage id="cometBrevoModule.brevoTestContacts.brevoTestContact" defaultMessage="Test contact" />
+                    </ToolbarTitleItem>
+                    <ToolbarFillSpace />
+                    <ToolbarActions>
+                        <FinalFormSaveSplitButton hasConflict={saveConflict.hasConflict} />
+                    </ToolbarActions>
+                </Toolbar>
+                <MainContent>
+                    {mode === "edit" && (
+                        <Box sx={{ marginBottom: 4 }}>
+                            <Alert severity="warning">
+                                <FormattedMessage
+                                    id="cometBrevoModule.brevoContact.contactEditAlert"
+                                    defaultMessage="Editing a contact will affect all scopes and the target groups within those scopes."
+                                />
+                            </Alert>
+                        </Box>
+                    )}
+                    <TextField
+                        required
+                        fullWidth
+                        name="email"
+                        label={<FormattedMessage id="cometBrevoModule.brevoTestContact.email" defaultMessage="Email" />}
+                        disabled={mode === "edit"}
+                    />
 
-                        {additionalFormFields && (
-                            <Card sx={{ padding: 4 }}>
-                                <FormSection
-                                    title={<FormattedMessage id="cometBrevoModule.brevoTestContact.attributes" defaultMessage="Attributes" />}
-                                >
-                                    {additionalFormFields}
-                                </FormSection>
-                            </Card>
-                        )}
-                    </MainContent>
-                </EditPageLayout>
-            )}
+                    {additionalFormFields && (
+                        <Card sx={{ padding: 4 }}>
+                            <FormSection title={<FormattedMessage id="cometBrevoModule.brevoTestContact.attributes" defaultMessage="Attributes" />}>
+                                {additionalFormFields}
+                            </FormSection>
+                        </Card>
+                    )}
+                </MainContent>
+            </>
         </FinalForm>
     );
 }

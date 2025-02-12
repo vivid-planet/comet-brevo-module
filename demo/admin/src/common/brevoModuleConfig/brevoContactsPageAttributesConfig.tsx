@@ -1,7 +1,6 @@
-import { Field, FinalFormSelect, TextField } from "@comet/admin";
+import { Field, FinalFormSelect, GridColDef, TextField } from "@comet/admin";
 import { EditBrevoContactFormValues } from "@comet/brevo-admin";
 import { MenuItem } from "@mui/material";
-import { GridColDef } from "@mui/x-data-grid";
 import { GQLBrevoContactBranch, GQLBrevoContactSalutation } from "@src/graphql.generated";
 import { DocumentNode } from "graphql";
 import gql from "graphql-tag";
@@ -60,9 +59,7 @@ export const additionalFormConfig = {
     nodeFragment: attributesFragment,
 };
 
-export const getBrevoContactConfig = (
-    intl: IntlShape,
-): {
+export interface BrevoContactConfig {
     additionalGridFields: GridColDef<GQLBrevoContactAttributesFragmentFragment>[];
     additionalFormFields: React.ReactNode;
     additionalAttributesFragment: {
@@ -76,7 +73,9 @@ export const getBrevoContactConfig = (
         renderValue: (row: GQLBrevoContactAttributesFragmentFragment) => string;
         headerName: string;
     }[];
-} => {
+}
+
+export const getBrevoContactConfig = (intl: IntlShape): BrevoContactConfig => {
     return {
         additionalGridFields: [
             {

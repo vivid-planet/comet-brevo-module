@@ -1,3 +1,5 @@
+export { NewsletterImageBlock } from "./blocks/NewsletterImageBlock";
+export { BrevoConfigPage } from "./brevoConfiguration/BrevoConfigPage";
 export { createBrevoContactsPage } from "./brevoContacts/BrevoContactsPage";
 export { EditBrevoContactFormValues } from "./brevoContacts/form/BrevoContactForm";
 export { createBrevoTestContactsPage } from "./brevoTestContacts/BrevoTestContactsPage";

@@ -1,6 +1,7 @@
 const packageFolderMapping = {
     "@comet/brevo-api": "packages/api",
     "@comet/brevo-admin": "packages/admin",
+    "@comet/brevo-mail-rendering": "packages/brevo-mail-rendering",
 };
 
 const waitOnPackages = (...packages) => {
@@ -20,11 +21,27 @@ module.exports = {
             script: "pnpm --filter @comet/brevo-api run generate-schema:watch",
             group: ["api"],
         },
+        {
+            name: "api-codegen-block-meta",
+            script: "pnpm --filter @comet/brevo-api run generate-block-meta:watch",
+            group: ["api"],
+        },
         //group admin
         {
             name: "admin",
             script: "pnpm --filter @comet/brevo-admin run start",
             group: ["admin"],
+        },
+        //group mail-rendering
+        {
+            name: "mail-rendering",
+            script: "pnpm --filter @comet/brevo-mail-rendering run dev",
+            group: ["mail-rendering"],
+        },
+        {
+            name: "mail-rendering-block-codegen",
+            script: "pnpm --filter @comet/brevo-mail-rendering run generate-block-types:watch",
+            group: ["mail-rendering"],
         },
         //group demo admin
         {

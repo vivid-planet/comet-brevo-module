@@ -1,8 +1,8 @@
+import { MjmlConditionalComment } from "@faire/mjml-react/extensions";
 import { Mjml, MjmlAttributes, MjmlBody, MjmlDivider, MjmlHead, MjmlSection, MjmlText, MjmlTitle } from "@luma-team/mjml-react";
 import { commonImageBlockStyles } from "@src/common/blocks/CommonImageBlock";
 import { css } from "@src/util/stylesHelper";
 import { theme } from "@src/util/theme";
-import { MjmlConditionalComment } from "mjml-react/extensions";
 import React from "react";
 import { renderToString } from "react-dom/server";
 

@@ -2,6 +2,14 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type UserPermissionsUser {
+  id: String!
+  name: String!
+  email: String!
+  permissionsCount: Int!
+  contentScopesCount: Int!
+}
+
 type CurrentUserPermission {
   permission: String!
   contentScopes: [JSONObject!]!
@@ -16,8 +24,10 @@ type CurrentUser {
   id: String!
   name: String!
   email: String!
-  language: String!
   permissions: [CurrentUserPermission!]!
+  impersonated: Boolean
+  authenticatedUser: UserPermissionsUser
+  permissionsForScope(scope: JSONObject!): [String!]!
 }
 
 type UserPermission {
@@ -151,16 +161,62 @@ type FilenameResponse {
   isOccupied: Boolean!
 }
 
-type User {
-  id: String!
+type FileUpload {
+  id: ID!
   name: String!
-  email: String!
-  language: String!
+  size: Int!
+  mimetype: String!
+  contentHash: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
-type PaginatedUserList {
-  nodes: [User!]!
+type UserPermissionPaginatedUserList {
+  nodes: [UserPermissionsUser!]!
   totalCount: Int!
+}
+
+type BrevoApiEmailTemplateSender {
+  id: String
+  subject: String
+  email: String!
+}
+
+type BrevoApiEmailTemplate {
+  id: ID!
+  name: String!
+  subject: String!
+  isActive: Boolean!
+  testSent: Boolean!
+  replyTo: String!
+  toField: String!
+  tag: String!
+  htmlContent: String!
+  createdAt: String!
+  modifiedAt: String!
+  sender: BrevoApiEmailTemplateSender!
+}
+
+type BrevoApiSender {
+  id: ID!
+  name: String!
+  email: String!
+  active: Boolean!
+  ips: [BrevoIp!]
+}
+
+type BrevoIp {
+  ip: String!
+  domain: String!
+  weight: Int!
+}
+
+type CsvImportInformation {
+  created: Int!
+  updated: Int!
+  failed: Int!
+  failedColumns: [[String!]!]
+  errorMessage: String
 }
 
 type BrevoApiCampaignStatistics {
@@ -341,6 +397,43 @@ type EmailCampaignContentScope {
   language: String!
 }
 
+type TargetGroup implements DocumentInterface {
+  id: ID!
+  updatedAt: DateTime!
+  createdAt: DateTime!
+  title: String!
+  isMainList: Boolean!
+  isTestList: Boolean!
+  brevoId: Int!
+  totalSubscribers: Int!
+  scope: EmailCampaignContentScope!
+  assignedContactsTargetGroupBrevoId: Int
+  filters: BrevoContactFilterAttributes
+}
+
+type EmailCampaign implements DocumentInterface {
+  id: ID!
+  updatedAt: DateTime!
+  createdAt: DateTime!
+  title: String!
+  subject: String!
+  brevoId: Int
+  scheduledAt: DateTime
+  targetGroups: [TargetGroup!]!
+  content: EmailCampaignContentBlockData!
+  scope: EmailCampaignContentScope!
+  sendingState: SendingState!
+}
+
+"""EmailCampaignContent root block data"""
+scalar EmailCampaignContentBlockData @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
+
+enum SendingState {
+  DRAFT
+  SENT
+  SCHEDULED
+}
+
 type PaginatedPageTreeNodes {
   nodes: [PageTreeNode!]!
   totalCount: Int!
@@ -405,18 +498,17 @@ type PaginatedDamFolders {
   totalCount: Int!
 }
 
-type TargetGroup implements DocumentInterface {
+type BrevoConfig implements DocumentInterface {
   id: ID!
   updatedAt: DateTime!
+  senderMail: String!
+  senderName: String!
+  doubleOptInTemplateId: Int!
+  folderId: Int!
+  allowedRedirectionUrl: String!
+  unsubscriptionPageId: String!
   createdAt: DateTime!
-  title: String!
-  isMainList: Boolean!
-  isTestList: Boolean!
-  brevoId: Int!
-  totalSubscribers: Int!
   scope: EmailCampaignContentScope!
-  assignedContactsTargetGroupBrevoId: Int
-  filters: BrevoContactFilterAttributes
 }
 
 type BrevoContact {
@@ -434,29 +526,6 @@ type BrevoContact {
 type PaginatedBrevoContacts {
   nodes: [BrevoContact!]!
   totalCount: Int!
-}
-
-type EmailCampaign implements DocumentInterface {
-  id: ID!
-  updatedAt: DateTime!
-  createdAt: DateTime!
-  title: String!
-  subject: String!
-  brevoId: Int
-  scheduledAt: DateTime
-  targetGroups: [TargetGroup!]!
-  content: EmailCampaignContentBlockData!
-  scope: EmailCampaignContentScope!
-  sendingState: SendingState!
-}
-
-"""EmailCampaignContent root block data"""
-scalar EmailCampaignContentBlockData @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
-
-enum SendingState {
-  DRAFT
-  SENT
-  SCHEDULED
 }
 
 type PaginatedEmailCampaigns {
@@ -493,8 +562,8 @@ input EmailCampaignContentScopeInput {
 
 type Query {
   currentUser: CurrentUser!
-  userPermissionsUserById(id: String!): User!
-  userPermissionsUsers(offset: Int! = 0, limit: Int! = 25, search: String, filter: UserFilter, sort: [UserSort!]): PaginatedUserList!
+  userPermissionsUserById(id: String!): UserPermissionsUser!
+  userPermissionsUsers(offset: Int! = 0, limit: Int! = 25, search: String, filter: UserPermissionsUserFilter, sort: [UserPermissionsUserSort!]): UserPermissionPaginatedUserList!
   userPermissionsPermissionList(userId: String!): [UserPermission!]!
   userPermissionsPermission(id: ID!, userId: String): UserPermission!
   userPermissionsAvailablePermissions: [String!]!
@@ -508,11 +577,13 @@ type Query {
   pageTreeNode(id: ID!): PageTreeNode
   pageTreeNodeByPath(path: String!, scope: PageTreeNodeScopeInput!): PageTreeNode
   pageTreeNodeList(scope: PageTreeNodeScopeInput!, category: String): [PageTreeNode!]!
-  paginatedPageTreeNodes(scope: PageTreeNodeScopeInput!, category: String, sort: [PageTreeNodeSort!], offset: Int! = 0, limit: Int! = 25): PaginatedPageTreeNodes!
+  paginatedPageTreeNodes(scope: PageTreeNodeScopeInput!, category: String, sort: [PageTreeNodeSort!], documentType: String, offset: Int! = 0, limit: Int! = 25): PaginatedPageTreeNodes!
   pageTreeNodeSlugAvailable(scope: PageTreeNodeScopeInput!, parentId: ID, slug: String!): SlugAvailability!
+  sitePreviewJwt(scope: JSONObject!, path: String!, includeInvisible: Boolean!): String!
   redirects(scope: RedirectScopeInput! = {}, query: String, type: RedirectGenerationType, active: Boolean, sortColumnName: String, sortDirection: SortDirection! = ASC): [Redirect!]! @deprecated(reason: "Use paginatedRedirects instead. Will be removed in the next version.")
   paginatedRedirects(scope: RedirectScopeInput! = {}, search: String, filter: RedirectFilter, sort: [RedirectSort!], offset: Int! = 0, limit: Int! = 25): PaginatedRedirects!
   redirect(id: ID!): Redirect!
+  redirectBySource(scope: RedirectScopeInput! = {}, source: String!, sourceType: RedirectSourceTypeValues!): Redirect
   redirectSourceAvailable(scope: RedirectScopeInput! = {}, source: String!): Boolean!
   damItemsList(offset: Int! = 0, limit: Int! = 25, sortColumnName: String, sortDirection: SortDirection! = ASC, scope: DamScopeInput! = {}, folderId: ID, includeArchived: Boolean, filter: DamItemFilterInput): PaginatedDamItems!
   damItemListPosition(sortColumnName: String, sortDirection: SortDirection! = ASC, scope: DamScopeInput! = {}, id: ID!, type: DamItemType!, folderId: ID, includeArchived: Boolean, filter: DamItemFilterInput): Int!
@@ -526,6 +597,7 @@ type Query {
   damFolder(id: ID!): DamFolder!
   damFolderByNameAndParentId(scope: DamScopeInput! = {}, name: String!, parentId: ID): DamFolder
   mainMenu(scope: PageTreeNodeScopeInput!): [PageTreeNode!]!
+  dontUseFileUploadDummy: FileUpload
   brevoContact(id: Int!, scope: EmailCampaignContentScopeInput!): BrevoContact!
   brevoContacts(targetGroupId: ID, email: String, scope: EmailCampaignContentScopeInput!, offset: Int! = 0, limit: Int! = 25): PaginatedBrevoContacts!
   brevoTestContacts(targetGroupId: ID, email: String, scope: EmailCampaignContentScopeInput!, offset: Int! = 0, limit: Int! = 25): PaginatedBrevoContacts!
@@ -535,15 +607,17 @@ type Query {
   emailCampaignStatistics(id: ID!): BrevoApiCampaignStatistics
   targetGroup(id: ID!): TargetGroup!
   targetGroups(scope: EmailCampaignContentScopeInput!, search: String, filter: TargetGroupFilter, sort: [TargetGroupSort!], offset: Int! = 0, limit: Int! = 25): PaginatedTargetGroups!
+  senders(scope: EmailCampaignContentScopeInput!): [BrevoApiSender!]
+  doubleOptInTemplates: [BrevoApiEmailTemplate!]
+  brevoConfig(scope: EmailCampaignContentScopeInput!): BrevoConfig
 }
 
-input UserFilter {
+input UserPermissionsUserFilter {
   name: StringFilter
   email: StringFilter
   status: StringFilter
-  language: StringFilter
-  and: [UserFilter!]
-  or: [UserFilter!]
+  and: [UserPermissionsUserFilter!]
+  or: [UserPermissionsUserFilter!]
 }
 
 input StringFilter {
@@ -554,16 +628,15 @@ input StringFilter {
   notEqual: String
 }
 
-input UserSort {
-  field: UserSortField!
+input UserPermissionsUserSort {
+  field: UserPermissionsUserSortField!
   direction: SortDirection! = ASC
 }
 
-enum UserSortField {
+enum UserPermissionsUserSortField {
   name
   email
   status
-  language
 }
 
 enum SortDirection {
@@ -595,8 +668,8 @@ input RedirectFilter {
   generationType: StringFilter
   source: StringFilter
   active: BooleanFilter
-  createdAt: DateFilter
-  updatedAt: DateFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
   and: [RedirectFilter!]
   or: [RedirectFilter!]
 }
@@ -605,7 +678,7 @@ input BooleanFilter {
   equal: Boolean
 }
 
-input DateFilter {
+input DateTimeFilter {
   equal: DateTime
   lowerThan: DateTime
   greaterThan: DateTime
@@ -662,13 +735,20 @@ input FolderFilterInput {
 }
 
 input EmailCampaignFilter {
-  createdAt: DateFilter
-  updatedAt: DateFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
   title: StringFilter
   subject: StringFilter
-  scheduledAt: DateFilter
+  sendingState: SendingStateEnumFilter
+  scheduledAt: DateTimeFilter
   and: [EmailCampaignFilter!]
   or: [EmailCampaignFilter!]
+}
+
+input SendingStateEnumFilter {
+  isAnyOf: [SendingState!]
+  equal: SendingState
+  notEqual: SendingState
 }
 
 input EmailCampaignSort {
@@ -685,8 +765,8 @@ enum EmailCampaignSortField {
 }
 
 input TargetGroupFilter {
-  createdAt: DateFilter
-  updatedAt: DateFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
   title: StringFilter
   isTestList: BooleanFilter
   and: [TargetGroupFilter!]
@@ -745,6 +825,7 @@ type Mutation {
   deleteBrevoContact(id: Int!, scope: EmailCampaignContentScopeInput!): Boolean!
   deleteBrevoTestContact(id: Int!, scope: EmailCampaignContentScopeInput!): Boolean!
   subscribeBrevoContact(input: SubscribeInput!, scope: EmailCampaignContentScopeInput!): SubscribeResponse!
+  startBrevoContactImport(fileId: ID!, targetGroupIds: [ID!], scope: EmailCampaignContentScopeInput!): CsvImportInformation!
   createEmailCampaign(scope: EmailCampaignContentScopeInput!, input: EmailCampaignInput!): EmailCampaign!
   updateEmailCampaign(id: ID!, input: EmailCampaignUpdateInput!, lastUpdatedAt: DateTime): EmailCampaign!
   deleteEmailCampaign(id: ID!): Boolean!
@@ -755,6 +836,8 @@ type Mutation {
   removeBrevoContactFromTargetGroup(id: ID!, input: RemoveBrevoContactInput!): Boolean!
   updateTargetGroup(id: ID!, input: TargetGroupUpdateInput!, lastUpdatedAt: DateTime): TargetGroup!
   deleteTargetGroup(id: ID!): Boolean!
+  createBrevoConfig(scope: EmailCampaignContentScopeInput!, input: BrevoConfigInput!): BrevoConfig!
+  updateBrevoConfig(id: ID!, input: BrevoConfigUpdateInput!, lastUpdatedAt: DateTime): BrevoConfig!
 }
 
 input UserPermissionInput {
@@ -952,4 +1035,22 @@ input RemoveBrevoContactInput {
 input TargetGroupUpdateInput {
   title: String
   filters: BrevoContactFilterAttributesInput
+}
+
+input BrevoConfigInput {
+  senderMail: String!
+  senderName: String!
+  doubleOptInTemplateId: Int!
+  folderId: Int!
+  allowedRedirectionUrl: String!
+  unsubscriptionPageId: String!
+}
+
+input BrevoConfigUpdateInput {
+  senderMail: String
+  senderName: String
+  doubleOptInTemplateId: Int
+  folderId: Int
+  allowedRedirectionUrl: String
+  unsubscriptionPageId: String
 }

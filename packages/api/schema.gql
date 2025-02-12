@@ -1,3 +1,9 @@
+type UserPermissionsUser {
+  id: String!
+  name: String!
+  email: String!
+}
+
 type CurrentUserPermission {
   permission: String!
   contentScopes: [JSONObject!]!
@@ -37,11 +43,47 @@ enum FocalPoint {
   SOUTHEAST
 }
 
-type User {
-  id: String!
+type BrevoApiEmailTemplateSender {
+  id: String
+  subject: String
+  email: String!
+}
+
+type BrevoApiEmailTemplate {
+  id: ID!
+  name: String!
+  subject: String!
+  isActive: Boolean!
+  testSent: Boolean!
+  replyTo: String!
+  toField: String!
+  tag: String!
+  htmlContent: String!
+  createdAt: String!
+  modifiedAt: String!
+  sender: BrevoApiEmailTemplateSender!
+}
+
+type BrevoApiSender {
+  id: ID!
   name: String!
   email: String!
-  language: String!
+  active: Boolean!
+  ips: [BrevoIp!]
+}
+
+type BrevoIp {
+  ip: String!
+  domain: String!
+  weight: Int!
+}
+
+type CsvImportInformation {
+  created: Int!
+  updated: Int!
+  failed: Int!
+  failedColumns: [[String!]!]
+  errorMessage: String
 }
 
 type BrevoApiCampaignStatistics {
@@ -160,6 +202,19 @@ type PaginatedEmailCampaigns {
   totalCount: Int!
 }
 
+type BrevoConfig implements DocumentInterface {
+  id: ID!
+  updatedAt: DateTime!
+  senderMail: String!
+  senderName: String!
+  doubleOptInTemplateId: Int!
+  folderId: Int!
+  allowedRedirectionUrl: String!
+  unsubscriptionPageId: String!
+  createdAt: DateTime!
+  scope: EmailCampaignContentScope!
+}
+
 input EmailCampaignContentScopeInput {
   thisScopeHasNoFields____: String
 }
@@ -174,18 +229,21 @@ type Query {
   emailCampaign(id: ID!): EmailCampaign!
   emailCampaigns(scope: EmailCampaignContentScopeInput!, search: String, filter: EmailCampaignFilter, sort: [EmailCampaignSort!], offset: Int! = 0, limit: Int! = 25): PaginatedEmailCampaigns!
   emailCampaignStatistics(id: ID!): BrevoApiCampaignStatistics
+  senders(scope: EmailCampaignContentScopeInput!): [BrevoApiSender!]
+  doubleOptInTemplates: [BrevoApiEmailTemplate!]
+  brevoConfig(scope: EmailCampaignContentScopeInput!): BrevoConfig
 }
 
 input TargetGroupFilter {
-  createdAt: DateFilter
-  updatedAt: DateFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
   title: StringFilter
   isTestList: BooleanFilter
   and: [TargetGroupFilter!]
   or: [TargetGroupFilter!]
 }
 
-input DateFilter {
+input DateTimeFilter {
   equal: DateTime
   lowerThan: DateTime
   greaterThan: DateTime
@@ -223,13 +281,20 @@ enum SortDirection {
 }
 
 input EmailCampaignFilter {
-  createdAt: DateFilter
-  updatedAt: DateFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
   title: StringFilter
   subject: StringFilter
-  scheduledAt: DateFilter
+  sendingState: SendingStateEnumFilter
+  scheduledAt: DateTimeFilter
   and: [EmailCampaignFilter!]
   or: [EmailCampaignFilter!]
+}
+
+input SendingStateEnumFilter {
+  isAnyOf: [SendingState!]
+  equal: SendingState
+  notEqual: SendingState
 }
 
 input EmailCampaignSort {
@@ -262,6 +327,9 @@ type Mutation {
   deleteEmailCampaign(id: ID!): Boolean!
   sendEmailCampaignNow(id: ID!): Boolean!
   sendEmailCampaignToTestEmails(id: ID!, data: SendTestEmailCampaignArgs!): Boolean!
+  startBrevoContactImport(fileId: ID!, targetGroupIds: [ID!], scope: EmailCampaignContentScopeInput!): CsvImportInformation!
+  createBrevoConfig(scope: EmailCampaignContentScopeInput!, input: BrevoConfigInput!): BrevoConfig!
+  updateBrevoConfig(id: ID!, input: BrevoConfigUpdateInput!, lastUpdatedAt: DateTime): BrevoConfig!
 }
 
 input BrevoContactUpdateInput {
@@ -334,4 +402,22 @@ input EmailCampaignUpdateInput {
 
 input SendTestEmailCampaignArgs {
   emails: [String!]!
+}
+
+input BrevoConfigInput {
+  senderMail: String!
+  senderName: String!
+  doubleOptInTemplateId: Int!
+  folderId: Int!
+  allowedRedirectionUrl: String!
+  unsubscriptionPageId: String!
+}
+
+input BrevoConfigUpdateInput {
+  senderMail: String
+  senderName: String
+  doubleOptInTemplateId: Int
+  folderId: Int
+  allowedRedirectionUrl: String
+  unsubscriptionPageId: String
 }

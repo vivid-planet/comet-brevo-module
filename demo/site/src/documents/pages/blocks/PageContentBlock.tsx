@@ -1,7 +1,6 @@
-import { BlocksBlock, PropsWithData, SupportedBlocks, YouTubeVideoBlock } from "@comet/cms-site";
+import { BlocksBlock, DamVideoBlock, PropsWithData, SupportedBlocks, YouTubeVideoBlock } from "@comet/cms-site";
 import { PageContentBlockData } from "@src/blocks.generated";
 import { DamImageBlock } from "@src/common/blocks/DamImageBlock";
-import { DamVideoBlock } from "@src/common/blocks/DamVideoBlock";
 import { HeadlineBlock } from "@src/common/blocks/HeadlineBlock";
 import { LinkListBlock } from "@src/common/blocks/LinkListBlock";
 import { RichTextBlock } from "@src/common/blocks/RichTextBlock";
