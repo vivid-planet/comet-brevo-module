@@ -1,5 +1,5 @@
 ---
-"@comet/brevo-admin": minor
+"@comet/brevo-admin": patch
 ---
 
 Fix scope in brevoTestContactsSelectQuery
