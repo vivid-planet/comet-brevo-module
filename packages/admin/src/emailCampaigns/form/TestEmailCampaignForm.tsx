@@ -7,6 +7,7 @@ import { Card } from "@mui/material";
 import React from "react";
 import { FormattedMessage } from "react-intl";
 
+import { useBrevoConfig } from "../../common/BrevoConfigProvider";
 import { GQLBrevoTestContactsSelectListFragment } from "./TestEmailCampaignForm.generated";
 import { SendEmailCampaignToTestEmailsMutation } from "./TestEmailCampaignForm.gql";
 import { GQLSendEmailCampaignToTestEmailsMutation, GQLSendEmailCampaignToTestEmailsMutationVariables } from "./TestEmailCampaignForm.gql.generated";
@@ -41,7 +42,14 @@ const brevoTestContactsSelectQuery = gql`
 
 export const TestEmailCampaignForm = ({ id, isSendable = false }: TestEmailCampaignFormProps) => {
     const client = useApolloClient();
-    const scope = useContentScope();
+
+    const { scopeParts } = useBrevoConfig();
+    const { scope: completeScope } = useContentScope();
+
+    const scope = scopeParts.reduce((acc, scopePart) => {
+        acc[scopePart] = completeScope[scopePart];
+        return acc;
+    }, {} as { [key: string]: unknown });
 
     // Contact creation is limited to 100 at a time. Therefore, 100 contacts are queried without using pagination.
     const { data, loading, error } = useQuery(brevoTestContactsSelectQuery, {
