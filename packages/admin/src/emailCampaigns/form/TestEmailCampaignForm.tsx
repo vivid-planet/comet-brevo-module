@@ -2,7 +2,7 @@ import { gql, useApolloClient, useQuery } from "@apollo/client";
 import { Field, FinalForm, FinalFormSelect, SaveButton } from "@comet/admin";
 import { Newsletter } from "@comet/admin-icons";
 import { AdminComponentPaper, AdminComponentSectionGroup } from "@comet/blocks-admin";
-import { useContentScope } from "@comet/cms-admin";
+import { ContentScopeInterface } from "@comet/cms-admin";
 import { Card } from "@mui/material";
 import React from "react";
 import { FormattedMessage } from "react-intl";
@@ -18,6 +18,7 @@ interface FormProps {
 interface TestEmailCampaignFormProps {
     id?: string;
     isSendable?: boolean;
+    scope: ContentScopeInterface;
 }
 
 const brevoTestContactsSelectFragment = gql`
@@ -39,9 +40,8 @@ const brevoTestContactsSelectQuery = gql`
     ${brevoTestContactsSelectFragment}
 `;
 
-export const TestEmailCampaignForm = ({ id, isSendable = false }: TestEmailCampaignFormProps) => {
+export const TestEmailCampaignForm = ({ id, isSendable = false, scope }: TestEmailCampaignFormProps) => {
     const client = useApolloClient();
-    const scope = useContentScope();
 
     // Contact creation is limited to 100 at a time. Therefore, 100 contacts are queried without using pagination.
     const { data, loading, error } = useQuery(brevoTestContactsSelectQuery, {
