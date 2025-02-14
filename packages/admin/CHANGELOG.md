@@ -1,5 +1,12 @@
 # @comet/brevo-admin
 
+## 3.0.1
+
+### Patch Changes
+
+-   c15195c: Improve send manager UX by positioning the TargetGroup field at the top and adding an info icon to all other fields, indicating that the TargetGroup must be selected and saved first.
+-   5059c86: Fix scope in brevoTestContactsSelectQuery
+
 ## 3.0.0
 
 ### Major Changes
