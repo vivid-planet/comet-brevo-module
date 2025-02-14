@@ -56,8 +56,6 @@ export function createBrevoConfigResolver({
             for await (const folder of this.brevoFolderIdService.getAllBrevoFolders(Scope)) {
                 if (folder.id === folderId) {
                     return true;
-                } else {
-                    throw new Error("Folder id is not valid. ");
                 }
             }
             return false;
