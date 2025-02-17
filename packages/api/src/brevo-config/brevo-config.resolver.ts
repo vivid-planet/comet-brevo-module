@@ -4,6 +4,7 @@ import { InjectRepository } from "@mikro-orm/nestjs";
 import { Type } from "@nestjs/common";
 import { Args, ID, Mutation, Query, Resolver } from "@nestjs/graphql";
 
+import { BrevoApiFoldersService } from "../brevo-api/brevo-api-folders.service";
 import { BrevoApiSenderService } from "../brevo-api/brevo-api-sender.service";
 import { BrevoTransactionalMailsService } from "../brevo-api/brevo-api-transactional-mails.service";
 import { BrevoApiEmailTemplate } from "../brevo-api/dto/brevo-api-email-templates-list";
@@ -26,6 +27,7 @@ export function createBrevoConfigResolver({
         constructor(
             private readonly entityManager: EntityManager,
             private readonly brevoSenderApiService: BrevoApiSenderService,
+            private readonly brevoFolderIdService: BrevoApiFoldersService,
             private readonly brevoTransactionalEmailsApiService: BrevoTransactionalMailsService,
             @InjectRepository(BrevoConfig) private readonly repository: EntityRepository<BrevoConfigInterface>,
         ) {}
@@ -47,6 +49,15 @@ export function createBrevoConfigResolver({
                 return true;
             }
 
+            return false;
+        }
+
+        private async isValidFolderId({ folderId }: { folderId: number }): Promise<boolean> {
+            for await (const folder of this.brevoFolderIdService.getAllBrevoFolders(Scope)) {
+                if (folder.id === folderId) {
+                    return true;
+                }
+            }
             return false;
         }
 
@@ -91,6 +102,10 @@ export function createBrevoConfigResolver({
                 throw new Error("Template ID is not valid. ");
             }
 
+            if (!(await this.isValidFolderId({ folderId: input.folderId }))) {
+                throw new Error("Folder ID is not valid. ");
+            }
+
             const brevoConfig = this.repository.create({
                 ...input,
                 scope,
@@ -118,6 +133,12 @@ export function createBrevoConfigResolver({
             if (input.doubleOptInTemplateId) {
                 if (!(await this.isValidTemplateId({ templateId: input.doubleOptInTemplateId }))) {
                     throw new Error("Template ID is not valid. ");
+                }
+            }
+
+            if (input.folderId) {
+                if (!(await this.isValidFolderId({ folderId: input.folderId }))) {
+                    throw new Error("Folder ID is not valid. ");
                 }
             }
 
