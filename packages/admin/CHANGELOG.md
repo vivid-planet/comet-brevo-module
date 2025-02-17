@@ -1,5 +1,11 @@
 # @comet/brevo-admin
 
+## 2.2.1
+
+### Patch Changes
+
+-   2e80382: Pass `scope` to `TestEmailCampaignForm`
+
 ## 2.2.0
 
 ### Minor Changes
