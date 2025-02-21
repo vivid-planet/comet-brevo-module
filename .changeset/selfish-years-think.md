@@ -4,4 +4,4 @@
 
 Remove `scope` from `BrevoConfig` database migration in module
 
-Add database migration for adding individual `scope` columns to `BrevoConfig` instead.
+A custom database migration must be created in the project to add individual `scope` columns to `BrevoConfig`.
