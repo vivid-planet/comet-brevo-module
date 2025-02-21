@@ -1,5 +1,13 @@
 # @comet/brevo-api
 
+## 3.0.2
+
+### Patch Changes
+
+-   c20792a: Remove `scope` from `BrevoConfig` database migration in module
+
+    A custom database migration must be created in the project to add individual `scope` columns to `BrevoConfig`.
+
 ## 3.0.1
 
 ## 3.0.0
