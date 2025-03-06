@@ -14,7 +14,7 @@ import { BrevoApiContactList } from "./dto/brevo-api-contact-list";
 export interface CreateDoubleOptInContactData {
     email: string;
     attributes?: BrevoContactAttributesInterface;
-    redirectionUrl: string;
+    redirectionUrl?: string;
 }
 
 @Injectable()
@@ -53,19 +53,39 @@ export class BrevoApiContactsService {
         scope: EmailCampaignScopeInterface,
     ): Promise<boolean> {
         try {
-            const contact = {
-                email,
-                includeListIds: brevoIds,
-                templateId,
-                redirectionUrl,
-                attributes,
-            };
-            const { response } = await this.getContactsApi(scope).createDoiContact(contact);
+            if (redirectionUrl) {
+                const contact = {
+                    email,
+                    includeListIds: brevoIds,
+                    templateId,
+                    redirectionUrl,
+                    attributes,
+                };
+                const { response } = await this.getContactsApi(scope).createDoiContact(contact);
 
-            return response.statusCode === 204 || response.statusCode === 201;
+                return response.statusCode === 204 || response.statusCode === 201;
+            }
+            return false;
         } catch (error) {
             handleBrevoError(error);
         }
+    }
+
+    public async createBrevoContactWithoutDoubleOptIn(
+        { email, attributes }: Brevo.CreateContact,
+        brevoIds: number[],
+        templateId: number,
+        scope: EmailCampaignScopeInterface,
+    ): Promise<boolean> {
+        const contact = {
+            email,
+            listIds: brevoIds,
+            attributes,
+            templateId,
+        };
+        const { response } = await this.getContactsApi(scope).createContact(contact);
+
+        return response.statusCode === 204 || response.statusCode === 201;
     }
 
     public async createTestContact(
