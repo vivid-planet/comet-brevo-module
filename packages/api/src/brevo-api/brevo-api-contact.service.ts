@@ -80,8 +80,8 @@ export class BrevoApiContactsService {
         const contact = {
             email,
             listIds: brevoIds,
-            templateId,
             attributes,
+            templateId,
         };
         const { response } = await this.getContactsApi(scope).createContact(contact);
 
