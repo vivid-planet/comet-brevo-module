@@ -1015,6 +1015,9 @@ importers:
       graphql:
         specifier: ^15.9.0
         version: 15.9.0
+      graphql-scalars:
+        specifier: 1.24.1
+        version: 1.24.1(graphql@15.9.0)
       jest:
         specifier: ^29.7.0
         version: 29.7.0(@types/node@18.19.8)(ts-node@10.9.2)
@@ -4267,7 +4270,7 @@ packages:
       got: 11.8.6
       graphql: 15.9.0
       graphql-parse-resolve-info: 4.13.0(graphql@15.9.0)
-      graphql-scalars: 1.23.0(graphql@15.9.0)
+      graphql-scalars: 1.24.1(graphql@15.9.0)
       hasha: 5.2.2
       jose: 5.9.6
       jsonwebtoken: 8.5.1
@@ -14148,8 +14151,8 @@ packages:
       - encoding
     dev: true
 
-  /graphql-scalars@1.23.0(graphql@15.9.0):
-    resolution: {integrity: sha512-YTRNcwitkn8CqYcleKOx9IvedA8JIERn8BRq21nlKgOr4NEcTaWEG0sT+H92eF3ALTFbPgsqfft4cw+MGgv0Gg==}
+  /graphql-scalars@1.24.1(graphql@15.9.0):
+    resolution: {integrity: sha512-3L553TMPh3YpHQM4x9G4tXcyD+AX8QQOYA6tUn1nrNiWEXE0JfAnWdjoe3WGxRuGjnZrzvHDz62q8S+sSGXXwA==}
     engines: {node: '>=10'}
     peerDependencies:
       graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0

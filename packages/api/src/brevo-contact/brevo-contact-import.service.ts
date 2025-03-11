@@ -4,6 +4,7 @@ import { InjectRepository } from "@mikro-orm/nestjs";
 import { Inject, Injectable } from "@nestjs/common";
 import { Field, Int, ObjectType } from "@nestjs/graphql";
 import { IsEmail, IsNotEmpty, validateSync } from "class-validator";
+import { GraphQLJSONObject } from "graphql-scalars";
 import isEqual from "lodash.isequal";
 import { BrevoConfigInterface } from "src/brevo-config/entities/brevo-config-entity.factory";
 import { TargetGroupInterface } from "src/target-group/entity/target-group-entity.factory";
@@ -35,8 +36,8 @@ export class CsvImportInformation {
     @Field(() => Int)
     failed: number;
 
-    @Field(() => [[String]], { nullable: true })
-    failedColumns: string[][];
+    @Field(() => [GraphQLJSONObject], { nullable: true })
+    failedColumns: Record<string, string>[];
 
     @Field({ nullable: true })
     errorMessage?: string;
@@ -68,7 +69,7 @@ export class BrevoContactImportService {
         targetGroupIds = [],
         isAdminImport = false,
     }: ImportContactsFromCsvParams): Promise<CsvImportInformation> {
-        const failedColumns: string[][] = [];
+        const failedColumns: Record<string, string>[] = [];
         const targetGroups = await this.targetGroupRepository.find({ id: { $in: targetGroupIds } });
 
         for (const targetGroup of targetGroups) {
