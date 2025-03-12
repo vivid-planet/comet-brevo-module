@@ -50,7 +50,7 @@ export class BrevoContactsService {
         }
 
         if (!sendDoubleOptIn) {
-            created = await this.brevoContactsApiService.createBrevoContactWithoutDoubleOptIn({ email, attributes }, brevoIds, templateId, scope);
+            created = await this.brevoContactsApiService.createBrevoContactWithoutDoubleOptIn({ email, attributes }, brevoIds, scope);
         } else {
             created = await this.brevoContactsApiService.createDoubleOptInBrevoContact(
                 { email, redirectionUrl, attributes },
