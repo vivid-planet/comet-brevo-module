@@ -1,6 +1,6 @@
 import { useApolloClient } from "@apollo/client";
 import { RefetchQueriesInclude } from "@apollo/client/core/types";
-import { Alert, Loading, messages, useErrorDialog } from "@comet/admin";
+import { Alert, CheckboxField, FinalForm, Loading, messages, useErrorDialog } from "@comet/admin";
 import { Upload } from "@comet/admin-icons";
 import { Box, Dialog, DialogActions, DialogContent, DialogTitle, styled } from "@mui/material";
 import Button from "@mui/material/Button";
@@ -21,8 +21,13 @@ interface UseContactImportProps {
     refetchQueries?: RefetchQueriesInclude;
 }
 
+type ContactImportFromCsvForm = {
+    sendDoubleOptIn: boolean;
+};
+
 export const useContactImportFromCsv = ({ scope, targetGroupId, refetchQueries }: UseContactImportProps): [CrudMoreActionsItem, React.ReactNode] => {
     const fileInputRef = React.useRef<HTMLInputElement>(null);
+    const [open, setOpen] = React.useState(false);
 
     const moreActionsMenuItem: CrudMoreActionsItem = React.useMemo(
         () => ({
@@ -34,11 +39,64 @@ export const useContactImportFromCsv = ({ scope, targetGroupId, refetchQueries }
                 />
             ),
             startAdornment: <Upload />,
-            onClick: () => {
-                fileInputRef.current?.click();
-            },
+            onClick: () => setOpen(true),
         }),
         [],
+    );
+
+    const handleClose = () => setOpen(false);
+
+    const dialog = (
+        <Dialog open={open} onClose={handleClose}>
+            <DialogTitle>
+                <FormattedMessage id="cometBrevoModule.useContactImport.importing.title" defaultMessage="Importing contacts from CSV..." />
+            </DialogTitle>
+            <DialogContent>
+                <FinalForm<ContactImportFromCsvForm>
+                    onSubmit={(values) => fileInputRef.current?.click()}
+                    mode="add"
+                    initialValues={{ sendDoubleOptIn: true }}
+                >
+                    {({ values }) => (
+                        <>
+                            {values.sendDoubleOptIn ? (
+                                <Alert severity="warning" sx={{ marginBottom: 5 }}>
+                                    <FormattedMessage
+                                        id="cometBrevoModule.brevoContact.contactAddAlert"
+                                        defaultMessage="The contact will get a double opt-in email to confirm the subscription."
+                                    />
+                                </Alert>
+                            ) : (
+                                <Alert severity="error" sx={{ marginBottom: 5 }}>
+                                    <FormattedMessage
+                                        id="cometBrevoModule.brevoContact.contactNoOptInAlert"
+                                        defaultMessage="No Double Opt-In email will be sent. Please ensure recipients have given their consent before proceeding."
+                                    />
+                                </Alert>
+                            )}
+                            <CheckboxField
+                                name="sendDoubleOptIn"
+                                label={
+                                    <FormattedMessage
+                                        id="cometBrevoModule.brevoContact.sendDoubleOptInMail"
+                                        defaultMessage="Send double opt-in email"
+                                    />
+                                }
+                                fullWidth
+                            />
+                        </>
+                    )}
+                </FinalForm>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={handleClose}>
+                    <FormattedMessage {...messages.cancel} />
+                </Button>
+                <Button variant="contained" onClick={() => fileInputRef.current?.click()}>
+                    <FormattedMessage id="import" defaultMessage="import" />
+                </Button>
+            </DialogActions>
+        </Dialog>
     );
 
     const component = React.useMemo(
@@ -46,7 +104,13 @@ export const useContactImportFromCsv = ({ scope, targetGroupId, refetchQueries }
         [refetchQueries, scope, targetGroupId],
     );
 
-    return [moreActionsMenuItem, component];
+    return [
+        moreActionsMenuItem,
+        <>
+            {dialog}
+            {component}
+        </>,
+    ];
 };
 
 interface ComponentProps extends UseContactImportProps {
