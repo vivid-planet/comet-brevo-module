@@ -51,7 +51,7 @@ export const useContactImportFromCsv = ({ scope, targetGroupId, refetchQueries }
     const dialog = (
         <Dialog open={open} onClose={handleClose}>
             <DialogTitle>
-                <FormattedMessage id="cometBrevoModule.useContactImport.importing.title" defaultMessage="Importing contacts from CSV..." />
+                <FormattedMessage id="cometBrevoModule.contactImport.title" defaultMessage="Importing contacts from CSV" />
             </DialogTitle>
             <DialogContent>
                 <FinalForm<ContactImportFromCsvForm>
@@ -69,14 +69,14 @@ export const useContactImportFromCsv = ({ scope, targetGroupId, refetchQueries }
                                 {values.sendDoubleOptIn ? (
                                     <Alert severity="warning" sx={{ marginBottom: 5 }}>
                                         <FormattedMessage
-                                            id="cometBrevoModule.brevoContact.contactAddAlert"
-                                            defaultMessage="The contact will get a double opt-in email to confirm the subscription."
+                                            id="cometBrevoModule.contactImport.contactAddAlert"
+                                            defaultMessage="The contact will get a double opt-in email to confirm the subscription. After the contact's confirmation, the contact will be added to the corresponding target groups in this scope depending on the contact's attributes. Before the confirmation the contact will not be shown on the contacts page."
                                         />
                                     </Alert>
                                 ) : (
                                     <Alert severity="error" sx={{ marginBottom: 5 }}>
                                         <FormattedMessage
-                                            id="cometBrevoModule.brevoContact.contactNoOptInAlert"
+                                            id="cometBrevoModule.contactImport.contactNoOptInAlert"
                                             defaultMessage="No Double Opt-In email will be sent. Please ensure recipients have given their consent before proceeding."
                                         />
                                     </Alert>
@@ -85,7 +85,7 @@ export const useContactImportFromCsv = ({ scope, targetGroupId, refetchQueries }
                                     name="sendDoubleOptIn"
                                     label={
                                         <FormattedMessage
-                                            id="cometBrevoModule.brevoContact.sendDoubleOptInMail"
+                                            id="cometBrevoModule.contactImport.sendDoubleOptInMail"
                                             defaultMessage="Send double opt-in email"
                                         />
                                     }
@@ -101,7 +101,7 @@ export const useContactImportFromCsv = ({ scope, targetGroupId, refetchQueries }
                     <FormattedMessage {...messages.cancel} />
                 </Button>
                 <Button variant="contained" onClick={() => fileInputRef.current?.click()}>
-                    <FormattedMessage id="import" defaultMessage="import" />
+                    <FormattedMessage id="cometBrevoModule.contactImport.importContacts" defaultMessage="Import Contacts" />
                 </Button>
             </DialogActions>
         </Dialog>
