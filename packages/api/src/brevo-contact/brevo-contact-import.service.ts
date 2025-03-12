@@ -46,6 +46,7 @@ interface ImportContactsFromCsvParams {
     fileStream: Readable;
     scope: EmailCampaignScopeInterface;
     redirectUrl: string;
+    sendDoubleOptIn: boolean;
     targetGroupIds?: string[];
     isAdminImport?: boolean;
 }
@@ -65,6 +66,7 @@ export class BrevoContactImportService {
         fileStream,
         scope,
         redirectUrl,
+        sendDoubleOptIn,
         targetGroupIds = [],
         isAdminImport = false,
     }: ImportContactsFromCsvParams): Promise<CsvImportInformation> {
@@ -109,7 +111,7 @@ export class BrevoContactImportService {
             }
             try {
                 const contactData = await this.processCsvRow(row, redirectUrl);
-                const result = await this.createOrUpdateBrevoContact(contactData, scope, targetGroupBrevoIds);
+                const result = await this.createOrUpdateBrevoContact(contactData, scope, targetGroupBrevoIds, sendDoubleOptIn);
                 switch (result) {
                     case "created":
                         created++;
@@ -139,6 +141,7 @@ export class BrevoContactImportService {
         contact: CreateDoubleOptInContactData,
         scope: EmailCampaignScopeInterface,
         targetGroupBrevoIds: number[],
+        sendDoubleOptIn: boolean,
     ): Promise<"created" | "updated" | "error"> {
         try {
             const brevoContact = await this.brevoApiContactsService.findContact(contact.email, scope);
@@ -159,7 +162,7 @@ export class BrevoContactImportService {
                     scope,
                     templateId: brevoConfig.doubleOptInTemplateId,
                     listIds: [mainTargetGroupForScope.brevoId, ...targetGroupBrevoIds],
-                    sendDoubleOptIn: true,
+                    sendDoubleOptIn,
                 });
                 if (success) return "created";
             }
