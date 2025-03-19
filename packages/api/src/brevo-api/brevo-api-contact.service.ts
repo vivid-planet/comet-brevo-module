@@ -74,11 +74,13 @@ export class BrevoApiContactsService {
     public async createBrevoContactWithoutDoubleOptIn(
         { email, attributes }: Brevo.CreateContact,
         brevoIds: number[],
+        templateId: number,
         scope: EmailCampaignScopeInterface,
     ): Promise<boolean> {
         const contact = {
             email,
             listIds: brevoIds,
+            templateId,
             attributes,
         };
         const { response } = await this.getContactsApi(scope).createContact(contact);
