@@ -1,5 +1,13 @@
 # @comet/brevo-api
 
+## 3.0.4
+
+### Patch Changes
+
+-   f4e0c24: Fix CSV import by correcting types
+
+    Previously, the type string[][] was used for the failedColumns field in the CSV import. While this worked in earlier versions, it caused an error after recent package updates. This issue has been resolved by changing the type to JSONObject, ensuring compatibility with the updated dependencies.
+
 ## 3.0.3
 
 ## 3.0.2
