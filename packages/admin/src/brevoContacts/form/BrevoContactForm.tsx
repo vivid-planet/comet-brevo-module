@@ -229,7 +229,9 @@ export function BrevoContactForm({ id, scope, input2State, additionalFormFields,
                                         <Alert severity="error" sx={{ marginBottom: 5 }}>
                                             <FormattedMessage
                                                 id="cometBrevoModule.brevoContact.contactNoOptInAlert"
-                                                defaultMessage="No Double Opt-In email will be sent. Please ensure that recipients have given their consent before proceeding"
+                                                defaultMessage="No Double Opt-In email will be sent. You are responsible for ensuring that recipients have provided their consent before proceeding. If consent has not been given, sending a Double Opt-In email is legally required.
+                                                
+                                                Additionally, the creation of the user will be tracked, and you may need to provide clarification if users report any issues."
                                             />
                                         </Alert>
                                     )}
