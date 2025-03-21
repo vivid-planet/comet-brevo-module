@@ -356,6 +356,11 @@ type BrevoContactFilterAttributes {
   BRANCH: [BrevoContactBranch!]
 }
 
+type EmailCampaignContentScope {
+  domain: String!
+  language: String!
+}
+
 type DamFolder {
   id: ID!
   name: String!
@@ -390,11 +395,6 @@ type DamFile {
   duplicates: [DamFile!]!
   damPath: String!
   dependents(offset: Int! = 0, limit: Int! = 25, filter: DependentFilter, forceRefresh: Boolean! = false): PaginatedDependencies!
-}
-
-type EmailCampaignContentScope {
-  domain: String!
-  language: String!
 }
 
 type TargetGroup implements DocumentInterface {
@@ -982,6 +982,7 @@ input BrevoContactInput {
   blocked: Boolean!
   redirectionUrl: String!
   sendDoubleOptIn: Boolean! = true
+  userId: String!
   attributes: BrevoContactAttributesInput
 }
 

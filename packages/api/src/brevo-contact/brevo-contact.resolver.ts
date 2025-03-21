@@ -222,6 +222,7 @@ export function createBrevoContactResolver({
                 scope,
                 templateId: brevoConfig.doubleOptInTemplateId,
                 sendDoubleOptIn: input.sendDoubleOptIn,
+                userId: input.userId,
             });
 
             if (created) {
