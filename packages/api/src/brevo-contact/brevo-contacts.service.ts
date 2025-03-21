@@ -23,37 +23,42 @@ export class BrevoContactsService {
         private readonly targetGroupService: TargetGroupsService,
     ) {}
 
-    public async createDoubleOptInContact({
+    public async createContact({
         email,
         attributes,
         redirectionUrl,
         scope,
         templateId,
         listIds,
+        sendDoubleOptIn,
     }: {
         email: string;
         attributes?: BrevoContactAttributesInterface;
-        redirectionUrl: string;
+        redirectionUrl?: string;
         scope: EmailCampaignScopeInterface;
         templateId: number;
         listIds?: number[];
+        sendDoubleOptIn: boolean;
     }): Promise<boolean> {
         const mainTargetGroupForScope = await this.targetGroupService.createIfNotExistMainTargetGroupForScope(scope);
-
         const targetGroupIds = await this.getTargetGroupIdsForNewContact({ scope, contactAttributes: attributes });
-
         const brevoIds = [mainTargetGroupForScope.brevoId, ...targetGroupIds];
+        let created;
 
         if (listIds) {
             brevoIds.push(...listIds);
         }
 
-        const created = await this.brevoContactsApiService.createDoubleOptInBrevoContact(
-            { email, redirectionUrl, attributes },
-            brevoIds,
-            templateId,
-            scope,
-        );
+        if (!sendDoubleOptIn) {
+            created = await this.brevoContactsApiService.createBrevoContactWithoutDoubleOptIn({ email, attributes }, brevoIds, templateId, scope);
+        } else {
+            created = await this.brevoContactsApiService.createDoubleOptInBrevoContact(
+                { email, redirectionUrl, attributes },
+                brevoIds,
+                templateId,
+                scope,
+            );
+        }
         return created;
     }
 
@@ -112,10 +117,11 @@ export class BrevoContactsService {
 
         const brevoConfig = await this.brevoConfigRepository.findOneOrFail({ scope });
 
-        const created = await this.createDoubleOptInContact({
+        const created = await this.createContact({
             ...data,
             scope,
             templateId: brevoConfig.doubleOptInTemplateId,
+            sendDoubleOptIn: true,
         });
 
         if (created) {
