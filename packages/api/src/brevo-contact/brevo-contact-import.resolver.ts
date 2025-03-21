@@ -43,7 +43,9 @@ export function createBrevoContactImportResolver({
         }
 
         @Mutation(() => CsvImportInformation)
-        async startBrevoContactImport(@Args() { fileId, targetGroupIds, scope }: BrevoContactImportArgs): Promise<CsvImportInformation> {
+        async startBrevoContactImport(
+            @Args() { fileId, targetGroupIds, scope, sendDoubleOptIn, userId }: BrevoContactImportArgs,
+        ): Promise<CsvImportInformation> {
             let storageFile: NodeJS.ReadableStream | null = null;
             let objectName = null;
 
@@ -69,6 +71,8 @@ export function createBrevoContactImportResolver({
                     scope,
                     redirectUrl,
                     targetGroupIds,
+                    sendDoubleOptIn,
+                    userId,
                 });
 
                 if (await this.storageService.fileExists(this.fileUploadsConfig.directory, objectName)) {

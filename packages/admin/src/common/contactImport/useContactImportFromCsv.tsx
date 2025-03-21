@@ -1,7 +1,8 @@
 import { useApolloClient } from "@apollo/client";
 import { RefetchQueriesInclude } from "@apollo/client/core/types";
-import { Alert, Loading, messages, useErrorDialog } from "@comet/admin";
+import { Alert, CheckboxField, FinalForm, Loading, messages, useErrorDialog } from "@comet/admin";
 import { Upload } from "@comet/admin-icons";
+import { useCurrentUser } from "@comet/cms-admin";
 import { Box, Dialog, DialogActions, DialogContent, DialogTitle, styled } from "@mui/material";
 import Button from "@mui/material/Button";
 import saveAs from "file-saver";
@@ -17,12 +18,19 @@ import { GQLStartBrevoContactImportMutation, GQLStartBrevoContactImportMutationV
 
 interface UseContactImportProps {
     scope: GQLEmailCampaignContentScopeInput;
+    sendDoubleOptIn: boolean;
     targetGroupId?: string;
     refetchQueries?: RefetchQueriesInclude;
 }
 
+type ContactImportFromCsvForm = {
+    sendDoubleOptIn: boolean;
+};
+
 export const useContactImportFromCsv = ({ scope, targetGroupId, refetchQueries }: UseContactImportProps): [CrudMoreActionsItem, React.ReactNode] => {
     const fileInputRef = React.useRef<HTMLInputElement>(null);
+    const [open, setOpen] = React.useState(false);
+    const [sendDoubleOptIn, setSendDoubleOptIn] = React.useState(true);
 
     const moreActionsMenuItem: CrudMoreActionsItem = React.useMemo(
         () => ({
@@ -34,26 +42,99 @@ export const useContactImportFromCsv = ({ scope, targetGroupId, refetchQueries }
                 />
             ),
             startAdornment: <Upload />,
-            onClick: () => {
-                fileInputRef.current?.click();
-            },
+            onClick: () => setOpen(true),
         }),
         [],
     );
 
-    const component = React.useMemo(
-        () => <ContactImportComponent scope={scope} targetGroupId={targetGroupId} fileInputRef={fileInputRef} refetchQueries={refetchQueries} />,
-        [refetchQueries, scope, targetGroupId],
+    const handleClose = () => setOpen(false);
+
+    const dialog = (
+        <Dialog open={open} onClose={handleClose}>
+            <DialogTitle>
+                <FormattedMessage id="cometBrevoModule.contactImport.title" defaultMessage="Importing contacts from CSV" />
+            </DialogTitle>
+            <DialogContent>
+                <FinalForm<ContactImportFromCsvForm>
+                    onSubmit={(values) => {
+                        fileInputRef.current?.click();
+                    }}
+                    mode="add"
+                    initialValues={{ sendDoubleOptIn: true }}
+                >
+                    {({ values }) => {
+                        setSendDoubleOptIn(values.sendDoubleOptIn);
+
+                        return (
+                            <>
+                                {values.sendDoubleOptIn ? (
+                                    <Alert severity="warning" sx={{ marginBottom: 5 }}>
+                                        <FormattedMessage
+                                            id="cometBrevoModule.contactImport.contactAddAlert"
+                                            defaultMessage="The contact will get a double opt-in email to confirm the subscription. After the contact's confirmation, the contact will be added to the corresponding target groups in this scope depending on the contact's attributes. Before the confirmation the contact will not be shown on the contacts page."
+                                        />
+                                    </Alert>
+                                ) : (
+                                    <Alert severity="error" sx={{ marginBottom: 5 }}>
+                                        <FormattedMessage
+                                            id="cometBrevoModule.contactImport.contactNoOptInAlert"
+                                            defaultMessage="No Double Opt-In email will be sent. Please ensure recipients have given their consent before proceeding."
+                                        />
+                                    </Alert>
+                                )}
+                                <CheckboxField
+                                    name="sendDoubleOptIn"
+                                    label={
+                                        <FormattedMessage
+                                            id="cometBrevoModule.contactImport.sendDoubleOptInMail"
+                                            defaultMessage="Send double opt-in email"
+                                        />
+                                    }
+                                    fullWidth
+                                />
+                            </>
+                        );
+                    }}
+                </FinalForm>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={handleClose}>
+                    <FormattedMessage {...messages.cancel} />
+                </Button>
+                <Button variant="contained" onClick={() => fileInputRef.current?.click()}>
+                    <FormattedMessage id="cometBrevoModule.contactImport.importContacts" defaultMessage="Import Contacts" />
+                </Button>
+            </DialogActions>
+        </Dialog>
     );
 
-    return [moreActionsMenuItem, component];
+    const component = React.useMemo(
+        () => (
+            <ContactImportComponent
+                scope={scope}
+                targetGroupId={targetGroupId}
+                fileInputRef={fileInputRef}
+                sendDoubleOptIn={sendDoubleOptIn} // Pass the updated state
+                refetchQueries={refetchQueries}
+            />
+        ),
+        [refetchQueries, scope, targetGroupId, sendDoubleOptIn], // Include sendDoubleOptIn in dependencies
+    );
+
+    return [
+        moreActionsMenuItem,
+        <>
+            {dialog}
+            {component}
+        </>,
+    ];
 };
 
 interface ComponentProps extends UseContactImportProps {
     fileInputRef: React.RefObject<HTMLInputElement>;
 }
 
-const ContactImportComponent = ({ scope, targetGroupId, fileInputRef, refetchQueries }: ComponentProps) => {
+const ContactImportComponent = ({ scope, targetGroupId, fileInputRef, sendDoubleOptIn, refetchQueries }: ComponentProps) => {
     const apolloClient = useApolloClient();
     const [importingCsv, setImportingCsv] = React.useState(false);
     const [importInformation, setImportInformation] = React.useState<GQLCsvImportInformation | null>(null);
@@ -62,6 +143,7 @@ const ContactImportComponent = ({ scope, targetGroupId, fileInputRef, refetchQue
     const config = useBrevoConfig();
     const intl = useIntl();
     const client = useApolloClient();
+    const currentUser = useCurrentUser();
 
     async function upload(file: File, scope: GQLEmailCampaignContentScopeInput, listIds?: string[]): Promise<GQLCsvImportInformation> {
         const formData = new FormData();
@@ -85,6 +167,8 @@ const ContactImportComponent = ({ scope, targetGroupId, fileInputRef, refetchQue
             variables: {
                 fileId: fileUploadId,
                 scope,
+                sendDoubleOptIn,
+                userId: currentUser.id,
             },
         });
 
@@ -221,7 +305,7 @@ const ContactImportComponent = ({ scope, targetGroupId, fileInputRef, refetchQue
                                 </Box>
                             )}
 
-                            {(importInformation.created > 0 || importInformation.updated > 0) && (
+                            {(importInformation.created > 0 || importInformation.updated > 0) && sendDoubleOptIn && (
                                 <Box mt={2}>
                                     <Alert severity="warning">
                                         <FormattedMessage

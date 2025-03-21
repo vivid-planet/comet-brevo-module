@@ -32,6 +32,7 @@ import { AuthModule } from "./auth/auth.module";
 import { AuthLocalModule } from "./auth/auth-local.module";
 import { BrevoContactSubscribeModule } from "./brevo-contact/brevo-contact-subscribe.module";
 import { BrevoContactAttributes, BrevoContactFilterAttributes } from "./brevo-contact/dto/brevo-contact-attributes";
+import { BrevoContactLog } from "./brevo-contact-log/entity/brevo-contact-log.entity";
 import { BrevoTransactionalMailsModule } from "./brevo-transactional-mails/brevo-transactional-mails.module";
 import { Config } from "./config/config";
 import { ConfigModule } from "./config/config.module";
@@ -161,6 +162,7 @@ export class AppModule {
                         BrevoContactFilterAttributes,
                         EmailCampaign,
                         TargetGroup,
+                        BrevoContactLog,
                     },
                     ecgRtrList: {
                         apiKey: config.ecgRtrList.apiKey,

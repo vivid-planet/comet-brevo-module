@@ -8,6 +8,7 @@ import { BrevoApiModule } from "./brevo-api/brevo-api.module";
 import { BrevoConfigModule } from "./brevo-config/brevo-config.module";
 import { BrevoConfigEntityFactory } from "./brevo-config/entities/brevo-config-entity.factory";
 import { BrevoContactModule } from "./brevo-contact/brevo-contact.module";
+import { BrevoContactLogModule } from "./brevo-contact-log/brevo-contact-log.module";
 import { BrevoModuleConfig } from "./config/brevo-module.config";
 import { ConfigModule } from "./config/config.module";
 import { EmailCampaignModule } from "./email-campaign/email-campaign.module";
@@ -56,8 +57,12 @@ export class BrevoModule {
                 }),
                 BrevoConfigModule.register({ BrevoConfig, Scope: config.emailCampaigns.Scope }),
                 ConfigModule.forRoot(config),
+                BrevoContactLogModule.register({
+                    Scope: config.emailCampaigns.Scope,
+                    BrevoContactLog: config.brevo.BrevoContactLog,
+                }),
             ],
-            exports: [TargetGroupModule, BrevoContactModule, BrevoApiModule],
+            exports: [TargetGroupModule, BrevoContactModule, BrevoApiModule, BrevoContactLogModule],
         };
     }
 }
