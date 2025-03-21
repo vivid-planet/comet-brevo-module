@@ -6,6 +6,7 @@ import { BrevoConfigInterface } from "src/brevo-config/entities/brevo-config-ent
 import { BrevoContactAttributesInterface, EmailCampaignScopeInterface } from "src/types";
 
 import { BrevoContactInterface } from "../brevo-contact/dto/brevo-contact.factory";
+import { BrevoContactLogService } from "../brevo-contact-log/brevo-contact-log.service";
 import { BrevoModuleConfig } from "../config/brevo-module.config";
 import { BREVO_MODULE_CONFIG } from "../config/brevo-module.constants";
 import { handleBrevoError, isErrorFromBrevo } from "./brevo-api.utils";
@@ -24,6 +25,7 @@ export class BrevoApiContactsService {
     constructor(
         @Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig,
         @InjectRepository("BrevoConfig") private readonly brevoConfigRepository: EntityRepository<BrevoConfigInterface>,
+        private readonly brevoContactLogService: BrevoContactLogService,
     ) {}
 
     private getContactsApi(scope: EmailCampaignScopeInterface): Brevo.ContactsApi {
@@ -112,6 +114,8 @@ export class BrevoApiContactsService {
             unlinkListIds,
         }: { blocked?: boolean; attributes?: BrevoContactAttributesInterface; listIds?: number[]; unlinkListIds?: number[] },
         scope: EmailCampaignScopeInterface,
+        sendDoubleOptIn?: boolean,
+        userId?: string,
     ): Promise<BrevoContactInterface> {
         try {
             const idAsString = id.toString(); // brevo expects a string, because it can be an email or the id, so we have to transform the id to string
@@ -121,6 +125,10 @@ export class BrevoApiContactsService {
 
             if (!brevoContact) {
                 throw new Error(`The brevo contact with the id ${id} not found`);
+            }
+
+            if (userId && !sendDoubleOptIn && brevoContact.email) {
+                await this.brevoContactLogService.addContactsToLogs([brevoContact.email], userId, scope);
             }
 
             return brevoContact;

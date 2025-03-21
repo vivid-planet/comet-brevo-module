@@ -12,6 +12,7 @@ import { Readable } from "stream";
 
 import { BrevoApiContactsService, CreateDoubleOptInContactData } from "../brevo-api/brevo-api-contact.service";
 import { BrevoContactsService } from "../brevo-contact/brevo-contacts.service";
+import { BrevoContactLogService } from "../brevo-contact-log/brevo-contact-log.service";
 import { BrevoModuleConfig } from "../config/brevo-module.config";
 import { BREVO_MODULE_CONFIG } from "../config/brevo-module.constants";
 import { TargetGroupsService } from "../target-group/target-groups.service";
@@ -50,6 +51,7 @@ interface ImportContactsFromCsvParams {
     sendDoubleOptIn: boolean;
     targetGroupIds?: string[];
     isAdminImport?: boolean;
+    userId?: string;
 }
 
 @Injectable()
@@ -59,6 +61,7 @@ export class BrevoContactImportService {
         private readonly brevoApiContactsService: BrevoApiContactsService,
         private readonly brevoContactsService: BrevoContactsService,
         private readonly targetGroupsService: TargetGroupsService,
+        private readonly brevoContactLogService: BrevoContactLogService,
         @InjectRepository("TargetGroup") private readonly targetGroupRepository: EntityRepository<TargetGroupInterface>,
         @InjectRepository("BrevoConfig") private readonly brevoConfigRepository: EntityRepository<BrevoConfigInterface>,
     ) {}
@@ -70,6 +73,7 @@ export class BrevoContactImportService {
         sendDoubleOptIn,
         targetGroupIds = [],
         isAdminImport = false,
+        userId,
     }: ImportContactsFromCsvParams): Promise<CsvImportInformation> {
         const failedColumns: Record<string, string>[] = [];
         const targetGroups = await this.targetGroupRepository.find({ id: { $in: targetGroupIds } });
@@ -112,7 +116,8 @@ export class BrevoContactImportService {
             }
             try {
                 const contactData = await this.processCsvRow(row, redirectUrl);
-                const result = await this.createOrUpdateBrevoContact(contactData, scope, targetGroupBrevoIds, sendDoubleOptIn);
+
+                const result = await this.createOrUpdateBrevoContact(contactData, scope, targetGroupBrevoIds, sendDoubleOptIn, userId);
                 switch (result) {
                     case "created":
                         created++;
@@ -154,6 +159,8 @@ export class BrevoContactImportService {
                     brevoContact.id,
                     { ...contact, listIds: [mainTargetGroupForScope.brevoId, ...targetGroupBrevoIds, ...brevoContact.listIds] },
                     scope,
+                    sendDoubleOptIn,
+                    userId,
                 );
                 if (updatedBrevoContact) return "updated";
             } else if (!brevoContact) {
