@@ -164,7 +164,7 @@ export class AppModule {
                         EmailCampaign,
                         TargetGroup,
                     },
-                    encryption: { encryptionKey: config.encryption.encryptionKey },
+                    encryptionKey: config.encryptionKey,
                     ecgRtrList: {
                         apiKey: config.ecgRtrList.apiKey,
                     },

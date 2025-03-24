@@ -33,7 +33,5 @@ export interface BrevoModuleConfig {
             };
         };
     };
-    encryption: {
-        encryptionKey: string;
-    };
+    encryptionKey: string;
 }

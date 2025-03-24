@@ -31,9 +31,7 @@ Also add it to the `config.ts` and your `AppModule`:
     ecgRtrList: {
         apiKey: envVars.ECG_RTR_LIST_API_KEY,
     },
-    +    encryption: {
     +       encryptionKey: envVars.ENCRYPTION_KEY,
-    +    },
     sitePreviewSecret: envVars.SITE_PREVIEW_SECRET,
 ```
 
@@ -43,7 +41,7 @@ Also add it to the `config.ts` and your `AppModule`:
                  //...
                BlacklistedContacts
               }
-       +   encryption: { encryptionKey: config.encryption.encryptionKey },
+       +   encryptionKey: config.encryption.encryptionKey,
            //...
          });
 ```
