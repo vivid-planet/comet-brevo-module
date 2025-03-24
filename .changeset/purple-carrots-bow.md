@@ -4,9 +4,9 @@
 
 Add `BlacklistedContacts` table to store encrypted blacklisted contacts
 
-Use `createBlacklistedContactsEntity` for creating `blacklisted-contacts` entity. Pass `Scope` and add it to the `AppModule`:
+Use `createBlacklistedContactsEntity` for creating `BlacklistedContacts` entity. Pass `Scope` and add it to the `AppModule`:
 
-    ```diff
+`diff
           BrevoModule.register({
             brevo: {
                   //...
@@ -14,7 +14,7 @@ Use `createBlacklistedContactsEntity` for creating `blacklisted-contacts` entity
                }
             //...
           });
-    ```
+    `
 
 Add `encryptionKey` to your environment variables:
 
