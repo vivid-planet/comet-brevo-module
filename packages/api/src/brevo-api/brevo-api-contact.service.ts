@@ -5,6 +5,7 @@ import { Inject, Injectable } from "@nestjs/common";
 import { BrevoConfigInterface } from "src/brevo-config/entities/brevo-config-entity.factory";
 import { BrevoContactAttributesInterface, EmailCampaignScopeInterface } from "src/types";
 
+import { BlacklistedContactsService } from "../blacklisted-contacts/blacklisted-contacts.service";
 import { BrevoContactInterface } from "../brevo-contact/dto/brevo-contact.factory";
 import { BrevoModuleConfig } from "../config/brevo-module.config";
 import { BREVO_MODULE_CONFIG } from "../config/brevo-module.constants";
@@ -24,6 +25,7 @@ export class BrevoApiContactsService {
     constructor(
         @Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig,
         @InjectRepository("BrevoConfig") private readonly brevoConfigRepository: EntityRepository<BrevoConfigInterface>,
+        private readonly blacklistedContactsService: BlacklistedContactsService,
     ) {}
 
     private getContactsApi(scope: EmailCampaignScopeInterface): Brevo.ContactsApi {
@@ -121,6 +123,12 @@ export class BrevoApiContactsService {
     public async deleteContact(id: number, scope: EmailCampaignScopeInterface): Promise<boolean> {
         try {
             const idAsString = id.toString(); // brevo expects a string, because it can be an email or the id, so we have to transform the id to string
+            const { body } = await this.getContactsApi(scope).getContactInfo(idAsString);
+
+            if (body.email) {
+                await this.blacklistedContactsService.addBlacklistedContacts([body.email], scope);
+            }
+
             const { response } = await this.getContactsApi(scope).deleteContact(idAsString);
 
             return response.statusCode === 204;
@@ -198,6 +206,9 @@ export class BrevoApiContactsService {
         try {
             for (const contact of contacts) {
                 const idAsString = contact.id.toString();
+                if (contact.email) {
+                    await this.blacklistedContactsService.addBlacklistedContacts([contact.email], scope);
+                }
                 const response = await this.getContactsApi(scope).deleteContact(idAsString);
                 if (response.response.statusCode !== 204) {
                     return false;
