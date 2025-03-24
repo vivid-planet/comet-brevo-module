@@ -18,9 +18,6 @@ export class BlacklistedContactsService {
         private readonly entityManager: EntityManager,
     ) {
         this.secretKey = this.config.encryption.encryptionKey;
-        if (!this.secretKey) {
-            throw new Error("There is no `encryptionKey` defined in the environment variables.");
-        }
     }
 
     public async addBlacklistedContacts(emails: string[], scope: EmailCampaignScopeInterface): Promise<BlacklistedContactsInterface[]> {
