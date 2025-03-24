@@ -333,6 +333,11 @@ input DependentFilter {
   rootColumnName: String
 }
 
+type EmailCampaignContentScope {
+  domain: String!
+  language: String!
+}
+
 type BrevoContactAttributes {
   LASTNAME: String!
   FIRSTNAME: String!
@@ -390,11 +395,6 @@ type DamFile {
   duplicates: [DamFile!]!
   damPath: String!
   dependents(offset: Int! = 0, limit: Int! = 25, filter: DependentFilter, forceRefresh: Boolean! = false): PaginatedDependencies!
-}
-
-type EmailCampaignContentScope {
-  domain: String!
-  language: String!
 }
 
 type TargetGroup implements DocumentInterface {
@@ -543,6 +543,11 @@ input PageTreeNodeScopeInput {
   language: String!
 }
 
+input EmailCampaignContentScopeInput {
+  domain: String!
+  language: String!
+}
+
 input BrevoContactAttributesInput {
   LASTNAME: String!
   FIRSTNAME: String!
@@ -553,11 +558,6 @@ input BrevoContactAttributesInput {
 input BrevoContactFilterAttributesInput {
   SALUTATION: [BrevoContactSalutation!]
   BRANCH: [BrevoContactBranch!]
-}
-
-input EmailCampaignContentScopeInput {
-  domain: String!
-  language: String!
 }
 
 type Query {
