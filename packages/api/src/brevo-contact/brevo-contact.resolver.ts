@@ -215,12 +215,13 @@ export function createBrevoContactResolver({
 
             const brevoConfig = await this.brevoConfigRepository.findOneOrFail({ scope });
 
-            const created = await this.brevoContactsService.createDoubleOptInContact({
+            const created = await this.brevoContactsService.createContact({
                 email: input.email,
                 attributes: input.attributes,
                 redirectionUrl: input.redirectionUrl,
                 scope,
                 templateId: brevoConfig.doubleOptInTemplateId,
+                sendDoubleOptIn: input.sendDoubleOptIn,
             });
 
             if (created) {

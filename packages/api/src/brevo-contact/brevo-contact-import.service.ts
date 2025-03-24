@@ -154,11 +154,12 @@ export class BrevoContactImportService {
             } else if (!brevoContact) {
                 const brevoConfig = await this.brevoConfigRepository.findOneOrFail({ scope });
 
-                const success = await this.brevoContactsService.createDoubleOptInContact({
+                const success = await this.brevoContactsService.createContact({
                     ...contact,
                     scope,
                     templateId: brevoConfig.doubleOptInTemplateId,
                     listIds: [mainTargetGroupForScope.brevoId, ...targetGroupBrevoIds],
+                    sendDoubleOptIn: true,
                 });
                 if (success) return "created";
             }
