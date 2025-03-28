@@ -4,6 +4,7 @@ import { FILE_UPLOADS_CONFIG } from "@comet/cms-api/lib/file-uploads/file-upload
 import { DynamicModule, Global, Module, Optional } from "@nestjs/common";
 import { ModuleRef } from "@nestjs/core";
 
+import { BlacklistedContactsModule } from "./blacklisted-contacts/blacklisted-contacts.module";
 import { BrevoApiModule } from "./brevo-api/brevo-api.module";
 import { BrevoConfigModule } from "./brevo-config/brevo-config.module";
 import { BrevoConfigEntityFactory } from "./brevo-config/entities/brevo-config-entity.factory";
@@ -55,9 +56,13 @@ export class BrevoModule {
                     TargetGroup: config.brevo.TargetGroup,
                 }),
                 BrevoConfigModule.register({ BrevoConfig, Scope: config.emailCampaigns.Scope }),
+                BlacklistedContactsModule.register({
+                    Scope: config.emailCampaigns.Scope,
+                    BlacklistedContacts: config.brevo.BlacklistedContacts,
+                }),
                 ConfigModule.forRoot(config),
             ],
-            exports: [TargetGroupModule, BrevoContactModule, BrevoApiModule],
+            exports: [TargetGroupModule, BrevoContactModule, BrevoApiModule, BlacklistedContactsModule],
         };
     }
 }

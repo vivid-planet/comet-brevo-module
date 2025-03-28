@@ -1,0 +1,43 @@
+import { EntityManager, EntityRepository } from "@mikro-orm/core";
+import { InjectRepository } from "@mikro-orm/nestjs";
+import { Inject, Injectable } from "@nestjs/common";
+import { EmailCampaignScopeInterface } from "src/types";
+
+import { BrevoModuleConfig } from "../config/brevo-module.config";
+import { BREVO_MODULE_CONFIG } from "../config/brevo-module.constants";
+import { encrypt } from "../util/encryption.util";
+import { BlacklistedContactsInterface } from "./entity/blacklisted-contacts.entity.factory";
+
+@Injectable()
+export class BlacklistedContactsService {
+    private readonly secretKey: string;
+
+    constructor(
+        @InjectRepository("BlacklistedContacts") private readonly repository: EntityRepository<BlacklistedContactsInterface>,
+        @Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig,
+        private readonly entityManager: EntityManager,
+    ) {
+        this.secretKey = this.config.encryptionKey;
+    }
+
+    public async addBlacklistedContacts(emails: string[], scope: EmailCampaignScopeInterface): Promise<BlacklistedContactsInterface[]> {
+        const blacklistedContacts: BlacklistedContactsInterface[] = [];
+
+        for (const email of emails) {
+            const hashedEmail = encrypt(email, this.secretKey);
+
+            const blacklistedContact = this.repository.create({
+                hashedEmail,
+                scope,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            });
+
+            blacklistedContacts.push(blacklistedContact);
+        }
+
+        await this.entityManager.flush();
+
+        return blacklistedContacts;
+    }
+}

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { BlobStorageConfig } from "@comet/cms-api";
 import { Transform, Type } from "class-transformer";
-import { IsBase64, IsBoolean, IsInt, IsOptional, IsString, MinLength, ValidateIf } from "class-validator";
+import { IsBase64, IsBoolean, IsInt, IsOptional, IsString, Length, MinLength, ValidateIf } from "class-validator";
 
 export class EnvironmentVariables {
     @IsString()
@@ -133,4 +133,8 @@ export class EnvironmentVariables {
     @IsString()
     @MinLength(16)
     SITE_PREVIEW_SECRET: string;
+
+    @IsString()
+    @Length(64)
+    ENCRYPTION_KEY: string;
 }
