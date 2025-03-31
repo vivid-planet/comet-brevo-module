@@ -44,7 +44,7 @@
     "peerDependencies": {
         "@comet/cms-site": "^7.10.0",
         "@luma-team/mjml-react": "^0.2.1",
-        "mjml": "^4.7.0",
+        "mjml": "^4.15.3",
         "next": "^14.2.25",
         "react": "^18.0.0",
         "react-dom": "^18.0.0",
