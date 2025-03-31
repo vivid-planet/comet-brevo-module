@@ -348,6 +348,7 @@ input BrevoContactInput {
   blocked: Boolean!
   redirectionUrl: String!
   sendDoubleOptIn: Boolean! = true
+  userId: String!
 }
 
 input BrevoTestContactInput {

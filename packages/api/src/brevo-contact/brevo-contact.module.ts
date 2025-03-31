@@ -5,6 +5,7 @@ import { DynamicModule, Module, Type } from "@nestjs/common";
 import { BrevoApiModule } from "../brevo-api/brevo-api.module";
 import { createBrevoContactImportConsole } from "../brevo-contact/brevo-contact-import.console";
 import { BrevoContactImportService } from "../brevo-contact/brevo-contact-import.service";
+import { BrevoContactLogModule } from "../brevo-contact-log/brevo-contact-log.module";
 import { ConfigModule } from "../config/config.module";
 import { TargetGroupInterface } from "../target-group/entity/target-group-entity.factory";
 import { BrevoContactAttributesInterface, EmailCampaignScopeInterface } from "../types";
@@ -47,7 +48,13 @@ export class BrevoContactModule {
 
         return {
             module: BrevoContactModule,
-            imports: [BrevoApiModule, ConfigModule, MikroOrmModule.forFeature([TargetGroup, FileUpload, "BrevoConfig", "BlacklistedContacts"])],
+            imports: [
+                BrevoApiModule,
+                BrevoContactModule,
+                BrevoContactLogModule,
+                ConfigModule,
+                MikroOrmModule.forFeature([TargetGroup, FileUpload, "BrevoConfig", "BlacklistedContacts"]),
+            ],
             providers: [
                 BrevoContactImportService,
                 BrevoContactsService,
