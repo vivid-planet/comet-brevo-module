@@ -113,11 +113,11 @@ export const useContactImportFromCsv = ({ scope, targetGroupId, refetchQueries }
                 scope={scope}
                 targetGroupId={targetGroupId}
                 fileInputRef={fileInputRef}
-                sendDoubleOptIn={sendDoubleOptIn} // Pass the updated state
+                sendDoubleOptIn={sendDoubleOptIn}
                 refetchQueries={refetchQueries}
             />
         ),
-        [refetchQueries, scope, targetGroupId, sendDoubleOptIn], // Include sendDoubleOptIn in dependencies
+        [refetchQueries, scope, targetGroupId, sendDoubleOptIn],
     );
 
     return [
