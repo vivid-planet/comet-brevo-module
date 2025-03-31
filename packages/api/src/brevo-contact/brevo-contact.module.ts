@@ -47,7 +47,7 @@ export class BrevoContactModule {
 
         return {
             module: BrevoContactModule,
-            imports: [BrevoApiModule, ConfigModule, MikroOrmModule.forFeature([TargetGroup, FileUpload, "BrevoConfig"])],
+            imports: [BrevoApiModule, ConfigModule, MikroOrmModule.forFeature([TargetGroup, FileUpload, "BrevoConfig", "BlacklistedContacts"])],
             providers: [
                 BrevoContactImportService,
                 BrevoContactsService,
