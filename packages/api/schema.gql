@@ -82,7 +82,7 @@ type CsvImportInformation {
   created: Int!
   updated: Int!
   failed: Int!
-  failedColumns: [[String!]!]
+  failedColumns: [JSONObject!]
   errorMessage: String
 }
 
@@ -327,7 +327,7 @@ type Mutation {
   deleteEmailCampaign(id: ID!): Boolean!
   sendEmailCampaignNow(id: ID!): Boolean!
   sendEmailCampaignToTestEmails(id: ID!, data: SendTestEmailCampaignArgs!): Boolean!
-  startBrevoContactImport(fileId: ID!, targetGroupIds: [ID!], scope: EmailCampaignContentScopeInput!): CsvImportInformation!
+  startBrevoContactImport(fileId: ID!, targetGroupIds: [ID!], scope: EmailCampaignContentScopeInput!, sendDoubleOptIn: Boolean!): CsvImportInformation!
   createBrevoConfig(scope: EmailCampaignContentScopeInput!, input: BrevoConfigInput!): BrevoConfig!
   updateBrevoConfig(id: ID!, input: BrevoConfigUpdateInput!, lastUpdatedAt: DateTime): BrevoConfig!
 }

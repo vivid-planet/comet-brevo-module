@@ -4,6 +4,7 @@ import { InjectRepository } from "@mikro-orm/nestjs";
 import { Inject, Injectable } from "@nestjs/common";
 import { Field, Int, ObjectType } from "@nestjs/graphql";
 import { IsEmail, IsNotEmpty, validateSync } from "class-validator";
+import { GraphQLJSONObject } from "graphql-scalars";
 import isEqual from "lodash.isequal";
 import { BrevoConfigInterface } from "src/brevo-config/entities/brevo-config-entity.factory";
 import { TargetGroupInterface } from "src/target-group/entity/target-group-entity.factory";
@@ -35,8 +36,8 @@ export class CsvImportInformation {
     @Field(() => Int)
     failed: number;
 
-    @Field(() => [[String]], { nullable: true })
-    failedColumns: string[][];
+    @Field(() => [GraphQLJSONObject], { nullable: true })
+    failedColumns: Record<string, string>[];
 
     @Field({ nullable: true })
     errorMessage?: string;
@@ -46,6 +47,7 @@ interface ImportContactsFromCsvParams {
     fileStream: Readable;
     scope: EmailCampaignScopeInterface;
     redirectUrl: string;
+    sendDoubleOptIn: boolean;
     targetGroupIds?: string[];
     isAdminImport?: boolean;
 }
@@ -65,10 +67,11 @@ export class BrevoContactImportService {
         fileStream,
         scope,
         redirectUrl,
+        sendDoubleOptIn,
         targetGroupIds = [],
         isAdminImport = false,
     }: ImportContactsFromCsvParams): Promise<CsvImportInformation> {
-        const failedColumns: string[][] = [];
+        const failedColumns: Record<string, string>[] = [];
         const targetGroups = await this.targetGroupRepository.find({ id: { $in: targetGroupIds } });
 
         for (const targetGroup of targetGroups) {
@@ -109,7 +112,7 @@ export class BrevoContactImportService {
             }
             try {
                 const contactData = await this.processCsvRow(row, redirectUrl);
-                const result = await this.createOrUpdateBrevoContact(contactData, scope, targetGroupBrevoIds);
+                const result = await this.createOrUpdateBrevoContact(contactData, scope, targetGroupBrevoIds, sendDoubleOptIn);
                 switch (result) {
                     case "created":
                         created++;
@@ -139,6 +142,7 @@ export class BrevoContactImportService {
         contact: CreateDoubleOptInContactData,
         scope: EmailCampaignScopeInterface,
         targetGroupBrevoIds: number[],
+        sendDoubleOptIn: boolean,
     ): Promise<"created" | "updated" | "error"> {
         try {
             const brevoContact = await this.brevoApiContactsService.findContact(contact.email, scope);
@@ -159,7 +163,7 @@ export class BrevoContactImportService {
                     scope,
                     templateId: brevoConfig.doubleOptInTemplateId,
                     listIds: [mainTargetGroupForScope.brevoId, ...targetGroupBrevoIds],
-                    sendDoubleOptIn: true,
+                    sendDoubleOptIn,
                 });
                 if (success) return "created";
             }

@@ -64,6 +64,7 @@ const updateBrevoContactMutation = gql`
 function BrevoContactsGridToolbar({ intl, scope }: { intl: IntlShape; scope: GQLEmailCampaignContentScopeInput }) {
     const [moreActionsMenuItem, contactImportComponent] = useContactImportFromCsv({
         scope,
+        sendDoubleOptIn: true,
         refetchQueries: [namedOperations.Query.BrevoContactsGrid],
     });
 
