@@ -9,7 +9,7 @@ import { BrevoApiModule } from "./brevo-api/brevo-api.module";
 import { BrevoConfigModule } from "./brevo-config/brevo-config.module";
 import { BrevoConfigEntityFactory } from "./brevo-config/entities/brevo-config-entity.factory";
 import { BrevoContactModule } from "./brevo-contact/brevo-contact.module";
-import { BrevoEmailImportLogModule } from "./brevo-email-import-log/brevo-email-input-log.module";
+import { BrevoEmailImportLogModule } from "./brevo-email-import-log/brevo-email-import-log.module";
 import { BrevoModuleConfig } from "./config/brevo-module.config";
 import { ConfigModule } from "./config/config.module";
 import { EmailCampaignModule } from "./email-campaign/email-campaign.module";

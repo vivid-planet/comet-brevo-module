@@ -5,7 +5,7 @@ import { BrevoConfigInterface } from "src/brevo-config/entities/brevo-config-ent
 
 import { BlacklistedContactsInterface } from "../blacklisted-contacts/entity/blacklisted-contacts.entity.factory";
 import { BrevoApiContactsService } from "../brevo-api/brevo-api-contact.service";
-import { BrevoEmailImportLogService } from "../brevo-email-import-log/brevo-email-input-log.service";
+import { BrevoEmailImportLogService } from "../brevo-email-import-log/brevo-email-import-log.service";
 import { BrevoModuleConfig } from "../config/brevo-module.config";
 import { BREVO_MODULE_CONFIG } from "../config/brevo-module.constants";
 import { TargetGroupsService } from "../target-group/target-groups.service";

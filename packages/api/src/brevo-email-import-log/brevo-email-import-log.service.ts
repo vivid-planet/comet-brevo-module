@@ -3,7 +3,7 @@ import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable } from "@nestjs/common";
 import { EmailCampaignScopeInterface } from "src/types";
 
-import { BrevoEmailImportLogInterface } from "./entity/brevo-email-input-log.entity.factory";
+import { BrevoEmailImportLogInterface } from "./entity/brevo-email-import-log.entity.factory";
 
 @Injectable()
 export class BrevoEmailImportLogService {

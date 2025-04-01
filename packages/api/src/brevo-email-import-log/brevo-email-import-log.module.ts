@@ -4,8 +4,8 @@ import { EmailCampaignScopeInterface } from "src/types";
 
 import { BrevoApiModule } from "../brevo-api/brevo-api.module";
 import { ConfigModule } from "../config/config.module";
-import { BrevoEmailImportLogService } from "./brevo-email-input-log.service";
-import { BrevoEmailImportLogInterface } from "./entity/brevo-email-input-log.entity.factory";
+import { BrevoEmailImportLogService } from "./brevo-email-import-log.service";
+import { BrevoEmailImportLogInterface } from "./entity/brevo-email-import-log.entity.factory";
 
 interface BrevoEmailImportLogModuleConfig {
     BrevoEmailImportLog: Type<BrevoEmailImportLogInterface>;

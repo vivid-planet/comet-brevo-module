@@ -1,7 +1,7 @@
 import { Block } from "@comet/blocks-api";
 import { Type } from "@nestjs/common";
 import { BlacklistedContactsInterface } from "src/blacklisted-contacts/entity/blacklisted-contacts.entity.factory";
-import { BrevoEmailImportLogInterface } from "src/brevo-email-import-log/entity/brevo-email-input-log.entity.factory";
+import { BrevoEmailImportLogInterface } from "src/brevo-email-import-log/entity/brevo-email-import-log.entity.factory";
 import { EmailCampaignInterface } from "src/email-campaign/entities/email-campaign-entity.factory";
 import { TargetGroupInterface } from "src/target-group/entity/target-group-entity.factory";
 import { BrevoContactAttributesInterface, EmailCampaignScopeInterface } from "src/types";
