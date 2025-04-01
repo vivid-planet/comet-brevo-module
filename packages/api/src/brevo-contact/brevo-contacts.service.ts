@@ -3,11 +3,13 @@ import { InjectRepository } from "@mikro-orm/nestjs";
 import { Inject, Injectable } from "@nestjs/common";
 import { BrevoConfigInterface } from "src/brevo-config/entities/brevo-config-entity.factory";
 
+import { BlacklistedContactsInterface } from "../blacklisted-contacts/entity/blacklisted-contacts.entity.factory";
 import { BrevoApiContactsService } from "../brevo-api/brevo-api-contact.service";
 import { BrevoModuleConfig } from "../config/brevo-module.config";
 import { BREVO_MODULE_CONFIG } from "../config/brevo-module.constants";
 import { TargetGroupsService } from "../target-group/target-groups.service";
 import { BrevoContactAttributesInterface, EmailCampaignScopeInterface } from "../types";
+import { encrypt } from "../util/encryption.util";
 import { BrevoContactInterface } from "./dto/brevo-contact.factory";
 import { SubscribeInputInterface } from "./dto/subscribe-input.factory";
 import { SubscribeResponse } from "./dto/subscribe-response.enum";
@@ -15,13 +17,17 @@ import { EcgRtrListService } from "./ecg-rtr-list/ecg-rtr-list.service";
 
 @Injectable()
 export class BrevoContactsService {
+    private readonly secretKey: string;
     constructor(
         @Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig,
         @InjectRepository("BrevoConfig") private readonly brevoConfigRepository: EntityRepository<BrevoConfigInterface>,
+        @InjectRepository("BlacklistedContacts") private readonly blacklistedContactsRepository: EntityRepository<BlacklistedContactsInterface>,
         private readonly brevoContactsApiService: BrevoApiContactsService,
         private readonly ecgRtrListService: EcgRtrListService,
         private readonly targetGroupService: TargetGroupsService,
-    ) {}
+    ) {
+        this.secretKey = this.config.encryptionKey;
+    }
 
     public async createContact({
         email,
@@ -43,14 +49,20 @@ export class BrevoContactsService {
         const mainTargetGroupForScope = await this.targetGroupService.createIfNotExistMainTargetGroupForScope(scope);
         const targetGroupIds = await this.getTargetGroupIdsForNewContact({ scope, contactAttributes: attributes });
         const brevoIds = [mainTargetGroupForScope.brevoId, ...targetGroupIds];
-        let created;
+
+        let created = false;
 
         if (listIds) {
             brevoIds.push(...listIds);
         }
 
         if (!sendDoubleOptIn) {
-            created = await this.brevoContactsApiService.createBrevoContactWithoutDoubleOptIn({ email, attributes }, brevoIds, templateId, scope);
+            const encryptedEmail = encrypt(email, this.secretKey);
+            const blacklistedContactAvailable = await this.blacklistedContactsRepository.findOne({ hashedEmail: encryptedEmail });
+
+            if (!blacklistedContactAvailable) {
+                created = await this.brevoContactsApiService.createBrevoContactWithoutDoubleOptIn({ email, attributes }, brevoIds, templateId, scope);
+            }
         } else {
             created = await this.brevoContactsApiService.createDoubleOptInBrevoContact(
                 { email, redirectionUrl, attributes },
