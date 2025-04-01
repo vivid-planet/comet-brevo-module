@@ -4,13 +4,11 @@ import { DocumentNode } from "graphql";
 import * as React from "react";
 import { useIntl } from "react-intl";
 
-import { useBrevoConfig } from "../common/BrevoConfigProvider";
 import { BrevoTestContactsGrid } from "./BrevoTestContactsGrid";
 import { BrevoTestContactForm, EditBrevoContactFormValues } from "./form/BrevoTestContactForm";
 
 interface CreateContactsPageOptions {
-    /** @deprecated Pass via BrevoConfigProvider instead */
-    scopeParts?: string[];
+    scopeParts: string[];
     additionalAttributesFragment?: { name: string; fragment: DocumentNode };
     additionalGridFields?: GridColDef[];
     additionalFormFields?: React.ReactNode;
@@ -18,7 +16,7 @@ interface CreateContactsPageOptions {
 }
 
 function createBrevoTestContactsPage({
-    scopeParts: passedScopeParts,
+    scopeParts,
     additionalAttributesFragment,
     additionalFormFields,
     additionalGridFields,
@@ -26,8 +24,6 @@ function createBrevoTestContactsPage({
 }: CreateContactsPageOptions) {
     function BrevoTestContactsPage(): JSX.Element {
         const intl = useIntl();
-        const brevoConfig = useBrevoConfig();
-        const scopeParts = passedScopeParts ?? brevoConfig.scopeParts;
         const { scope: completeScope } = useContentScope();
 
         const scope = scopeParts.reduce((acc, scopePart) => {

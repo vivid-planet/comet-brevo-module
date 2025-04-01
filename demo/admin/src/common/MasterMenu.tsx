@@ -64,6 +64,7 @@ const getMasterMenuData = ({ brevoContactConfig }: { brevoContactConfig: BrevoCo
     });
 
     const BrevoTestContactsPage = createBrevoTestContactsPage({
+        scopeParts: ["domain", "language"],
         additionalAttributesFragment: brevoContactConfig.additionalAttributesFragment,
         additionalGridFields: brevoContactConfig.additionalGridFields,
         additionalFormFields: brevoContactConfig.additionalFormFields,
