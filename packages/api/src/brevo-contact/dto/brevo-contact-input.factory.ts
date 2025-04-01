@@ -57,7 +57,7 @@ export class BrevoContactInputFactory {
             @IsNotEmpty()
             @IsString()
             @Field()
-            userId: string;
+            responsibleUserId: string;
         }
 
         @InputType({
