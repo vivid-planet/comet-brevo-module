@@ -26,15 +26,10 @@ export class BrevoContactsService {
         private readonly brevoContactsApiService: BrevoApiContactsService,
         private readonly ecgRtrListService: EcgRtrListService,
         private readonly targetGroupService: TargetGroupsService,
-<<<<<<< HEAD
-        private readonly brevoContactLogService: BrevoContactLogService,
+        private readonly brevoEmailImportLogService: BrevoEmailImportLogService,
     ) {
         this.secretKey = this.config.encryptionKey;
     }
-=======
-        private readonly brevoEmailImportLogService: BrevoEmailImportLogService,
-    ) {}
->>>>>>> 11c5c7d (rename BrevoContactLog to BrevoEmailImportLog)
 
     public async createContact({
         email,
@@ -66,18 +61,13 @@ export class BrevoContactsService {
         }
 
         if (!sendDoubleOptIn && responsibleUserId) {
-<<<<<<< HEAD
             const encryptedEmail = encrypt(email, this.secretKey);
             const blacklistedContactAvailable = await this.blacklistedContactsRepository.findOne({ hashedEmail: encryptedEmail });
 
             if (!blacklistedContactAvailable) {
                 created = await this.brevoContactsApiService.createBrevoContactWithoutDoubleOptIn({ email, attributes }, brevoIds, templateId, scope);
-                await this.brevoContactLogService.addContactsToLogs([email], responsibleUserId, scope);
+                await this.brevoEmailImportLogService.addContactToLogs(email, responsibleUserId, scope);
             }
-=======
-            created = await this.brevoContactsApiService.createBrevoContactWithoutDoubleOptIn({ email, attributes }, brevoIds, templateId, scope);
-            await this.brevoEmailImportLogService.addContactToLogs(email, responsibleUserId, scope);
->>>>>>> 3877850 (pass email string to addContactsToLogs and rename to singular)
         } else {
             created = await this.brevoContactsApiService.createDoubleOptInBrevoContact(
                 { email, redirectionUrl, attributes },
