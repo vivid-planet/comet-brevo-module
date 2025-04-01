@@ -129,7 +129,7 @@ export function BrevoContactForm({ id, scope, input2State, additionalFormFields,
         const output = {
             ...state,
             blocked: false,
-            userId: currentUser.id,
+            responsibleUserId: currentUser.id,
         };
 
         if (mode === "edit") {

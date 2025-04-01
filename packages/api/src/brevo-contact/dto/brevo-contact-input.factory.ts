@@ -13,7 +13,7 @@ export interface BrevoContactInputInterface {
     attributes?: BrevoContactAttributesInterface;
     redirectionUrl?: string;
     sendDoubleOptIn: boolean;
-    userId?: string;
+    responsibleUserId?: string;
 }
 
 export interface BrevoContactUpdateInputInterface {

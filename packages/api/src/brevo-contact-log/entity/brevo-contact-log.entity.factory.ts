@@ -7,8 +7,8 @@ import { v4 } from "uuid";
 import { EmailCampaignScopeInterface } from "../../types";
 
 export interface BrevoContactLogInterface {
-    email: string;
-    userId: string;
+    importedEmail: string;
+    responsibleUserId: string;
     scope: EmailCampaignScopeInterface;
     createdAt: Date;
     updatedAt: Date;
@@ -28,11 +28,11 @@ export function createBrevoContactLogEntity({ Scope }: { Scope: EmailCampaignSco
 
         @Property({ columnType: "text" })
         @Field()
-        email: string;
+        importedEmail: string;
 
         @Property()
         @Field()
-        userId: string;
+        responsibleUserId: string;
 
         @Property({
             columnType: "timestamp with time zone",

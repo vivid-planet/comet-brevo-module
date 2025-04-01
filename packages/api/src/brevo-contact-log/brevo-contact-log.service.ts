@@ -11,11 +11,15 @@ export class BrevoContactLogService {
         @InjectRepository("BrevoContactLog") private readonly repository: EntityRepository<BrevoContactLogInterface>,
         private readonly entityManager: EntityManager,
     ) {}
-    public async addContactsToLogs(emails: string[], userId: string, scope: EmailCampaignScopeInterface): Promise<BrevoContactLogInterface[]> {
-        const logs = emails.map((email) => {
+    public async addContactsToLogs(
+        emails: string[],
+        responsibleUserId: string,
+        scope: EmailCampaignScopeInterface,
+    ): Promise<BrevoContactLogInterface[]> {
+        const logs = emails.map((importedEmail) => {
             return this.repository.create({
-                email,
-                userId,
+                importedEmail,
+                responsibleUserId,
                 scope,
                 createdAt: new Date(),
                 updatedAt: new Date(),

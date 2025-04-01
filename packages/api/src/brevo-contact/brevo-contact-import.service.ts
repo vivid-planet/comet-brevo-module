@@ -143,7 +143,7 @@ export class BrevoContactImportService {
         scope: EmailCampaignScopeInterface,
         targetGroupBrevoIds: number[],
         sendDoubleOptIn: boolean,
-        userId?: string,
+        responsibleUserId?: string,
     ): Promise<"created" | "updated" | "error"> {
         try {
             const brevoContact = await this.brevoApiContactsService.findContact(contact.email, scope);
@@ -165,7 +165,7 @@ export class BrevoContactImportService {
                     templateId: brevoConfig.doubleOptInTemplateId,
                     listIds: [mainTargetGroupForScope.brevoId, ...targetGroupBrevoIds],
                     sendDoubleOptIn,
-                    userId,
+                    responsibleUserId,
                 });
                 if (success) return "created";
             }

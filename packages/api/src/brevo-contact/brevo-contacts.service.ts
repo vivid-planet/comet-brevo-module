@@ -39,7 +39,7 @@ export class BrevoContactsService {
         templateId,
         listIds,
         sendDoubleOptIn,
-        userId,
+        responsibleUserId,
     }: {
         email: string;
         attributes?: BrevoContactAttributesInterface;
@@ -48,7 +48,7 @@ export class BrevoContactsService {
         templateId: number;
         listIds?: number[];
         sendDoubleOptIn: boolean;
-        userId?: string;
+        responsibleUserId?: string;
     }): Promise<boolean> {
         const mainTargetGroupForScope = await this.targetGroupService.createIfNotExistMainTargetGroupForScope(scope);
         const targetGroupIds = await this.getTargetGroupIdsForNewContact({ scope, contactAttributes: attributes });
@@ -60,13 +60,13 @@ export class BrevoContactsService {
             brevoIds.push(...listIds);
         }
 
-        if (!sendDoubleOptIn && userId) {
+        if (!sendDoubleOptIn && responsibleUserId) {
             const encryptedEmail = encrypt(email, this.secretKey);
             const blacklistedContactAvailable = await this.blacklistedContactsRepository.findOne({ hashedEmail: encryptedEmail });
 
             if (!blacklistedContactAvailable) {
                 created = await this.brevoContactsApiService.createBrevoContactWithoutDoubleOptIn({ email, attributes }, brevoIds, templateId, scope);
-                await this.brevoContactLogService.addContactsToLogs([email], userId, scope);
+                await this.brevoContactLogService.addContactsToLogs([email], responsibleUserId, scope);
             }
         } else {
             created = await this.brevoContactsApiService.createDoubleOptInBrevoContact(
