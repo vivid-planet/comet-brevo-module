@@ -66,6 +66,7 @@ export class BrevoContactsService {
         }
 
         if (!sendDoubleOptIn && responsibleUserId) {
+<<<<<<< HEAD
             const encryptedEmail = encrypt(email, this.secretKey);
             const blacklistedContactAvailable = await this.blacklistedContactsRepository.findOne({ hashedEmail: encryptedEmail });
 
@@ -73,6 +74,10 @@ export class BrevoContactsService {
                 created = await this.brevoContactsApiService.createBrevoContactWithoutDoubleOptIn({ email, attributes }, brevoIds, templateId, scope);
                 await this.brevoContactLogService.addContactsToLogs([email], responsibleUserId, scope);
             }
+=======
+            created = await this.brevoContactsApiService.createBrevoContactWithoutDoubleOptIn({ email, attributes }, brevoIds, templateId, scope);
+            await this.brevoEmailImportLogService.addContactToLogs(email, responsibleUserId, scope);
+>>>>>>> 3877850 (pass email string to addContactsToLogs and rename to singular)
         } else {
             created = await this.brevoContactsApiService.createDoubleOptInBrevoContact(
                 { email, redirectionUrl, attributes },
