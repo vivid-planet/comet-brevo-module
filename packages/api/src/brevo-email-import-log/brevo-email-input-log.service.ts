@@ -3,19 +3,19 @@ import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable } from "@nestjs/common";
 import { EmailCampaignScopeInterface } from "src/types";
 
-import { BrevoContactLogInterface } from "./entity/brevo-contact-log.entity.factory";
+import { BrevoEmailImportLogInterface } from "./entity/brevo-email-input-log.entity.factory";
 
 @Injectable()
-export class BrevoContactLogService {
+export class BrevoEmailImportLogService {
     constructor(
-        @InjectRepository("BrevoContactLog") private readonly repository: EntityRepository<BrevoContactLogInterface>,
+        @InjectRepository("BrevoEmailImportLog") private readonly repository: EntityRepository<BrevoEmailImportLogInterface>,
         private readonly entityManager: EntityManager,
     ) {}
     public async addContactsToLogs(
         emails: string[],
         responsibleUserId: string,
         scope: EmailCampaignScopeInterface,
-    ): Promise<BrevoContactLogInterface[]> {
+    ): Promise<BrevoEmailImportLogInterface[]> {
         const logs = emails.map((importedEmail) => {
             return this.repository.create({
                 importedEmail,

@@ -6,7 +6,7 @@ import { v4 } from "uuid";
 
 import { EmailCampaignScopeInterface } from "../../types";
 
-export interface BrevoContactLogInterface {
+export interface BrevoEmailImportLogInterface {
     importedEmail: string;
     responsibleUserId: string;
     scope: EmailCampaignScopeInterface;
@@ -14,12 +14,12 @@ export interface BrevoContactLogInterface {
     updatedAt: Date;
 }
 
-export function createBrevoContactLogEntity({ Scope }: { Scope: EmailCampaignScopeInterface }): Type<BrevoContactLogInterface> {
+export function createBrevoEmailImportLogEntity({ Scope }: { Scope: EmailCampaignScopeInterface }): Type<BrevoEmailImportLogInterface> {
     @Entity()
     @ObjectType({
         implements: () => [DocumentInterface],
     })
-    class BrevoContactLog implements BrevoContactLogInterface, DocumentInterface {
+    class BrevoEmailImportLog implements BrevoEmailImportLogInterface, DocumentInterface {
         [OptionalProps]?: "createdAt" | "updatedAt";
 
         @PrimaryKey({ columnType: "uuid" })
@@ -52,5 +52,5 @@ export function createBrevoContactLogEntity({ Scope }: { Scope: EmailCampaignSco
         scope: typeof Scope;
     }
 
-    return BrevoContactLog;
+    return BrevoEmailImportLog;
 }

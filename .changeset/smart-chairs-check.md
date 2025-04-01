@@ -7,13 +7,13 @@ Added logging for contacts created manually via the admin contact form without d
 
 When a user adds a contact manually and skips sending the double opt-in email, the action is logged.
 
-Use `createBrevoContactLogEntity` for creating `brevo-contact-log` entity. Pass `Scope` and add it to the `AppModule`:
+Use `createBrevoEmailImportLogEntity` for creating `brevo-email-import-log` entity. Pass `Scope` and add it to the `AppModule`:
 
     ```diff
           BrevoModule.register({
             brevo: {
                   //...
-      +       BrevoContactLog
+      +       BrevoEmailImportLog
                }
             //...
           });

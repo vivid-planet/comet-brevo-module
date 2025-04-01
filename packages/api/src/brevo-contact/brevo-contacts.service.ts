@@ -5,7 +5,7 @@ import { BrevoConfigInterface } from "src/brevo-config/entities/brevo-config-ent
 
 import { BlacklistedContactsInterface } from "../blacklisted-contacts/entity/blacklisted-contacts.entity.factory";
 import { BrevoApiContactsService } from "../brevo-api/brevo-api-contact.service";
-import { BrevoContactLogService } from "../brevo-contact-log/brevo-contact-log.service";
+import { BrevoEmailImportLogService } from "../brevo-email-import-log/brevo-email-input-log.service";
 import { BrevoModuleConfig } from "../config/brevo-module.config";
 import { BREVO_MODULE_CONFIG } from "../config/brevo-module.constants";
 import { TargetGroupsService } from "../target-group/target-groups.service";
@@ -26,10 +26,15 @@ export class BrevoContactsService {
         private readonly brevoContactsApiService: BrevoApiContactsService,
         private readonly ecgRtrListService: EcgRtrListService,
         private readonly targetGroupService: TargetGroupsService,
+<<<<<<< HEAD
         private readonly brevoContactLogService: BrevoContactLogService,
     ) {
         this.secretKey = this.config.encryptionKey;
     }
+=======
+        private readonly brevoEmailImportLogService: BrevoEmailImportLogService,
+    ) {}
+>>>>>>> 11c5c7d (rename BrevoContactLog to BrevoEmailImportLog)
 
     public async createContact({
         email,
