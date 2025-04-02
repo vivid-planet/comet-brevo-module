@@ -3,10 +3,12 @@ import { EntityRepository } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Inject, Injectable } from "@nestjs/common";
 import { BrevoConfigInterface } from "src/brevo-config/entities/brevo-config-entity.factory";
+import { ContactSource } from "src/brevo-email-import-log/entity/brevo-email-import-log.entity.factory";
 import { BrevoContactAttributesInterface, EmailCampaignScopeInterface } from "src/types";
 
 import { BlacklistedContactsService } from "../blacklisted-contacts/blacklisted-contacts.service";
 import { BrevoContactInterface } from "../brevo-contact/dto/brevo-contact.factory";
+import { BrevoEmailImportLogService } from "../brevo-email-import-log/brevo-email-import-log.service";
 import { BrevoModuleConfig } from "../config/brevo-module.config";
 import { BREVO_MODULE_CONFIG } from "../config/brevo-module.constants";
 import { handleBrevoError, isErrorFromBrevo } from "./brevo-api.utils";
@@ -26,6 +28,7 @@ export class BrevoApiContactsService {
         @Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig,
         @InjectRepository("BrevoConfig") private readonly brevoConfigRepository: EntityRepository<BrevoConfigInterface>,
         private readonly blacklistedContactsService: BlacklistedContactsService,
+        private readonly brevoContactLogService: BrevoEmailImportLogService,
     ) {}
 
     private getContactsApi(scope: EmailCampaignScopeInterface): Brevo.ContactsApi {
@@ -114,6 +117,9 @@ export class BrevoApiContactsService {
             unlinkListIds,
         }: { blocked?: boolean; attributes?: BrevoContactAttributesInterface; listIds?: number[]; unlinkListIds?: number[] },
         scope: EmailCampaignScopeInterface,
+        sendDoubleOptIn?: boolean,
+        responsibleUserId?: string,
+        contactSource?: ContactSource,
     ): Promise<BrevoContactInterface> {
         try {
             const idAsString = id.toString(); // brevo expects a string, because it can be an email or the id, so we have to transform the id to string
@@ -123,6 +129,10 @@ export class BrevoApiContactsService {
 
             if (!brevoContact) {
                 throw new Error(`The brevo contact with the id ${id} not found`);
+            }
+
+            if (responsibleUserId && !sendDoubleOptIn && brevoContact.email && contactSource) {
+                await this.brevoContactLogService.addContactToLogs(brevoContact.email, responsibleUserId, scope, contactSource);
             }
 
             return brevoContact;

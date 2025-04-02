@@ -50,6 +50,7 @@ interface ImportContactsFromCsvParams {
     sendDoubleOptIn: boolean;
     targetGroupIds?: string[];
     isAdminImport?: boolean;
+    responsibleUserId?: string;
 }
 
 @Injectable()
@@ -70,6 +71,7 @@ export class BrevoContactImportService {
         sendDoubleOptIn,
         targetGroupIds = [],
         isAdminImport = false,
+        responsibleUserId,
     }: ImportContactsFromCsvParams): Promise<CsvImportInformation> {
         const failedColumns: Record<string, string>[] = [];
         const targetGroups = await this.targetGroupRepository.find({ id: { $in: targetGroupIds } });
@@ -112,7 +114,7 @@ export class BrevoContactImportService {
             }
             try {
                 const contactData = await this.processCsvRow(row, redirectUrl);
-                const result = await this.createOrUpdateBrevoContact(contactData, scope, targetGroupBrevoIds, sendDoubleOptIn);
+                const result = await this.createOrUpdateBrevoContact(contactData, scope, targetGroupBrevoIds, sendDoubleOptIn, responsibleUserId);
                 switch (result) {
                     case "created":
                         created++;
@@ -154,6 +156,8 @@ export class BrevoContactImportService {
                     brevoContact.id,
                     { ...contact, listIds: [mainTargetGroupForScope.brevoId, ...targetGroupBrevoIds, ...brevoContact.listIds] },
                     scope,
+                    sendDoubleOptIn,
+                    responsibleUserId,
                 );
                 if (updatedBrevoContact) return "updated";
             } else if (!brevoContact) {
