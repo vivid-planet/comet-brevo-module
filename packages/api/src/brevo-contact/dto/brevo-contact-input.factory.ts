@@ -13,6 +13,7 @@ export interface BrevoContactInputInterface {
     attributes?: BrevoContactAttributesInterface;
     redirectionUrl?: string;
     sendDoubleOptIn: boolean;
+    responsibleUserId?: string;
 }
 
 export interface BrevoContactUpdateInputInterface {
@@ -52,6 +53,11 @@ export class BrevoContactInputFactory {
             @IsBoolean()
             @Field({ defaultValue: true })
             sendDoubleOptIn: boolean;
+
+            @IsNotEmpty()
+            @IsString()
+            @Field()
+            responsibleUserId: string;
         }
 
         @InputType({

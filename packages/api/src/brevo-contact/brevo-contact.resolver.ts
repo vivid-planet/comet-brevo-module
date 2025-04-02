@@ -6,6 +6,7 @@ import { Args, ArgsType, Int, Mutation, ObjectType, Query, Resolver } from "@nes
 import { BrevoConfigInterface } from "src/brevo-config/entities/brevo-config-entity.factory";
 
 import { BrevoApiContactsService } from "../brevo-api/brevo-api-contact.service";
+import { ContactSource } from "../brevo-email-import-log/entity/brevo-email-import-log.entity.factory";
 import { BrevoModuleConfig } from "../config/brevo-module.config";
 import { BREVO_MODULE_CONFIG } from "../config/brevo-module.constants";
 import { TargetGroupInterface } from "../target-group/entity/target-group-entity.factory";
@@ -222,6 +223,8 @@ export function createBrevoContactResolver({
                 scope,
                 templateId: brevoConfig.doubleOptInTemplateId,
                 sendDoubleOptIn: input.sendDoubleOptIn,
+                responsibleUserId: input.responsibleUserId,
+                contactSource: ContactSource.manualCreation,
             });
 
             if (created) {
