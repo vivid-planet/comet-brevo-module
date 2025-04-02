@@ -2,7 +2,7 @@
 "@comet/brevo-api": major
 ---
 
-Add `BlacklistedContacts` table to store encrypted blacklisted contacts
+Add `BlacklistedContacts` table to store hashed blacklisted contacts
 
 Use `createBlacklistedContactsEntity` for creating `BlacklistedContacts` entity. Pass `Scope` and add it to the `AppModule`:
 
@@ -16,12 +16,12 @@ Use `createBlacklistedContactsEntity` for creating `BlacklistedContacts` entity.
           });
     `
 
-Add `encryptionKey` to your environment variables:
+Add `emailHashKey` to your environment variables:
 
 ```diff
 +  @IsString()
 + @Length(64)
-+ ENCRYPTION_KEY: string;
++ EMAIL_HASH_KEY: string;
 ```
 
 Also add it to the `config.ts` and your `AppModule`:
@@ -31,7 +31,7 @@ Also add it to the `config.ts` and your `AppModule`:
     ecgRtrList: {
         apiKey: envVars.ECG_RTR_LIST_API_KEY,
     },
-    +       encryptionKey: envVars.ENCRYPTION_KEY,
+    +       emailHashKey: envVars.EMAIL_HASH_KEY,
     sitePreviewSecret: envVars.SITE_PREVIEW_SECRET,
 ```
 
@@ -41,7 +41,7 @@ Also add it to the `config.ts` and your `AppModule`:
                  //...
                BlacklistedContacts
               }
-       +   encryptionKey: config.encryption.encryptionKey,
+       +   emailHashKey: config.emailHashKey,
            //...
          });
 ```

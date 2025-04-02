@@ -2,10 +2,10 @@ import { EntityManager, EntityRepository } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Inject, Injectable } from "@nestjs/common";
 import { EmailCampaignScopeInterface } from "src/types";
+import { hashEmail } from "src/util/hash.util";
 
 import { BrevoModuleConfig } from "../config/brevo-module.config";
 import { BREVO_MODULE_CONFIG } from "../config/brevo-module.constants";
-import { encrypt } from "../util/encryption.util";
 import { BlacklistedContactsInterface } from "./entity/blacklisted-contacts.entity.factory";
 
 @Injectable()
@@ -17,14 +17,14 @@ export class BlacklistedContactsService {
         @Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig,
         private readonly entityManager: EntityManager,
     ) {
-        this.secretKey = this.config.encryptionKey;
+        this.secretKey = this.config.emailHashKey;
     }
 
     public async addBlacklistedContacts(emails: string[], scope: EmailCampaignScopeInterface): Promise<BlacklistedContactsInterface[]> {
         const blacklistedContacts: BlacklistedContactsInterface[] = [];
 
         for (const email of emails) {
-            const hashedEmail = encrypt(email, this.secretKey);
+            const hashedEmail = hashEmail(email, this.secretKey);
 
             const blacklistedContact = this.repository.create({
                 hashedEmail,

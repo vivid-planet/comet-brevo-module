@@ -166,7 +166,7 @@ export class AppModule {
                         TargetGroup,
                         BrevoEmailImportLog,
                     },
-                    encryptionKey: config.encryptionKey,
+                    emailHashKey: config.emailHashKey,
                     ecgRtrList: {
                         apiKey: config.ecgRtrList.apiKey,
                     },
