@@ -3,12 +3,12 @@ import { EntityRepository } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Inject, Injectable } from "@nestjs/common";
 import { BrevoConfigInterface } from "src/brevo-config/entities/brevo-config-entity.factory";
-import { ContactSource } from "src/brevo-email-import-log/entity/brevo-email-import-log.entity.factory";
 import { BrevoContactAttributesInterface, EmailCampaignScopeInterface } from "src/types";
 
 import { BlacklistedContactsService } from "../blacklisted-contacts/blacklisted-contacts.service";
 import { BrevoContactInterface } from "../brevo-contact/dto/brevo-contact.factory";
 import { BrevoEmailImportLogService } from "../brevo-email-import-log/brevo-email-import-log.service";
+import { ContactSource } from "../brevo-email-import-log/entity/brevo-email-import-log.entity.factory";
 import { BrevoModuleConfig } from "../config/brevo-module.config";
 import { BREVO_MODULE_CONFIG } from "../config/brevo-module.constants";
 import { handleBrevoError, isErrorFromBrevo } from "./brevo-api.utils";

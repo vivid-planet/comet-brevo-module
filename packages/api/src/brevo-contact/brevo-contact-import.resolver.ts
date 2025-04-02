@@ -8,6 +8,7 @@ import { Inject, Type } from "@nestjs/common";
 import { ModuleRef } from "@nestjs/core";
 import { Args, ArgsType, Mutation, Resolver } from "@nestjs/graphql";
 import { Readable } from "stream";
+import { v4 } from "uuid";
 
 import { BrevoModuleConfig } from "../config/brevo-module.config";
 import { BREVO_MODULE_CONFIG } from "../config/brevo-module.constants";
@@ -48,6 +49,7 @@ export function createBrevoContactImportResolver({
         ): Promise<CsvImportInformation> {
             let storageFile: NodeJS.ReadableStream | null = null;
             let objectName = null;
+            const importId: string = v4();
 
             try {
                 const fileUpload = await this.fileUploadRepository.findOne(fileId);
@@ -73,6 +75,7 @@ export function createBrevoContactImportResolver({
                     targetGroupIds,
                     sendDoubleOptIn,
                     responsibleUserId,
+                    importId,
                 });
 
                 if (await this.storageService.fileExists(this.fileUploadsConfig.directory, objectName)) {

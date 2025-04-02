@@ -7,13 +7,12 @@ import { IsEmail, IsNotEmpty, validateSync } from "class-validator";
 import { GraphQLJSONObject } from "graphql-scalars";
 import isEqual from "lodash.isequal";
 import { BrevoConfigInterface } from "src/brevo-config/entities/brevo-config-entity.factory";
-import { ContactSource } from "src/brevo-email-import-log/entity/brevo-email-import-log.entity.factory";
 import { TargetGroupInterface } from "src/target-group/entity/target-group-entity.factory";
 import { Readable } from "stream";
-import { v4 } from "uuid";
 
 import { BrevoApiContactsService, CreateDoubleOptInContactData } from "../brevo-api/brevo-api-contact.service";
 import { BrevoContactsService } from "../brevo-contact/brevo-contacts.service";
+import { ContactSource } from "../brevo-email-import-log/entity/brevo-email-import-log.entity.factory";
 import { BrevoModuleConfig } from "../config/brevo-module.config";
 import { BREVO_MODULE_CONFIG } from "../config/brevo-module.constants";
 import { TargetGroupsService } from "../target-group/target-groups.service";
@@ -53,6 +52,7 @@ interface ImportContactsFromCsvParams {
     targetGroupIds?: string[];
     isAdminImport?: boolean;
     responsibleUserId?: string;
+    importId?: string;
 }
 
 @Injectable()
@@ -74,11 +74,11 @@ export class BrevoContactImportService {
         targetGroupIds = [],
         isAdminImport = false,
         responsibleUserId,
+        importId,
     }: ImportContactsFromCsvParams): Promise<CsvImportInformation> {
         const failedColumns: Record<string, string>[] = [];
         const targetGroups = await this.targetGroupRepository.find({ id: { $in: targetGroupIds } });
         const contactSource = ContactSource.csvImport;
-        const importId: string = v4();
 
         for (const targetGroup of targetGroups) {
             if (targetGroup.isMainList) {
