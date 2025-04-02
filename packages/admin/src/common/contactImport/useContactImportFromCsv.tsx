@@ -2,7 +2,6 @@ import { useApolloClient } from "@apollo/client";
 import { RefetchQueriesInclude } from "@apollo/client/core/types";
 import { Alert, CheckboxField, FinalForm, Loading, messages, useErrorDialog } from "@comet/admin";
 import { Upload } from "@comet/admin-icons";
-import { useCurrentUser } from "@comet/cms-admin";
 import { Box, Dialog, DialogActions, DialogContent, DialogTitle, styled } from "@mui/material";
 import Button from "@mui/material/Button";
 import saveAs from "file-saver";
@@ -143,7 +142,6 @@ const ContactImportComponent = ({ scope, targetGroupId, fileInputRef, sendDouble
     const config = useBrevoConfig();
     const intl = useIntl();
     const client = useApolloClient();
-    const currentUser = useCurrentUser();
 
     async function upload(file: File, scope: GQLEmailCampaignContentScopeInput, listIds?: string[]): Promise<GQLCsvImportInformation> {
         const formData = new FormData();
@@ -168,7 +166,6 @@ const ContactImportComponent = ({ scope, targetGroupId, fileInputRef, sendDouble
                 fileId: fileUploadId,
                 scope,
                 sendDoubleOptIn,
-                responsibleUserId: currentUser.id,
             },
         });
 

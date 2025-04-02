@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 export const startBrevoContactImportMutation = gql`
-    mutation StartBrevoContactImport($scope: EmailCampaignContentScopeInput!, $fileId: ID!, $sendDoubleOptIn: Boolean!, $responsibleUserId: String!) {
-        startBrevoContactImport(scope: $scope, fileId: $fileId, sendDoubleOptIn: $sendDoubleOptIn, responsibleUserId: $responsibleUserId) {
+    mutation StartBrevoContactImport($scope: EmailCampaignContentScopeInput!, $fileId: ID!, $sendDoubleOptIn: Boolean!) {
+        startBrevoContactImport(scope: $scope, fileId: $fileId, sendDoubleOptIn: $sendDoubleOptIn) {
             created
             updated
             failed

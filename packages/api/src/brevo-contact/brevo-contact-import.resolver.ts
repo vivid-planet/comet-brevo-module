@@ -1,4 +1,4 @@
-import { BlobStorageBackendService, FileUpload, RequiredPermission } from "@comet/cms-api";
+import { BlobStorageBackendService, CurrentUser, FileUpload, GetCurrentUser, RequiredPermission } from "@comet/cms-api";
 import { createHashedPath } from "@comet/cms-api/lib/blob-storage/utils/create-hashed-path.util";
 import { FileUploadsConfig } from "@comet/cms-api/lib/file-uploads/file-uploads.config";
 import { FILE_UPLOADS_CONFIG } from "@comet/cms-api/lib/file-uploads/file-uploads.constants";
@@ -45,7 +45,8 @@ export function createBrevoContactImportResolver({
 
         @Mutation(() => CsvImportInformation)
         async startBrevoContactImport(
-            @Args() { fileId, targetGroupIds, scope, sendDoubleOptIn, responsibleUserId }: BrevoContactImportArgs,
+            @Args() { fileId, targetGroupIds, scope, sendDoubleOptIn }: BrevoContactImportArgs,
+            @GetCurrentUser() user: CurrentUser,
         ): Promise<CsvImportInformation> {
             let storageFile: NodeJS.ReadableStream | null = null;
             let objectName = null;
@@ -74,7 +75,7 @@ export function createBrevoContactImportResolver({
                     redirectUrl,
                     targetGroupIds,
                     sendDoubleOptIn,
-                    responsibleUserId,
+                    responsibleUserId: user.id,
                     importId,
                 });
 
