@@ -120,6 +120,7 @@ export class BrevoApiContactsService {
         sendDoubleOptIn?: boolean,
         responsibleUserId?: string,
         contactSource?: ContactSource,
+        importId?: string,
     ): Promise<BrevoContactInterface> {
         try {
             const idAsString = id.toString(); // brevo expects a string, because it can be an email or the id, so we have to transform the id to string
@@ -132,7 +133,7 @@ export class BrevoApiContactsService {
             }
 
             if (responsibleUserId && !sendDoubleOptIn && brevoContact.email && contactSource) {
-                await this.brevoContactLogService.addContactToLogs(brevoContact.email, responsibleUserId, scope, contactSource);
+                await this.brevoContactLogService.addContactToLogs(brevoContact.email, responsibleUserId, scope, contactSource, importId);
             }
 
             return brevoContact;
