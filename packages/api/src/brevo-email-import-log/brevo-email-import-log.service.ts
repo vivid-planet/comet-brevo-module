@@ -3,7 +3,7 @@ import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable } from "@nestjs/common";
 import { EmailCampaignScopeInterface } from "src/types";
 
-import { BrevoEmailImportLogInterface } from "./entity/brevo-email-import-log.entity.factory";
+import { BrevoEmailImportLogInterface, ContactSource } from "./entity/brevo-email-import-log.entity.factory";
 
 @Injectable()
 export class BrevoEmailImportLogService {
@@ -15,6 +15,8 @@ export class BrevoEmailImportLogService {
         email: string,
         responsibleUserId: string,
         scope: EmailCampaignScopeInterface,
+        contactSource: ContactSource,
+        importId?: string,
     ): Promise<BrevoEmailImportLogInterface> {
         const log = this.repository.create({
             importedEmail: email,
@@ -22,6 +24,8 @@ export class BrevoEmailImportLogService {
             scope,
             createdAt: new Date(),
             updatedAt: new Date(),
+            contactSource,
+            importId,
         });
         await this.entityManager.flush();
         return log;

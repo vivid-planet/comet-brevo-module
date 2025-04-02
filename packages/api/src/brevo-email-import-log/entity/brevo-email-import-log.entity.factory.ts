@@ -1,5 +1,5 @@
-import { DocumentInterface } from "@comet/cms-api";
-import { Embedded, Entity, OptionalProps, PrimaryKey, Property } from "@mikro-orm/core";
+import { DocumentInterface, IsUndefinable } from "@comet/cms-api";
+import { Embedded, Entity, Enum, OptionalProps, PrimaryKey, Property } from "@mikro-orm/core";
 import { Type } from "@nestjs/common";
 import { Field, ID, ObjectType } from "@nestjs/graphql";
 import { v4 } from "uuid";
@@ -12,6 +12,13 @@ export interface BrevoEmailImportLogInterface {
     scope: EmailCampaignScopeInterface;
     createdAt: Date;
     updatedAt: Date;
+    contactSource: ContactSource;
+    importId?: string;
+}
+
+export enum ContactSource {
+    manualCreation = "Manual Creation",
+    csvImport = "CSV Import",
 }
 
 export function createBrevoEmailImportLogEntity({ Scope }: { Scope: EmailCampaignScopeInterface }): Type<BrevoEmailImportLogInterface> {
@@ -50,6 +57,16 @@ export function createBrevoEmailImportLogEntity({ Scope }: { Scope: EmailCampaig
         @Embedded(() => Scope)
         @Field(() => Scope)
         scope: typeof Scope;
+
+        @Property({ columnType: "uuid" })
+        @IsUndefinable()
+        @Field(() => ID)
+        importId?: string = v4();
+
+        @Property({ columnType: "text" })
+        @Field(() => ContactSource)
+        @Enum({ items: () => ContactSource })
+        contactSource: ContactSource;
     }
 
     return BrevoEmailImportLog;

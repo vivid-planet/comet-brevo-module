@@ -6,6 +6,7 @@ import { BrevoConfigInterface } from "src/brevo-config/entities/brevo-config-ent
 import { BlacklistedContactsInterface } from "../blacklisted-contacts/entity/blacklisted-contacts.entity.factory";
 import { BrevoApiContactsService } from "../brevo-api/brevo-api-contact.service";
 import { BrevoEmailImportLogService } from "../brevo-email-import-log/brevo-email-import-log.service";
+import { ContactSource } from "../brevo-email-import-log/entity/brevo-email-import-log.entity.factory";
 import { BrevoModuleConfig } from "../config/brevo-module.config";
 import { BREVO_MODULE_CONFIG } from "../config/brevo-module.constants";
 import { TargetGroupsService } from "../target-group/target-groups.service";
@@ -40,6 +41,7 @@ export class BrevoContactsService {
         listIds,
         sendDoubleOptIn,
         responsibleUserId,
+        contactSource,
     }: {
         email: string;
         attributes?: BrevoContactAttributesInterface;
@@ -49,6 +51,7 @@ export class BrevoContactsService {
         listIds?: number[];
         sendDoubleOptIn: boolean;
         responsibleUserId?: string;
+        contactSource?: ContactSource;
     }): Promise<boolean> {
         const mainTargetGroupForScope = await this.targetGroupService.createIfNotExistMainTargetGroupForScope(scope);
         const targetGroupIds = await this.getTargetGroupIdsForNewContact({ scope, contactAttributes: attributes });
@@ -64,9 +67,9 @@ export class BrevoContactsService {
             const encryptedEmail = encrypt(email, this.secretKey);
             const blacklistedContactAvailable = await this.blacklistedContactsRepository.findOne({ hashedEmail: encryptedEmail });
 
-            if (!blacklistedContactAvailable) {
+            if (!blacklistedContactAvailable && contactSource) {
                 created = await this.brevoContactsApiService.createBrevoContactWithoutDoubleOptIn({ email, attributes }, brevoIds, templateId, scope);
-                await this.brevoEmailImportLogService.addContactToLogs(email, responsibleUserId, scope);
+                await this.brevoEmailImportLogService.addContactToLogs(email, responsibleUserId, scope, contactSource);
             }
         } else {
             created = await this.brevoContactsApiService.createDoubleOptInBrevoContact(
