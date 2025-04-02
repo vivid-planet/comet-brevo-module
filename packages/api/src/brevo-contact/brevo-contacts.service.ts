@@ -2,6 +2,7 @@ import { EntityRepository } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Inject, Injectable } from "@nestjs/common";
 import { BrevoConfigInterface } from "src/brevo-config/entities/brevo-config-entity.factory";
+import { hashEmail } from "src/util/hash.util";
 
 import { BlacklistedContactsInterface } from "../blacklisted-contacts/entity/blacklisted-contacts.entity.factory";
 import { BrevoApiContactsService } from "../brevo-api/brevo-api-contact.service";
@@ -11,7 +12,6 @@ import { BrevoModuleConfig } from "../config/brevo-module.config";
 import { BREVO_MODULE_CONFIG } from "../config/brevo-module.constants";
 import { TargetGroupsService } from "../target-group/target-groups.service";
 import { BrevoContactAttributesInterface, EmailCampaignScopeInterface } from "../types";
-import { encrypt } from "../util/encryption.util";
 import { BrevoContactInterface } from "./dto/brevo-contact.factory";
 import { SubscribeInputInterface } from "./dto/subscribe-input.factory";
 import { SubscribeResponse } from "./dto/subscribe-response.enum";
@@ -29,7 +29,7 @@ export class BrevoContactsService {
         private readonly targetGroupService: TargetGroupsService,
         private readonly brevoEmailImportLogService: BrevoEmailImportLogService,
     ) {
-        this.secretKey = this.config.encryptionKey;
+        this.secretKey = this.config.emailHashKey;
     }
 
     public async createContact({
@@ -64,8 +64,8 @@ export class BrevoContactsService {
         }
 
         if (!sendDoubleOptIn && responsibleUserId) {
-            const encryptedEmail = encrypt(email, this.secretKey);
-            const blacklistedContactAvailable = await this.blacklistedContactsRepository.findOne({ hashedEmail: encryptedEmail });
+            const hashedEmail = hashEmail(email, this.secretKey);
+            const blacklistedContactAvailable = await this.blacklistedContactsRepository.findOne({ hashedEmail: hashedEmail });
 
             if (!blacklistedContactAvailable && contactSource) {
                 created = await this.brevoContactsApiService.createBrevoContactWithoutDoubleOptIn({ email, attributes }, brevoIds, templateId, scope);

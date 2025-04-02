@@ -35,5 +35,5 @@ export interface BrevoModuleConfig {
             };
         };
     };
-    encryptionKey: string;
+    emailHashKey: string;
 }

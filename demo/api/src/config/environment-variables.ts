@@ -136,5 +136,5 @@ export class EnvironmentVariables {
 
     @IsString()
     @Length(64)
-    ENCRYPTION_KEY: string;
+    EMAIL_HASH_KEY: string;
 }
