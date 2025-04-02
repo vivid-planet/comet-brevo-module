@@ -17,8 +17,8 @@ export interface BrevoEmailImportLogInterface {
 }
 
 export enum ContactSource {
-    manualCreation = "Manual Creation",
-    csvImport = "CSV Import",
+    manualCreation = "manualCreation",
+    csvImport = "csvImport",
 }
 
 export function createBrevoEmailImportLogEntity({ Scope }: { Scope: EmailCampaignScopeInterface }): Type<BrevoEmailImportLogInterface> {
