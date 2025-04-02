@@ -1,4 +1,4 @@
-import { AffectedEntity, PaginatedResponseFactory, RequiredPermission } from "@comet/cms-api";
+import { AffectedEntity, CurrentUser, GetCurrentUser, PaginatedResponseFactory, RequiredPermission } from "@comet/cms-api";
 import { EntityRepository, FilterQuery } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Inject, Type } from "@nestjs/common";
@@ -209,6 +209,7 @@ export function createBrevoContactResolver({
             @Args("scope", { type: () => Scope }, new DynamicDtoValidationPipe(Scope)) scope: typeof Scope,
             @Args("input", { type: () => BrevoContactInput })
             input: BrevoContactInputInterface,
+            @GetCurrentUser() user: CurrentUser,
         ): Promise<SubscribeResponse> {
             if ((await this.ecgRtrListService.getContainedEcgRtrListEmails([input.email])).length > 0) {
                 return SubscribeResponse.ERROR_CONTAINED_IN_ECG_RTR_LIST;
@@ -223,7 +224,7 @@ export function createBrevoContactResolver({
                 scope,
                 templateId: brevoConfig.doubleOptInTemplateId,
                 sendDoubleOptIn: input.sendDoubleOptIn,
-                responsibleUserId: input.responsibleUserId,
+                responsibleUserId: user.id,
                 contactSource: ContactSource.manualCreation,
             });
 
