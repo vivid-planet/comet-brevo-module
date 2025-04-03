@@ -10,11 +10,14 @@ import { BrevoEmailImportLogInterface, ContactSource } from "./entity/brevo-emai
 
 @Injectable()
 export class BrevoEmailImportLogService {
+    private readonly secretKey: string;
     constructor(
         @Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig,
         @InjectRepository("BrevoEmailImportLog") private readonly repository: EntityRepository<BrevoEmailImportLogInterface>,
         private readonly entityManager: EntityManager,
-    ) {}
+    ) {
+        this.secretKey = this.config.emailHashKey;
+    }
     public async addContactToLogs(
         email: string,
         responsibleUserId: string,
