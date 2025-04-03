@@ -2,7 +2,6 @@ import { EntityRepository } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Inject, Injectable } from "@nestjs/common";
 import { BrevoConfigInterface } from "src/brevo-config/entities/brevo-config-entity.factory";
-import { hashEmail } from "src/util/hash.util";
 
 import { BlacklistedContactsInterface } from "../blacklisted-contacts/entity/blacklisted-contacts.entity.factory";
 import { BrevoApiContactsService } from "../brevo-api/brevo-api-contact.service";
@@ -12,6 +11,7 @@ import { BrevoModuleConfig } from "../config/brevo-module.config";
 import { BREVO_MODULE_CONFIG } from "../config/brevo-module.constants";
 import { TargetGroupsService } from "../target-group/target-groups.service";
 import { BrevoContactAttributesInterface, EmailCampaignScopeInterface } from "../types";
+import { hashEmail } from "../util/hash.util";
 import { BrevoContactInterface } from "./dto/brevo-contact.factory";
 import { SubscribeInputInterface } from "./dto/subscribe-input.factory";
 import { SubscribeResponse } from "./dto/subscribe-response.enum";
