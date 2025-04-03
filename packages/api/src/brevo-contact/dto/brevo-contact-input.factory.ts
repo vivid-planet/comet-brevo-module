@@ -53,11 +53,6 @@ export class BrevoContactInputFactory {
             @IsBoolean()
             @Field({ defaultValue: true })
             sendDoubleOptIn: boolean;
-
-            @IsNotEmpty()
-            @IsString()
-            @Field()
-            responsibleUserId: string;
         }
 
         @InputType({

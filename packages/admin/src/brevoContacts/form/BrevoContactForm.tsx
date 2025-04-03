@@ -18,7 +18,7 @@ import {
     useStackApi,
 } from "@comet/admin";
 import { ArrowLeft } from "@comet/admin-icons";
-import { ContentScopeIndicator, ContentScopeInterface, resolveHasSaveConflict, useCurrentUser, useFormSaveConflict } from "@comet/cms-admin";
+import { ContentScopeIndicator, ContentScopeInterface, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
 import { Card, IconButton } from "@mui/material";
 import { Box } from "@mui/system";
 import { FormApi } from "final-form";
@@ -64,7 +64,6 @@ export function BrevoContactForm({ id, scope, input2State, additionalFormFields,
     const client = useApolloClient();
     const mode = id ? "edit" : "add";
     const formApiRef = useFormApiRef<EditBrevoContactFormValuesWithAttributes>();
-    const currentUser = useCurrentUser();
 
     const brevoContactFormFragment = gql`
         fragment BrevoContactForm on BrevoContact {
@@ -129,7 +128,6 @@ export function BrevoContactForm({ id, scope, input2State, additionalFormFields,
         const output = {
             ...state,
             blocked: false,
-            responsibleUserId: currentUser.id,
         };
 
         if (mode === "edit") {

@@ -982,7 +982,6 @@ input BrevoContactInput {
   blocked: Boolean!
   redirectionUrl: String!
   sendDoubleOptIn: Boolean! = true
-  responsibleUserId: String!
   attributes: BrevoContactAttributesInput
 }
 
