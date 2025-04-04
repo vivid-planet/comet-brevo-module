@@ -16,8 +16,8 @@ export class BlacklistedContactsModule {
         return {
             module: BlacklistedContactsModule,
             imports: BlacklistedContacts ? [MikroOrmModule.forFeature([BlacklistedContacts])] : [],
-            providers: [BlacklistedContactsService],
-            exports: [BlacklistedContactsService],
+            providers: BlacklistedContacts ? [BlacklistedContactsService] : [],
+            exports: BlacklistedContacts ? [BlacklistedContactsService] : [],
         };
     }
 }

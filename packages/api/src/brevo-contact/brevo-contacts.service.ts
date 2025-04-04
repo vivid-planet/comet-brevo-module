@@ -1,6 +1,6 @@
 import { EntityRepository } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
-import { Inject, Injectable } from "@nestjs/common";
+import { Inject, Injectable, Optional } from "@nestjs/common";
 import { BrevoConfigInterface } from "src/brevo-config/entities/brevo-config-entity.factory";
 
 import { BlacklistedContactsInterface } from "../blacklisted-contacts/entity/blacklisted-contacts.entity.factory";
@@ -23,11 +23,14 @@ export class BrevoContactsService {
     constructor(
         @Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig,
         @InjectRepository("BrevoConfig") private readonly brevoConfigRepository: EntityRepository<BrevoConfigInterface>,
-        @InjectRepository("BlacklistedContacts") private readonly blacklistedContactsRepository: EntityRepository<BlacklistedContactsInterface>,
+        @Optional()
+        @InjectRepository("BlacklistedContacts")
+        @Optional()
+        private readonly blacklistedContactsRepository: EntityRepository<BlacklistedContactsInterface>,
         private readonly brevoContactsApiService: BrevoApiContactsService,
         private readonly ecgRtrListService: EcgRtrListService,
         private readonly targetGroupService: TargetGroupsService,
-        private readonly brevoEmailImportLogService: BrevoEmailImportLogService,
+        @Optional() private readonly brevoEmailImportLogService: BrevoEmailImportLogService,
     ) {
         this.secretKey = this.config.contactsWithoutDoi?.emailHashKey;
     }

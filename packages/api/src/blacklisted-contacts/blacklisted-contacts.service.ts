@@ -1,6 +1,6 @@
 import { EntityManager, EntityRepository } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
-import { Inject, Injectable } from "@nestjs/common";
+import { Inject, Injectable, Optional } from "@nestjs/common";
 import { EmailCampaignScopeInterface } from "src/types";
 
 import { BrevoModuleConfig } from "../config/brevo-module.config";
@@ -13,7 +13,9 @@ export class BlacklistedContactsService {
     private readonly secretKey?: string;
 
     constructor(
-        @InjectRepository("BlacklistedContacts") private readonly repository: EntityRepository<BlacklistedContactsInterface>,
+        @Optional()
+        @InjectRepository("BlacklistedContacts")
+        private readonly repository: EntityRepository<BlacklistedContactsInterface>,
         @Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig,
         private readonly entityManager: EntityManager,
     ) {

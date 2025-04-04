@@ -41,6 +41,8 @@ export class BrevoModule {
                 BrevoContactAttributes: config.brevo.BrevoContactAttributes,
                 Scope: config.emailCampaigns.Scope,
                 TargetGroup: config.brevo.TargetGroup,
+                BlacklistedContacts: config.brevo.BlacklistedContacts,
+                BrevoEmailImportLog: config.brevo.BrevoEmailImportLog,
             }),
             EmailCampaignModule.register({
                 EmailCampaignContentBlock: config.emailCampaigns.EmailCampaignContentBlock,
@@ -83,7 +85,6 @@ export class BrevoModule {
                 TargetGroupModule,
                 BrevoContactModule,
                 BrevoApiModule,
-                BrevoEmailImportLogModule,
                 ...(config.brevo.BlacklistedContacts ? [BlacklistedContactsModule] : []),
                 ...(config.brevo.BrevoEmailImportLog ? [BrevoEmailImportLogModule] : []),
             ],
