@@ -1,7 +1,7 @@
 import * as Brevo from "@getbrevo/brevo";
 import { EntityRepository } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
-import { Inject, Injectable } from "@nestjs/common";
+import { Inject, Injectable, Optional } from "@nestjs/common";
 import { BrevoConfigInterface } from "src/brevo-config/entities/brevo-config-entity.factory";
 import { BrevoContactAttributesInterface, EmailCampaignScopeInterface } from "src/types";
 
@@ -27,8 +27,8 @@ export class BrevoApiContactsService {
     constructor(
         @Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig,
         @InjectRepository("BrevoConfig") private readonly brevoConfigRepository: EntityRepository<BrevoConfigInterface>,
-        private readonly blacklistedContactsService: BlacklistedContactsService,
-        private readonly brevoContactLogService: BrevoEmailImportLogService,
+        @Optional() private readonly blacklistedContactsService: BlacklistedContactsService,
+        @Optional() private readonly brevoContactLogService: BrevoEmailImportLogService,
     ) {}
 
     private getContactsApi(scope: EmailCampaignScopeInterface): Brevo.ContactsApi {
