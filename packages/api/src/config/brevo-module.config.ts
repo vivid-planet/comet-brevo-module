@@ -14,12 +14,12 @@ export interface BrevoModuleConfig {
             apiKey: string;
             redirectUrlForImport: string;
         };
-        BlacklistedContacts: Type<BlacklistedContactsInterface>;
+        BlacklistedContacts?: Type<BlacklistedContactsInterface>;
         BrevoContactAttributes?: Type<BrevoContactAttributesInterface>;
         BrevoContactFilterAttributes?: Type<BrevoContactFilterAttributesInterface>;
         EmailCampaign: Type<EmailCampaignInterface>;
         TargetGroup: Type<TargetGroupInterface>;
-        BrevoEmailImportLog: Type<BrevoEmailImportLogInterface>;
+        BrevoEmailImportLog?: Type<BrevoEmailImportLogInterface>;
     };
     ecgRtrList: {
         apiKey: string;
@@ -35,5 +35,8 @@ export interface BrevoModuleConfig {
             };
         };
     };
-    emailHashKey: string;
+    contactsWithoutDoi: {
+        allowAddingContactsWithoutDoi?: boolean;
+        emailHashKey?: string;
+    };
 }

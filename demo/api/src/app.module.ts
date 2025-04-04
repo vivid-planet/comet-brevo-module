@@ -166,7 +166,11 @@ export class AppModule {
                         TargetGroup,
                         BrevoEmailImportLog,
                     },
-                    emailHashKey: config.emailHashKey,
+
+                    contactsWithoutDoi: {
+                        allowAddingContactsWithoutDoi: config.contactsWithoutDoi.allowAddingContactsWithoutDoi,
+                        emailHashKey: config.contactsWithoutDoi.emailHashKey,
+                    },
                     ecgRtrList: {
                         apiKey: config.ecgRtrList.apiKey,
                     },
