@@ -25,6 +25,7 @@ import { FormApi } from "final-form";
 import React from "react";
 import { FormattedMessage } from "react-intl";
 
+import { useBrevoConfig } from "../../common/BrevoConfigProvider";
 import {
     brevoContactFormCheckForChangesQuery,
     brevoContactFormQuery,
@@ -64,6 +65,7 @@ export function BrevoContactForm({ id, scope, input2State, additionalFormFields,
     const client = useApolloClient();
     const mode = id ? "edit" : "add";
     const formApiRef = useFormApiRef<EditBrevoContactFormValuesWithAttributes>();
+    const { allowAddingContactsWithoutDoi } = useBrevoConfig();
 
     const brevoContactFormFragment = gql`
         fragment BrevoContactForm on BrevoContact {
@@ -208,16 +210,18 @@ export function BrevoContactForm({ id, scope, input2State, additionalFormFields,
                                 <FormSection
                                     title={<FormattedMessage id="cometBrevoModule.brevoContact.doubleOptIn" defaultMessage="Double Opt-in" />}
                                 >
-                                    <CheckboxField
-                                        name="sendDoubleOptIn"
-                                        label={
-                                            <FormattedMessage
-                                                id="cometBrevoModule.brevoContact.sendDoubleOptInMail"
-                                                defaultMessage="Send double opt-in email"
-                                            />
-                                        }
-                                        fullWidth
-                                    />
+                                    {allowAddingContactsWithoutDoi && (
+                                        <CheckboxField
+                                            name="sendDoubleOptIn"
+                                            label={
+                                                <FormattedMessage
+                                                    id="cometBrevoModule.brevoContact.sendDoubleOptInMail"
+                                                    defaultMessage="Send double opt-in email"
+                                                />
+                                            }
+                                            fullWidth
+                                        />
+                                    )}
                                     {values.sendDoubleOptIn ? (
                                         <Alert severity="warning" sx={{ marginBottom: 5 }}>
                                             <FormattedMessage

@@ -141,5 +141,6 @@ export class EnvironmentVariables {
 
     @IsBoolean()
     @IsUndefinable()
+    @Transform(({ value }) => value === "true")
     ALLOW_ADDING_CONTACTS_WITHOUT_DOI?: boolean;
 }
