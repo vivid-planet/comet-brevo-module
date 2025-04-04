@@ -16,6 +16,9 @@ export function createConfig() {
             console.warn(`External variable ${externalVariableName} not set"`);
         }
     }
+
+    const toBoolean = (value?: string): boolean => value?.toLowerCase() === "true";
+
     return {
         ...cometConfig,
         apiUrl: environmentVariables.API_URL,
@@ -25,6 +28,7 @@ export function createConfig() {
         buildNumber: environmentVariables.BUILD_NUMBER,
         commitSha: environmentVariables.COMMIT_SHA,
         campaignUrl: environmentVariables.CAMPAIGN_URL,
+        allowAddingContactsWithoutDoi: toBoolean(environmentVariables.ALLOW_ADDING_CONTACTS_WITHOUT_DOI),
     };
 }
 

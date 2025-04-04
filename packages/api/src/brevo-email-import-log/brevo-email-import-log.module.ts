@@ -8,7 +8,7 @@ import { BrevoEmailImportLogService } from "./brevo-email-import-log.service";
 import { BrevoEmailImportLogInterface } from "./entity/brevo-email-import-log.entity.factory";
 
 interface BrevoEmailImportLogModuleConfig {
-    BrevoEmailImportLog: Type<BrevoEmailImportLogInterface>;
+    BrevoEmailImportLog?: Type<BrevoEmailImportLogInterface>;
     Scope: Type<EmailCampaignScopeInterface>;
 }
 
@@ -17,7 +17,7 @@ export class BrevoEmailImportLogModule {
     static register({ Scope, BrevoEmailImportLog }: BrevoEmailImportLogModuleConfig): DynamicModule {
         return {
             module: BrevoEmailImportLogModule,
-            imports: [ConfigModule, BrevoApiModule, MikroOrmModule.forFeature([BrevoEmailImportLog])],
+            imports: [ConfigModule, BrevoApiModule, ...(BrevoEmailImportLog ? [MikroOrmModule.forFeature([BrevoEmailImportLog])] : [])],
             providers: [BrevoEmailImportLogService],
             exports: [BrevoEmailImportLogService],
         };

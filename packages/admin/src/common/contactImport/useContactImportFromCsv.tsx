@@ -30,6 +30,7 @@ export const useContactImportFromCsv = ({ scope, targetGroupId, refetchQueries }
     const fileInputRef = React.useRef<HTMLInputElement>(null);
     const [open, setOpen] = React.useState(false);
     const [sendDoubleOptIn, setSendDoubleOptIn] = React.useState(true);
+    const { allowAddingContactsWithoutDoi } = useBrevoConfig();
 
     const moreActionsMenuItem: CrudMoreActionsItem = React.useMemo(
         () => ({
@@ -81,16 +82,18 @@ export const useContactImportFromCsv = ({ scope, targetGroupId, refetchQueries }
                                         />
                                     </Alert>
                                 )}
-                                <CheckboxField
-                                    name="sendDoubleOptIn"
-                                    label={
-                                        <FormattedMessage
-                                            id="cometBrevoModule.contactImport.sendDoubleOptInMail"
-                                            defaultMessage="Send double opt-in email"
-                                        />
-                                    }
-                                    fullWidth
-                                />
+                                {allowAddingContactsWithoutDoi && (
+                                    <CheckboxField
+                                        name="sendDoubleOptIn"
+                                        label={
+                                            <FormattedMessage
+                                                id="cometBrevoModule.contactImport.sendDoubleOptInMail"
+                                                defaultMessage="Send double opt-in email"
+                                            />
+                                        }
+                                        fullWidth
+                                    />
+                                )}
                             </>
                         );
                     }}

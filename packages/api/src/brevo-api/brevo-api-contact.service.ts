@@ -1,7 +1,7 @@
 import * as Brevo from "@getbrevo/brevo";
 import { EntityRepository } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
-import { Inject, Injectable } from "@nestjs/common";
+import { Inject, Injectable, Optional } from "@nestjs/common";
 import { BrevoConfigInterface } from "src/brevo-config/entities/brevo-config-entity.factory";
 import { BrevoContactAttributesInterface, EmailCampaignScopeInterface } from "src/types";
 
@@ -27,8 +27,8 @@ export class BrevoApiContactsService {
     constructor(
         @Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig,
         @InjectRepository("BrevoConfig") private readonly brevoConfigRepository: EntityRepository<BrevoConfigInterface>,
-        private readonly blacklistedContactsService: BlacklistedContactsService,
-        private readonly brevoContactLogService: BrevoEmailImportLogService,
+        @Optional() private readonly blacklistedContactsService: BlacklistedContactsService,
+        @Optional() private readonly brevoContactLogService: BrevoEmailImportLogService,
     ) {}
 
     private getContactsApi(scope: EmailCampaignScopeInterface): Brevo.ContactsApi {
@@ -156,7 +156,7 @@ export class BrevoApiContactsService {
             const idAsString = id.toString(); // brevo expects a string, because it can be an email or the id, so we have to transform the id to string
             const { body } = await this.getContactsApi(scope).getContactInfo(idAsString);
 
-            if (body.email) {
+            if (body.email && this.config.contactsWithoutDoi?.allowAddingContactsWithoutDoi) {
                 await this.blacklistedContactsService.addBlacklistedContacts([body.email], scope);
             }
 
@@ -237,7 +237,7 @@ export class BrevoApiContactsService {
         try {
             for (const contact of contacts) {
                 const idAsString = contact.id.toString();
-                if (contact.email) {
+                if (contact.email && this.config.contactsWithoutDoi?.allowAddingContactsWithoutDoi) {
                     await this.blacklistedContactsService.addBlacklistedContacts([contact.email], scope);
                 }
                 const response = await this.getContactsApi(scope).deleteContact(idAsString);
