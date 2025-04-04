@@ -19,7 +19,7 @@ import { EcgRtrListService } from "./ecg-rtr-list/ecg-rtr-list.service";
 
 @Injectable()
 export class BrevoContactsService {
-    private readonly secretKey: string;
+    private readonly secretKey?: string;
     constructor(
         @Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig,
         @InjectRepository("BrevoConfig") private readonly brevoConfigRepository: EntityRepository<BrevoConfigInterface>,
@@ -29,7 +29,7 @@ export class BrevoContactsService {
         private readonly targetGroupService: TargetGroupsService,
         private readonly brevoEmailImportLogService: BrevoEmailImportLogService,
     ) {
-        this.secretKey = this.config.emailHashKey;
+        this.secretKey = this.config.contactsWithoutDoi.emailHashKey;
     }
 
     public async createContact({
@@ -64,6 +64,10 @@ export class BrevoContactsService {
         }
 
         if (!sendDoubleOptIn && responsibleUserId) {
+            if (!this.secretKey) {
+                throw new Error("There is no `encryptionKey` defined in the environment variables.");
+            }
+
             const hashedEmail = hashEmail(email, this.secretKey);
             const blacklistedContactAvailable = await this.blacklistedContactsRepository.findOne({ hashedEmail: hashedEmail });
 

@@ -69,7 +69,10 @@ export function createConfig(processEnv: NodeJS.ProcessEnv) {
         ecgRtrList: {
             apiKey: envVars.ECG_RTR_LIST_API_KEY,
         },
-        emailHashKey: envVars.EMAIL_HASH_KEY,
+        contactsWithoutDoi: {
+            allowAddingContactsWithoutDoi: envVars.ALLOW_ADDING_CONTACTS_WITHOUT_DOI ?? undefined,
+            emailHashKey: envVars.EMAIL_HASH_KEY ?? undefined,
+        },
         sitePreviewSecret: envVars.SITE_PREVIEW_SECRET,
     };
 }
