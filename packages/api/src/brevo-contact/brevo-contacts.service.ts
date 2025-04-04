@@ -29,7 +29,7 @@ export class BrevoContactsService {
         private readonly targetGroupService: TargetGroupsService,
         private readonly brevoEmailImportLogService: BrevoEmailImportLogService,
     ) {
-        this.secretKey = this.config.contactsWithoutDoi.emailHashKey;
+        this.secretKey = this.config.contactsWithoutDoi?.emailHashKey;
     }
 
     public async createContact({

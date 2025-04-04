@@ -17,7 +17,7 @@ export class BlacklistedContactsService {
         @Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig,
         private readonly entityManager: EntityManager,
     ) {
-        this.secretKey = this.config.contactsWithoutDoi.emailHashKey;
+        this.secretKey = this.config.contactsWithoutDoi?.emailHashKey;
     }
 
     public async addBlacklistedContacts(emails: string[], scope: EmailCampaignScopeInterface): Promise<BlacklistedContactsInterface[]> {
