@@ -156,7 +156,7 @@ export class BrevoApiContactsService {
             const idAsString = id.toString(); // brevo expects a string, because it can be an email or the id, so we have to transform the id to string
             const { body } = await this.getContactsApi(scope).getContactInfo(idAsString);
 
-            if (body.email) {
+            if (body.email && this.config.contactsWithoutDoi.allowAddingContactsWithoutDoi) {
                 await this.blacklistedContactsService.addBlacklistedContacts([body.email], scope);
             }
 
@@ -237,7 +237,7 @@ export class BrevoApiContactsService {
         try {
             for (const contact of contacts) {
                 const idAsString = contact.id.toString();
-                if (contact.email) {
+                if (contact.email && this.config.contactsWithoutDoi.allowAddingContactsWithoutDoi) {
                     await this.blacklistedContactsService.addBlacklistedContacts([contact.email], scope);
                 }
                 const response = await this.getContactsApi(scope).deleteContact(idAsString);
