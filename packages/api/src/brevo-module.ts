@@ -35,39 +35,58 @@ export class BrevoModule {
             Scope: config.emailCampaigns.Scope,
         });
 
-        return {
-            module: BrevoModule,
-            imports: [
-                BrevoApiModule,
-                BrevoContactModule.register({
-                    BrevoContactAttributes: config.brevo.BrevoContactAttributes,
-                    Scope: config.emailCampaigns.Scope,
-                    TargetGroup: config.brevo.TargetGroup,
-                }),
-                EmailCampaignModule.register({
-                    EmailCampaignContentBlock: config.emailCampaigns.EmailCampaignContentBlock,
-                    Scope: config.emailCampaigns.Scope,
-                    TargetGroup: config.brevo.TargetGroup,
-                    EmailCampaign: config.brevo.EmailCampaign,
-                    BrevoConfig,
-                }),
-                TargetGroupModule.register({
-                    Scope: config.emailCampaigns.Scope,
-                    BrevoFilterAttributes: config.brevo.BrevoContactFilterAttributes,
-                    TargetGroup: config.brevo.TargetGroup,
-                }),
-                BrevoConfigModule.register({ BrevoConfig, Scope: config.emailCampaigns.Scope }),
+        const imports = [
+            BrevoApiModule,
+            BrevoContactModule.register({
+                BrevoContactAttributes: config.brevo.BrevoContactAttributes,
+                Scope: config.emailCampaigns.Scope,
+                TargetGroup: config.brevo.TargetGroup,
+            }),
+            EmailCampaignModule.register({
+                EmailCampaignContentBlock: config.emailCampaigns.EmailCampaignContentBlock,
+                Scope: config.emailCampaigns.Scope,
+                TargetGroup: config.brevo.TargetGroup,
+                EmailCampaign: config.brevo.EmailCampaign,
+                BrevoConfig,
+            }),
+            TargetGroupModule.register({
+                Scope: config.emailCampaigns.Scope,
+                BrevoFilterAttributes: config.brevo.BrevoContactFilterAttributes,
+                TargetGroup: config.brevo.TargetGroup,
+            }),
+            BrevoConfigModule.register({ BrevoConfig, Scope: config.emailCampaigns.Scope }),
+            ConfigModule.forRoot(config),
+        ];
+
+        if (config.brevo.BlacklistedContacts) {
+            imports.push(
                 BlacklistedContactsModule.register({
                     Scope: config.emailCampaigns.Scope,
                     BlacklistedContacts: config.brevo.BlacklistedContacts,
                 }),
-                ConfigModule.forRoot(config),
+            );
+        }
+
+        if (config.brevo.BrevoEmailImportLog) {
+            imports.push(
                 BrevoEmailImportLogModule.register({
                     Scope: config.emailCampaigns.Scope,
                     BrevoEmailImportLog: config.brevo.BrevoEmailImportLog,
                 }),
+            );
+        }
+
+        return {
+            module: BrevoModule,
+            imports,
+            exports: [
+                TargetGroupModule,
+                BrevoContactModule,
+                BrevoApiModule,
+                BrevoEmailImportLogModule,
+                ...(config.brevo.BlacklistedContacts ? [BlacklistedContactsModule] : []),
+                ...(config.brevo.BrevoEmailImportLog ? [BrevoEmailImportLogModule] : []),
             ],
-            exports: [TargetGroupModule, BrevoContactModule, BrevoApiModule, BrevoEmailImportLogModule, BlacklistedContactsModule],
         };
     }
 }
