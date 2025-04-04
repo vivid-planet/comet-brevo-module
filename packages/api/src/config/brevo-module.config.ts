@@ -35,7 +35,7 @@ export interface BrevoModuleConfig {
             };
         };
     };
-    contactsWithoutDoi: {
+    contactsWithoutDoi?: {
         allowAddingContactsWithoutDoi?: boolean;
         emailHashKey?: string;
     };
