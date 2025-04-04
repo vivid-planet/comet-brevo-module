@@ -15,9 +15,7 @@ export class BrevoEmailImportLogService {
         @Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig,
         @InjectRepository("BrevoEmailImportLog") private readonly repository: EntityRepository<BrevoEmailImportLogInterface>,
         private readonly entityManager: EntityManager,
-    ) {
-        this.secretKey = this.config.emailHashKey;
-    }
+    ) {}
     public async addContactToLogs(
         email: string,
         responsibleUserId: string,
@@ -26,7 +24,7 @@ export class BrevoEmailImportLogService {
         importId?: string,
     ): Promise<BrevoEmailImportLogInterface> {
         const log = this.repository.create({
-            importedEmail: hashEmail(email, this.secretKey),
+            importedEmail: hashEmail(email, this.config.emailHashKey),
             responsibleUserId,
             scope,
             createdAt: new Date(),
