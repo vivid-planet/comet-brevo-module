@@ -68,7 +68,7 @@ export class BrevoContactsService {
 
         if (!sendDoubleOptIn && responsibleUserId) {
             if (!this.secretKey) {
-                throw new Error("There is no `encryptionKey` defined in the environment variables.");
+                throw new Error("There is no `emailHashKey` defined in the environment variables.");
             }
 
             const hashedEmail = hashEmail(email, this.secretKey);

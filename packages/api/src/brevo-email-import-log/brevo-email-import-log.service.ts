@@ -23,7 +23,7 @@ export class BrevoEmailImportLogService {
         importId?: string,
     ): Promise<BrevoEmailImportLogInterface> {
         if (!this.config.contactsWithoutDoi?.emailHashKey) {
-            throw new Error("There is no `encryptionKey` defined in the environment variables.");
+            throw new Error("There is no `emailHashKey` defined in the environment variables.");
         }
         const log = this.repository.create({
             importedEmail: hashEmail(email, this.config.contactsWithoutDoi.emailHashKey),
