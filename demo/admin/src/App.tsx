@@ -89,7 +89,6 @@ export function App() {
                                                     resolvePreviewUrlForScope: (scope: ContentScope) => {
                                                         return `${config.campaignUrl}/block-preview/${scope.domain}/${scope.language}`;
                                                     },
-                                                    allowAddingContactsWithoutDoi: config.allowAddingContactsWithoutDoi,
                                                 }}
                                             >
                                                 <CmsBlockContextProvider
