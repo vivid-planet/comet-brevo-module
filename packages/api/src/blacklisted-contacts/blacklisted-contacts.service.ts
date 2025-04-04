@@ -26,7 +26,7 @@ export class BlacklistedContactsService {
         const blacklistedContacts: BlacklistedContactsInterface[] = [];
 
         if (!this.secretKey) {
-            throw new Error("There is no `encryptionKey` defined in the environment variables.");
+            throw new Error("There is no `emailHashKey` defined in the environment variables.");
         }
 
         for (const email of emails) {
