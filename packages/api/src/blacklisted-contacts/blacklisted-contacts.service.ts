@@ -2,10 +2,10 @@ import { EntityManager, EntityRepository } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Inject, Injectable } from "@nestjs/common";
 import { EmailCampaignScopeInterface } from "src/types";
-import { hashEmail } from "src/util/hash.util";
 
 import { BrevoModuleConfig } from "../config/brevo-module.config";
 import { BREVO_MODULE_CONFIG } from "../config/brevo-module.constants";
+import { hashEmail } from "../util/hash.util";
 import { BlacklistedContactsInterface } from "./entity/blacklisted-contacts.entity.factory";
 
 @Injectable()
