@@ -1,20 +1,20 @@
-@comet/brevo-admin": major
-"@comet/brevo-api": major
+@comet/brevo-admin": minor
+"@comet/brevo-api": minor
 
 ---
 
-Added logging for contacts created manually via the admin contact form without double opt-in confirmation
+Added logging for contacts created without sending a double opt-in confirmation
 
-When a user adds a contact manually and skips sending the double opt-in email, the action is logged.
+When a user adds a contact and skips sending the double opt-in email, the action is logged.
 
-Use `createBrevoEmailImportLogEntity` for creating `brevo-email-import-log` entity. Pass `Scope` and add it to the `AppModule`:
+If adding contacts without sending a double opt-in email is allowed, use `createBrevoEmailImportLogEntity` for creating `brevo-email-import-log` entity. Pass `Scope` and add it to the `AppModule`:
 
-    ```diff
+```diff
           BrevoModule.register({
             brevo: {
                   //...
-      +       BrevoEmailImportLog
-               }
-            //...
-          });
-    ```
++           BrevoEmailImportLog
+                   }
+                //...
+              });
+```

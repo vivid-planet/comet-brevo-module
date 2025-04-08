@@ -1,6 +1,6 @@
 import { EntityRepository } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
-import { Inject, Injectable } from "@nestjs/common";
+import { Inject, Injectable, Optional } from "@nestjs/common";
 import { BrevoConfigInterface } from "src/brevo-config/entities/brevo-config-entity.factory";
 
 import { BlacklistedContactsInterface } from "../blacklisted-contacts/entity/blacklisted-contacts.entity.factory";
@@ -19,17 +19,20 @@ import { EcgRtrListService } from "./ecg-rtr-list/ecg-rtr-list.service";
 
 @Injectable()
 export class BrevoContactsService {
-    private readonly secretKey: string;
+    private readonly secretKey?: string;
     constructor(
         @Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig,
         @InjectRepository("BrevoConfig") private readonly brevoConfigRepository: EntityRepository<BrevoConfigInterface>,
-        @InjectRepository("BlacklistedContacts") private readonly blacklistedContactsRepository: EntityRepository<BlacklistedContactsInterface>,
+        @Optional()
+        @InjectRepository("BlacklistedContacts")
+        @Optional()
+        private readonly blacklistedContactsRepository: EntityRepository<BlacklistedContactsInterface>,
         private readonly brevoContactsApiService: BrevoApiContactsService,
         private readonly ecgRtrListService: EcgRtrListService,
         private readonly targetGroupService: TargetGroupsService,
-        private readonly brevoEmailImportLogService: BrevoEmailImportLogService,
+        @Optional() private readonly brevoEmailImportLogService: BrevoEmailImportLogService,
     ) {
-        this.secretKey = this.config.emailHashKey;
+        this.secretKey = this.config.contactsWithoutDoi?.emailHashKey;
     }
 
     public async createContact({
@@ -64,6 +67,10 @@ export class BrevoContactsService {
         }
 
         if (!sendDoubleOptIn && responsibleUserId) {
+            if (!this.secretKey) {
+                throw new Error("There is no `emailHashKey` defined in the environment variables.");
+            }
+
             const hashedEmail = hashEmail(email, this.secretKey);
             const blacklistedContactAvailable = await this.blacklistedContactsRepository.findOne({ hashedEmail: hashedEmail });
 
