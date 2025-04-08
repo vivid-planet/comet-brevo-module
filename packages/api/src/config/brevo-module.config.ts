@@ -4,6 +4,8 @@ import { EmailCampaignInterface } from "src/email-campaign/entities/email-campai
 import { TargetGroupInterface } from "src/target-group/entity/target-group-entity.factory";
 import { BrevoContactAttributesInterface, EmailCampaignScopeInterface } from "src/types";
 
+import { BlacklistedContactsInterface } from "../blacklisted-contacts/entity/blacklisted-contacts.entity.factory";
+import { BrevoEmailImportLogInterface } from "../brevo-email-import-log/entity/brevo-email-import-log.entity.factory";
 import { BrevoContactFilterAttributesInterface } from "../types";
 
 export interface BrevoModuleConfig {
@@ -12,10 +14,12 @@ export interface BrevoModuleConfig {
             apiKey: string;
             redirectUrlForImport: string;
         };
+        BlacklistedContacts?: Type<BlacklistedContactsInterface>;
         BrevoContactAttributes?: Type<BrevoContactAttributesInterface>;
         BrevoContactFilterAttributes?: Type<BrevoContactFilterAttributesInterface>;
         EmailCampaign: Type<EmailCampaignInterface>;
         TargetGroup: Type<TargetGroupInterface>;
+        BrevoEmailImportLog?: Type<BrevoEmailImportLogInterface>;
     };
     ecgRtrList: {
         apiKey: string;
@@ -30,5 +34,9 @@ export interface BrevoModuleConfig {
                 password: string;
             };
         };
+    };
+    contactsWithoutDoi?: {
+        allowAddingContactsWithoutDoi?: boolean;
+        emailHashKey?: string;
     };
 }

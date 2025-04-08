@@ -17,6 +17,7 @@ interface CommandOptions {
     path: string;
     scope: Type<EmailCampaignScopeInterface>;
     targetGroupIds: string[];
+    sendDoubleOptIn: boolean;
 }
 
 export function createBrevoContactImportConsole({ Scope }: { Scope: Type<EmailCampaignScopeInterface> }): Type<unknown> {
@@ -83,7 +84,7 @@ export function createBrevoContactImportConsole({ Scope }: { Scope: Type<EmailCa
             ],
         })
         @CreateRequestContext()
-        async execute({ scope, path, targetGroupIds }: CommandOptions): Promise<void> {
+        async execute({ scope, path, targetGroupIds, sendDoubleOptIn }: CommandOptions): Promise<void> {
             const redirectUrl = this.config.brevo.resolveConfig(scope).redirectUrlForImport;
             const fileStream = fs.createReadStream(path);
             if (!this.validateRedirectUrl(redirectUrl, scope)) {
@@ -93,6 +94,7 @@ export function createBrevoContactImportConsole({ Scope }: { Scope: Type<EmailCa
             const result = await this.brevoContactImportService.importContactsFromCsv({
                 fileStream,
                 scope,
+                sendDoubleOptIn,
                 redirectUrl,
                 targetGroupIds,
             });
