@@ -1,5 +1,17 @@
 # @comet/brevo-admin
 
+## 3.0.4
+
+### Patch Changes
+
+-   fc3bc63: Fix scope parameter handling in `doubleOptInTemplates` query
+
+    Previously, the `scope` parameter in the `doubleOptInTemplates` query was not properly handled, causing it to always resolve to `undefined`. This update:
+
+    -   Adds proper scope parameter handling in the API
+    -   Implements scope parameter passing from the admin interface
+    -   Ensures correct template filtering based on scope
+
 ## 3.0.3
 
 ### Patch Changes
