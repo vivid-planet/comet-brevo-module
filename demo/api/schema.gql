@@ -215,7 +215,9 @@ type CsvImportInformation {
   created: Int!
   updated: Int!
   failed: Int!
+  blacklisted: Int!
   failedColumns: [JSONObject!]
+  blacklistedColumns: [JSONObject!]
   errorMessage: String
 }
 
