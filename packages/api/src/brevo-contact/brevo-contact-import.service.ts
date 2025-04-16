@@ -43,6 +43,9 @@ export class CsvImportInformation {
     @Field(() => [GraphQLJSONObject], { nullable: true })
     failedColumns: Record<string, string>[];
 
+    @Field(() => [GraphQLJSONObject], { nullable: true })
+    blacklistedColumns: Record<string, string>[];
+
     @Field({ nullable: true })
     errorMessage?: string;
 }
@@ -80,6 +83,8 @@ export class BrevoContactImportService {
         importId,
     }: ImportContactsFromCsvParams): Promise<CsvImportInformation> {
         const failedColumns: Record<string, string>[] = [];
+        const blacklistedColumns: Record<string, string>[] = [];
+
         const targetGroups = await this.targetGroupRepository.find({ id: { $in: targetGroupIds } });
         const contactSource = ContactSource.csvImport;
 
@@ -117,6 +122,7 @@ export class BrevoContactImportService {
                     failed,
                     blacklisted,
                     failedColumns,
+                    blacklistedColumns,
                     errorMessage:
                         "Too many contacts. Currently we only support 100 contacts at once, the first 100 contacts were handled. Please split the file and try again with the remaining contacts.",
                 };
@@ -140,6 +146,7 @@ export class BrevoContactImportService {
                         updated++;
                         break;
                     case "blacklisted":
+                        blacklistedColumns.push(row);
                         blacklisted++;
                         break;
                     case "error":
@@ -154,10 +161,10 @@ export class BrevoContactImportService {
             }
         }
         if (created + updated + failed === 0) {
-            return { created, updated, failed, blacklisted, failedColumns, errorMessage: "No contacts found." };
+            return { created, updated, failed, blacklisted, failedColumns, blacklistedColumns, errorMessage: "No contacts found." };
         }
 
-        return { created, updated, failed, blacklisted, failedColumns };
+        return { created, updated, failed, blacklisted, failedColumns, blacklistedColumns };
     }
 
     private async createOrUpdateBrevoContact(
