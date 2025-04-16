@@ -92,7 +92,9 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
         data: doubleOptInTemplatesData,
         error: doubleOptInTemplatesError,
         loading: doubleOptInTemplatesLoading,
-    } = useQuery<GQLDoubleOptInTemplatesSelectQuery, GQLDoubleOptInTemplatesSelectQueryVariables>(doubleOptInTemplatesSelectQuery);
+    } = useQuery<GQLDoubleOptInTemplatesSelectQuery, GQLDoubleOptInTemplatesSelectQueryVariables>(doubleOptInTemplatesSelectQuery, {
+        variables: { scope },
+    });
 
     const senderOptions =
         sendersData?.senders?.map((sender) => ({

@@ -63,8 +63,8 @@ export const sendersSelectQuery = gql`
 `;
 
 export const doubleOptInTemplatesSelectQuery = gql`
-    query DoubleOptInTemplatesSelect {
-        doubleOptInTemplates {
+    query DoubleOptInTemplatesSelect($scope: EmailCampaignContentScopeInput!) {
+        doubleOptInTemplates(scope: $scope) {
             id
             name
         }

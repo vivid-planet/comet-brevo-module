@@ -73,8 +73,11 @@ export function createBrevoConfigResolver({
 
         @RequiredPermission(["brevo-newsletter-config"], { skipScopeCheck: true })
         @Query(() => [BrevoApiEmailTemplate], { nullable: true })
-        async doubleOptInTemplates(): Promise<Array<BrevoApiEmailTemplate> | undefined> {
-            const { templates } = await this.brevoTransactionalEmailsApiService.getEmailTemplates(Scope);
+        async doubleOptInTemplates(
+            @Args("scope", { type: () => Scope }, new DynamicDtoValidationPipe(Scope))
+            scope: typeof Scope,
+        ): Promise<Array<BrevoApiEmailTemplate> | undefined> {
+            const { templates } = await this.brevoTransactionalEmailsApiService.getEmailTemplates(scope);
             const doubleOptInTemplates = templates?.filter((template) => template.tag === "optin" && template.isActive);
             return doubleOptInTemplates;
         }
