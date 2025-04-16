@@ -150,12 +150,14 @@ export class AppModule {
                                     apiKey: config.brevo.apiKey,
                                     redirectUrlForImport: config.brevo.redirectUrlForImport,
                                 };
-                            } else {
+                            } else if (scope.domain === "secondary") {
                                 return {
                                     apiKey: config.brevo.apiKey,
                                     redirectUrlForImport: config.brevo.redirectUrlForImport,
                                 };
                             }
+
+                            throw Error("Invalid Scope passed");
                         },
                         BrevoContactAttributes,
                         BrevoContactFilterAttributes,
