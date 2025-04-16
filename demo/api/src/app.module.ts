@@ -157,7 +157,7 @@ export class AppModule {
                                 };
                             }
 
-                            throw Error("Invalid Scope passed");
+                            throw Error("Invalid scope passed");
                         },
                         BrevoContactAttributes,
                         BrevoContactFilterAttributes,
