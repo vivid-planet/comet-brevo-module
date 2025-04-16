@@ -11,7 +11,9 @@ export interface BrevoContactInputInterface {
     email: string;
     blocked?: boolean;
     attributes?: BrevoContactAttributesInterface;
-    redirectionUrl: string;
+    redirectionUrl?: string;
+    sendDoubleOptIn: boolean;
+    responsibleUserId?: string;
 }
 
 export interface BrevoContactUpdateInputInterface {
@@ -44,7 +46,13 @@ export class BrevoContactInputFactory {
             @Field()
             @IsUrl({ require_tld: process.env.NODE_ENV === "production" })
             @IsValidRedirectURL(Scope)
-            redirectionUrl: string;
+            @IsUndefinable()
+            redirectionUrl?: string;
+
+            @IsNotEmpty()
+            @IsBoolean()
+            @Field({ defaultValue: true })
+            sendDoubleOptIn: boolean;
         }
 
         @InputType({
