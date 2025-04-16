@@ -306,6 +306,20 @@ const ContactImportComponent = ({ scope, targetGroupId, fileInputRef, sendDouble
                                 </Box>
                             )}
 
+                            {importInformation.blacklisted > 0 && (
+                                <Box mt={2}>
+                                    <Alert severity="error">
+                                        <FormattedMessage
+                                            id="cometBrevoModule.useContactImport.error.contactsAreBlacklisted"
+                                            defaultMessage="{amount} contacts could not be imported as they are blacklisted."
+                                            values={{
+                                                amount: importInformation.failed,
+                                            }}
+                                        />
+                                    </Alert>
+                                </Box>
+                            )}
+
                             {(importInformation.created > 0 || importInformation.updated > 0) && sendDoubleOptIn && (
                                 <Box mt={2}>
                                     <Alert severity="warning">
