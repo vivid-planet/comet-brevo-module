@@ -608,7 +608,7 @@ type Query {
   targetGroup(id: ID!): TargetGroup!
   targetGroups(scope: EmailCampaignContentScopeInput!, search: String, filter: TargetGroupFilter, sort: [TargetGroupSort!], offset: Int! = 0, limit: Int! = 25): PaginatedTargetGroups!
   senders(scope: EmailCampaignContentScopeInput!): [BrevoApiSender!]
-  doubleOptInTemplates: [BrevoApiEmailTemplate!]
+  doubleOptInTemplates(scope: EmailCampaignContentScopeInput!): [BrevoApiEmailTemplate!]
   brevoConfig(scope: EmailCampaignContentScopeInput!): BrevoConfig
 }
 
