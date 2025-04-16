@@ -175,7 +175,7 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
 
         const sender = sendersData?.senders?.find((s) => s.email === state.sender.value);
 
-        if (!sender || !state.doubleOptInTemplate || !state.allowedRedirectionUrl || !state.unsubscriptionPageId) {
+        if (!sender || !state.doubleOptInTemplate || !state.allowedRedirectionUrl) {
             throw new Error("Not all required fields are set");
         }
 
@@ -185,7 +185,7 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
             doubleOptInTemplateId: Number(state.doubleOptInTemplate.value),
             folderId: state.folderId ?? 1,
             allowedRedirectionUrl: state?.allowedRedirectionUrl ?? "",
-            unsubscriptionPageId: state.unsubscriptionPageId,
+            unsubscriptionPageId: state.unsubscriptionPageId ?? undefined,
         };
 
         if (mode === "edit") {
@@ -223,7 +223,7 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
 
     const validateUnsubscriptionPageId = (value: string) => {
         const validUnsubscriptionPageId = /^[a-zA-Z0-9]{24}$/;
-        if (!validUnsubscriptionPageId.test(value)) {
+        if (value?.length > 0 && !validUnsubscriptionPageId.test(value)) {
             return (
                 <FormattedMessage
                     id="cometBrevoModule.brevoConfig.unsubscriptionPageId.validation"
@@ -325,12 +325,24 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
                             <TextField
                                 fullWidth
                                 name="unsubscriptionPageId"
-                                required
                                 label={
-                                    <FormattedMessage
-                                        id="cometBrevoModule.brevoConfig.unsubscriptionPageId"
-                                        defaultMessage="Unsubscription Page ID"
-                                    />
+                                    <>
+                                        <FormattedMessage
+                                            id="cometBrevoModule.brevoConfig.unsubscriptionPageId"
+                                            defaultMessage="Unsubscription Page ID"
+                                        />
+                                        <Tooltip
+                                            title={
+                                                <FormattedMessage
+                                                    id="cometBrevoModule.brevoConfig.unsubscriptionPageId.info"
+                                                    defaultMessage="The page ID for the unsubscribe page. You can find or set this in your Brevo account. If left empty, Brevo will use its default unsubscribe page. For a better brand experience, we recommend creating a custom unsubscribe page."
+                                                />
+                                            }
+                                            sx={{ marginLeft: "5px" }}
+                                        >
+                                            <Info />
+                                        </Tooltip>
+                                    </>
                                 }
                                 validate={validateUnsubscriptionPageId}
                             />

@@ -210,7 +210,7 @@ type BrevoConfig implements DocumentInterface {
   doubleOptInTemplateId: Int!
   folderId: Int!
   allowedRedirectionUrl: String!
-  unsubscriptionPageId: String!
+  unsubscriptionPageId: String
   createdAt: DateTime!
   scope: EmailCampaignContentScope!
 }
@@ -410,7 +410,7 @@ input BrevoConfigInput {
   doubleOptInTemplateId: Int!
   folderId: Int!
   allowedRedirectionUrl: String!
-  unsubscriptionPageId: String!
+  unsubscriptionPageId: String
 }
 
 input BrevoConfigUpdateInput {
