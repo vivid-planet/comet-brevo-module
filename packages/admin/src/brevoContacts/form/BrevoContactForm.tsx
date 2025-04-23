@@ -1,6 +1,7 @@
 import { DocumentNode, gql, useApolloClient, useQuery } from "@apollo/client";
 import {
     Alert,
+    CheckboxField,
     FinalForm,
     FinalFormSaveButton,
     FinalFormSubmitEvent,
@@ -24,6 +25,7 @@ import { FormApi } from "final-form";
 import React from "react";
 import { FormattedMessage } from "react-intl";
 
+import { useBrevoConfig } from "../../common/BrevoConfigProvider";
 import {
     brevoContactFormCheckForChangesQuery,
     brevoContactFormQuery,
@@ -63,6 +65,7 @@ export function BrevoContactForm({ id, scope, input2State, additionalFormFields,
     const client = useApolloClient();
     const mode = id ? "edit" : "add";
     const formApiRef = useFormApiRef<EditBrevoContactFormValuesWithAttributes>();
+    const { allowAddingContactsWithoutDoi } = useBrevoConfig();
 
     const brevoContactFormFragment = gql`
         fragment BrevoContactForm on BrevoContact {
@@ -80,6 +83,7 @@ export function BrevoContactForm({ id, scope, input2State, additionalFormFields,
         let baseInitialValues = {
             email: "",
             redirectionUrl: "",
+            sendDoubleOptIn: true,
         };
 
         if (input2State) {
@@ -184,21 +188,16 @@ export function BrevoContactForm({ id, scope, input2State, additionalFormFields,
                         </ToolbarActions>
                     </Toolbar>
                     <MainContent>
-                        <Box sx={{ marginBottom: 4 }}>
-                            <Alert severity="warning">
-                                {mode === "edit" ? (
+                        {mode === "edit" && (
+                            <Box sx={{ marginBottom: 4 }}>
+                                <Alert severity="warning">
                                     <FormattedMessage
                                         id="cometBrevoModule.brevoContact.contactEditAlert"
                                         defaultMessage="Editing a contact will affect all scopes and the target groups within those scopes."
                                     />
-                                ) : (
-                                    <FormattedMessage
-                                        id="cometBrevoModule.brevoContact.contactAddAlert"
-                                        defaultMessage="The contact will get a double opt-in email to confirm the subscription. After the contact's confirmation, the contact will be added to the corresponding target groups in this scope depending on the contact's attributes. Before the confirmation the contact will not be shown on the contacts page."
-                                    />
-                                )}
-                            </Alert>
-                        </Box>
+                                </Alert>
+                            </Box>
+                        )}
                         <TextField
                             required
                             fullWidth
@@ -207,17 +206,53 @@ export function BrevoContactForm({ id, scope, input2State, additionalFormFields,
                             disabled={mode === "edit"}
                         />
                         {mode === "add" && (
-                            <TextField
-                                required
-                                fullWidth
-                                name="redirectionUrl"
-                                label={
-                                    <FormattedMessage
-                                        id="cometBrevoModule.brevoContact.redirectionUrl"
-                                        defaultMessage="Redirection Url (Contact will be redirected to this page after the confirmation in the double opt-in email)"
+                            <Card sx={{ padding: 4, marginBottom: 5 }}>
+                                <FormSection
+                                    title={<FormattedMessage id="cometBrevoModule.brevoContact.doubleOptIn" defaultMessage="Double Opt-in" />}
+                                >
+                                    {allowAddingContactsWithoutDoi && (
+                                        <CheckboxField
+                                            name="sendDoubleOptIn"
+                                            label={
+                                                <FormattedMessage
+                                                    id="cometBrevoModule.brevoContact.sendDoubleOptInMail"
+                                                    defaultMessage="Send double opt-in email"
+                                                />
+                                            }
+                                            fullWidth
+                                        />
+                                    )}
+                                    {values.sendDoubleOptIn ? (
+                                        <Alert severity="warning" sx={{ marginBottom: 5 }}>
+                                            <FormattedMessage
+                                                id="cometBrevoModule.brevoContact.contactAddAlert"
+                                                defaultMessage="The contact will get a double opt-in email to confirm the subscription. After the contact's confirmation, the contact will be added to the corresponding target groups in this scope depending on the contact's attributes. Before the confirmation the contact will not be shown on the contacts page."
+                                            />
+                                        </Alert>
+                                    ) : (
+                                        <Alert severity="error" sx={{ marginBottom: 5 }}>
+                                            <FormattedMessage
+                                                id="cometBrevoModule.brevoContact.contactNoOptInAlert"
+                                                defaultMessage="No Double Opt-In email will be sent. You are responsible for ensuring that recipients have provided their consent before proceeding. If consent has not been given, sending a Double Opt-In email is legally required.
+                                                
+                                                Additionally, the creation of the user will be tracked, and you may need to provide clarification if users report any issues."
+                                            />
+                                        </Alert>
+                                    )}
+
+                                    <TextField
+                                        disabled={values.sendDoubleOptIn ? false : true}
+                                        fullWidth
+                                        name="redirectionUrl"
+                                        label={
+                                            <FormattedMessage
+                                                id="cometBrevoModule.brevoContact.redirectionUrl"
+                                                defaultMessage="Redirection Url (Contact will be redirected to this page after the confirmation in the double opt-in email)"
+                                            />
+                                        }
                                     />
-                                }
-                            />
+                                </FormSection>
+                            </Card>
                         )}
                         {additionalFormFields && (
                             <Card sx={{ padding: 4 }}>

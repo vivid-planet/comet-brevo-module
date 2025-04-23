@@ -1,11 +1,14 @@
 import * as Brevo from "@getbrevo/brevo";
 import { EntityRepository } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
-import { Inject, Injectable } from "@nestjs/common";
+import { Inject, Injectable, Optional } from "@nestjs/common";
 import { BrevoConfigInterface } from "src/brevo-config/entities/brevo-config-entity.factory";
 import { BrevoContactAttributesInterface, EmailCampaignScopeInterface } from "src/types";
 
+import { BlacklistedContactsService } from "../blacklisted-contacts/blacklisted-contacts.service";
 import { BrevoContactInterface } from "../brevo-contact/dto/brevo-contact.factory";
+import { BrevoEmailImportLogService } from "../brevo-email-import-log/brevo-email-import-log.service";
+import { ContactSource } from "../brevo-email-import-log/entity/brevo-email-import-log.entity.factory";
 import { BrevoModuleConfig } from "../config/brevo-module.config";
 import { BREVO_MODULE_CONFIG } from "../config/brevo-module.constants";
 import { handleBrevoError, isErrorFromBrevo } from "./brevo-api.utils";
@@ -14,7 +17,7 @@ import { BrevoApiContactList } from "./dto/brevo-api-contact-list";
 export interface CreateDoubleOptInContactData {
     email: string;
     attributes?: BrevoContactAttributesInterface;
-    redirectionUrl: string;
+    redirectionUrl?: string;
 }
 
 @Injectable()
@@ -24,6 +27,8 @@ export class BrevoApiContactsService {
     constructor(
         @Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig,
         @InjectRepository("BrevoConfig") private readonly brevoConfigRepository: EntityRepository<BrevoConfigInterface>,
+        @Optional() private readonly blacklistedContactsService: BlacklistedContactsService,
+        @Optional() private readonly brevoContactLogService: BrevoEmailImportLogService,
     ) {}
 
     private getContactsApi(scope: EmailCampaignScopeInterface): Brevo.ContactsApi {
@@ -53,19 +58,39 @@ export class BrevoApiContactsService {
         scope: EmailCampaignScopeInterface,
     ): Promise<boolean> {
         try {
-            const contact = {
-                email,
-                includeListIds: brevoIds,
-                templateId,
-                redirectionUrl,
-                attributes,
-            };
-            const { response } = await this.getContactsApi(scope).createDoiContact(contact);
+            if (redirectionUrl) {
+                const contact = {
+                    email,
+                    includeListIds: brevoIds,
+                    templateId,
+                    redirectionUrl,
+                    attributes,
+                };
+                const { response } = await this.getContactsApi(scope).createDoiContact(contact);
 
-            return response.statusCode === 204 || response.statusCode === 201;
+                return response.statusCode === 204 || response.statusCode === 201;
+            }
+            return false;
         } catch (error) {
             handleBrevoError(error);
         }
+    }
+
+    public async createBrevoContactWithoutDoubleOptIn(
+        { email, attributes }: Brevo.CreateContact,
+        brevoIds: number[],
+        templateId: number,
+        scope: EmailCampaignScopeInterface,
+    ): Promise<boolean> {
+        const contact = {
+            email,
+            listIds: brevoIds,
+            templateId,
+            attributes,
+        };
+        const { response } = await this.getContactsApi(scope).createContact(contact);
+
+        return response.statusCode === 204 || response.statusCode === 201;
     }
 
     public async createTestContact(
@@ -92,6 +117,10 @@ export class BrevoApiContactsService {
             unlinkListIds,
         }: { blocked?: boolean; attributes?: BrevoContactAttributesInterface; listIds?: number[]; unlinkListIds?: number[] },
         scope: EmailCampaignScopeInterface,
+        sendDoubleOptIn?: boolean,
+        responsibleUserId?: string,
+        contactSource?: ContactSource,
+        importId?: string,
     ): Promise<BrevoContactInterface> {
         try {
             const idAsString = id.toString(); // brevo expects a string, because it can be an email or the id, so we have to transform the id to string
@@ -101,6 +130,10 @@ export class BrevoApiContactsService {
 
             if (!brevoContact) {
                 throw new Error(`The brevo contact with the id ${id} not found`);
+            }
+
+            if (responsibleUserId && !sendDoubleOptIn && brevoContact.email && contactSource) {
+                await this.brevoContactLogService.addContactToLogs(brevoContact.email, responsibleUserId, scope, contactSource, importId);
             }
 
             return brevoContact;
@@ -121,6 +154,12 @@ export class BrevoApiContactsService {
     public async deleteContact(id: number, scope: EmailCampaignScopeInterface): Promise<boolean> {
         try {
             const idAsString = id.toString(); // brevo expects a string, because it can be an email or the id, so we have to transform the id to string
+            const { body } = await this.getContactsApi(scope).getContactInfo(idAsString);
+
+            if (body.email && this.config.contactsWithoutDoi?.allowAddingContactsWithoutDoi) {
+                await this.blacklistedContactsService.addBlacklistedContacts([body.email], scope);
+            }
+
             const { response } = await this.getContactsApi(scope).deleteContact(idAsString);
 
             return response.statusCode === 204;
@@ -198,6 +237,9 @@ export class BrevoApiContactsService {
         try {
             for (const contact of contacts) {
                 const idAsString = contact.id.toString();
+                if (contact.email && this.config.contactsWithoutDoi?.allowAddingContactsWithoutDoi) {
+                    await this.blacklistedContactsService.addBlacklistedContacts([contact.email], scope);
+                }
                 const response = await this.getContactsApi(scope).deleteContact(idAsString);
                 if (response.response.statusCode !== 204) {
                     return false;
