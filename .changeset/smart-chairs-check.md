@@ -1,6 +1,6 @@
-@comet/brevo-admin": minor
+---
+"@comet/brevo-admin": minor
 "@comet/brevo-api": minor
-
 ---
 
 Added logging for contacts created without sending a double opt-in confirmation
