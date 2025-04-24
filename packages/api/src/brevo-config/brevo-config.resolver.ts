@@ -32,8 +32,8 @@ export function createBrevoConfigResolver({
             @InjectRepository(BrevoConfig) private readonly repository: EntityRepository<BrevoConfigInterface>,
         ) {}
 
-        private async isValidSender({ email, name }: { email: string; name: string }): Promise<boolean> {
-            const senders = await this.brevoSenderApiService.getSenders(Scope);
+        private async isValidSender({ email, name, scope }: { email: string; name: string; scope: EmailCampaignScopeInterface }): Promise<boolean> {
+            const senders = await this.brevoSenderApiService.getSenders(scope);
 
             if (senders && senders.some((sender) => sender.email === email && sender.name === name)) {
                 return true;
@@ -42,8 +42,8 @@ export function createBrevoConfigResolver({
             return false;
         }
 
-        private async isValidTemplateId({ templateId }: { templateId: number }): Promise<boolean> {
-            const { templates } = await this.brevoTransactionalEmailsApiService.getEmailTemplates(Scope);
+        private async isValidTemplateId({ templateId, scope }: { templateId: number; scope: EmailCampaignScopeInterface }): Promise<boolean> {
+            const { templates } = await this.brevoTransactionalEmailsApiService.getEmailTemplates(scope);
 
             if (templates && templates.some((template) => template.id === templateId)) {
                 return true;
@@ -52,8 +52,8 @@ export function createBrevoConfigResolver({
             return false;
         }
 
-        private async isValidFolderId({ folderId }: { folderId: number }): Promise<boolean> {
-            for await (const folder of this.brevoFolderIdService.getAllBrevoFolders(Scope)) {
+        private async isValidFolderId({ folderId, scope }: { folderId: number; scope: EmailCampaignScopeInterface }): Promise<boolean> {
+            for await (const folder of this.brevoFolderIdService.getAllBrevoFolders(scope)) {
                 if (folder.id === folderId) {
                     return true;
                 }
@@ -97,15 +97,15 @@ export function createBrevoConfigResolver({
             scope: typeof Scope,
             @Args("input", { type: () => BrevoConfigInput }) input: BrevoConfigInput,
         ): Promise<BrevoConfigInterface> {
-            if (!(await this.isValidSender({ email: input.senderMail, name: input.senderName }))) {
+            if (!(await this.isValidSender({ email: input.senderMail, name: input.senderName, scope }))) {
                 throw new Error("Sender not found");
             }
 
-            if (!(await this.isValidTemplateId({ templateId: input.doubleOptInTemplateId }))) {
+            if (!(await this.isValidTemplateId({ templateId: input.doubleOptInTemplateId, scope }))) {
                 throw new Error("Template ID is not valid. ");
             }
 
-            if (!(await this.isValidFolderId({ folderId: input.folderId }))) {
+            if (!(await this.isValidFolderId({ folderId: input.folderId, scope }))) {
                 throw new Error("Folder ID is not valid. ");
             }
 
@@ -128,19 +128,19 @@ export function createBrevoConfigResolver({
         ): Promise<BrevoConfigInterface> {
             const brevoConfig = await this.repository.findOneOrFail(id);
             if (input.senderMail && input.senderName) {
-                if (!(await this.isValidSender({ email: input.senderMail, name: input.senderName }))) {
+                if (!(await this.isValidSender({ email: input.senderMail, name: input.senderName, scope: brevoConfig.scope }))) {
                     throw new Error("Sender not found");
                 }
             }
 
             if (input.doubleOptInTemplateId) {
-                if (!(await this.isValidTemplateId({ templateId: input.doubleOptInTemplateId }))) {
+                if (!(await this.isValidTemplateId({ templateId: input.doubleOptInTemplateId, scope: brevoConfig.scope }))) {
                     throw new Error("Template ID is not valid. ");
                 }
             }
 
             if (input.folderId) {
-                if (!(await this.isValidFolderId({ folderId: input.folderId }))) {
+                if (!(await this.isValidFolderId({ folderId: input.folderId, scope: brevoConfig.scope }))) {
                     throw new Error("Folder ID is not valid. ");
                 }
             }
