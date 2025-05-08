@@ -1,5 +1,11 @@
 # @comet/brevo-api
 
+## 3.1.1
+
+### Patch Changes
+
+-   e7fdae6: Export `createBrevoEmailImportLogEntity` and `createBlacklistedContactsEntity` so these functions can be used without a `/lib` import
+
 ## 3.1.0
 
 ### Minor Changes
