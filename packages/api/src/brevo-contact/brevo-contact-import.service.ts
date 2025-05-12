@@ -96,7 +96,7 @@ export class BrevoContactImportService {
             }),
         );
         const targetGroupBrevoIds = [...targetGroups.map((targetGroup) => targetGroup.brevoId), ...manuallyAssignedBrevoContacts];
-        console.log("targetGroupBrevoIds", targetGroupBrevoIds);
+
         const rows = fileStream.pipe(csv.parse({ headers: true, delimiter: ";", ignoreEmpty: true })).on("error", (error) => {
             throw error;
         });
