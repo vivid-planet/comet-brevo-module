@@ -1,5 +1,12 @@
 # @comet/brevo-api
 
+## 3.1.1
+
+### Patch Changes
+
+-   1ba6c4d: Ensure contacts are properly assigned to target groups during CSV import process
+-   e7fdae6: Export `createBrevoEmailImportLogEntity` and `createBlacklistedContactsEntity` so these functions can be used without a `/lib` import
+
 ## 3.1.0
 
 ### Minor Changes
