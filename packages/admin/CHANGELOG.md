@@ -1,5 +1,11 @@
 # @comet/brevo-admin
 
+## 3.1.1
+
+### Patch Changes
+
+-   1ba6c4d: Ensure contacts are properly assigned to target groups during CSV import process
+
 ## 3.1.0
 
 ### Minor Changes
