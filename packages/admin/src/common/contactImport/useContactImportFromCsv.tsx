@@ -169,6 +169,7 @@ const ContactImportComponent = ({ scope, targetGroupId, fileInputRef, sendDouble
                 fileId: fileUploadId,
                 scope,
                 sendDoubleOptIn,
+                targetGroupIds: listIds,
             },
         });
 

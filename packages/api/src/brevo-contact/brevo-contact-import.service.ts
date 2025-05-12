@@ -85,7 +85,7 @@ export class BrevoContactImportService {
                 throw new Error("Main lists are not allowed as target groups for import");
             }
 
-            if (!isEqual({ ...targetGroup.scope }, scope)) {
+            if (!isEqual(targetGroup.scope, scope)) {
                 throw new Error("Target group scope does not match the scope of the import file");
             }
         }
@@ -96,7 +96,7 @@ export class BrevoContactImportService {
             }),
         );
         const targetGroupBrevoIds = [...targetGroups.map((targetGroup) => targetGroup.brevoId), ...manuallyAssignedBrevoContacts];
-
+        console.log("targetGroupBrevoIds", targetGroupBrevoIds);
         const rows = fileStream.pipe(csv.parse({ headers: true, delimiter: ";", ignoreEmpty: true })).on("error", (error) => {
             throw error;
         });
