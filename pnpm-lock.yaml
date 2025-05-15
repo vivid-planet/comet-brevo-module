@@ -1076,7 +1076,7 @@ importers:
         specifier: ^18.3.1
         version: 18.3.1
       chokidar-cli:
-        specifier: ^2.0.0
+        specifier: ^2.1.0
         version: 2.1.0
       eslint:
         specifier: ^8.0.0
