@@ -4,13 +4,13 @@ const next = require("next");
 const fs = require("fs");
 
 const dev = process.env.NODE_ENV !== "production";
-const hostname = "localhost";
+const host = process.env.SERVER_HOST ?? "localhost";
 const port = process.env.APP_PORT ?? 3000;
 const cdnEnabled = process.env.CDN_ENABLED === "true";
 const cdnOriginHeader = process.env.CDN_ORIGIN_HEADER;
 
 // when using middleware `hostname` and `port` must be provided below
-const app = next({ dev, hostname, port });
+const app = next({ dev, hostname: host, port });
 const handle = app.getRequestHandler();
 
 app.prepare()
@@ -38,9 +38,9 @@ app.prepare()
                 res.statusCode = 500;
                 res.end("internal server error");
             }
-        }).listen(port, (err) => {
-            if (err) throw err;
-            console.log(`> Ready on http://${hostname}:${port}`);
+        }).listen(port, host, () => {
+            // eslint-disable-next-line no-console
+            console.log(`> Ready on http://${host}:${port}`);
         });
     })
     .catch((error) => console.error(error));
