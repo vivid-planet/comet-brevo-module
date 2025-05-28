@@ -82,6 +82,16 @@ export function createBrevoConfigResolver({
             return doubleOptInTemplates;
         }
 
+        @Query(() => Boolean)
+        @RequiredPermission(["brevo-newsletter"])
+        async isBrevoConfigDefined(
+            @Args("scope", { type: () => Scope }, new DynamicDtoValidationPipe(Scope))
+            scope: typeof Scope,
+        ): Promise<boolean> {
+            const brevoConfig = await this.repository.findOne({ scope });
+            return !!brevoConfig;
+        }
+
         @Query(() => BrevoConfig, { nullable: true })
         async brevoConfig(
             @Args("scope", { type: () => Scope }, new DynamicDtoValidationPipe(Scope))
