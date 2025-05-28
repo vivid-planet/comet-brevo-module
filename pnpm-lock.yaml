@@ -280,7 +280,7 @@ importers:
         version: link:../../packages/api
       '@comet/cms-api':
         specifier: ^7.21.1
-        version: 7.21.1(@kubernetes/client-node@0.18.1)(@mikro-orm/core@5.9.8)(@mikro-orm/migrations@5.9.8)(@mikro-orm/nestjs@5.2.3)(@mikro-orm/postgresql@5.9.8)(@nestjs/common@9.4.3)(@nestjs/core@9.4.3)(@nestjs/graphql@10.2.1)(@nestjs/platform-express@9.4.3)(class-validator@0.13.2)(express@4.21.1)(graphql@15.9.0)(nestjs-console@8.0.0)(rxjs@7.8.1)
+        version: 7.21.1(@kubernetes/client-node@0.18.1)(@mikro-orm/core@5.9.8)(@mikro-orm/migrations@5.9.8)(@mikro-orm/nestjs@5.2.3)(@mikro-orm/postgresql@5.9.8)(@nestjs/common@9.4.3)(@nestjs/core@9.4.3)(@nestjs/graphql@10.2.1)(@nestjs/platform-express@9.4.3)(class-validator@0.13.2)(express@4.21.2)(graphql@15.9.0)(nestjs-console@8.0.0)(rxjs@7.8.1)
       '@faker-js/faker':
         specifier: ^8.4.1
         version: 8.4.1
@@ -343,7 +343,7 @@ importers:
         version: 3.13.0(graphql@15.9.0)
       apollo-server-express:
         specifier: ^3.13.0
-        version: 3.13.0(express@4.21.1)(graphql@15.9.0)
+        version: 3.13.0(express@4.21.2)(graphql@15.9.0)
       class-transformer:
         specifier: ^0.5.1
         version: 0.5.1
@@ -366,8 +366,8 @@ importers:
         specifier: ^6.3.0
         version: 6.3.0
       express:
-        specifier: ^4.21.1
-        version: 4.21.1
+        specifier: ^4.21.2
+        version: 4.21.2
       file-type:
         specifier: ^16.5.4
         version: 16.5.4
@@ -437,10 +437,10 @@ importers:
         version: 1.7.5
       '@types/cookie-parser':
         specifier: ^1.4.8
-        version: 1.4.8(@types/express@4.17.21)
+        version: 1.4.8(@types/express@4.17.22)
       '@types/express':
-        specifier: ^4.17.21
-        version: 4.17.21
+        specifier: ^4.17.22
+        version: 4.17.22
       '@types/jest':
         specifier: ^27.5.2
         version: 27.5.2
@@ -514,8 +514,8 @@ importers:
         specifier: ^0.11.7
         version: 0.11.7(react-dom@18.3.1)(react@18.3.1)
       express:
-        specifier: ^4.21.1
-        version: 4.21.1
+        specifier: ^4.21.2
+        version: 4.21.2
       fs-extra:
         specifier: ^9.1.0
         version: 9.1.0
@@ -665,8 +665,8 @@ importers:
         specifier: ^0.11.7
         version: 0.11.7(react-dom@18.3.1)(react@18.3.1)
       express:
-        specifier: ^4.21.1
-        version: 4.21.1
+        specifier: ^4.21.2
+        version: 4.21.2
       fs-extra:
         specifier: ^9.1.0
         version: 9.1.0
@@ -942,7 +942,7 @@ importers:
         version: 7.21.1(@nestjs/common@9.4.3)(class-validator@0.13.2)
       '@comet/cms-api':
         specifier: ^7.21.1
-        version: 7.21.1(@kubernetes/client-node@0.18.1)(@mikro-orm/core@5.9.8)(@mikro-orm/migrations@5.9.8)(@mikro-orm/nestjs@5.2.3)(@mikro-orm/postgresql@5.9.8)(@nestjs/common@9.4.3)(@nestjs/core@9.4.3)(@nestjs/graphql@10.2.1)(@nestjs/platform-express@9.4.3)(class-validator@0.13.2)(express@4.21.1)(graphql@15.9.0)(nestjs-console@8.0.0)(rxjs@7.8.1)
+        version: 7.21.1(@kubernetes/client-node@0.18.1)(@mikro-orm/core@5.9.8)(@mikro-orm/migrations@5.9.8)(@mikro-orm/nestjs@5.2.3)(@mikro-orm/postgresql@5.9.8)(@nestjs/common@9.4.3)(@nestjs/core@9.4.3)(@nestjs/graphql@10.2.1)(@nestjs/platform-express@9.4.3)(class-validator@0.13.2)(express@4.21.2)(graphql@15.9.0)(nestjs-console@8.0.0)(rxjs@7.8.1)
       '@comet/eslint-config':
         specifier: ^7.21.1
         version: 7.21.1(eslint@8.56.0)(prettier@2.8.8)(ts-jest@29.1.1)(typescript@4.9.5)
@@ -1010,8 +1010,8 @@ importers:
         specifier: ^8.0.0
         version: 8.56.0
       express:
-        specifier: ^4.21.1
-        version: 4.21.1
+        specifier: ^4.21.2
+        version: 4.21.2
       graphql:
         specifier: ^15.9.0
         version: 15.9.0
@@ -4159,7 +4159,7 @@ packages:
       - draft-js
       - history
 
-  /@comet/cms-api@7.21.1(@kubernetes/client-node@0.18.1)(@mikro-orm/core@5.9.8)(@mikro-orm/migrations@5.9.8)(@mikro-orm/nestjs@5.2.3)(@mikro-orm/postgresql@5.9.8)(@nestjs/common@9.4.3)(@nestjs/core@9.4.3)(@nestjs/graphql@10.2.1)(@nestjs/platform-express@9.4.3)(class-validator@0.13.2)(express@4.21.1)(graphql@15.9.0)(nestjs-console@8.0.0)(rxjs@7.8.1):
+  /@comet/cms-api@7.21.1(@kubernetes/client-node@0.18.1)(@mikro-orm/core@5.9.8)(@mikro-orm/migrations@5.9.8)(@mikro-orm/nestjs@5.2.3)(@mikro-orm/postgresql@5.9.8)(@nestjs/common@9.4.3)(@nestjs/core@9.4.3)(@nestjs/graphql@10.2.1)(@nestjs/platform-express@9.4.3)(class-validator@0.13.2)(express@4.21.2)(graphql@15.9.0)(nestjs-console@8.0.0)(rxjs@7.8.1):
     resolution: {integrity: sha512-W1xlCGvxaQx4591eJjQKR8B5v0AofVmnIUJcBJoH3pAHkrLGwW8BwRselRVaiE14AOVFYTlWdLKaBIF46l+0jA==}
     hasBin: true
     peerDependencies:
@@ -4212,7 +4212,7 @@ packages:
       dataloader: 2.2.2
       date-fns: 2.30.0
       exifr: 7.1.3
-      express: 4.21.1
+      express: 4.21.2
       fast-xml-parser: 4.5.0
       file-type: 16.5.4
       get-image-colors: 4.0.1
@@ -6737,7 +6737,7 @@ packages:
       '@nestjs/core': 9.4.3(@nestjs/common@9.4.3)(@nestjs/platform-express@9.4.3)(reflect-metadata@0.1.14)(rxjs@7.8.1)
       '@nestjs/graphql': 10.2.1(@nestjs/common@9.4.3)(@nestjs/core@9.4.3)(class-transformer@0.5.1)(class-validator@0.13.2)(graphql@15.9.0)(reflect-metadata@0.1.14)
       apollo-server-core: 3.13.0(graphql@15.9.0)
-      apollo-server-express: 3.13.0(express@4.21.1)(graphql@15.9.0)
+      apollo-server-express: 3.13.0(express@4.21.2)(graphql@15.9.0)
       graphql: 15.9.0
       iterall: 1.3.0
       lodash.omit: 4.5.0
@@ -8974,7 +8974,7 @@ packages:
   /@types/compression@1.7.5:
     resolution: {integrity: sha512-AAQvK5pxMpaT+nDvhHrsBhLSYG5yQdtkaJE1WYieSNY2mVFKAgmU4ks65rkZD5oqnGCFLyQpUr1CqI4DmUMyDg==}
     dependencies:
-      '@types/express': 4.17.21
+      '@types/express': 4.17.22
     dev: true
 
   /@types/connect-history-api-fallback@1.5.4:
@@ -8998,19 +8998,19 @@ packages:
     resolution: {integrity: sha512-QVSSvno3dE0MgO76pJhmv4Qyi/j0Yk9pBp0Y7TJ2Tlj+KCgJWY6qX7nnxCOLkZ3VYRSIk1WTxCvwUSdx6CCLdg==}
     dev: false
 
-  /@types/cookie-parser@1.4.8(@types/express@4.17.21):
+  /@types/cookie-parser@1.4.8(@types/express@4.17.22):
     resolution: {integrity: sha512-l37JqFrOJ9yQfRQkljb41l0xVphc7kg5JTjjr+pLRZ0IyZ49V4BQ8vbF4Ut2C2e+WH4al3xD3ZwYwIUfnbT4NQ==}
     peerDependencies:
       '@types/express': '*'
     dependencies:
-      '@types/express': 4.17.21
+      '@types/express': 4.17.22
     dev: true
 
   /@types/cookies@0.7.10:
     resolution: {integrity: sha512-hmUCjAk2fwZVPPkkPBcI7jGLIR5mg4OVoNMBwU6aVsMm/iNPY7z9/R+x2fSwLt/ZXoGua6C5Zy2k5xOo9jUyhQ==}
     dependencies:
       '@types/connect': 3.4.38
-      '@types/express': 4.17.21
+      '@types/express': 4.17.22
       '@types/keygrip': 1.0.6
       '@types/node': 22.15.18
     dev: false
@@ -9074,6 +9074,14 @@ packages:
 
   /@types/express@4.17.21:
     resolution: {integrity: sha512-ejlPM315qwLpaQlQDTjPdsUFSc6ZsP4AN6AlWnogPjQ7CVi7PYF3YVz+CY3jE2pwYf7E/7HlDAN0rV2GxTG0HQ==}
+    dependencies:
+      '@types/body-parser': 1.19.5
+      '@types/express-serve-static-core': 4.17.41
+      '@types/qs': 6.9.11
+      '@types/serve-static': 1.15.5
+
+  /@types/express@4.17.22:
+    resolution: {integrity: sha512-eZUmSnhRX9YRSkplpz0N+k6NljUUn5l3EWZIKZvYzhvMphEuNiyyy1viH/ejgt66JWgALwC/gtSUAeQKtSwW/w==}
     dependencies:
       '@types/body-parser': 1.19.5
       '@types/express-serve-static-core': 4.17.41
@@ -9326,7 +9334,7 @@ packages:
   /@types/multer@1.4.12:
     resolution: {integrity: sha512-pQ2hoqvXiJt2FP9WQVLPRO+AmiIm/ZYkavPlIQnx282u4ZrVdztx0pkh3jjpQt0Kz+YI0YhSG264y08UJKoUQg==}
     dependencies:
-      '@types/express': 4.17.21
+      '@types/express': 4.17.22
     dev: true
 
   /@types/mysql@2.15.22:
@@ -9504,7 +9512,7 @@ packages:
   /@types/serve-index@1.9.4:
     resolution: {integrity: sha512-qLpGZ/c2fhSs5gnYsQxtDEq3Oy8SXPClIXkW5ghvAvsNuVSA8k+gCONcUCS/UjLEYvYps+e8uBtfgXgvhwfNug==}
     dependencies:
-      '@types/express': 4.17.21
+      '@types/express': 4.17.22
 
   /@types/serve-static@1.15.5:
     resolution: {integrity: sha512-PDRk21MnK70hja/YF8AHfC7yIsiQHn1rcXx7ijCFBX/k+XQJhQT/gw3xekXKJvx+5SXaMMS8oqQy09Mzvz2TuQ==}
@@ -10313,7 +10321,7 @@ packages:
       graphql: 15.9.0
     dev: false
 
-  /apollo-server-express@3.13.0(express@4.21.1)(graphql@15.9.0):
+  /apollo-server-express@3.13.0(express@4.21.2)(graphql@15.9.0):
     resolution: {integrity: sha512-iSxICNbDUyebOuM8EKb3xOrpIwOQgKxGbR2diSr4HP3IW8T3njKFOoMce50vr+moOCe1ev8BnLcw9SNbuUtf7g==}
     engines: {node: '>=12.0'}
     deprecated: The `apollo-server-express` package is part of Apollo Server v2 and v3, which are now end-of-life (as of October 22nd 2023 and October 22nd 2024, respectively). This package's functionality is now found in the `@apollo/server` package. See https://www.apollographql.com/docs/apollo-server/previous-versions/ for more details.
@@ -10331,7 +10339,7 @@ packages:
       apollo-server-types: 3.8.0(graphql@15.9.0)
       body-parser: 1.20.3
       cors: 2.8.5
-      express: 4.21.1
+      express: 4.21.2
       graphql: 15.9.0
       parseurl: 1.3.3
     transitivePeerDependencies:
@@ -13337,8 +13345,8 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
-  /express@4.21.1:
-    resolution: {integrity: sha512-YSFlK1Ee0/GC8QaO91tHcDxJiE/X4FbpAyQWkxAvG6AXCuR65YzK8ua6D9hvi/TzUfZMpc+BwuM1IPw8fmQBiQ==}
+  /express@4.21.2:
+    resolution: {integrity: sha512-28HqgMZAmih1Czt9ny7qr6ek2qddF4FclbMzwhCREB6OFfH+rXAnuNCwo1/wFvrtbgsQDb4kSbX9de9lFbrXnA==}
     engines: {node: '>= 0.10.0'}
     dependencies:
       accepts: 1.3.8
@@ -13360,7 +13368,7 @@ packages:
       methods: 1.1.2
       on-finished: 2.4.1
       parseurl: 1.3.3
-      path-to-regexp: 0.1.10
+      path-to-regexp: 0.1.12
       proxy-addr: 2.0.7
       qs: 6.13.0
       range-parser: 1.2.1
@@ -16514,7 +16522,7 @@ packages:
     resolution: {integrity: sha512-v7nqlfezb9YfHHzYII3ef2a2j1XnGeSE/bK3WfumaYCqONAIstJbrEGapz4kadScZzEt7zYCN7bucj8C0Mv/Rg==}
     engines: {node: '>=14'}
     dependencies:
-      '@types/express': 4.17.21
+      '@types/express': 4.17.22
       '@types/jsonwebtoken': 9.0.5
       debug: 4.3.7(supports-color@9.4.0)
       jose: 4.15.9
@@ -18452,6 +18460,9 @@ packages:
 
   /path-to-regexp@0.1.10:
     resolution: {integrity: sha512-7lf7qcQidTku0Gu3YDPc8DJ1q7OOucfa/BSsIwjuh56VU7katFvuM8hULfkwB3Fns/rsVF7PwPKVw1sl5KQS9w==}
+
+  /path-to-regexp@0.1.12:
+    resolution: {integrity: sha512-RA1GjUVMnvYFxuqovrEqZoxxW5NUZqbwKtYz/Tt7nXerk0LbLblQmrsgdeOxV5SFHf0UDggjS/bSeOZwt1pmEQ==}
 
   /path-to-regexp@0.1.7:
     resolution: {integrity: sha512-5DFkuoqlv1uYQKxy8omFBeJPQcdoE07Kv2sferDCrAq1ohOU+MSDswDIbnx3YAM60qIOnYa53wBhXW0EbMonrQ==}
