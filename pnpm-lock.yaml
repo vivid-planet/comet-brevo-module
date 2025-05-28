@@ -177,7 +177,7 @@ importers:
         specifier: ^3.2.3
         version: 3.2.3(graphql@15.9.0)
       '@graphql-codegen/cli':
-        specifier: ^3.0.0
+        specifier: ^3.3.1
         version: 3.3.1(@babel/core@7.26.0)(@types/node@22.15.18)(graphql@15.9.0)
       '@graphql-codegen/fragment-matcher':
         specifier: ^2.0.1
@@ -584,7 +584,7 @@ importers:
         specifier: ^3.2.3
         version: 3.2.3(graphql@15.9.0)
       '@graphql-codegen/cli':
-        specifier: ^3.0.0
+        specifier: ^3.3.1
         version: 3.3.1(@babel/core@7.26.0)(@types/node@22.15.18)(graphql@15.9.0)
       '@graphql-codegen/named-operations-object':
         specifier: ^2.3.1
@@ -726,7 +726,7 @@ importers:
         specifier: ^3.2.3
         version: 3.2.3(graphql@15.9.0)
       '@graphql-codegen/cli':
-        specifier: ^3.0.0
+        specifier: ^3.3.1
         version: 3.3.1(@babel/core@7.26.0)(@types/node@22.15.18)(graphql@15.9.0)
       '@graphql-codegen/named-operations-object':
         specifier: ^2.3.1
@@ -835,7 +835,7 @@ importers:
         specifier: ^11.9.3
         version: 11.11.0(@emotion/react@11.11.3)(@types/react@17.0.75)(react@17.0.2)
       '@graphql-codegen/cli':
-        specifier: ^3.0.0
+        specifier: ^3.3.1
         version: 3.3.1(@babel/core@7.26.0)(@types/node@22.15.18)(graphql@15.9.0)
       '@mui/icons-material':
         specifier: ^5.16.14
@@ -5370,9 +5370,9 @@ packages:
     peerDependencies:
       graphql: ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
     dependencies:
-      '@babel/parser': 7.23.6
+      '@babel/parser': 7.26.2
       '@babel/plugin-syntax-import-assertions': 7.23.3(@babel/core@7.26.0)
-      '@babel/traverse': 7.23.7
+      '@babel/traverse': 7.25.9
       '@babel/types': 7.26.0
       '@graphql-tools/utils': 9.2.1(graphql@15.9.0)
       graphql: 15.9.0
@@ -12724,10 +12724,6 @@ packages:
       is-date-object: 1.0.5
       is-symbol: 1.0.4
     dev: true
-
-  /escalade@3.1.1:
-    resolution: {integrity: sha512-k0er2gUkLf8O0zKJiAhmkTnJlTvINGv7ygDNPbeIsX/TJjGJZHuh9B2UxbsaEkmlEo9MfhrSzmhIlhRlI2GXnw==}
-    engines: {node: '>=6'}
 
   /escalade@3.2.0:
     resolution: {integrity: sha512-WUj2qlxaQtO4g6Pq5c29GTcWGDyd8itL8zTlipgECz3JesAiiOKotd8JU6otB3PACgG6xkJUyVhboMS+bje/jA==}
@@ -22165,7 +22161,7 @@ packages:
     engines: {node: '>=12'}
     dependencies:
       cliui: 8.0.1
-      escalade: 3.1.1
+      escalade: 3.2.0
       get-caller-file: 2.0.5
       require-directory: 2.1.1
       string-width: 4.2.3
