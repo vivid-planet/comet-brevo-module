@@ -64,7 +64,7 @@ export function EmailCampaignView({ id, EmailCampaignContentBlock }: EmailCampai
                 </ToolbarTitleItem>
                 <ToolbarFillSpace />
             </Toolbar>
-            <MainContent disablePaddingBottom>
+            <MainContent fullHeight>
                 <IFrameBridgeProvider key={previewUrl}>
                     <BlockPreview url={previewUrl} previewState={previewState} previewApi={previewApi} />
                 </IFrameBridgeProvider>
