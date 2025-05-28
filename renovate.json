@@ -59,6 +59,11 @@
       "matchPackageNames": ["/^lodash.*/"]
     },
     {
+      "groupName": "node",
+      "matchPackageNames": ["node"],
+      "rangeStrategy": "widen"
+    },
+    {
       "matchUpdateTypes": ["major"],
       "labels": ["major", "dependencies"]
     }
