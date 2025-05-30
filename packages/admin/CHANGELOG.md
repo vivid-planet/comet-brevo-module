@@ -1,5 +1,11 @@
 # @comet/brevo-admin
 
+## 3.1.2
+
+### Patch Changes
+
+-   7aadab3: Fix block preview being too small on view page of already sent campaings
+
 ## 3.1.1
 
 ### Patch Changes
