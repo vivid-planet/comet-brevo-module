@@ -38,7 +38,7 @@
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
         "rimraf": "^6.0.1",
-        "styled-components": "^6.1.13",
+        "styled-components": "^6.1.18",
         "typescript": "^4.9.5"
     },
     "peerDependencies": {
@@ -48,7 +48,7 @@
         "next": "^14.2.18",
         "react": "^18.0.0",
         "react-dom": "^18.0.0",
-        "styled-components": "^6.1.13"
+        "styled-components": "^6.1.18"
     },
     "publishConfig": {
         "access": "public",
