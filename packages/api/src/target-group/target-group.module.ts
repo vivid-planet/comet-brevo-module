@@ -6,7 +6,7 @@ import { ConfigModule } from "../config/config.module";
 import { BrevoContactFilterAttributesInterface, EmailCampaignScopeInterface } from "../types";
 import { TargetGroupInputFactory } from "./dto/target-group-input.factory";
 import { TargetGroupInterface } from "./entity/target-group-entity.factory";
-import { createTargetGroupsResolver } from "./target-group.resolver";
+import { createBrevoTargetGroupsResolver } from "./target-group.resolver";
 import { TargetGroupsService } from "./target-groups.service";
 
 interface TargetGroupModuleConfig {
@@ -19,7 +19,7 @@ interface TargetGroupModuleConfig {
 export class TargetGroupModule {
     static register({ Scope, BrevoFilterAttributes, TargetGroup }: TargetGroupModuleConfig): DynamicModule {
         const [TargetGroupInput, TargetGroupUpdateInput] = TargetGroupInputFactory.create({ BrevoFilterAttributes });
-        const TargetGroupResolver = createTargetGroupsResolver({ TargetGroup, TargetGroupInput, TargetGroupUpdateInput, Scope });
+        const TargetGroupResolver = createBrevoTargetGroupsResolver({ TargetGroup, TargetGroupInput, TargetGroupUpdateInput, Scope });
 
         return {
             module: TargetGroupModule,

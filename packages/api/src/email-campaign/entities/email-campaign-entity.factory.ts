@@ -38,7 +38,7 @@ export function createEmailCampaignEntity({
     @ObjectType({
         implements: () => [DocumentInterface],
     })
-    class EmailCampaign implements EmailCampaignInterface, DocumentInterface {
+    class BrevoEmailCampaign implements EmailCampaignInterface, DocumentInterface {
         [OptionalProps]?: "createdAt" | "updatedAt";
 
         @PrimaryKey({ columnType: "uuid" })
@@ -91,5 +91,5 @@ export function createEmailCampaignEntity({
         scope: typeof Scope;
     }
 
-    return EmailCampaign;
+    return BrevoEmailCampaign;
 }
