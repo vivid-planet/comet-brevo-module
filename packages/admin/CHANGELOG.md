@@ -1,5 +1,11 @@
 # @comet/brevo-admin
 
+## 3.1.3
+
+### Patch Changes
+
+-   228907b: Set the peer dependency to the major version of Comet, allowing the project to specify the desired minor version as needed.
+
 ## 3.1.2
 
 ### Patch Changes
