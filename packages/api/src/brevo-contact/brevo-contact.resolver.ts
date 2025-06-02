@@ -228,6 +228,10 @@ export function createBrevoContactResolver({
                 contactSource: ContactSource.manualCreation,
             });
 
+            if (created === SubscribeResponse.ERROR_CONTACT_IS_BLACKLISTED) {
+                return SubscribeResponse.ERROR_CONTACT_IS_BLACKLISTED;
+            }
+
             if (created) {
                 return SubscribeResponse.SUCCESSFUL;
             }

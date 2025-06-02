@@ -55,7 +55,7 @@ export class BrevoContactsService {
         sendDoubleOptIn: boolean;
         responsibleUserId?: string;
         contactSource?: ContactSource;
-    }): Promise<boolean> {
+    }): Promise<boolean | SubscribeResponse> {
         const mainTargetGroupForScope = await this.targetGroupService.createIfNotExistMainTargetGroupForScope(scope);
         const targetGroupIds = await this.getTargetGroupIdsForNewContact({ scope, contactAttributes: attributes });
         const brevoIds = [mainTargetGroupForScope.brevoId, ...targetGroupIds];
@@ -77,6 +77,8 @@ export class BrevoContactsService {
             if (!blacklistedContactAvailable && contactSource) {
                 created = await this.brevoContactsApiService.createBrevoContactWithoutDoubleOptIn({ email, attributes }, brevoIds, templateId, scope);
                 await this.brevoEmailImportLogService.addContactToLogs(email, responsibleUserId, scope, contactSource);
+            } else {
+                return SubscribeResponse.ERROR_CONTACT_IS_BLACKLISTED;
             }
         } else {
             created = await this.brevoContactsApiService.createDoubleOptInBrevoContact(

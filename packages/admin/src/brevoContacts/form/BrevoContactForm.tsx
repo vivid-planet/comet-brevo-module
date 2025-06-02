@@ -14,6 +14,7 @@ import {
     ToolbarFillSpace,
     ToolbarItem,
     ToolbarTitleItem,
+    useErrorDialog,
     useFormApiRef,
     useStackApi,
 } from "@comet/admin";
@@ -66,6 +67,7 @@ export function BrevoContactForm({ id, scope, input2State, additionalFormFields,
     const mode = id ? "edit" : "add";
     const formApiRef = useFormApiRef<EditBrevoContactFormValuesWithAttributes>();
     const { allowAddingContactsWithoutDoi } = useBrevoConfig();
+    const errorDialog = useErrorDialog();
 
     const brevoContactFormFragment = gql`
         fragment BrevoContactForm on BrevoContact {
@@ -74,7 +76,7 @@ export function BrevoContactForm({ id, scope, input2State, additionalFormFields,
         }
         ${additionalAttributesFragment?.fragment ?? ""}
 `;
-    const { data, error, loading, refetch } = useQuery<GQLBrevoContactFormQuery, GQLBrevoContactFormQueryVariables>(
+    const { data, loading, refetch } = useQuery<GQLBrevoContactFormQuery, GQLBrevoContactFormQueryVariables>(
         brevoContactFormQuery(brevoContactFormFragment),
         id ? { variables: { id, scope } } : { skip: true },
     );
@@ -123,46 +125,54 @@ export function BrevoContactForm({ id, scope, input2State, additionalFormFields,
         form: FormApi<EditBrevoContactFormValuesWithAttributes>,
         event: FinalFormSubmitEvent,
     ) => {
-        if (await saveConflict.checkForConflicts()) {
-            throw new Error("Conflicts detected");
-        }
-
-        const output = {
-            ...state,
-            blocked: false,
-        };
-
-        if (mode === "edit") {
-            if (!id) {
-                throw new Error("Missing id in edit mode");
+        try {
+            if (await saveConflict.checkForConflicts()) {
+                throw new Error("Conflicts detected");
             }
-            const { email, redirectionUrl, ...rest } = output;
-            await client.mutate<GQLUpdateBrevoContactMutation, GQLUpdateBrevoContactMutationVariables>({
-                mutation: updateBrevoContactMutation(brevoContactFormFragment),
-                variables: { id, input: rest, scope },
-            });
-        } else {
-            const { data: mutationResponse } = await client.mutate<GQLCreateBrevoContactMutation, GQLCreateBrevoContactMutationVariables>({
-                mutation: createBrevoContactMutation,
-                variables: { scope, input: output },
-            });
-            if (!event.navigatingBack) {
-                const response = mutationResponse?.createBrevoContact;
 
-                if (response === "SUCCESSFUL") {
-                    setTimeout(() => {
-                        stackApi?.goBack();
-                    });
-                } else if (response === "ERROR_CONTAINED_IN_ECG_RTR_LIST") {
-                    throw new Error("Contact contained in ECG RTR list, cannot create contact");
-                } else {
-                    throw new Error("Error creating contact");
+            const output = {
+                ...state,
+                blocked: false,
+            };
+
+            if (mode === "edit") {
+                if (!id) {
+                    throw new Error("Missing id in edit mode");
+                }
+                const { email, redirectionUrl, ...rest } = output;
+                await client.mutate<GQLUpdateBrevoContactMutation, GQLUpdateBrevoContactMutationVariables>({
+                    mutation: updateBrevoContactMutation(brevoContactFormFragment),
+                    variables: { id, input: rest, scope },
+                });
+            } else {
+                const { data: mutationResponse } = await client.mutate<GQLCreateBrevoContactMutation, GQLCreateBrevoContactMutationVariables>({
+                    mutation: createBrevoContactMutation,
+                    variables: { scope, input: output },
+                });
+                if (!event.navigatingBack) {
+                    const response = mutationResponse?.createBrevoContact;
+
+                    if (response === "SUCCESSFUL") {
+                        setTimeout(() => {
+                            stackApi?.goBack();
+                        });
+                    } else if (response === "ERROR_CONTAINED_IN_ECG_RTR_LIST") {
+                        throw new Error("Contact contained in ECG RTR list, cannot create contact");
+                    } else if (response === "ERROR_CONTACT_IS_BLACKLISTED") {
+                        throw new Error("Contact could not be created as it is blacklisted.");
+                    } else {
+                        throw new Error("Error creating contact");
+                    }
                 }
             }
+        } catch (error) {
+            errorDialog?.showError({
+                title: "Error",
+                userMessage: <Alert severity="error">{(error as Error).message}</Alert>,
+                error: error,
+            });
         }
     };
-
-    if (error) throw error;
 
     if (loading) {
         return <Loading behavior="fillPageHeight" />;
