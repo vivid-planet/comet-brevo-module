@@ -19,7 +19,7 @@ import { createEmailCampaignsResolver } from "./src/email-campaign/email-campaig
 import { createEmailCampaignEntity } from "./src/email-campaign/entities/email-campaign-entity.factory";
 import { TargetGroupInputFactory } from "./src/target-group/dto/target-group-input.factory";
 import { createTargetGroupEntity } from "./src/target-group/entity/target-group-entity.factory";
-import { createTargetGroupsResolver } from "./src/target-group/target-group.resolver";
+import { createBrevoTargetGroupsResolver } from "./src/target-group/target-group.resolver";
 import { BrevoContactFilterAttributesInterface, EmailCampaignScopeInterface } from "./src/types";
 
 @ObjectType("EmailCampaignContentScope")
@@ -83,7 +83,7 @@ async function generateSchema(): Promise<void> {
 
     const TargetGroup = createTargetGroupEntity({ Scope: EmailCampaignScope });
     const [TargetGroupInput, TargetGroupUpdateInput] = TargetGroupInputFactory.create({ BrevoFilterAttributes: BrevoContactFilterAttributes });
-    const TargetGroupResolver = createTargetGroupsResolver({ TargetGroup, TargetGroupInput, TargetGroupUpdateInput, Scope: EmailCampaignScope });
+    const TargetGroupResolver = createBrevoTargetGroupsResolver({ TargetGroup, TargetGroupInput, TargetGroupUpdateInput, Scope: EmailCampaignScope });
 
     const EmailCampaign = createEmailCampaignEntity({ Scope: EmailCampaignScope, TargetGroup: TargetGroup, EmailCampaignContentBlock });
     const [EmailCampaignInput, EmailCampaignUpdateInput] = EmailCampaignInputFactory.create({ EmailCampaignContentBlock });
