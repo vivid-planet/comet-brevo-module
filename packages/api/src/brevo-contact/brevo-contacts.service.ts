@@ -56,6 +56,11 @@ export class BrevoContactsService {
         responsibleUserId?: string;
         contactSource?: ContactSource;
     }): Promise<boolean | SubscribeResponse> {
+        const existingContact = await this.brevoContactsApiService.getContactInfoByEmail(email, scope);
+        if (existingContact) {
+            return SubscribeResponse.ERROR_CONTACT_ALREADY_EXISTS;
+        }
+
         const mainTargetGroupForScope = await this.targetGroupService.createIfNotExistMainTargetGroupForScope(scope);
         const targetGroupIds = await this.getTargetGroupIdsForNewContact({ scope, contactAttributes: attributes });
         const brevoIds = [mainTargetGroupForScope.brevoId, ...targetGroupIds];

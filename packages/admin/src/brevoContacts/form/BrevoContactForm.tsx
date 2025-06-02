@@ -160,6 +160,8 @@ export function BrevoContactForm({ id, scope, input2State, additionalFormFields,
                         throw new Error("Contact contained in ECG RTR list, cannot create contact");
                     } else if (response === "ERROR_CONTACT_IS_BLACKLISTED") {
                         throw new Error("Contact could not be created as it is blacklisted.");
+                    } else if (response === "ERROR_CONTACT_ALREADY_EXISTS") {
+                        throw new Error("A contact with this email already exists.");
                     } else {
                         throw new Error("Error creating contact");
                     }

@@ -231,6 +231,9 @@ export function createBrevoContactResolver({
             if (created === SubscribeResponse.ERROR_CONTACT_IS_BLACKLISTED) {
                 return SubscribeResponse.ERROR_CONTACT_IS_BLACKLISTED;
             }
+            if (created === SubscribeResponse.ERROR_CONTACT_ALREADY_EXISTS) {
+                return SubscribeResponse.ERROR_CONTACT_ALREADY_EXISTS;
+            }
 
             if (created) {
                 return SubscribeResponse.SUCCESSFUL;
