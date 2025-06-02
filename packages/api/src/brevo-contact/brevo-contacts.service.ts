@@ -55,7 +55,7 @@ export class BrevoContactsService {
         sendDoubleOptIn: boolean;
         responsibleUserId?: string;
         contactSource?: ContactSource;
-    }): Promise<boolean | SubscribeResponse> {
+    }): Promise<SubscribeResponse> {
         const existingContact = await this.brevoContactsApiService.getContactInfoByEmail(email, scope);
         if (existingContact) {
             return SubscribeResponse.ERROR_CONTACT_ALREADY_EXISTS;
@@ -64,8 +64,6 @@ export class BrevoContactsService {
         const mainTargetGroupForScope = await this.targetGroupService.createIfNotExistMainTargetGroupForScope(scope);
         const targetGroupIds = await this.getTargetGroupIdsForNewContact({ scope, contactAttributes: attributes });
         const brevoIds = [mainTargetGroupForScope.brevoId, ...targetGroupIds];
-
-        let created = false;
 
         if (listIds) {
             brevoIds.push(...listIds);
@@ -79,21 +77,39 @@ export class BrevoContactsService {
             const hashedEmail = hashEmail(email, this.secretKey);
             const blacklistedContactAvailable = await this.blacklistedContactsRepository.findOne({ hashedEmail: hashedEmail });
 
-            if (!blacklistedContactAvailable && contactSource) {
-                created = await this.brevoContactsApiService.createBrevoContactWithoutDoubleOptIn({ email, attributes }, brevoIds, templateId, scope);
-                await this.brevoEmailImportLogService.addContactToLogs(email, responsibleUserId, scope, contactSource);
-            } else {
+            if (blacklistedContactAvailable) {
                 return SubscribeResponse.ERROR_CONTACT_IS_BLACKLISTED;
             }
+
+            if (contactSource) {
+                const created = await this.brevoContactsApiService.createBrevoContactWithoutDoubleOptIn(
+                    { email, attributes },
+                    brevoIds,
+                    templateId,
+                    scope,
+                );
+                if (created) {
+                    await this.brevoEmailImportLogService.addContactToLogs(email, responsibleUserId, scope, contactSource);
+                    return SubscribeResponse.SUCCESSFUL;
+                } else {
+                    return SubscribeResponse.ERROR_UNKNOWN;
+                }
+            }
         } else {
-            created = await this.brevoContactsApiService.createDoubleOptInBrevoContact(
+            const created = await this.brevoContactsApiService.createDoubleOptInBrevoContact(
                 { email, redirectionUrl, attributes },
                 brevoIds,
                 templateId,
                 scope,
             );
+            if (created) {
+                return SubscribeResponse.SUCCESSFUL;
+            } else {
+                return SubscribeResponse.ERROR_UNKNOWN;
+            }
         }
-        return created;
+
+        return SubscribeResponse.ERROR_UNKNOWN;
     }
 
     public async createTestContact({

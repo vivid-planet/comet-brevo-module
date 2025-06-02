@@ -217,7 +217,7 @@ export function createBrevoContactResolver({
 
             const brevoConfig = await this.brevoConfigRepository.findOneOrFail({ scope });
 
-            const created = await this.brevoContactsService.createContact({
+            return this.brevoContactsService.createContact({
                 email: input.email,
                 attributes: input.attributes,
                 redirectionUrl: input.redirectionUrl,
@@ -227,19 +227,6 @@ export function createBrevoContactResolver({
                 responsibleUserId: user.id,
                 contactSource: ContactSource.manualCreation,
             });
-
-            if (created === SubscribeResponse.ERROR_CONTACT_IS_BLACKLISTED) {
-                return SubscribeResponse.ERROR_CONTACT_IS_BLACKLISTED;
-            }
-            if (created === SubscribeResponse.ERROR_CONTACT_ALREADY_EXISTS) {
-                return SubscribeResponse.ERROR_CONTACT_ALREADY_EXISTS;
-            }
-
-            if (created) {
-                return SubscribeResponse.SUCCESSFUL;
-            }
-
-            return SubscribeResponse.ERROR_UNKNOWN;
         }
 
         @Mutation(() => SubscribeResponse)
