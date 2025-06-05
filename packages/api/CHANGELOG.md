@@ -1,5 +1,11 @@
 # @comet/brevo-api
 
+## 3.1.4
+
+### Patch Changes
+
+-   9c580ab: Remove brevo-newsletter-test-contacts permission. Creating test contacts is now allowed with the default permission brevo-newsletter.
+
 ## 3.1.3
 
 ### Patch Changes
