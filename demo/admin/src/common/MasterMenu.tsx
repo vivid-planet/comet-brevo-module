@@ -142,6 +142,7 @@ const getMasterMenuData = ({ brevoContactConfig }: { brevoContactConfig: BrevoCo
                         path: "/newsletter/config",
                         render: () => <BrevoConfigPage />,
                     },
+                    requiredPermission: "brevo-newsletter-config",
                 },
             ],
             requiredPermission: "brevo-newsletter",

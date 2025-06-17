@@ -231,6 +231,7 @@ type Query {
   emailCampaignStatistics(id: ID!): BrevoApiCampaignStatistics
   senders(scope: EmailCampaignContentScopeInput!): [BrevoApiSender!]
   doubleOptInTemplates(scope: EmailCampaignContentScopeInput!): [BrevoApiEmailTemplate!]
+  isBrevoConfigDefined(scope: EmailCampaignContentScopeInput!): Boolean!
   brevoConfig(scope: EmailCampaignContentScopeInput!): BrevoConfig
 }
 
