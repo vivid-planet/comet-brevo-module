@@ -1,5 +1,21 @@
 # @comet/brevo-api
 
+## 3.1.4
+
+### Patch Changes
+
+-   9126afd: Resolve Issues with Brevo Config Page Permissions
+
+    -   Address a bug that required the brevo-newsletter-config permission to send email campaigns from the admin interface.
+    -   Improve error handling by enhancing the styling and incorporating a MUI Alert component to clearly display messages when the configuration is missing.
+
+-   cf4405c: Improve error handling for adding contacts:
+
+    -   Display specific error messages when attempting to create a contact that already exists or is blacklisted.
+    -   Provide error logs when importing blacklisted contacts via CSV import.
+
+-   9c580ab: Remove brevo-newsletter-test-contacts permission. Creating test contacts is now allowed with the default permission brevo-newsletter.
+
 ## 3.1.3
 
 ### Patch Changes
