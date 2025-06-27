@@ -6,7 +6,9 @@ export const startBrevoContactImportMutation = gql`
             created
             updated
             failed
+            blacklisted
             failedColumns
+            blacklistedColumns
             errorMessage
         }
     }

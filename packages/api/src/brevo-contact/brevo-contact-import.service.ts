@@ -37,8 +37,14 @@ export class CsvImportInformation {
     @Field(() => Int)
     failed: number;
 
+    @Field(() => Int)
+    blacklisted: number;
+
     @Field(() => [GraphQLJSONObject], { nullable: true })
     failedColumns: Record<string, string>[];
+
+    @Field(() => [GraphQLJSONObject], { nullable: true })
+    blacklistedColumns: Record<string, string>[];
 
     @Field({ nullable: true })
     errorMessage?: string;
@@ -77,6 +83,8 @@ export class BrevoContactImportService {
         importId,
     }: ImportContactsFromCsvParams): Promise<CsvImportInformation> {
         const failedColumns: Record<string, string>[] = [];
+        const blacklistedColumns: Record<string, string>[] = [];
+
         const targetGroups = await this.targetGroupRepository.find({ id: { $in: targetGroupIds } });
         const contactSource = ContactSource.csvImport;
 
@@ -104,14 +112,17 @@ export class BrevoContactImportService {
         let created = 0;
         let updated = 0;
         let failed = 0;
+        let blacklisted = 0;
         for await (const row of rows) {
             // This is a temporary solution. We should handle the import as a background job and allow importing more than 100 contacts
-            if (isAdminImport && created + updated + failed > 100) {
+            if (isAdminImport && created + updated + failed + blacklisted > 100) {
                 return {
                     created,
                     updated,
                     failed,
+                    blacklisted,
                     failedColumns,
+                    blacklistedColumns,
                     errorMessage:
                         "Too many contacts. Currently we only support 100 contacts at once, the first 100 contacts were handled. Please split the file and try again with the remaining contacts.",
                 };
@@ -134,6 +145,10 @@ export class BrevoContactImportService {
                     case "updated":
                         updated++;
                         break;
+                    case "blacklisted":
+                        blacklistedColumns.push(row);
+                        blacklisted++;
+                        break;
                     case "error":
                         failedColumns.push(row);
                         failed++;
@@ -146,10 +161,10 @@ export class BrevoContactImportService {
             }
         }
         if (created + updated + failed === 0) {
-            return { created, updated, failed, failedColumns, errorMessage: "No contacts found." };
+            return { created, updated, failed, blacklisted, failedColumns, blacklistedColumns, errorMessage: "No contacts found." };
         }
 
-        return { created, updated, failed, failedColumns };
+        return { created, updated, failed, blacklisted, failedColumns, blacklistedColumns };
     }
 
     private async createOrUpdateBrevoContact(
@@ -160,7 +175,7 @@ export class BrevoContactImportService {
         responsibleUserId?: string,
         contactSource?: ContactSource,
         importId?: string,
-    ): Promise<"created" | "updated" | "error"> {
+    ): Promise<"created" | "updated" | "error" | "blacklisted"> {
         try {
             const brevoContact = await this.brevoApiContactsService.findContact(contact.email, scope);
 
@@ -188,6 +203,7 @@ export class BrevoContactImportService {
                     responsibleUserId,
                     contactSource,
                 });
+                if (!success) return "blacklisted";
                 if (success) return "created";
             }
         } catch (err) {

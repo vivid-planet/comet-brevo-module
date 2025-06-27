@@ -213,6 +213,34 @@ const ContactImportComponent = ({ scope, targetGroupId, fileInputRef, sendDouble
         saveAs(file, `error-log-${new Date().toISOString()}.csv`);
     };
 
+    const saveBlacklistedContactsFile = () => {
+        const blacklistedContactsColumns = importInformation?.blacklistedColumns;
+        if (!blacklistedContactsColumns || blacklistedContactsColumns.length === 0) {
+            throw new Error(intl.formatMessage({ id: "export", defaultMessage: "No failed columns to save" }));
+        }
+
+        let blacklistedContactsData = "";
+
+        // Add headers to the file without trailing semicolon
+        const headers = Object.keys(blacklistedContactsColumns[0]);
+        const headerStr = headers.join(";");
+        blacklistedContactsData = `${headerStr.replace(/;+$/, "")}\n`; // Remove trailing semicolon from the header
+
+        // Add each row of failed columns data
+        for (const column of blacklistedContactsColumns) {
+            // Use Object.values to get the values of each column
+            const row = Object.values(column); // No need to check for undefined/null
+
+            // Join row values and remove the trailing semicolon if not needed
+            const rowStr = row.join(";");
+            blacklistedContactsData += `${rowStr.replace(/;+$/, "")}\n`;
+        }
+
+        // Create and download the file
+        const file = new Blob([blacklistedContactsData], { type: "text/csv;charset=utf-8" });
+        saveAs(file, `blacklisted-contact-log-${new Date().toISOString()}.csv`);
+    };
+
     const { getInputProps } = useDropzone({
         accept: { "text/csv": [] },
         multiple: false,
@@ -299,6 +327,23 @@ const ContactImportComponent = ({ scope, targetGroupId, fileInputRef, sendDouble
                                                 amount: importInformation.failed,
                                                 link: (chunks: React.ReactNode) => (
                                                     <CsvDownloadLink onClick={saveErrorFile}>{chunks}</CsvDownloadLink>
+                                                ),
+                                            }}
+                                        />
+                                    </Alert>
+                                </Box>
+                            )}
+
+                            {importInformation.blacklisted > 0 && (
+                                <Box mt={2}>
+                                    <Alert severity="error">
+                                        <FormattedMessage
+                                            id="cometBrevoModule.useContactImport.error.contactsAreBlacklisted"
+                                            defaultMessage="{amount} contacts could not be imported as they are blacklisted.  <link>Download this file</link> to get the blacklisted contact(s)."
+                                            values={{
+                                                amount: importInformation.blacklisted,
+                                                link: (chunks: React.ReactNode) => (
+                                                    <CsvDownloadLink onClick={saveBlacklistedContactsFile}>{chunks}</CsvDownloadLink>
                                                 ),
                                             }}
                                         />
