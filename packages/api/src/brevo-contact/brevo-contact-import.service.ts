@@ -179,7 +179,6 @@ export class BrevoContactImportService {
         try {
             const brevoContact = await this.brevoApiContactsService.findContact(contact.email, scope);
 
-            console.log(brevoContact);
             const mainTargetGroupForScope = await this.targetGroupsService.createIfNotExistMainTargetGroupForScope(scope);
             if (brevoContact && !brevoContact.emailBlacklisted) {
                 const updatedBrevoContact = await this.brevoApiContactsService.updateContact(
