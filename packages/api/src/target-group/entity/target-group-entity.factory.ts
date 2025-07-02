@@ -77,7 +77,7 @@ export function createTargetGroupEntity({
         @Field(() => Int, { nullable: true })
         assignedContactsTargetGroupBrevoId?: number;
 
-        @ManyToMany("EmailCampaign", "targetGroups")
+        @ManyToMany("BrevoEmailCampaign", "targetGroups")
         campaigns = new Collection<EmailCampaignInterface>(this);
     }
     if (BrevoFilterAttributes) {
@@ -98,7 +98,7 @@ export function createTargetGroupEntity({
     @ObjectType({
         implements: () => [DocumentInterface],
     })
-    class TargetGroup extends TargetGroupBase {}
+    class BrevoTargetGroup extends TargetGroupBase {}
 
-    return TargetGroup;
+    return BrevoTargetGroup;
 }
