@@ -43,13 +43,13 @@ export function createTargetGroupsResolver({
 
         @Query(() => TargetGroup)
         @AffectedEntity(TargetGroup)
-        async targetGroup(@Args("id", { type: () => ID }) id: string): Promise<TargetGroupInterface> {
+        async brevoTargetGroup(@Args("id", { type: () => ID }) id: string): Promise<TargetGroupInterface> {
             const targetGroup = await this.repository.findOneOrFail(id);
             return targetGroup;
         }
 
         @Query(() => PaginatedTargetGroups)
-        async targetGroups(@Args() { search, filter, sort, offset, limit, scope }: TargetGroupsArgs): Promise<PaginatedTargetGroups> {
+        async brevoTargetGroups(@Args() { search, filter, sort, offset, limit, scope }: TargetGroupsArgs): Promise<PaginatedTargetGroups> {
             const where = this.targetGroupsService.getFindCondition({ search, filter });
             where.scope = scope;
             where.isTestList = false;
@@ -83,7 +83,7 @@ export function createTargetGroupsResolver({
         }
 
         @Mutation(() => TargetGroup)
-        async createTargetGroup(
+        async createBrevoTargetGroup(
             @Args("scope", { type: () => Scope }, new DynamicDtoValidationPipe(Scope))
             scope: typeof Scope,
             @Args("input", { type: () => TargetGroupInput }, new DynamicDtoValidationPipe(TargetGroupInput)) input: TargetGroupInputInterface,
@@ -163,7 +163,7 @@ export function createTargetGroupsResolver({
 
         @Mutation(() => TargetGroup)
         @AffectedEntity(TargetGroup)
-        async updateTargetGroup(
+        async updateBrevoTargetGroup(
             @Args("id", { type: () => ID }) id: string,
             @Args("input", { type: () => TargetGroupUpdateInput }, new DynamicDtoValidationPipe(TargetGroupUpdateInput))
             input: Partial<TargetGroupInputInterface>,
@@ -203,7 +203,7 @@ export function createTargetGroupsResolver({
 
         @Mutation(() => Boolean)
         @AffectedEntity(TargetGroup)
-        async deleteTargetGroup(@Args("id", { type: () => ID }) id: string): Promise<boolean> {
+        async deleteBrevoTargetGroup(@Args("id", { type: () => ID }) id: string): Promise<boolean> {
             const targetGroup = await this.repository.findOneOrFail(id);
 
             if (targetGroup.isMainList) {
@@ -222,8 +222,8 @@ export function createTargetGroupsResolver({
             return true;
         }
 
-        @ResolveField()
-        async totalSubscribers(@Parent() targetGroup: TargetGroupInterface): Promise<number> {
+        @ResolveField(() => Number)
+        async brevoTotalSubscribers(@Parent() targetGroup: TargetGroupInterface): Promise<number> {
             if (targetGroup.totalSubscribers !== undefined) return targetGroup.totalSubscribers;
 
             const { uniqueSubscribers } = await this.brevoApiContactsService.findBrevoContactListById(targetGroup.brevoId, targetGroup.scope);
