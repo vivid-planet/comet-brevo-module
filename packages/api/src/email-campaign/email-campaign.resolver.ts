@@ -23,13 +23,13 @@ export function createEmailCampaignsResolver({
     EmailCampaignInput,
     EmailCampaignUpdateInput,
     Scope,
-    TargetGroup,
+    BrevoTargetGroup,
 }: {
     BrevoEmailCampaign: Type<EmailCampaignInterface>;
     EmailCampaignInput: Type<EmailCampaignInputInterface>;
     EmailCampaignUpdateInput: Type<Partial<EmailCampaignInputInterface>>;
     Scope: Type<EmailCampaignScopeInterface>;
-    TargetGroup: Type<TargetGroupInterface>;
+    BrevoTargetGroup: Type<TargetGroupInterface>;
 }): Type<unknown> {
     @ObjectType()
     class PaginatedEmailCampaigns extends PaginatedResponseFactory.create(BrevoEmailCampaign) {}
@@ -237,7 +237,7 @@ export function createEmailCampaignsResolver({
             return campaign.sendingState;
         }
 
-        @ResolveField(() => [TargetGroup])
+        @ResolveField(() => [BrevoTargetGroup])
         async targetGroups(@Parent() emailCampaign: EmailCampaignInterface): Promise<TargetGroupInterface[] | undefined> {
             return emailCampaign.targetGroups.loadItems();
         }

@@ -47,14 +47,14 @@ export class BrevoModule {
             EmailCampaignModule.register({
                 EmailCampaignContentBlock: config.emailCampaigns.EmailCampaignContentBlock,
                 Scope: config.emailCampaigns.Scope,
-                TargetGroup: config.brevo.TargetGroup,
-                BrevoEmailCampaign: config.brevo.BrevoEmailCampaign,
+                BrevoTargetGroup: config.brevo.TargetGroup,
+                BrevoEmailCampaign: config.brevo.EmailCampaign,
                 BrevoConfig,
             }),
             TargetGroupModule.register({
                 Scope: config.emailCampaigns.Scope,
                 BrevoFilterAttributes: config.brevo.BrevoContactFilterAttributes,
-                TargetGroup: config.brevo.TargetGroup,
+                BrevoTargetGroup: config.brevo.TargetGroup,
             }),
             BrevoConfigModule.register({ BrevoConfig, Scope: config.emailCampaigns.Scope }),
             ConfigModule.forRoot(config),

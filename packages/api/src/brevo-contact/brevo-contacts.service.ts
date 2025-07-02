@@ -24,7 +24,7 @@ export class BrevoContactsService {
         @Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig,
         @InjectRepository("BrevoConfig") private readonly brevoConfigRepository: EntityRepository<BrevoConfigInterface>,
         @Optional()
-        @InjectRepository("BlacklistedContacts")
+        @InjectRepository("BrevoBlacklistedContacts")
         @Optional()
         private readonly blacklistedContactsRepository: EntityRepository<BlacklistedContactsInterface>,
         private readonly brevoContactsApiService: BrevoApiContactsService,
