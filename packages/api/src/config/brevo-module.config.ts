@@ -17,7 +17,7 @@ export interface BrevoModuleConfig {
         BlacklistedContacts?: Type<BlacklistedContactsInterface>;
         BrevoContactAttributes?: Type<BrevoContactAttributesInterface>;
         BrevoContactFilterAttributes?: Type<BrevoContactFilterAttributesInterface>;
-        EmailCampaign: Type<EmailCampaignInterface>;
+        BrevoEmailCampaign: Type<EmailCampaignInterface>;
         TargetGroup: Type<TargetGroupInterface>;
         BrevoEmailImportLog?: Type<BrevoEmailImportLogInterface>;
     };

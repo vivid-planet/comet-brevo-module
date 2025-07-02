@@ -186,7 +186,7 @@ type PaginatedTargetGroups {
   totalCount: Int!
 }
 
-type EmailCampaign implements DocumentInterface {
+type BrevoEmailCampaign implements DocumentInterface {
   id: ID!
   updatedAt: DateTime!
   createdAt: DateTime!
@@ -210,7 +210,7 @@ enum SendingState {
 }
 
 type PaginatedEmailCampaigns {
-  nodes: [EmailCampaign!]!
+  nodes: [BrevoEmailCampaign!]!
   totalCount: Int!
 }
 
@@ -238,7 +238,7 @@ type Query {
   manuallyAssignedBrevoContacts(offset: Int! = 0, limit: Int! = 25, targetGroupId: ID!, email: String): PaginatedBrevoContacts!
   targetGroup(id: ID!): TargetGroup!
   targetGroups(scope: EmailCampaignContentScopeInput!, search: String, filter: TargetGroupFilter, sort: [TargetGroupSort!], offset: Int! = 0, limit: Int! = 25): PaginatedTargetGroups!
-  emailCampaign(id: ID!): EmailCampaign!
+  emailCampaign(id: ID!): BrevoEmailCampaign!
   emailCampaigns(scope: EmailCampaignContentScopeInput!, search: String, filter: EmailCampaignFilter, sort: [EmailCampaignSort!], offset: Int! = 0, limit: Int! = 25): PaginatedEmailCampaigns!
   emailCampaignStatistics(id: ID!): BrevoApiCampaignStatistics
   senders(scope: EmailCampaignContentScopeInput!): [BrevoApiSender!]
@@ -336,8 +336,8 @@ type Mutation {
   removeBrevoContactFromTargetGroup(id: ID!, input: RemoveBrevoContactInput!): Boolean!
   updateTargetGroup(id: ID!, input: TargetGroupUpdateInput!, lastUpdatedAt: DateTime): TargetGroup!
   deleteTargetGroup(id: ID!): Boolean!
-  createEmailCampaign(scope: EmailCampaignContentScopeInput!, input: EmailCampaignInput!): EmailCampaign!
-  updateEmailCampaign(id: ID!, input: EmailCampaignUpdateInput!, lastUpdatedAt: DateTime): EmailCampaign!
+  createEmailCampaign(scope: EmailCampaignContentScopeInput!, input: EmailCampaignInput!): BrevoEmailCampaign!
+  updateEmailCampaign(id: ID!, input: EmailCampaignUpdateInput!, lastUpdatedAt: DateTime): BrevoEmailCampaign!
   deleteEmailCampaign(id: ID!): Boolean!
   sendEmailCampaignNow(id: ID!): Boolean!
   sendEmailCampaignToTestEmails(id: ID!, data: SendTestEmailCampaignArgs!): Boolean!

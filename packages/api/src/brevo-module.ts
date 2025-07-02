@@ -48,7 +48,7 @@ export class BrevoModule {
                 EmailCampaignContentBlock: config.emailCampaigns.EmailCampaignContentBlock,
                 Scope: config.emailCampaigns.Scope,
                 TargetGroup: config.brevo.TargetGroup,
-                EmailCampaign: config.brevo.EmailCampaign,
+                BrevoEmailCampaign: config.brevo.BrevoEmailCampaign,
                 BrevoConfig,
             }),
             TargetGroupModule.register({
