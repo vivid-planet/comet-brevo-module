@@ -51,7 +51,7 @@ export const SendManagerFields = ({ isCampaignCreated, scope, id, isSendable }: 
                 variables: { scope },
                 fetchPolicy: "network-only",
             })
-        ).data.targetGroups.nodes;
+        ).data.brevoTargetGroups.nodes;
     });
 
     const [sendEmailCampaignNow, { loading: sendEmailCampaignNowLoading, error: sendEmailCampaignNowError }] = useMutation<

@@ -47,7 +47,7 @@ export function EmailCampaignView({ id, EmailCampaignContentBlock }: EmailCampai
 
     const previewState = {
         emailCampaignId: id,
-        content: EmailCampaignContentBlock.createPreviewState(EmailCampaignContentBlock.input2State(data.emailCampaign.content), previewContext),
+        content: EmailCampaignContentBlock.createPreviewState(EmailCampaignContentBlock.input2State(data.brevoEmailCampaign.content), previewContext),
         scope,
     };
 

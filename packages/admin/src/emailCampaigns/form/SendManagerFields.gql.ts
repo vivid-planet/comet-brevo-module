@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
 const targetGroupSelectFragment = gql`
-    fragment TargetGroupSelect on TargetGroup {
+    fragment TargetGroupSelect on BrevoTargetGroup {
         id
         title
     }
@@ -9,7 +9,7 @@ const targetGroupSelectFragment = gql`
 
 export const targetGroupsSelectQuery = gql`
     query TargetGroupsSelect($scope: EmailCampaignContentScopeInput!) {
-        targetGroups(scope: $scope, limit: 100) {
+        brevoTargetGroups(scope: $scope, limit: 100) {
             nodes {
                 ...TargetGroupSelect
             }
@@ -21,6 +21,6 @@ export const targetGroupsSelectQuery = gql`
 
 export const sendEmailCampaignNowMutation = gql`
     mutation SendEmailCampaignNow($id: ID!) {
-        sendEmailCampaignNow(id: $id)
+        sendBrevoEmailCampaignNow(id: $id)
     }
 `;

@@ -97,21 +97,21 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
     });
 
     const senderOptions =
-        sendersData?.senders?.map((sender) => ({
+        sendersData?.brevoSenders?.map((sender) => ({
             value: sender.email,
             label: `${sender.name} (${sender.email})`,
         })) ?? [];
 
     const doubleOptInTemplateOptions =
-        doubleOptInTemplatesData?.doubleOptInTemplates?.map((doubleOptInTemplate) => ({
+        doubleOptInTemplatesData?.brevoDoubleOptInTemplates?.map((doubleOptInTemplate) => ({
             value: doubleOptInTemplate.id,
             label: `${doubleOptInTemplate.id}: ${doubleOptInTemplate.name}`,
         })) ?? [];
 
     const initialValues = React.useMemo<Partial<FormValues>>(() => {
-        const sender = sendersData?.senders?.find((s) => s.email === data?.brevoConfig?.senderMail && s.name === data?.brevoConfig?.senderName);
+        const sender = sendersData?.brevoSenders?.find((s) => s.email === data?.brevoConfig?.senderMail && s.name === data?.brevoConfig?.senderName);
 
-        const doubleOptInTemplate = doubleOptInTemplatesData?.doubleOptInTemplates?.find(
+        const doubleOptInTemplate = doubleOptInTemplatesData?.brevoDoubleOptInTemplates?.find(
             (template) => template.id === data?.brevoConfig?.doubleOptInTemplateId?.toString(),
         );
 
@@ -134,15 +134,14 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
             unsubscriptionPageId: data?.brevoConfig?.unsubscriptionPageId ?? "",
         };
     }, [
-        data?.brevoConfig?.folderId,
+        sendersData?.brevoSenders,
+        doubleOptInTemplatesData?.brevoDoubleOptInTemplates,
         data?.brevoConfig?.allowedRedirectionUrl,
-
-        data?.brevoConfig?.doubleOptInTemplateId,
+        data?.brevoConfig?.folderId,
+        data?.brevoConfig?.unsubscriptionPageId,
         data?.brevoConfig?.senderMail,
         data?.brevoConfig?.senderName,
-        doubleOptInTemplatesData?.doubleOptInTemplates,
-        data?.brevoConfig?.unsubscriptionPageId,
-        sendersData?.senders,
+        data?.brevoConfig?.doubleOptInTemplateId,
     ]);
 
     const saveConflict = useFormSaveConflict({
@@ -173,7 +172,7 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
             throw new Error("Conflicts detected");
         }
 
-        const sender = sendersData?.senders?.find((s) => s.email === state.sender.value);
+        const sender = sendersData?.brevoSenders?.find((s) => s.email === state.sender.value);
 
         if (!sender || !state.doubleOptInTemplate || !state.allowedRedirectionUrl || !state.unsubscriptionPageId) {
             throw new Error("Not all required fields are set");
