@@ -6,18 +6,18 @@ import { BlacklistedContactsService } from "./blacklisted-contacts.service";
 import { BlacklistedContactsInterface } from "./entity/blacklisted-contacts.entity.factory";
 
 interface BlacklistedContactsModuleConfig {
-    BlacklistedContacts?: Type<BlacklistedContactsInterface>;
+    BrevoBlacklistedContacts?: Type<BlacklistedContactsInterface>;
     Scope: Type<EmailCampaignScopeInterface>;
 }
 
 @Module({})
 export class BlacklistedContactsModule {
-    static register({ BlacklistedContacts }: BlacklistedContactsModuleConfig): DynamicModule {
+    static register({ BrevoBlacklistedContacts }: BlacklistedContactsModuleConfig): DynamicModule {
         return {
             module: BlacklistedContactsModule,
-            imports: BlacklistedContacts ? [MikroOrmModule.forFeature([BlacklistedContacts])] : [],
-            providers: BlacklistedContacts ? [BlacklistedContactsService] : [],
-            exports: BlacklistedContacts ? [BlacklistedContactsService] : [],
+            imports: BrevoBlacklistedContacts ? [MikroOrmModule.forFeature([BrevoBlacklistedContacts])] : [],
+            providers: BrevoBlacklistedContacts ? [BlacklistedContactsService] : [],
+            exports: BrevoBlacklistedContacts ? [BlacklistedContactsService] : [],
         };
     }
 }

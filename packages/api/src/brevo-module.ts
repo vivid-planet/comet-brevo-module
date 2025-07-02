@@ -64,7 +64,7 @@ export class BrevoModule {
             imports.push(
                 BlacklistedContactsModule.register({
                     Scope: config.emailCampaigns.Scope,
-                    BlacklistedContacts: config.brevo.BlacklistedContacts,
+                    BrevoBlacklistedContacts: config.brevo.BlacklistedContacts,
                 }),
             );
         }
