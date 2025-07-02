@@ -98,14 +98,14 @@ export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope }: Form
         query: emailCampaignFormQuery,
         variables: id ? { id } : undefined,
         mode,
-        input2State: ({ emailCampaign }) => {
+        input2State: ({ brevoEmailCampaign }) => {
             return {
-                title: emailCampaign?.title,
-                subject: emailCampaign?.subject,
-                content: EmailCampaignContentBlock.input2State(emailCampaign.content),
-                scheduledAt: emailCampaign?.scheduledAt ? new Date(emailCampaign.scheduledAt) : null,
-                sendingState: emailCampaign?.sendingState,
-                targetGroups: emailCampaign?.targetGroups,
+                title: brevoEmailCampaign?.title,
+                subject: brevoEmailCampaign?.subject,
+                content: EmailCampaignContentBlock.input2State(brevoEmailCampaign.content),
+                scheduledAt: brevoEmailCampaign?.scheduledAt ? new Date(brevoEmailCampaign.scheduledAt) : null,
+                brevoSendingState: brevoEmailCampaign?.brevoSendingState,
+                targetGroups: brevoEmailCampaign?.targetGroups,
             };
         },
         state2Output: (state) => ({
@@ -119,7 +119,7 @@ export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope }: Form
             title: "",
             subject: "",
             content: EmailCampaignContentBlock.defaultValues(),
-            sendingState: "DRAFT",
+            brevoSendingState: "DRAFT",
             scheduledAt: undefined,
             targetGroups: [],
         },
@@ -128,7 +128,7 @@ export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope }: Form
     const saveConflict = useFormSaveConflict({
         checkConflict: async () => {
             const updatedAt = await queryUpdatedAt(client, "emailCampaign", id);
-            return resolveHasSaveConflict(data?.emailCampaign.updatedAt, updatedAt);
+            return resolveHasSaveConflict(data?.brevoEmailCampaign.updatedAt, updatedAt);
         },
         formApiRef,
         loadLatestVersion: async () => {
@@ -136,7 +136,7 @@ export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope }: Form
         },
     });
 
-    const { saveButton } = useSaveState<{ emailCampaign: GQLEmailCampaignFormFragment & { id: string } }>({
+    const { saveButton } = useSaveState<{ brevoEmailCampaign: GQLEmailCampaignFormFragment & { id: string } }>({
         hasChanges,
         saveConflict,
         mode,
@@ -155,7 +155,7 @@ export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope }: Form
         save: saveEmailCampaign,
         navigateToEditPage: async (data) => {
             if (!id) {
-                stackSwitchApi.activatePage(`edit`, data.emailCampaign.id);
+                stackSwitchApi.activatePage(`edit`, data.brevoEmailCampaign.id);
             }
         },
         updateReferenceContent,
@@ -175,7 +175,7 @@ export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope }: Form
 
             const { data: mutationResponse } = await client.mutate<GQLUpdateEmailCampaignMutation, GQLUpdateEmailCampaignMutationVariables>({
                 mutation: updateEmailCampaignMutation,
-                variables: { id, input: { ...output }, lastUpdatedAt: query.data?.emailCampaign?.updatedAt },
+                variables: { id, input: { ...output }, lastUpdatedAt: query.data?.brevoEmailCampaign?.updatedAt },
             });
 
             if (!mutationResponse) {
@@ -220,7 +220,7 @@ export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope }: Form
     };
 
     const isScheduledDateInPast = state.scheduledAt != undefined && isBefore(new Date(state.scheduledAt), new Date());
-    const isCampaignCreated = state.sendingState === "SENT" || mode === "add" || state.targetGroups.length === 0 || isScheduledDateInPast;
+    const isCampaignCreated = state.brevoSendingState === "SENT" || mode === "add" || state.targetGroups.length === 0 || isScheduledDateInPast;
 
     return (
         <>

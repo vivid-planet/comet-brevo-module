@@ -54,7 +54,7 @@ export const updateBrevoConfigMutation = gql`
 
 export const sendersSelectQuery = gql`
     query SendersSelect($scope: EmailCampaignContentScopeInput!) {
-        senders(scope: $scope) {
+        brevoSenders(scope: $scope) {
             id
             name
             email
@@ -64,7 +64,7 @@ export const sendersSelectQuery = gql`
 
 export const doubleOptInTemplatesSelectQuery = gql`
     query DoubleOptInTemplatesSelect($scope: EmailCampaignContentScopeInput!) {
-        doubleOptInTemplates(scope: $scope) {
+        brevoDoubleOptInTemplates(scope: $scope) {
             id
             name
         }

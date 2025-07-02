@@ -65,7 +65,7 @@ export const TestEmailCampaignForm = ({ id, isSendable = false, isCampaignCreate
                 mutation: SendEmailCampaignToTestEmailsMutation,
                 variables: { id, data: { emails: testEmails } },
             });
-            return data?.sendEmailCampaignToTestEmails;
+            return data?.sendBrevoEmailCampaignToTestEmails;
         }
     }
 

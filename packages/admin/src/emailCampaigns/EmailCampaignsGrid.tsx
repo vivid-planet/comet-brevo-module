@@ -37,17 +37,17 @@ import {
 import { SendingStateColumn } from "./SendingStateColumn";
 
 const emailCampaignsFragment = gql`
-    fragment EmailCampaignsList on EmailCampaign {
+    fragment EmailCampaignsList on BrevoEmailCampaign {
         id
         updatedAt
         createdAt
         title
         subject
-        sendingState
+        brevoSendingState
         scheduledAt
         brevoId
         content
-        targetGroups {
+        brevoTargetGroups {
             id
             title
         }
@@ -63,7 +63,7 @@ const emailCampaignsQuery = gql`
         $filter: EmailCampaignFilter
         $scope: EmailCampaignContentScopeInput!
     ) {
-        emailCampaigns(offset: $offset, limit: $limit, sort: $sort, search: $search, filter: $filter, scope: $scope) {
+        brevoEmailCampaigns(offset: $offset, limit: $limit, sort: $sort, search: $search, filter: $filter, scope: $scope) {
             nodes {
                 ...EmailCampaignsList
             }
@@ -75,13 +75,13 @@ const emailCampaignsQuery = gql`
 
 const deleteEmailCampaignMutation = gql`
     mutation DeleteEmailCampaign($id: ID!) {
-        deleteEmailCampaign(id: $id)
+        deleteBrevoEmailCampaign(id: $id)
     }
 `;
 
 const createEmailCampaignMutation = gql`
     mutation CreateEmailCampaign($scope: EmailCampaignContentScopeInput!, $input: EmailCampaignInput!) {
-        createEmailCampaign(scope: $scope, input: $input) {
+        createBrevoEmailCampaign(scope: $scope, input: $input) {
             id
         }
     }
@@ -185,17 +185,17 @@ export function EmailCampaignsGrid({
 
                 return (
                     <>
-                        {row.sendingState !== "SENT" && !isScheduledDateInPast && (
+                        {row.brevoSendingState !== "SENT" && !isScheduledDateInPast && (
                             <IconButton component={StackLink} pageName="edit" payload={row.id}>
                                 <Edit color="primary" />
                             </IconButton>
                         )}
-                        {row.sendingState === "SENT" && (
+                        {row.brevoSendingState === "SENT" && (
                             <IconButton component={StackLink} pageName="statistics" payload={row.id}>
                                 <Statistics color="primary" />
                             </IconButton>
                         )}
-                        {(row.sendingState === "SENT" || (row.sendingState == "SCHEDULED" && isScheduledDateInPast)) && (
+                        {(row.brevoSendingState === "SENT" || (row.brevoSendingState == "SCHEDULED" && isScheduledDateInPast)) && (
                             <IconButton component={StackLink} pageName="view" payload={row.id}>
                                 <Visible color="primary" />
                             </IconButton>
@@ -206,7 +206,7 @@ export function EmailCampaignsGrid({
                                     title: row.title,
                                     subject: row.subject,
                                     content: EmailCampaignContentBlock.state2Output(EmailCampaignContentBlock.input2State(row.content)),
-                                    targetGroups: row.targetGroups.map((targetGroup) => targetGroup.id),
+                                    targetGroups: row.brevoTargetGroups.map((targetGroup) => targetGroup.id),
                                 };
                             }}
                             onPaste={async ({ input }) => {
@@ -245,9 +245,9 @@ export function EmailCampaignsGrid({
             sort: muiGridSortToGql(dataGridProps.sortModel),
         },
     });
-    const rowCount = useBufferedRowCount(data?.emailCampaigns.totalCount);
+    const rowCount = useBufferedRowCount(data?.brevoEmailCampaigns.totalCount);
     if (error) throw error;
-    const rows = data?.emailCampaigns.nodes ?? [];
+    const rows = data?.brevoEmailCampaigns.nodes ?? [];
 
     return (
         <MainContent fullHeight>
