@@ -430,6 +430,7 @@ type TargetGroup implements DocumentInterface {
   scope: EmailCampaignContentScope!
   assignedContactsTargetGroupBrevoId: Int
   filters: BrevoContactFilterAttributes
+  brevoTotalSubscribers: Float!
 }
 
 type BrevoEmailCampaign implements DocumentInterface {
@@ -443,7 +444,8 @@ type BrevoEmailCampaign implements DocumentInterface {
   targetGroups: [TargetGroup!]!
   content: EmailCampaignContentBlockData!
   scope: EmailCampaignContentScope!
-  sendingState: SendingState!
+  brevoSendingState: SendingState!
+  brevoTargetGroups: [TargetGroup!]!
 }
 
 """EmailCampaignContent root block data"""
@@ -626,13 +628,13 @@ type Query {
   brevoContacts(targetGroupId: ID, email: String, scope: EmailCampaignContentScopeInput!, offset: Int! = 0, limit: Int! = 25): PaginatedBrevoContacts!
   brevoTestContacts(targetGroupId: ID, email: String, scope: EmailCampaignContentScopeInput!, offset: Int! = 0, limit: Int! = 25): PaginatedBrevoContacts!
   manuallyAssignedBrevoContacts(offset: Int! = 0, limit: Int! = 25, targetGroupId: ID!, email: String): PaginatedBrevoContacts!
-  emailCampaign(id: ID!): BrevoEmailCampaign!
-  emailCampaigns(scope: EmailCampaignContentScopeInput!, search: String, filter: EmailCampaignFilter, sort: [EmailCampaignSort!], offset: Int! = 0, limit: Int! = 25): PaginatedEmailCampaigns!
-  emailCampaignStatistics(id: ID!): BrevoApiCampaignStatistics
-  targetGroup(id: ID!): TargetGroup!
-  targetGroups(scope: EmailCampaignContentScopeInput!, search: String, filter: TargetGroupFilter, sort: [TargetGroupSort!], offset: Int! = 0, limit: Int! = 25): PaginatedTargetGroups!
-  senders(scope: EmailCampaignContentScopeInput!): [BrevoApiSender!]
-  doubleOptInTemplates(scope: EmailCampaignContentScopeInput!): [BrevoApiEmailTemplate!]
+  brevoEmailCampaign(id: ID!): BrevoEmailCampaign!
+  brevoEmailCampaigns(scope: EmailCampaignContentScopeInput!, search: String, filter: EmailCampaignFilter, sort: [EmailCampaignSort!], offset: Int! = 0, limit: Int! = 25): PaginatedEmailCampaigns!
+  brevoEmailCampaignStatistics(id: ID!): BrevoApiCampaignStatistics
+  brevoTargetGroup(id: ID!): TargetGroup!
+  brevoTargetGroups(scope: EmailCampaignContentScopeInput!, search: String, filter: TargetGroupFilter, sort: [TargetGroupSort!], offset: Int! = 0, limit: Int! = 25): PaginatedTargetGroups!
+  brevoSenders(scope: EmailCampaignContentScopeInput!): [BrevoApiSender!]
+  brevoDoubleOptInTemplates(scope: EmailCampaignContentScopeInput!): [BrevoApiEmailTemplate!]
   isBrevoConfigDefined(scope: EmailCampaignContentScopeInput!): Boolean!
   brevoConfig(scope: EmailCampaignContentScopeInput!): BrevoConfig
 }
@@ -869,16 +871,16 @@ type Mutation {
   deleteBrevoTestContact(id: Int!, scope: EmailCampaignContentScopeInput!): Boolean!
   subscribeBrevoContact(input: SubscribeInput!, scope: EmailCampaignContentScopeInput!): SubscribeResponse!
   startBrevoContactImport(fileId: ID!, targetGroupIds: [ID!], scope: EmailCampaignContentScopeInput!, sendDoubleOptIn: Boolean!): CsvImportInformation!
-  createEmailCampaign(scope: EmailCampaignContentScopeInput!, input: EmailCampaignInput!): BrevoEmailCampaign!
-  updateEmailCampaign(id: ID!, input: EmailCampaignUpdateInput!, lastUpdatedAt: DateTime): BrevoEmailCampaign!
-  deleteEmailCampaign(id: ID!): Boolean!
-  sendEmailCampaignNow(id: ID!): Boolean!
-  sendEmailCampaignToTestEmails(id: ID!, data: SendTestEmailCampaignArgs!): Boolean!
-  createTargetGroup(scope: EmailCampaignContentScopeInput!, input: TargetGroupInput!): TargetGroup!
+  createBrevoEmailCampaign(scope: EmailCampaignContentScopeInput!, input: EmailCampaignInput!): BrevoEmailCampaign!
+  updateBrevoEmailCampaign(id: ID!, input: EmailCampaignUpdateInput!, lastUpdatedAt: DateTime): BrevoEmailCampaign!
+  deleteBrevoEmailCampaign(id: ID!): Boolean!
+  sendBrevoEmailCampaignNow(id: ID!): Boolean!
+  sendBrevoEmailCampaignToTestEmails(id: ID!, data: SendTestEmailCampaignArgs!): Boolean!
+  createBrevoTargetGroup(scope: EmailCampaignContentScopeInput!, input: TargetGroupInput!): TargetGroup!
   addBrevoContactsToTargetGroup(id: ID!, input: AddBrevoContactsInput!): Boolean!
   removeBrevoContactFromTargetGroup(id: ID!, input: RemoveBrevoContactInput!): Boolean!
-  updateTargetGroup(id: ID!, input: TargetGroupUpdateInput!, lastUpdatedAt: DateTime): TargetGroup!
-  deleteTargetGroup(id: ID!): Boolean!
+  updateBrevoTargetGroup(id: ID!, input: TargetGroupUpdateInput!, lastUpdatedAt: DateTime): TargetGroup!
+  deleteBrevoTargetGroup(id: ID!): Boolean!
   createBrevoConfig(scope: EmailCampaignContentScopeInput!, input: BrevoConfigInput!): BrevoConfig!
   updateBrevoConfig(id: ID!, input: BrevoConfigUpdateInput!, lastUpdatedAt: DateTime): BrevoConfig!
 }
