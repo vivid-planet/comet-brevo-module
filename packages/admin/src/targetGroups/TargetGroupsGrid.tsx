@@ -45,7 +45,7 @@ export type AdditionalContactAttributesType = Record<string, unknown>;
 type ContactWithAdditionalAttributes = GQLTargetGroupContactItemFragment & AdditionalContactAttributesType;
 
 const targetGroupsFragment = gql`
-    fragment TargetGroupsList on TargetGroup {
+    fragment TargetGroupsList on BrevoTargetGroup {
         id
         title
         totalSubscribers
@@ -71,7 +71,7 @@ const targetGroupsQuery = gql`
         $filter: TargetGroupFilter
         $scope: EmailCampaignContentScopeInput!
     ) {
-        targetGroups(offset: $offset, limit: $limit, sort: $sort, search: $search, filter: $filter, scope: $scope) {
+        brevoTargetGroups(offset: $offset, limit: $limit, sort: $sort, search: $search, filter: $filter, scope: $scope) {
             nodes {
                 ...TargetGroupsList
             }
@@ -83,13 +83,13 @@ const targetGroupsQuery = gql`
 
 const deleteTargetGroupMutation = gql`
     mutation DeleteTargetGroup($id: ID!) {
-        deleteTargetGroup(id: $id)
+        deleteBrevoTargetGroup(id: $id)
     }
 `;
 
 const createTargetGroupMutation = gql`
     mutation CreateTargetGroup($scope: EmailCampaignContentScopeInput!, $input: TargetGroupInput!) {
-        createTargetGroup(scope: $scope, input: $input) {
+        createBrevoTargetGroup(scope: $scope, input: $input) {
             id
         }
     }
@@ -267,9 +267,9 @@ export function TargetGroupsGrid({
             sort: muiGridSortToGql(dataGridProps.sortModel),
         },
     });
-    const rowCount = useBufferedRowCount(data?.targetGroups.totalCount);
+    const rowCount = useBufferedRowCount(data?.brevoTargetGroups.totalCount);
     if (error) throw error;
-    const rows = data?.targetGroups.nodes ?? [];
+    const rows = data?.brevoTargetGroups.nodes ?? [];
 
     return (
         <MainContent fullHeight>

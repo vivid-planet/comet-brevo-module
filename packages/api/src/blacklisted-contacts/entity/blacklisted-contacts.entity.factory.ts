@@ -18,7 +18,7 @@ export function createBlacklistedContactsEntity({ Scope }: { Scope: EmailCampaig
     @ObjectType({
         implements: () => [DocumentInterface],
     })
-    class BlacklistedContacts implements BlacklistedContactsInterface, DocumentInterface {
+    class BrevoBlacklistedContacts implements BlacklistedContactsInterface, DocumentInterface {
         [OptionalProps]?: "createdAt" | "updatedAt";
 
         @PrimaryKey({ columnType: "uuid" })
@@ -47,5 +47,5 @@ export function createBlacklistedContactsEntity({ Scope }: { Scope: EmailCampaig
         scope: typeof Scope;
     }
 
-    return BlacklistedContacts;
+    return BrevoBlacklistedContacts;
 }

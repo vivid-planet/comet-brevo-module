@@ -47,14 +47,14 @@ export class BrevoModule {
             EmailCampaignModule.register({
                 EmailCampaignContentBlock: config.emailCampaigns.EmailCampaignContentBlock,
                 Scope: config.emailCampaigns.Scope,
-                TargetGroup: config.brevo.TargetGroup,
-                EmailCampaign: config.brevo.EmailCampaign,
+                BrevoTargetGroup: config.brevo.TargetGroup,
+                BrevoEmailCampaign: config.brevo.EmailCampaign,
                 BrevoConfig,
             }),
             TargetGroupModule.register({
                 Scope: config.emailCampaigns.Scope,
                 BrevoFilterAttributes: config.brevo.BrevoContactFilterAttributes,
-                TargetGroup: config.brevo.TargetGroup,
+                BrevoTargetGroup: config.brevo.TargetGroup,
             }),
             BrevoConfigModule.register({ BrevoConfig, Scope: config.emailCampaigns.Scope }),
             ConfigModule.forRoot(config),
@@ -64,7 +64,7 @@ export class BrevoModule {
             imports.push(
                 BlacklistedContactsModule.register({
                     Scope: config.emailCampaigns.Scope,
-                    BlacklistedContacts: config.brevo.BlacklistedContacts,
+                    BrevoBlacklistedContacts: config.brevo.BlacklistedContacts,
                 }),
             );
         }

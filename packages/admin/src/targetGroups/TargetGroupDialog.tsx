@@ -32,7 +32,7 @@ export function TargetGroupDialog({ scope }: TargetGroupDialogProps): React.Reac
             variables: { scope, input: output },
         });
         if (!event.navigatingBack) {
-            const id = mutationResponse?.createTargetGroup.id;
+            const id = mutationResponse?.createBrevoTargetGroup.id;
             if (id) {
                 setTimeout(() => {
                     stackSwitchApi.activatePage("edit", id);

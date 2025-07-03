@@ -12,18 +12,23 @@ import { TargetGroupsService } from "./target-groups.service";
 interface TargetGroupModuleConfig {
     Scope: Type<EmailCampaignScopeInterface>;
     BrevoFilterAttributes?: Type<BrevoContactFilterAttributesInterface>;
-    TargetGroup: Type<TargetGroupInterface>;
+    BrevoTargetGroup: Type<TargetGroupInterface>;
 }
 
 @Module({})
 export class TargetGroupModule {
-    static register({ Scope, BrevoFilterAttributes, TargetGroup }: TargetGroupModuleConfig): DynamicModule {
+    static register({ Scope, BrevoFilterAttributes, BrevoTargetGroup }: TargetGroupModuleConfig): DynamicModule {
         const [TargetGroupInput, TargetGroupUpdateInput] = TargetGroupInputFactory.create({ BrevoFilterAttributes });
-        const TargetGroupResolver = createTargetGroupsResolver({ TargetGroup, TargetGroupInput, TargetGroupUpdateInput, Scope });
+        const TargetGroupResolver = createTargetGroupsResolver({
+            TargetGroup: BrevoTargetGroup,
+            TargetGroupInput,
+            TargetGroupUpdateInput,
+            Scope,
+        });
 
         return {
             module: TargetGroupModule,
-            imports: [ConfigModule, BrevoApiModule, MikroOrmModule.forFeature([TargetGroup])],
+            imports: [ConfigModule, BrevoApiModule, MikroOrmModule.forFeature([BrevoTargetGroup])],
             providers: [TargetGroupResolver, TargetGroupsService],
             exports: [TargetGroupsService],
         };

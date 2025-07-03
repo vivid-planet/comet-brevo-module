@@ -56,7 +56,7 @@ export class BrevoContactModule {
         const BrevoContactImportResolver = createBrevoContactImportResolver({ Scope, BrevoContact });
         const BrevoContactImportConsole = createBrevoContactImportConsole({ Scope });
 
-        const mikroOrmEntities = [TargetGroup, FileUpload, "BrevoConfig", ...(BlacklistedContacts ? ["BlacklistedContacts"] : [])];
+        const mikroOrmEntities = [TargetGroup, FileUpload, "BrevoConfig", ...(BlacklistedContacts ? ["BrevoBlacklistedContacts"] : [])];
 
         const imports = [
             BrevoApiModule,

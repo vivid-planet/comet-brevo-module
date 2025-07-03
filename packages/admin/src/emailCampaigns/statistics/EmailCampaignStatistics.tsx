@@ -43,8 +43,8 @@ export const EmailCampaignStatistics = ({ id }: Props): React.ReactElement => {
                             title={
                                 <FormattedMessage id="cometBrevoModule.emailCampaignStatistics.overallDelivery" defaultMessage="Overall delivery" />
                             }
-                            currentNumber={campaignStatistics?.emailCampaignStatistics?.delivered}
-                            targetNumber={campaignStatistics?.emailCampaignStatistics?.sent}
+                            currentNumber={campaignStatistics?.brevoEmailCampaignStatistics?.delivered}
+                            targetNumber={campaignStatistics?.brevoEmailCampaignStatistics?.sent}
                         />
                     </Grid>
                     <Grid item xs={12} md={6}>
@@ -56,38 +56,40 @@ export const EmailCampaignStatistics = ({ id }: Props): React.ReactElement => {
                                 />
                             }
                             currentNumber={
-                                campaignStatistics?.emailCampaignStatistics
-                                    ? campaignStatistics.emailCampaignStatistics?.sent - campaignStatistics.emailCampaignStatistics?.delivered
+                                campaignStatistics?.brevoEmailCampaignStatistics
+                                    ? campaignStatistics.brevoEmailCampaignStatistics?.sent -
+                                      campaignStatistics.brevoEmailCampaignStatistics?.delivered
                                     : undefined
                             }
-                            targetNumber={campaignStatistics?.emailCampaignStatistics?.sent}
+                            targetNumber={campaignStatistics?.brevoEmailCampaignStatistics?.sent}
                         />
                     </Grid>
                     <Grid item xs={12} sm={6} lg={3}>
                         <PercentageCard
                             title={<FormattedMessage id="cometBrevoModule.emailCampaignStatistics.uniqueViews" defaultMessage="Unique views" />}
                             variant="circle"
-                            currentNumber={campaignStatistics?.emailCampaignStatistics?.uniqueViews}
-                            targetNumber={campaignStatistics?.emailCampaignStatistics?.sent}
+                            currentNumber={campaignStatistics?.brevoEmailCampaignStatistics?.uniqueViews}
+                            targetNumber={campaignStatistics?.brevoEmailCampaignStatistics?.sent}
                         />
                     </Grid>
                     <Grid item xs={12} sm={6} lg={3}>
                         <PercentageCard
                             title={<FormattedMessage id="cometBrevoModule.emailCampaignStatistics.overallClicked" defaultMessage="Overall clicked" />}
                             variant="circle"
-                            currentNumber={campaignStatistics?.emailCampaignStatistics?.uniqueClicks}
-                            targetNumber={campaignStatistics?.emailCampaignStatistics?.sent}
+                            currentNumber={campaignStatistics?.brevoEmailCampaignStatistics?.uniqueClicks}
+                            targetNumber={campaignStatistics?.brevoEmailCampaignStatistics?.sent}
                         />
                     </Grid>
                     <Grid item xs={12} sm={6} lg={3}>
                         <PercentageCard
                             title={<FormattedMessage id="cometBrevoModule.emailCampaignStatistics.overallBounce" defaultMessage="Overall bounce" />}
                             currentNumber={
-                                campaignStatistics?.emailCampaignStatistics
-                                    ? campaignStatistics.emailCampaignStatistics.softBounces + campaignStatistics.emailCampaignStatistics.hardBounces
+                                campaignStatistics?.brevoEmailCampaignStatistics
+                                    ? campaignStatistics.brevoEmailCampaignStatistics.softBounces +
+                                      campaignStatistics.brevoEmailCampaignStatistics.hardBounces
                                     : undefined
                             }
-                            targetNumber={campaignStatistics?.emailCampaignStatistics?.sent}
+                            targetNumber={campaignStatistics?.brevoEmailCampaignStatistics?.sent}
                             variant="circle"
                         />
                     </Grid>
@@ -96,8 +98,8 @@ export const EmailCampaignStatistics = ({ id }: Props): React.ReactElement => {
                             title={
                                 <FormattedMessage id="cometBrevoModule.emailCampaignStatistics.unsubscriptions" defaultMessage="Unsubscriptions" />
                             }
-                            currentNumber={campaignStatistics?.emailCampaignStatistics?.unsubscriptions}
-                            targetNumber={campaignStatistics?.emailCampaignStatistics?.sent}
+                            currentNumber={campaignStatistics?.brevoEmailCampaignStatistics?.unsubscriptions}
+                            targetNumber={campaignStatistics?.brevoEmailCampaignStatistics?.sent}
                             variant="circle"
                         />
                     </Grid>
