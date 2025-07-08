@@ -20,7 +20,7 @@ export class TargetGroupModule {
     static register({ Scope, BrevoFilterAttributes, BrevoTargetGroup }: TargetGroupModuleConfig): DynamicModule {
         const [TargetGroupInput, TargetGroupUpdateInput] = TargetGroupInputFactory.create({ BrevoFilterAttributes });
         const TargetGroupResolver = createTargetGroupsResolver({
-            TargetGroup: BrevoTargetGroup,
+            BrevoTargetGroup,
             TargetGroupInput,
             TargetGroupUpdateInput,
             Scope,
@@ -28,7 +28,7 @@ export class TargetGroupModule {
 
         return {
             module: TargetGroupModule,
-            imports: [ConfigModule, BrevoApiModule, MikroOrmModule.forFeature([BrevoTargetGroup])],
+            imports: [ConfigModule, BrevoApiModule, MikroOrmModule.forFeature(["BrevoTargetGroup"])],
             providers: [TargetGroupResolver, TargetGroupsService],
             exports: [TargetGroupsService],
         };

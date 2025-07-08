@@ -54,7 +54,7 @@ export function createBrevoContactResolver({
             private readonly brevoContactsService: BrevoContactsService,
             private readonly ecgRtrListService: EcgRtrListService,
             private readonly targetGroupService: TargetGroupsService,
-            @InjectRepository("TargetGroup") private readonly targetGroupRepository: EntityRepository<TargetGroupInterface>,
+            @InjectRepository("BrevoTargetGroup") private readonly targetGroupRepository: EntityRepository<TargetGroupInterface>,
         ) {}
 
         @Query(() => BrevoContact)

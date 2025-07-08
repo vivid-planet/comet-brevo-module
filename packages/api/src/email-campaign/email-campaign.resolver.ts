@@ -46,7 +46,7 @@ export function createEmailCampaignsResolver({
             private readonly ecgRtrListService: EcgRtrListService,
             private readonly entityManager: EntityManager,
             @InjectRepository("BrevoEmailCampaign") private readonly repository: EntityRepository<EmailCampaignInterface>,
-            @InjectRepository("TargetGroup") private readonly targetGroupRepository: EntityRepository<TargetGroupInterface>,
+            @InjectRepository("BrevoTargetGroup") private readonly targetGroupRepository: EntityRepository<TargetGroupInterface>,
         ) {}
 
         @Query(() => BrevoEmailCampaign)

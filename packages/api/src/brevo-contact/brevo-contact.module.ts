@@ -25,7 +25,7 @@ import { IsValidRedirectURLConstraint } from "./validator/redirect-url.validator
 interface BrevoContactModuleConfig {
     BrevoContactAttributes?: Type<BrevoContactAttributesInterface>;
     Scope: Type<EmailCampaignScopeInterface>;
-    TargetGroup: Type<TargetGroupInterface>;
+    BrevoTargetGroup: Type<TargetGroupInterface>;
     BlacklistedContacts?: Type<BlacklistedContactsInterface>;
     BrevoEmailImportLog?: Type<BrevoEmailImportLogInterface>;
 }
@@ -35,7 +35,7 @@ export class BrevoContactModule {
     static register({
         BrevoContactAttributes,
         Scope,
-        TargetGroup,
+        BrevoTargetGroup,
         BlacklistedContacts,
         BrevoEmailImportLog,
     }: BrevoContactModuleConfig): DynamicModule {
@@ -56,7 +56,7 @@ export class BrevoContactModule {
         const BrevoContactImportResolver = createBrevoContactImportResolver({ Scope, BrevoContact });
         const BrevoContactImportConsole = createBrevoContactImportConsole({ Scope });
 
-        const mikroOrmEntities = [TargetGroup, FileUpload, "BrevoConfig", ...(BlacklistedContacts ? ["BrevoBlacklistedContacts"] : [])];
+        const mikroOrmEntities = [BrevoTargetGroup, FileUpload, "BrevoConfig", ...(BlacklistedContacts ? ["BrevoBlacklistedContacts"] : [])];
 
         const imports = [
             BrevoApiModule,

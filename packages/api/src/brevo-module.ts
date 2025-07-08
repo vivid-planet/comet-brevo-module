@@ -40,7 +40,7 @@ export class BrevoModule {
             BrevoContactModule.register({
                 BrevoContactAttributes: config.brevo.BrevoContactAttributes,
                 Scope: config.emailCampaigns.Scope,
-                TargetGroup: config.brevo.TargetGroup,
+                BrevoTargetGroup: config.brevo.TargetGroup,
                 BlacklistedContacts: config.brevo.BlacklistedContacts,
                 BrevoEmailImportLog: config.brevo.BrevoEmailImportLog,
             }),

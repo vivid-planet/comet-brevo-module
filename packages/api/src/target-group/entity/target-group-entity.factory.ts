@@ -85,13 +85,13 @@ export function createTargetGroupEntity({
         @ObjectType({
             implements: () => [DocumentInterface],
         })
-        class TargetGroup extends TargetGroupBase {
+        class BrevoTargetGroup extends TargetGroupBase {
             @Embedded(() => BrevoFilterAttributes, { nullable: true })
             @Field(() => BrevoFilterAttributes, { nullable: true })
             filters?: BrevoContactFilterAttributesInterface;
         }
 
-        return TargetGroup;
+        return BrevoTargetGroup;
     }
 
     @Entity()

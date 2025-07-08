@@ -84,7 +84,7 @@ async function generateSchema(): Promise<void> {
     const BrevoTargetGroup = createTargetGroupEntity({ Scope: EmailCampaignScope });
     const [TargetGroupInput, TargetGroupUpdateInput] = TargetGroupInputFactory.create({ BrevoFilterAttributes: BrevoContactFilterAttributes });
     const TargetGroupResolver = createTargetGroupsResolver({
-        TargetGroup: BrevoTargetGroup,
+        BrevoTargetGroup,
         TargetGroupInput,
         TargetGroupUpdateInput,
         Scope: EmailCampaignScope,

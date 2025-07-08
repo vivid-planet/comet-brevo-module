@@ -14,7 +14,7 @@ import { TargetGroupInterface } from "./entity/target-group-entity.factory";
 @Injectable()
 export class TargetGroupsService {
     constructor(
-        @InjectRepository("TargetGroup") private readonly repository: EntityRepository<TargetGroupInterface>,
+        @InjectRepository("BrevoTargetGroup") private readonly repository: EntityRepository<TargetGroupInterface>,
         private readonly brevoApiContactsService: BrevoApiContactsService,
         private readonly entityManager: EntityManager,
     ) {}
