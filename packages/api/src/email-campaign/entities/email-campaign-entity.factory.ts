@@ -28,7 +28,7 @@ export interface EmailCampaignInterface {
 export function createEmailCampaignEntity({
     EmailCampaignContentBlock,
     Scope,
-    TargetGroup,
+    TargetGroup: BrevoTargetGroup,
 }: {
     EmailCampaignContentBlock: Block;
     Scope: EmailCampaignScopeInterface;
@@ -77,8 +77,8 @@ export function createEmailCampaignEntity({
         @Field(() => Date, { nullable: true })
         scheduledAt?: Date;
 
-        @ManyToMany(() => TargetGroup, (targetGroup) => targetGroup.campaigns, { owner: true })
-        @Field(() => [TargetGroup])
+        @ManyToMany(() => BrevoTargetGroup, (brevoTargetGroup) => brevoTargetGroup.campaigns, { owner: true })
+        @Field(() => [BrevoTargetGroup])
         targetGroups = new Collection<TargetGroupInterface>(this);
 
         @RootBlock(EmailCampaignContentBlock)
