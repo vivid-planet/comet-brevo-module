@@ -57,7 +57,7 @@ export function TargetGroupForm({ id, scope, additionalFormFields, input2State, 
     let targetGroupFormFragment: DocumentNode | undefined;
     if (additionalFormFields && nodeFragment) {
         targetGroupFormFragment = gql`
-            fragment TargetGroupForm on TargetGroup {
+            fragment TargetGroupForm on BrevoTargetGroup {
                 ${"...".concat(nodeFragment.name)}
             }
             ${nodeFragment.fragment}
@@ -81,7 +81,7 @@ export function TargetGroupForm({ id, scope, additionalFormFields, input2State, 
 
     const saveConflict = useFormSaveConflict({
         checkConflict: async () => {
-            const updatedAt = await queryUpdatedAt(client, "targetGroup", id);
+            const updatedAt = await queryUpdatedAt(client, "brevoTargetGroup", id);
             return resolveHasSaveConflict(data?.brevoTargetGroup.updatedAt, updatedAt);
         },
         formApiRef,

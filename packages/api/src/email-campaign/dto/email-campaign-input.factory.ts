@@ -10,7 +10,7 @@ export interface EmailCampaignInputInterface {
     subject: string;
     scheduledAt?: Date | null;
     content: BlockInputInterface;
-    targetGroups: string[];
+    brevoTargetGroups: string[];
 }
 
 export class EmailCampaignInputFactory {
@@ -40,7 +40,7 @@ export class EmailCampaignInputFactory {
 
             @Field(() => [ID])
             @IsUUID(4, { each: true })
-            targetGroups: string[];
+            brevoTargetGroups: string[];
 
             @Field(() => RootBlockInputScalar(EmailCampaignContentBlock))
             @Transform(({ value }) => (isBlockInputInterface(value) ? value : EmailCampaignContentBlock.blockInputFactory(value)), {

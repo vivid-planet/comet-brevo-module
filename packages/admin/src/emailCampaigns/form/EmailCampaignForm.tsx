@@ -104,30 +104,30 @@ export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope }: Form
                 subject: brevoEmailCampaign?.subject,
                 content: EmailCampaignContentBlock.input2State(brevoEmailCampaign.content),
                 scheduledAt: brevoEmailCampaign?.scheduledAt ? new Date(brevoEmailCampaign.scheduledAt) : null,
-                brevoSendingState: brevoEmailCampaign?.brevoSendingState,
-                targetGroups: brevoEmailCampaign?.targetGroups,
+                sendingState: brevoEmailCampaign?.sendingState,
+                brevoTargetGroups: brevoEmailCampaign?.brevoTargetGroups,
             };
         },
         state2Output: (state) => ({
             ...state,
             content: EmailCampaignContentBlock.state2Output(state.content),
-            scheduledAt: state.targetGroups.length > 0 ? state.scheduledAt ?? null : null,
+            scheduledAt: state.brevoTargetGroups.length > 0 ? state.scheduledAt ?? null : null,
             sendingState: undefined,
-            targetGroups: state.targetGroups.map((targetGroup) => targetGroup.id),
+            brevoTargetGroups: state.brevoTargetGroups.map((brevoTargetGroup) => brevoTargetGroup.id),
         }),
         defaultState: {
             title: "",
             subject: "",
             content: EmailCampaignContentBlock.defaultValues(),
-            brevoSendingState: "DRAFT",
+            sendingState: "DRAFT",
             scheduledAt: undefined,
-            targetGroups: [],
+            brevoTargetGroups: [],
         },
     });
 
     const saveConflict = useFormSaveConflict({
         checkConflict: async () => {
-            const updatedAt = await queryUpdatedAt(client, "emailCampaign", id);
+            const updatedAt = await queryUpdatedAt(client, "brevoEmailCampaign", id);
             return resolveHasSaveConflict(data?.brevoEmailCampaign.updatedAt, updatedAt);
         },
         formApiRef,
@@ -186,7 +186,7 @@ export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope }: Form
         } else {
             const { data: mutationResponse } = await client.mutate<GQLCreateEmailCampaignMutation, GQLCreateEmailCampaignMutationVariables>({
                 mutation: createEmailCampaignMutation,
-                variables: { scope, input: { ...output, targetGroups: output.targetGroups } },
+                variables: { scope, input: { ...output, brevoTargetGroups: output.brevoTargetGroups } },
             });
 
             if (!mutationResponse) {
@@ -220,7 +220,7 @@ export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope }: Form
     };
 
     const isScheduledDateInPast = state.scheduledAt != undefined && isBefore(new Date(state.scheduledAt), new Date());
-    const isCampaignCreated = state.brevoSendingState === "SENT" || mode === "add" || state.targetGroups.length === 0 || isScheduledDateInPast;
+    const isCampaignCreated = state.sendingState === "SENT" || mode === "add" || state.brevoTargetGroups.length === 0 || isScheduledDateInPast;
 
     return (
         <>
@@ -288,9 +288,11 @@ export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope }: Form
                             ),
                             content: (
                                 <BlocksFinalForm
-                                    onSubmit={(values) => setState({ ...state, scheduledAt: values.scheduledAt, targetGroups: values.targetGroups })}
+                                    onSubmit={(values) =>
+                                        setState({ ...state, scheduledAt: values.scheduledAt, brevoTargetGroups: values.targetGroups })
+                                    }
                                     initialValues={{
-                                        targetGroups: state.targetGroups,
+                                        targetGroups: state.brevoTargetGroups,
                                         scheduledAt: state.scheduledAt,
                                     }}
                                 >
@@ -298,12 +300,12 @@ export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope }: Form
                                         <SendManagerFields
                                             scope={scope}
                                             isCampaignCreated={isCampaignCreated}
-                                            isSendable={!hasChanges && state.targetGroups != undefined}
+                                            isSendable={!hasChanges && state.brevoTargetGroups != undefined}
                                             id={id}
                                         />
                                         <TestEmailCampaignForm
                                             id={id}
-                                            isSendable={!hasChanges && state.targetGroups != undefined}
+                                            isSendable={!hasChanges && state.brevoTargetGroups != undefined}
                                             scope={scope}
                                             isCampaignCreated={isCampaignCreated}
                                         />

@@ -6,8 +6,8 @@ export const emailCampaignFormFragment = gql`
         subject
         scheduledAt
         content
-        brevoSendingState
-        targetGroups {
+        sendingState
+        brevoTargetGroups {
             id
             title
         }

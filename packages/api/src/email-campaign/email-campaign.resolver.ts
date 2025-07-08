@@ -224,7 +224,7 @@ export function createEmailCampaignsResolver({
         }
 
         @ResolveField(() => SendingState)
-        async brevoSendingState(@Parent() campaign: EmailCampaignInterface): Promise<SendingState> {
+        async sendingState(@Parent() campaign: EmailCampaignInterface): Promise<SendingState> {
             if (campaign.sendingState === SendingState.SCHEDULED && campaign.scheduledAt && campaign.scheduledAt < new Date()) {
                 const brevoCampaign = await this.brevoApiCampaignsService.loadBrevoCampaignById(campaign);
 

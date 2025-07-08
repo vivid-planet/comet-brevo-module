@@ -43,7 +43,7 @@ const emailCampaignsFragment = gql`
         createdAt
         title
         subject
-        brevoSendingState
+        sendingState
         scheduledAt
         brevoId
         content
@@ -166,7 +166,7 @@ export function EmailCampaignsGrid({
             width: 200,
         },
         {
-            field: "targetGroups",
+            field: "brevoTargetGroups",
             headerName: intl.formatMessage({ id: "cometBrevoModule.emailCampaign.targetGroups", defaultMessage: "Target groups" }),
             width: 150,
             renderCell: ({ value }) => value.map((value: { title: string }) => value.title).join(", "),
@@ -185,17 +185,17 @@ export function EmailCampaignsGrid({
 
                 return (
                     <>
-                        {row.brevoSendingState !== "SENT" && !isScheduledDateInPast && (
+                        {row.sendingState !== "SENT" && !isScheduledDateInPast && (
                             <IconButton component={StackLink} pageName="edit" payload={row.id}>
                                 <Edit color="primary" />
                             </IconButton>
                         )}
-                        {row.brevoSendingState === "SENT" && (
+                        {row.sendingState === "SENT" && (
                             <IconButton component={StackLink} pageName="statistics" payload={row.id}>
                                 <Statistics color="primary" />
                             </IconButton>
                         )}
-                        {(row.brevoSendingState === "SENT" || (row.brevoSendingState == "SCHEDULED" && isScheduledDateInPast)) && (
+                        {(row.sendingState === "SENT" || (row.sendingState == "SCHEDULED" && isScheduledDateInPast)) && (
                             <IconButton component={StackLink} pageName="view" payload={row.id}>
                                 <Visible color="primary" />
                             </IconButton>
@@ -206,7 +206,7 @@ export function EmailCampaignsGrid({
                                     title: row.title,
                                     subject: row.subject,
                                     content: EmailCampaignContentBlock.state2Output(EmailCampaignContentBlock.input2State(row.content)),
-                                    targetGroups: row.brevoTargetGroups.map((targetGroup) => targetGroup.id),
+                                    brevoTargetGroups: row.brevoTargetGroups.map((brevoTargetGroup) => brevoTargetGroup.id),
                                 };
                             }}
                             onPaste={async ({ input }) => {
