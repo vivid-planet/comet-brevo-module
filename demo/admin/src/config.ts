@@ -16,6 +16,7 @@ export function createConfig() {
             console.warn(`External variable ${externalVariableName} not set"`);
         }
     }
+
     return {
         ...cometConfig,
         apiUrl: environmentVariables.API_URL,
@@ -25,6 +26,7 @@ export function createConfig() {
         buildNumber: environmentVariables.BUILD_NUMBER,
         commitSha: environmentVariables.COMMIT_SHA,
         campaignUrl: environmentVariables.CAMPAIGN_URL,
+        allowAddingContactsWithoutDoi: environmentVariables.ALLOW_ADDING_CONTACTS_WITHOUT_DOI === "true",
     };
 }
 

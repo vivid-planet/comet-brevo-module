@@ -1,4 +1,4 @@
-import { BlobStorageBackendService, FileUpload, RequiredPermission } from "@comet/cms-api";
+import { BlobStorageBackendService, CurrentUser, FileUpload, GetCurrentUser, RequiredPermission } from "@comet/cms-api";
 import { createHashedPath } from "@comet/cms-api/lib/blob-storage/utils/create-hashed-path.util";
 import { FileUploadsConfig } from "@comet/cms-api/lib/file-uploads/file-uploads.config";
 import { FILE_UPLOADS_CONFIG } from "@comet/cms-api/lib/file-uploads/file-uploads.constants";
@@ -8,6 +8,7 @@ import { Inject, Type } from "@nestjs/common";
 import { ModuleRef } from "@nestjs/core";
 import { Args, ArgsType, Mutation, Resolver } from "@nestjs/graphql";
 import { Readable } from "stream";
+import { v4 } from "uuid";
 
 import { BrevoModuleConfig } from "../config/brevo-module.config";
 import { BREVO_MODULE_CONFIG } from "../config/brevo-module.constants";
@@ -43,9 +44,13 @@ export function createBrevoContactImportResolver({
         }
 
         @Mutation(() => CsvImportInformation)
-        async startBrevoContactImport(@Args() { fileId, targetGroupIds, scope }: BrevoContactImportArgs): Promise<CsvImportInformation> {
+        async startBrevoContactImport(
+            @Args() { fileId, targetGroupIds, scope, sendDoubleOptIn }: BrevoContactImportArgs,
+            @GetCurrentUser() user: CurrentUser,
+        ): Promise<CsvImportInformation> {
             let storageFile: NodeJS.ReadableStream | null = null;
             let objectName = null;
+            const importId: string = v4();
 
             try {
                 const fileUpload = await this.fileUploadRepository.findOne(fileId);
@@ -69,6 +74,9 @@ export function createBrevoContactImportResolver({
                     scope,
                     redirectUrl,
                     targetGroupIds,
+                    sendDoubleOptIn,
+                    responsibleUserId: user.id,
+                    importId,
                 });
 
                 if (await this.storageService.fileExists(this.fileUploadsConfig.directory, objectName)) {

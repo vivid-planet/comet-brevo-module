@@ -215,7 +215,9 @@ type CsvImportInformation {
   created: Int!
   updated: Int!
   failed: Int!
-  failedColumns: [[String!]!]
+  blacklisted: Int!
+  failedColumns: [JSONObject!]
+  blacklistedColumns: [JSONObject!]
   errorMessage: String
 }
 
@@ -307,7 +309,7 @@ type PageTreeNode {
   scope: PageTreeNodeScope!
   category: PageTreeNodeCategory!
   childNodes: [PageTreeNode!]!
-  numberOfDescendants: Float!
+  numberOfDescendants: Int!
   parentNode: PageTreeNode
   path: String!
   parentNodes: [PageTreeNode!]!
@@ -331,6 +333,11 @@ input DependentFilter {
   rootGraphqlObjectType: String
   rootId: String
   rootColumnName: String
+}
+
+type EmailCampaignContentScope {
+  domain: String!
+  language: String!
 }
 
 type BrevoContactAttributes {
@@ -392,11 +399,6 @@ type DamFile {
   dependents(offset: Int! = 0, limit: Int! = 25, filter: DependentFilter, forceRefresh: Boolean! = false): PaginatedDependencies!
 }
 
-type EmailCampaignContentScope {
-  domain: String!
-  language: String!
-}
-
 type TargetGroup implements DocumentInterface {
   id: ID!
   updatedAt: DateTime!
@@ -446,6 +448,7 @@ type Redirect {
   target: JSONObject!
   comment: String
   active: Boolean!
+  activatedAt: DateTime
   generationType: RedirectGenerationType!
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -543,6 +546,11 @@ input PageTreeNodeScopeInput {
   language: String!
 }
 
+input EmailCampaignContentScopeInput {
+  domain: String!
+  language: String!
+}
+
 input BrevoContactAttributesInput {
   LASTNAME: String!
   FIRSTNAME: String!
@@ -553,11 +561,6 @@ input BrevoContactAttributesInput {
 input BrevoContactFilterAttributesInput {
   SALUTATION: [BrevoContactSalutation!]
   BRANCH: [BrevoContactBranch!]
-}
-
-input EmailCampaignContentScopeInput {
-  domain: String!
-  language: String!
 }
 
 type Query {
@@ -608,7 +611,8 @@ type Query {
   targetGroup(id: ID!): TargetGroup!
   targetGroups(scope: EmailCampaignContentScopeInput!, search: String, filter: TargetGroupFilter, sort: [TargetGroupSort!], offset: Int! = 0, limit: Int! = 25): PaginatedTargetGroups!
   senders(scope: EmailCampaignContentScopeInput!): [BrevoApiSender!]
-  doubleOptInTemplates: [BrevoApiEmailTemplate!]
+  doubleOptInTemplates(scope: EmailCampaignContentScopeInput!): [BrevoApiEmailTemplate!]
+  isBrevoConfigDefined(scope: EmailCampaignContentScopeInput!): Boolean!
   brevoConfig(scope: EmailCampaignContentScopeInput!): BrevoConfig
 }
 
@@ -626,6 +630,7 @@ input StringFilter {
   endsWith: String
   equal: String
   notEqual: String
+  isAnyOf: [String!]
 }
 
 input UserPermissionsUserSort {
@@ -667,6 +672,7 @@ input RedirectScopeInput {
 input RedirectFilter {
   generationType: StringFilter
   source: StringFilter
+  target: StringFilter
   active: BooleanFilter
   createdAt: DateTimeFilter
   updatedAt: DateTimeFilter
@@ -825,7 +831,7 @@ type Mutation {
   deleteBrevoContact(id: Int!, scope: EmailCampaignContentScopeInput!): Boolean!
   deleteBrevoTestContact(id: Int!, scope: EmailCampaignContentScopeInput!): Boolean!
   subscribeBrevoContact(input: SubscribeInput!, scope: EmailCampaignContentScopeInput!): SubscribeResponse!
-  startBrevoContactImport(fileId: ID!, targetGroupIds: [ID!], scope: EmailCampaignContentScopeInput!): CsvImportInformation!
+  startBrevoContactImport(fileId: ID!, targetGroupIds: [ID!], scope: EmailCampaignContentScopeInput!, sendDoubleOptIn: Boolean!): CsvImportInformation!
   createEmailCampaign(scope: EmailCampaignContentScopeInput!, input: EmailCampaignInput!): EmailCampaign!
   updateEmailCampaign(id: ID!, input: EmailCampaignUpdateInput!, lastUpdatedAt: DateTime): EmailCampaign!
   deleteEmailCampaign(id: ID!): Boolean!
@@ -975,12 +981,15 @@ enum SubscribeResponse {
   ERROR_UNKNOWN
   ERROR_CONTAINED_IN_ECG_RTR_LIST
   ERROR_MAXIMAL_NUMBER_OF_TEST_CONTACTS_REACHED
+  ERROR_CONTACT_IS_BLACKLISTED
+  ERROR_CONTACT_ALREADY_EXISTS
 }
 
 input BrevoContactInput {
   email: String!
   blocked: Boolean!
   redirectionUrl: String!
+  sendDoubleOptIn: Boolean! = true
   attributes: BrevoContactAttributesInput
 }
 

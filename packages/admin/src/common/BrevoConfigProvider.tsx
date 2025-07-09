@@ -5,6 +5,7 @@ export interface BrevoConfig {
     apiUrl: string;
     scopeParts: string[];
     resolvePreviewUrlForScope: (scope: ContentScopeInterface) => string;
+    allowAddingContactsWithoutDoi?: boolean;
 }
 
 const BrevoConfigContext = React.createContext<BrevoConfig | undefined>(undefined);
@@ -21,6 +22,7 @@ interface UseBrevoConfigReturn {
     apiUrl: string;
     previewUrl: string;
     scopeParts: string[];
+    allowAddingContactsWithoutDoi?: boolean;
 }
 
 export const useBrevoConfig = (): UseBrevoConfigReturn => {
@@ -32,6 +34,7 @@ export const useBrevoConfig = (): UseBrevoConfigReturn => {
     }
 
     const previewUrl = context.resolvePreviewUrlForScope(scope);
+    const allowAddingContactsWithoutDoi = context.allowAddingContactsWithoutDoi ?? false;
 
-    return { ...context, previewUrl };
+    return { ...context, previewUrl, allowAddingContactsWithoutDoi };
 };
