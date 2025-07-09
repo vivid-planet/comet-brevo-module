@@ -169,7 +169,7 @@ type BrevoTargetGroup implements DocumentInterface {
   totalSubscribers: Int!
   scope: EmailCampaignContentScope!
   assignedContactsTargetGroupBrevoId: Int
-  brevoTotalSubscribers: Float!
+  brevoTotalSubscribers: Int!
 }
 
 interface DocumentInterface {

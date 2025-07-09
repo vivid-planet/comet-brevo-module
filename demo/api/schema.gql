@@ -430,7 +430,7 @@ type BrevoTargetGroup implements DocumentInterface {
   scope: EmailCampaignContentScope!
   assignedContactsTargetGroupBrevoId: Int
   filters: BrevoContactFilterAttributes
-  brevoTotalSubscribers: Float!
+  brevoTotalSubscribers: Int!
 }
 
 type BrevoEmailCampaign implements DocumentInterface {

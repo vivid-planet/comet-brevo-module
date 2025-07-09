@@ -2,7 +2,7 @@ import { AffectedEntity, PaginatedResponseFactory, RequiredPermission, validateN
 import { EntityManager, EntityRepository, FindOptions, wrap } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Type } from "@nestjs/common";
-import { Args, ArgsType, ID, Mutation, ObjectType, Parent, Query, ResolveField, Resolver } from "@nestjs/graphql";
+import { Args, ArgsType, ID, Int, Mutation, ObjectType, Parent, Query, ResolveField, Resolver } from "@nestjs/graphql";
 import { EmailCampaignScopeInterface } from "src/types";
 
 import { BrevoApiContactsService } from "../brevo-api/brevo-api-contact.service";
@@ -222,7 +222,7 @@ export function createTargetGroupsResolver({
             return true;
         }
 
-        @ResolveField(() => Number)
+        @ResolveField(() => Int)
         async brevoTotalSubscribers(@Parent() targetGroup: TargetGroupInterface): Promise<number> {
             if (targetGroup.totalSubscribers !== undefined) return targetGroup.totalSubscribers;
 
