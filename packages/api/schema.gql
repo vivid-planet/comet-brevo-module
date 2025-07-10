@@ -26,6 +26,16 @@ type Dependency {
   secondaryInformation: String
 }
 
+type DamMediaAlternative {
+  id: ID!
+  language: String!
+  type: DamMediaAlternativeType!
+}
+
+enum DamMediaAlternativeType {
+  captions
+}
+
 type ImageCropArea {
   focalPoint: FocalPoint!
   width: Float
