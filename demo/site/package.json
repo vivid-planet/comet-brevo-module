@@ -61,11 +61,7 @@
         "@graphql-codegen/typescript-operations": "^2.5.13",
         "@types/draft-js": "^0.11.18",
         "@types/fs-extra": "^9.0.13",
-<<<<<<< HEAD
-        "@types/node": "^18.19.86",
-=======
         "@types/node": "^22.15.32",
->>>>>>> origin/main
         "@types/react": "^18.0.0",
         "@types/react-dom": "^18.0.0",
         "@types/styled-components": "^5.1.34",

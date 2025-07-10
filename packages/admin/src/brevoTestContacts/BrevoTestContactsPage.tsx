@@ -4,11 +4,8 @@ import { DocumentNode } from "graphql";
 import * as React from "react";
 import { useIntl } from "react-intl";
 
-<<<<<<< HEAD
-import { ConfigVerification } from "../configVerification/ConfigVerification";
-=======
 import { useBrevoConfig } from "../common/BrevoConfigProvider";
->>>>>>> origin/main
+import { ConfigVerification } from "../configVerification/ConfigVerification";
 import { BrevoTestContactsGrid } from "./BrevoTestContactsGrid";
 import { BrevoTestContactForm, EditBrevoContactFormValues } from "./form/BrevoTestContactForm";
 
