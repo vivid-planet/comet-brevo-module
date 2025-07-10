@@ -14,16 +14,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - uses: pnpm/action-setup@v2
         with:
           version: 8
 
-      - name: Use Node.js 18.x
+      - name: Use Node.js 22.x
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 22
           registry-url: "https://registry.npmjs.org"
           cache: "pnpm" # https://github.com/actions/setup-node/blob/main/docs/advanced-usage.md#caching-packages-dependencies
 
@@ -34,7 +34,7 @@ jobs:
         run: pnpm run copy-schema-files
 
       - name: Publish Canary release
-        if: ${{ github.ref_name == 'main' }}
+        if: ${{ github.ref_name == 'main' && !contains(github.event.head_commit.message, 'Version Packages') }}
         run: |
           echo --- > .changeset/canary.md
           echo '"@comet/brevo-admin": patch' >> .changeset/canary.md
@@ -47,7 +47,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Publish Canary release
-        if: ${{ github.ref_name == 'next' }}
+        if: ${{ github.ref_name == 'next' && !contains(github.event.head_commit.message, 'Version Packages') }}
         run: |
           echo --- > .changeset/canary.md
           echo '"@comet/brevo-admin": major' >> .changeset/canary.md

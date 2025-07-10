@@ -1,5 +1,244 @@
 # @comet/brevo-admin
 
+## 3.1.4
+
+### Patch Changes
+
+-   9126afd: Resolve Issues with Brevo Config Page Permissions
+
+    -   Address a bug that required the brevo-newsletter-config permission to send email campaigns from the admin interface.
+    -   Improve error handling by enhancing the styling and incorporating a MUI Alert component to clearly display messages when the configuration is missing.
+
+-   cf4405c: Improve error handling for adding contacts:
+
+    -   Display specific error messages when attempting to create a contact that already exists or is blacklisted.
+    -   Provide error logs when importing blacklisted contacts via CSV import.
+
+## 3.1.3
+
+### Patch Changes
+
+-   228907b: Set the peer dependency to the major version of Comet, allowing the project to specify the desired minor version as needed.
+
+## 3.1.2
+
+### Patch Changes
+
+-   7aadab3: Fix block preview being too small on view page of already sent campaings
+
+## 3.1.1
+
+### Patch Changes
+
+-   1ba6c4d: Ensure contacts are properly assigned to target groups during CSV import process
+
+## 3.1.0
+
+### Minor Changes
+
+-   5ff4e5a: Add optional feature for importing contacts without sending a double opt-in email
+
+    Enable creating contacts manually or using the import in admin without sending a double opt-in mail by setting a new environment variable:
+
+    ```diff
+    +   @IsBoolean()
+    +   @IsUndefinable()
+    +   @Transform(({ value }) => value === "true")
+    +   ALLOW_ADDING_CONTACTS_WITHOUT_DOI?: boolean;
+    ```
+
+    Add `contactsWithoutDoi` to your`AppModule`:
+
+    ```diff
+             BrevoModule.register({
+               brevo: {
+                     //...
+                   BlacklistedContacts
+                  }
+    +           contactsWithoutDoi: {
+    +               allowAddingContactsWithoutDoi: config.contactsWithoutDoi.allowAddingContactsWithoutDoi,
+    +               emailHashKey: config.contactsWithoutDoi.emailHashKey,
+                        },
+               //...
+             });
+    ```
+
+    Add `allowAddingContactsWithoutDoi` to the `config.ts` in the api:
+
+    ```diff
+        //...
+        ecgRtrList: {
+                apiKey: envVars.ECG_RTR_LIST_API_KEY,
+            },
+    +    contactsWithoutDoi: {
+    +       allowAddingContactsWithoutDoi: envVars.ALLOW_ADDING_CONTACTS_WITHOUT_DOI,
+            },
+        //...
+    ```
+
+    Add it to the `config.ts` in the admin:
+
+    ```diff
+            //...
+                return {
+                        ...cometConfig,
+                apiUrl: environmentVariables.API_URL,
+                adminUrl: environmentVariables.ADMIN_URL,
+                sitesConfig: JSON.parse(environmentVariables.SITES_CONFIG) as SitesConfig,
+                buildDate: environmentVariables.BUILD_DATE,
+                buildNumber: environmentVariables.BUILD_NUMBER,
+                commitSha: environmentVariables.COMMIT_SHA,
+                campaignUrl: environmentVariables.CAMPAIGN_URL,
+    +           allowAddingContactsWithoutDoi: environmentVariables.ALLOW_ADDING_CONTACTS_WITHOUT_DOI === "true",
+                      }
+    ```
+
+    Add `allowAddingContactsWithoutDoi` to the `BrevoConfigProvider` in your `App.tsx`:
+
+    ```diff
+        //...
+               <BrevoConfigProvider
+                     value={{
+                            scopeParts: ["domain", "language"],
+                            apiUrl: config.apiUrl,
+                            resolvePreviewUrlForScope: (scope: ContentScope) => {
+                                return `${config.campaignUrl}/block-preview/${scope.domain}/${scope.language}`;
+                                },
+    +                       allowAddingContactsWithoutDoi: config.allowAddingContactsWithoutDoi,
+                                }}
+                >
+    ```
+
+-   45a5285: Added logging for contacts created without sending a double opt-in confirmation
+
+    When a user adds a contact and skips sending the double opt-in email, the action is logged.
+
+    If adding contacts without sending a double opt-in email is allowed, use `createBrevoEmailImportLogEntity` for creating `brevo-email-import-log` entity. Pass `Scope` and add it to the `AppModule`:
+
+    ```diff
+              BrevoModule.register({
+                brevo: {
+                      //...
+    +           BrevoEmailImportLog
+                       }
+                    //...
+                  });
+    ```
+
+### Patch Changes
+
+-   fc3bc63: Fix scope parameter handling in `doubleOptInTemplates` query
+
+    Previously, the `scope` parameter in the `doubleOptInTemplates` query was not properly handled, causing it to always resolve to `undefined`. This update:
+
+    -   Adds proper scope parameter handling in the API
+    -   Implements scope parameter passing from the admin interface
+    -   Ensures correct template filtering based on scope
+
+## 3.0.3
+
+### Patch Changes
+
+-   1b9cf61: Deprecate `scopeParts` in `createBrevoTestContactsPage` and use scopeParts from the BrevoConfig instead
+
+    Instead, the `scopeParts` from the BrevoConfig will be used. This is in line with the other Page factories.
+
+## 3.0.2
+
+## 3.0.1
+
+### Patch Changes
+
+-   c15195c: Improve send manager UX by positioning the TargetGroup field at the top and adding an info icon to all other fields, indicating that the TargetGroup must be selected and saved first.
+-   5059c86: Fix scope in brevoTestContactsSelectQuery
+
+## 3.0.0
+
+### Major Changes
+
+-   adb69fd: Refactor brevo contact import to upload files to public uploads temporarily
+
+    The files for the brevo contact import now get temporarily stored in the public uploads until the import is concluded.
+    This change prepares for future imports to be handled in a separate job, allowing more than 100 contacts to be imported without exhausting api resources or blocking the event loop.
+
+    It is now necessary to import the `PublicUploadsModule` in the project's `AppModule` and configure it to accept csv files.
+
+    ```ts
+            PublicUploadModule.register({
+                acceptedMimeTypes: ["text/csv"],
+                maxFileSize: config.publicUploads.maxFileSize,
+                directory: `${config.blob.storageDirectoryPrefix}-public-uploads`,
+            }),
+    ```
+
+-   d5319bc: Add `mail-rendering` package for providing reuseable components for rendering emails
+
+    Add new `NewsletterImageBlock`
+
+-   4fb6b8f: A required brevo config page must now be generated with `createBrevoConfigPage`.
+    All necessary brevo configuration (for each scope) must be configured within this page for emails campaigns to be sent.
+
+    ```diff
+    + const BrevoConfigPage = createBrevoConfigPage({
+    +        scopeParts: ["domain", "language"],
+    + });
+    ```
+
+    Env vars containing the brevo sender information can be removed.
+
+    ```diff
+    - BREVO_SENDER_NAME=senderName
+    - BREVO_SENDER_EMAIL=senderEmail
+    ```
+
+-   aa75e4c: Define `scopeParts` in `BrevoConfig`
+
+    Previously the `scopeParts` were passed to the functions:
+
+    -   createBrevoContactsPage
+    -   createTargetGroupsPage
+    -   createEmailCampaignsPage
+    -   createBrevoConfigPage
+
+    Now they are defined once in the `BrevoConfig`:
+
+    ```tsx
+    <BrevoConfigProvider
+        value={{
+            scopeParts: ["domain", "language"],
+            ...otherProps,
+        }}
+    >
+        {children}
+    </BrevoConfigProvider>
+    ```
+
+### Minor Changes
+
+-   e931996: Add field for `doubleOptInTemplateId` to `BrevoConfigPage`
+
+    The environment variable BREVO_DOUBLE_OPT_IN_TEMPLATE_ID can be removed, as it is now available as a maintainable variable in the admin interface.
+
+-   7215ec1: Add `folderId` to `BrevoConfig` to allow overwriting the default folderId `1`
+-   cc4bd07: Add a brevo configuration field for `allowedRedirectionUrl`
+    Env vars containing this information can be removed and must be removed from the brevo module configuration.
+
+    ```diff
+    BrevoModule.register({
+        brevo: {
+    -       allowedRedirectionUrl: config.brevo.allowedRedirectionUrl,
+            //...
+        },
+        //..
+    })
+    ```
+
+-   ea503b9: Add a brevo configuration field for `unsubscriptionPageId`
+
+### Patch Changes
+
+-   a605a42: Remove the `totalContactsBlocked` field from the `TargetGroup` type, because it is not delivered in the list request in Brevo anymore.
+
 ## 2.2.0
 
 ### Minor Changes

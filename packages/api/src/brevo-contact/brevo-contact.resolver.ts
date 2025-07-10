@@ -1,4 +1,4 @@
-import { AffectedEntity, PaginatedResponseFactory, RequiredPermission } from "@comet/cms-api";
+import { AffectedEntity, CurrentUser, GetCurrentUser, PaginatedResponseFactory, RequiredPermission } from "@comet/cms-api";
 import { EntityRepository, FilterQuery } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Inject, Type } from "@nestjs/common";
@@ -6,6 +6,7 @@ import { Args, ArgsType, Int, Mutation, ObjectType, Query, Resolver } from "@nes
 import { BrevoConfigInterface } from "src/brevo-config/entities/brevo-config-entity.factory";
 
 import { BrevoApiContactsService } from "../brevo-api/brevo-api-contact.service";
+import { ContactSource } from "../brevo-email-import-log/entity/brevo-email-import-log.entity.factory";
 import { BrevoModuleConfig } from "../config/brevo-module.config";
 import { BREVO_MODULE_CONFIG } from "../config/brevo-module.constants";
 import { TargetGroupInterface } from "../target-group/entity/target-group-entity.factory";
@@ -208,6 +209,7 @@ export function createBrevoContactResolver({
             @Args("scope", { type: () => Scope }, new DynamicDtoValidationPipe(Scope)) scope: typeof Scope,
             @Args("input", { type: () => BrevoContactInput })
             input: BrevoContactInputInterface,
+            @GetCurrentUser() user: CurrentUser,
         ): Promise<SubscribeResponse> {
             if ((await this.ecgRtrListService.getContainedEcgRtrListEmails([input.email])).length > 0) {
                 return SubscribeResponse.ERROR_CONTAINED_IN_ECG_RTR_LIST;
@@ -215,23 +217,20 @@ export function createBrevoContactResolver({
 
             const brevoConfig = await this.brevoConfigRepository.findOneOrFail({ scope });
 
-            const created = await this.brevoContactsService.createDoubleOptInContact({
+            return this.brevoContactsService.createContact({
                 email: input.email,
                 attributes: input.attributes,
                 redirectionUrl: input.redirectionUrl,
                 scope,
                 templateId: brevoConfig.doubleOptInTemplateId,
+                sendDoubleOptIn: input.sendDoubleOptIn,
+                responsibleUserId: user.id,
+                contactSource: ContactSource.manualCreation,
             });
-
-            if (created) {
-                return SubscribeResponse.SUCCESSFUL;
-            }
-
-            return SubscribeResponse.ERROR_UNKNOWN;
         }
 
         @Mutation(() => SubscribeResponse)
-        @RequiredPermission(["brevo-newsletter-test-contacts"], { skipScopeCheck: true })
+        @RequiredPermission(["brevo-newsletter"], { skipScopeCheck: true })
         async createBrevoTestContact(
             @Args("scope", { type: () => Scope }, new DynamicDtoValidationPipe(Scope)) scope: typeof Scope,
             @Args("input", { type: () => BrevoTestContactInput })
@@ -242,7 +241,7 @@ export function createBrevoContactResolver({
             const contact = await this.brevoContactsApiService.getContactInfoByEmail(input.email, scope);
 
             if (targetGroup) {
-                const numberOfContacts = await this.brevoContactsApiService.getContactCountByListId(targetGroup.brevoId, Scope);
+                const numberOfContacts = await this.brevoContactsApiService.getContactCountByListId(targetGroup.brevoId, scope);
                 if (numberOfContacts >= 100) {
                     return SubscribeResponse.ERROR_MAXIMAL_NUMBER_OF_TEST_CONTACTS_REACHED;
                 }

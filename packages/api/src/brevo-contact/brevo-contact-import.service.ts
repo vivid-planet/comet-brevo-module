@@ -4,6 +4,7 @@ import { InjectRepository } from "@mikro-orm/nestjs";
 import { Inject, Injectable } from "@nestjs/common";
 import { Field, Int, ObjectType } from "@nestjs/graphql";
 import { IsEmail, IsNotEmpty, validateSync } from "class-validator";
+import { GraphQLJSONObject } from "graphql-scalars";
 import isEqual from "lodash.isequal";
 import { BrevoConfigInterface } from "src/brevo-config/entities/brevo-config-entity.factory";
 import { TargetGroupInterface } from "src/target-group/entity/target-group-entity.factory";
@@ -11,6 +12,7 @@ import { Readable } from "stream";
 
 import { BrevoApiContactsService, CreateDoubleOptInContactData } from "../brevo-api/brevo-api-contact.service";
 import { BrevoContactsService } from "../brevo-contact/brevo-contacts.service";
+import { ContactSource } from "../brevo-email-import-log/entity/brevo-email-import-log.entity.factory";
 import { BrevoModuleConfig } from "../config/brevo-module.config";
 import { BREVO_MODULE_CONFIG } from "../config/brevo-module.constants";
 import { TargetGroupsService } from "../target-group/target-groups.service";
@@ -35,8 +37,14 @@ export class CsvImportInformation {
     @Field(() => Int)
     failed: number;
 
-    @Field(() => [[String]], { nullable: true })
-    failedColumns: string[][];
+    @Field(() => Int)
+    blacklisted: number;
+
+    @Field(() => [GraphQLJSONObject], { nullable: true })
+    failedColumns: Record<string, string>[];
+
+    @Field(() => [GraphQLJSONObject], { nullable: true })
+    blacklistedColumns: Record<string, string>[];
 
     @Field({ nullable: true })
     errorMessage?: string;
@@ -46,8 +54,11 @@ interface ImportContactsFromCsvParams {
     fileStream: Readable;
     scope: EmailCampaignScopeInterface;
     redirectUrl: string;
+    sendDoubleOptIn: boolean;
     targetGroupIds?: string[];
     isAdminImport?: boolean;
+    responsibleUserId?: string;
+    importId?: string;
 }
 
 @Injectable()
@@ -65,18 +76,24 @@ export class BrevoContactImportService {
         fileStream,
         scope,
         redirectUrl,
+        sendDoubleOptIn,
         targetGroupIds = [],
         isAdminImport = false,
+        responsibleUserId,
+        importId,
     }: ImportContactsFromCsvParams): Promise<CsvImportInformation> {
-        const failedColumns: string[][] = [];
+        const failedColumns: Record<string, string>[] = [];
+        const blacklistedColumns: Record<string, string>[] = [];
+
         const targetGroups = await this.targetGroupRepository.find({ id: { $in: targetGroupIds } });
+        const contactSource = ContactSource.csvImport;
 
         for (const targetGroup of targetGroups) {
             if (targetGroup.isMainList) {
                 throw new Error("Main lists are not allowed as target groups for import");
             }
 
-            if (!isEqual({ ...targetGroup.scope }, scope)) {
+            if (!isEqual(targetGroup.scope, scope)) {
                 throw new Error("Target group scope does not match the scope of the import file");
             }
         }
@@ -95,27 +112,42 @@ export class BrevoContactImportService {
         let created = 0;
         let updated = 0;
         let failed = 0;
+        let blacklisted = 0;
         for await (const row of rows) {
             // This is a temporary solution. We should handle the import as a background job and allow importing more than 100 contacts
-            if (isAdminImport && created + updated + failed > 100) {
+            if (isAdminImport && created + updated + failed + blacklisted > 100) {
                 return {
                     created,
                     updated,
                     failed,
+                    blacklisted,
                     failedColumns,
+                    blacklistedColumns,
                     errorMessage:
                         "Too many contacts. Currently we only support 100 contacts at once, the first 100 contacts were handled. Please split the file and try again with the remaining contacts.",
                 };
             }
             try {
                 const contactData = await this.processCsvRow(row, redirectUrl);
-                const result = await this.createOrUpdateBrevoContact(contactData, scope, targetGroupBrevoIds);
+                const result = await this.createOrUpdateBrevoContact(
+                    contactData,
+                    scope,
+                    targetGroupBrevoIds,
+                    sendDoubleOptIn,
+                    responsibleUserId,
+                    contactSource,
+                    importId,
+                );
                 switch (result) {
                     case "created":
                         created++;
                         break;
                     case "updated":
                         updated++;
+                        break;
+                    case "blacklisted":
+                        blacklistedColumns.push(row);
+                        blacklisted++;
                         break;
                     case "error":
                         failedColumns.push(row);
@@ -129,17 +161,21 @@ export class BrevoContactImportService {
             }
         }
         if (created + updated + failed === 0) {
-            return { created, updated, failed, failedColumns, errorMessage: "No contacts found." };
+            return { created, updated, failed, blacklisted, failedColumns, blacklistedColumns, errorMessage: "No contacts found." };
         }
 
-        return { created, updated, failed, failedColumns };
+        return { created, updated, failed, blacklisted, failedColumns, blacklistedColumns };
     }
 
     private async createOrUpdateBrevoContact(
         contact: CreateDoubleOptInContactData,
         scope: EmailCampaignScopeInterface,
         targetGroupBrevoIds: number[],
-    ): Promise<"created" | "updated" | "error"> {
+        sendDoubleOptIn: boolean,
+        responsibleUserId?: string,
+        contactSource?: ContactSource,
+        importId?: string,
+    ): Promise<"created" | "updated" | "error" | "blacklisted"> {
         try {
             const brevoContact = await this.brevoApiContactsService.findContact(contact.email, scope);
 
@@ -149,17 +185,25 @@ export class BrevoContactImportService {
                     brevoContact.id,
                     { ...contact, listIds: [mainTargetGroupForScope.brevoId, ...targetGroupBrevoIds, ...brevoContact.listIds] },
                     scope,
+                    sendDoubleOptIn,
+                    responsibleUserId,
+                    contactSource,
+                    importId,
                 );
                 if (updatedBrevoContact) return "updated";
             } else if (!brevoContact) {
                 const brevoConfig = await this.brevoConfigRepository.findOneOrFail({ scope });
 
-                const success = await this.brevoContactsService.createDoubleOptInContact({
+                const success = await this.brevoContactsService.createContact({
                     ...contact,
                     scope,
                     templateId: brevoConfig.doubleOptInTemplateId,
                     listIds: [mainTargetGroupForScope.brevoId, ...targetGroupBrevoIds],
+                    sendDoubleOptIn,
+                    responsibleUserId,
+                    contactSource,
                 });
+                if (!success) return "blacklisted";
                 if (success) return "created";
             }
         } catch (err) {

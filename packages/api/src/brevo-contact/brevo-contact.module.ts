@@ -2,9 +2,12 @@ import { FileUpload } from "@comet/cms-api";
 import { MikroOrmModule } from "@mikro-orm/nestjs";
 import { DynamicModule, Module, Type } from "@nestjs/common";
 
+import { BlacklistedContactsInterface } from "../blacklisted-contacts/entity/blacklisted-contacts.entity.factory";
 import { BrevoApiModule } from "../brevo-api/brevo-api.module";
 import { createBrevoContactImportConsole } from "../brevo-contact/brevo-contact-import.console";
 import { BrevoContactImportService } from "../brevo-contact/brevo-contact-import.service";
+import { BrevoEmailImportLogModule } from "../brevo-email-import-log/brevo-email-import-log.module";
+import { BrevoEmailImportLogInterface } from "../brevo-email-import-log/entity/brevo-email-import-log.entity.factory";
 import { ConfigModule } from "../config/config.module";
 import { TargetGroupInterface } from "../target-group/entity/target-group-entity.factory";
 import { BrevoContactAttributesInterface, EmailCampaignScopeInterface } from "../types";
@@ -23,11 +26,19 @@ interface BrevoContactModuleConfig {
     BrevoContactAttributes?: Type<BrevoContactAttributesInterface>;
     Scope: Type<EmailCampaignScopeInterface>;
     TargetGroup: Type<TargetGroupInterface>;
+    BlacklistedContacts?: Type<BlacklistedContactsInterface>;
+    BrevoEmailImportLog?: Type<BrevoEmailImportLogInterface>;
 }
 
 @Module({})
 export class BrevoContactModule {
-    static register({ BrevoContactAttributes, Scope, TargetGroup }: BrevoContactModuleConfig): DynamicModule {
+    static register({
+        BrevoContactAttributes,
+        Scope,
+        TargetGroup,
+        BlacklistedContacts,
+        BrevoEmailImportLog,
+    }: BrevoContactModuleConfig): DynamicModule {
         const BrevoContact = BrevoContactFactory.create({ BrevoContactAttributes });
         const BrevoContactSubscribeInput = SubscribeInputFactory.create({ BrevoContactAttributes, Scope });
         const [BrevoContactInput, BrevoContactUpdateInput] = BrevoContactInputFactory.create({ BrevoContactAttributes, Scope });
@@ -45,9 +56,17 @@ export class BrevoContactModule {
         const BrevoContactImportResolver = createBrevoContactImportResolver({ Scope, BrevoContact });
         const BrevoContactImportConsole = createBrevoContactImportConsole({ Scope });
 
+        const mikroOrmEntities = [TargetGroup, FileUpload, "BrevoConfig", ...(BlacklistedContacts ? ["BlacklistedContacts"] : [])];
+
+        const imports = [
+            BrevoApiModule,
+            ConfigModule,
+            MikroOrmModule.forFeature(mikroOrmEntities),
+            ...(BrevoEmailImportLog ? [BrevoEmailImportLogModule] : []),
+        ];
         return {
             module: BrevoContactModule,
-            imports: [BrevoApiModule, ConfigModule, MikroOrmModule.forFeature([TargetGroup, FileUpload, "BrevoConfig"])],
+            imports: imports,
             providers: [
                 BrevoContactImportService,
                 BrevoContactsService,

@@ -1,12 +1,14 @@
 import { gql, useApolloClient, useQuery } from "@apollo/client";
-import { Field, FinalForm, FinalFormSelect, SaveButton } from "@comet/admin";
-import { Newsletter } from "@comet/admin-icons";
+import { Field, FinalForm, FinalFormSelect, SaveButton, Tooltip } from "@comet/admin";
+import { Info, Newsletter } from "@comet/admin-icons";
 import { AdminComponentPaper, AdminComponentSectionGroup } from "@comet/blocks-admin";
 import { useContentScope } from "@comet/cms-admin";
 import { Card } from "@mui/material";
 import React from "react";
 import { FormattedMessage } from "react-intl";
 
+import { useBrevoConfig } from "../../common/BrevoConfigProvider";
+import { GQLEmailCampaignContentScopeInput } from "../../graphql.generated";
 import { GQLBrevoTestContactsSelectListFragment } from "./TestEmailCampaignForm.generated";
 import { SendEmailCampaignToTestEmailsMutation } from "./TestEmailCampaignForm.gql";
 import { GQLSendEmailCampaignToTestEmailsMutation, GQLSendEmailCampaignToTestEmailsMutationVariables } from "./TestEmailCampaignForm.gql.generated";
@@ -18,6 +20,8 @@ interface FormProps {
 interface TestEmailCampaignFormProps {
     id?: string;
     isSendable?: boolean;
+    scope: GQLEmailCampaignContentScopeInput;
+    isCampaignCreated: boolean;
 }
 
 const brevoTestContactsSelectFragment = gql`
@@ -39,9 +43,16 @@ const brevoTestContactsSelectQuery = gql`
     ${brevoTestContactsSelectFragment}
 `;
 
-export const TestEmailCampaignForm = ({ id, isSendable = false }: TestEmailCampaignFormProps) => {
+export const TestEmailCampaignForm = ({ id, isSendable = false, isCampaignCreated }: TestEmailCampaignFormProps) => {
     const client = useApolloClient();
-    const scope = useContentScope();
+
+    const { scopeParts } = useBrevoConfig();
+    const { scope: completeScope } = useContentScope();
+
+    const scope = scopeParts.reduce((acc, scopePart) => {
+        acc[scopePart] = completeScope[scopePart];
+        return acc;
+    }, {} as { [key: string]: unknown });
 
     // Contact creation is limited to 100 at a time. Therefore, 100 contacts are queried without using pagination.
     const { data, loading, error } = useQuery(brevoTestContactsSelectQuery, {
@@ -76,10 +87,24 @@ export const TestEmailCampaignForm = ({ id, isSendable = false }: TestEmailCampa
                                         component={FinalFormSelect}
                                         name="testEmails"
                                         label={
-                                            <FormattedMessage
-                                                id="cometBrevoModule.emailCampaigns.testEmailCampaign.testEmails"
-                                                defaultMessage="Email addresses"
-                                            />
+                                            <>
+                                                <FormattedMessage
+                                                    id="cometBrevoModule.emailCampaigns.testEmailCampaign.testEmails"
+                                                    defaultMessage="Email addresses"
+                                                />{" "}
+                                                {isCampaignCreated && (
+                                                    <Tooltip
+                                                        title={
+                                                            <FormattedMessage
+                                                                id="cometBrevoModule.emailCampaigns.testEmails.info"
+                                                                defaultMessage="Please select a target group and save the campaign before you can send test emails."
+                                                            />
+                                                        }
+                                                    >
+                                                        <Info />
+                                                    </Tooltip>
+                                                )}
+                                            </>
                                         }
                                         fullWidth
                                         options={emailOptions}
@@ -87,9 +112,10 @@ export const TestEmailCampaignForm = ({ id, isSendable = false }: TestEmailCampa
                                         error={!!error}
                                         value={values.testEmails || []}
                                         getOptionLabel={(option: string) => option}
+                                        disabled={isCampaignCreated}
                                     />
                                     <SaveButton
-                                        disabled={!values.testEmails || !isSendable || !id}
+                                        disabled={!values.testEmails || !isSendable || !id || isCampaignCreated}
                                         saveIcon={<Newsletter />}
                                         onClick={handleSubmit}
                                         saving={submitting}
