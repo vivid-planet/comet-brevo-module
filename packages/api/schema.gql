@@ -26,6 +26,16 @@ type Dependency {
   secondaryInformation: String
 }
 
+type DamMediaAlternative {
+  id: ID!
+  language: String!
+  type: DamMediaAlternativeType!
+}
+
+enum DamMediaAlternativeType {
+  captions
+}
+
 type ImageCropArea {
   focalPoint: FocalPoint!
   width: Float
@@ -82,7 +92,9 @@ type CsvImportInformation {
   created: Int!
   updated: Int!
   failed: Int!
-  failedColumns: [[String!]!]
+  blacklisted: Int!
+  failedColumns: [JSONObject!]
+  blacklistedColumns: [JSONObject!]
   errorMessage: String
 }
 
@@ -230,7 +242,8 @@ type Query {
   emailCampaigns(scope: EmailCampaignContentScopeInput!, search: String, filter: EmailCampaignFilter, sort: [EmailCampaignSort!], offset: Int! = 0, limit: Int! = 25): PaginatedEmailCampaigns!
   emailCampaignStatistics(id: ID!): BrevoApiCampaignStatistics
   senders(scope: EmailCampaignContentScopeInput!): [BrevoApiSender!]
-  doubleOptInTemplates: [BrevoApiEmailTemplate!]
+  doubleOptInTemplates(scope: EmailCampaignContentScopeInput!): [BrevoApiEmailTemplate!]
+  isBrevoConfigDefined(scope: EmailCampaignContentScopeInput!): Boolean!
   brevoConfig(scope: EmailCampaignContentScopeInput!): BrevoConfig
 }
 
@@ -258,6 +271,7 @@ input StringFilter {
   endsWith: String
   equal: String
   notEqual: String
+  isAnyOf: [String!]
 }
 
 input BooleanFilter {
@@ -327,7 +341,7 @@ type Mutation {
   deleteEmailCampaign(id: ID!): Boolean!
   sendEmailCampaignNow(id: ID!): Boolean!
   sendEmailCampaignToTestEmails(id: ID!, data: SendTestEmailCampaignArgs!): Boolean!
-  startBrevoContactImport(fileId: ID!, targetGroupIds: [ID!], scope: EmailCampaignContentScopeInput!): CsvImportInformation!
+  startBrevoContactImport(fileId: ID!, targetGroupIds: [ID!], scope: EmailCampaignContentScopeInput!, sendDoubleOptIn: Boolean!): CsvImportInformation!
   createBrevoConfig(scope: EmailCampaignContentScopeInput!, input: BrevoConfigInput!): BrevoConfig!
   updateBrevoConfig(id: ID!, input: BrevoConfigUpdateInput!, lastUpdatedAt: DateTime): BrevoConfig!
 }
@@ -341,12 +355,15 @@ enum SubscribeResponse {
   ERROR_UNKNOWN
   ERROR_CONTAINED_IN_ECG_RTR_LIST
   ERROR_MAXIMAL_NUMBER_OF_TEST_CONTACTS_REACHED
+  ERROR_CONTACT_IS_BLACKLISTED
+  ERROR_CONTACT_ALREADY_EXISTS
 }
 
 input BrevoContactInput {
   email: String!
   blocked: Boolean!
   redirectionUrl: String!
+  sendDoubleOptIn: Boolean! = true
 }
 
 input BrevoTestContactInput {

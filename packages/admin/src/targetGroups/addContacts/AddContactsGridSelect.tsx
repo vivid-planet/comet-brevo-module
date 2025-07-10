@@ -49,16 +49,19 @@ const AssignedContactsGridToolbar = ({
     onOpenDialog,
     scope,
     targetGroupId,
+    sendDoubleOptIn,
 }: {
     onOpenDialog: () => void;
     scope: GQLEmailCampaignContentScopeInput;
     targetGroupId: string;
+    sendDoubleOptIn: boolean;
 }) => {
     const intl = useIntl();
 
     const [moreActionsMenuItem, component] = useContactImportFromCsv({
         scope,
         targetGroupId,
+        sendDoubleOptIn,
         refetchQueries: [namedOperations.Query.ManuallyAssignedBrevoContactsGrid],
     });
 

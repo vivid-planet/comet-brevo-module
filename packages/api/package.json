@@ -1,6 +1,6 @@
 {
     "name": "@comet/brevo-api",
-    "version": "2.2.0",
+    "version": "3.1.4",
     "repository": {
         "type": "git",
         "url": "https://github.com/vivid-planet/comet-brevo-module/",
@@ -37,9 +37,9 @@
         "node-fetch": "^2.7.0"
     },
     "devDependencies": {
-        "@comet/blocks-api": "^7.10.0",
-        "@comet/cms-api": "^7.10.0",
-        "@comet/eslint-config": "^7.10.0",
+        "@comet/blocks-api": "^7.21.1",
+        "@comet/cms-api": "^7.21.1",
+        "@comet/eslint-config": "^7.21.1",
         "@kubernetes/client-node": "^0.18.0",
         "@mikro-orm/cli": "^5.9.8",
         "@mikro-orm/core": "^5.9.8",
@@ -61,8 +61,9 @@
         "class-transformer": "^0.5.1",
         "class-validator": "^0.13.1",
         "eslint": "^8.0.0",
-        "express": "^4.21.1",
+        "express": "^4.21.2",
         "graphql": "^15.9.0",
+        "graphql-scalars": "1.24.1",
         "jest": "^29.7.0",
         "jest-junit": "^15.0.0",
         "lodash.isequal": "^4.5.0",
@@ -77,8 +78,8 @@
         "uuid": "^8.3.2"
     },
     "peerDependencies": {
-        "@comet/blocks-api": "^7.10.0",
-        "@comet/cms-api": "^7.10.0",
+        "@comet/blocks-api": "^7.0.0",
+        "@comet/cms-api": "^7.0.0",
         "@mikro-orm/cli": "^5.9.8",
         "@mikro-orm/core": "^5.9.8",
         "@mikro-orm/migrations": "^5.9.8",

@@ -30,8 +30,10 @@ import { Request } from "express";
 import { AccessControlService } from "./auth/access-control.service";
 import { AuthModule } from "./auth/auth.module";
 import { AuthLocalModule } from "./auth/auth-local.module";
+import { BlacklistedContacts } from "./blacklisted-contacts/entity/blacklisted-contacts.entity";
 import { BrevoContactSubscribeModule } from "./brevo-contact/brevo-contact-subscribe.module";
 import { BrevoContactAttributes, BrevoContactFilterAttributes } from "./brevo-contact/dto/brevo-contact-attributes";
+import { BrevoEmailImportLog } from "./brevo-email-import-log/entity/brevo-email-import-log.entity";
 import { BrevoTransactionalMailsModule } from "./brevo-transactional-mails/brevo-transactional-mails.module";
 import { Config } from "./config/config";
 import { ConfigModule } from "./config/config.module";
@@ -150,17 +152,26 @@ export class AppModule {
                                     apiKey: config.brevo.apiKey,
                                     redirectUrlForImport: config.brevo.redirectUrlForImport,
                                 };
-                            } else {
+                            } else if (scope.domain === "secondary") {
                                 return {
                                     apiKey: config.brevo.apiKey,
                                     redirectUrlForImport: config.brevo.redirectUrlForImport,
                                 };
                             }
+
+                            throw Error("Invalid scope passed");
                         },
+                        BlacklistedContacts,
                         BrevoContactAttributes,
                         BrevoContactFilterAttributes,
                         EmailCampaign,
                         TargetGroup,
+                        BrevoEmailImportLog,
+                    },
+
+                    contactsWithoutDoi: {
+                        allowAddingContactsWithoutDoi: config.contactsWithoutDoi.allowAddingContactsWithoutDoi,
+                        emailHashKey: config.contactsWithoutDoi.emailHashKey,
                     },
                     ecgRtrList: {
                         apiKey: config.ecgRtrList.apiKey,

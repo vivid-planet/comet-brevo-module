@@ -14,6 +14,7 @@ export function createConfig(processEnv: NodeJS.ProcessEnv) {
     return {
         ...cometConfig,
         debug: processEnv.NODE_ENV !== "production",
+        serverHost: processEnv.SERVER_HOST ?? "localhost",
         helmRelease: envVars.HELM_RELEASE,
         apiUrl: envVars.API_URL,
         apiPort: envVars.API_PORT,
@@ -68,6 +69,10 @@ export function createConfig(processEnv: NodeJS.ProcessEnv) {
         },
         ecgRtrList: {
             apiKey: envVars.ECG_RTR_LIST_API_KEY,
+        },
+        contactsWithoutDoi: {
+            allowAddingContactsWithoutDoi: envVars.ALLOW_ADDING_CONTACTS_WITHOUT_DOI,
+            emailHashKey: envVars.EMAIL_HASH_KEY,
         },
         sitePreviewSecret: envVars.SITE_PREVIEW_SECRET,
     };
