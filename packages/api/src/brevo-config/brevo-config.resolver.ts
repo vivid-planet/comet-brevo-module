@@ -32,7 +32,15 @@ export function createBrevoConfigResolver({
             @InjectRepository(BrevoConfig) private readonly repository: EntityRepository<BrevoConfigInterface>,
         ) {}
 
-        private async isValidSender({ email, name, scope }: { email: string; name: string; scope: EmailCampaignScopeInterface }): Promise<boolean> {
+        private async brevoIsValidSender({
+            email,
+            name,
+            scope,
+        }: {
+            email: string;
+            name: string;
+            scope: EmailCampaignScopeInterface;
+        }): Promise<boolean> {
             const senders = await this.brevoSenderApiService.getSenders(scope);
 
             if (senders && senders.some((sender) => sender.email === email && sender.name === name)) {
@@ -42,7 +50,7 @@ export function createBrevoConfigResolver({
             return false;
         }
 
-        private async isValidTemplateId({ templateId, scope }: { templateId: number; scope: EmailCampaignScopeInterface }): Promise<boolean> {
+        private async brevoIsValidTemplateId({ templateId, scope }: { templateId: number; scope: EmailCampaignScopeInterface }): Promise<boolean> {
             const { templates } = await this.brevoTransactionalEmailsApiService.getEmailTemplates(scope);
 
             if (templates && templates.some((template) => template.id === templateId)) {
@@ -52,7 +60,7 @@ export function createBrevoConfigResolver({
             return false;
         }
 
-        private async isValidFolderId({ folderId, scope }: { folderId: number; scope: EmailCampaignScopeInterface }): Promise<boolean> {
+        private async brevoIsValidFolderId({ folderId, scope }: { folderId: number; scope: EmailCampaignScopeInterface }): Promise<boolean> {
             for await (const folder of this.brevoFolderIdService.getAllBrevoFolders(scope)) {
                 if (folder.id === folderId) {
                     return true;
@@ -63,7 +71,7 @@ export function createBrevoConfigResolver({
 
         @RequiredPermission(["brevo-newsletter-config"], { skipScopeCheck: true })
         @Query(() => [BrevoApiSender], { nullable: true })
-        async senders(
+        async brevoSenders(
             @Args("scope", { type: () => Scope }, new DynamicDtoValidationPipe(Scope))
             scope: typeof Scope,
         ): Promise<Array<BrevoApiSender> | undefined> {
@@ -73,7 +81,7 @@ export function createBrevoConfigResolver({
 
         @RequiredPermission(["brevo-newsletter-config"], { skipScopeCheck: true })
         @Query(() => [BrevoApiEmailTemplate], { nullable: true })
-        async doubleOptInTemplates(
+        async brevoDoubleOptInTemplates(
             @Args("scope", { type: () => Scope }, new DynamicDtoValidationPipe(Scope))
             scope: typeof Scope,
         ): Promise<Array<BrevoApiEmailTemplate> | undefined> {
@@ -107,15 +115,15 @@ export function createBrevoConfigResolver({
             scope: typeof Scope,
             @Args("input", { type: () => BrevoConfigInput }) input: BrevoConfigInput,
         ): Promise<BrevoConfigInterface> {
-            if (!(await this.isValidSender({ email: input.senderMail, name: input.senderName, scope }))) {
+            if (!(await this.brevoIsValidSender({ email: input.senderMail, name: input.senderName, scope }))) {
                 throw new Error("Sender not found");
             }
 
-            if (!(await this.isValidTemplateId({ templateId: input.doubleOptInTemplateId, scope }))) {
+            if (!(await this.brevoIsValidTemplateId({ templateId: input.doubleOptInTemplateId, scope }))) {
                 throw new Error("Template ID is not valid. ");
             }
 
-            if (!(await this.isValidFolderId({ folderId: input.folderId, scope }))) {
+            if (!(await this.brevoIsValidFolderId({ folderId: input.folderId, scope }))) {
                 throw new Error("Folder ID is not valid. ");
             }
 
@@ -138,19 +146,19 @@ export function createBrevoConfigResolver({
         ): Promise<BrevoConfigInterface> {
             const brevoConfig = await this.repository.findOneOrFail(id);
             if (input.senderMail && input.senderName) {
-                if (!(await this.isValidSender({ email: input.senderMail, name: input.senderName, scope: brevoConfig.scope }))) {
+                if (!(await this.brevoIsValidSender({ email: input.senderMail, name: input.senderName, scope: brevoConfig.scope }))) {
                     throw new Error("Sender not found");
                 }
             }
 
             if (input.doubleOptInTemplateId) {
-                if (!(await this.isValidTemplateId({ templateId: input.doubleOptInTemplateId, scope: brevoConfig.scope }))) {
+                if (!(await this.brevoIsValidTemplateId({ templateId: input.doubleOptInTemplateId, scope: brevoConfig.scope }))) {
                     throw new Error("Template ID is not valid. ");
                 }
             }
 
             if (input.folderId) {
-                if (!(await this.isValidFolderId({ folderId: input.folderId, scope: brevoConfig.scope }))) {
+                if (!(await this.brevoIsValidFolderId({ folderId: input.folderId, scope: brevoConfig.scope }))) {
                     throw new Error("Folder ID is not valid. ");
                 }
             }

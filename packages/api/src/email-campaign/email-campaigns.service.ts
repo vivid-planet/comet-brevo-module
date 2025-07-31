@@ -20,7 +20,7 @@ import { SendingState } from "./sending-state.enum";
 export class EmailCampaignsService {
     constructor(
         @Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig,
-        @InjectRepository("EmailCampaign") private readonly repository: EntityRepository<EmailCampaignInterface>,
+        @InjectRepository("BrevoEmailCampaign") private readonly repository: EntityRepository<EmailCampaignInterface>,
         @InjectRepository("BrevoConfig") private readonly brevoConfigRepository: EntityRepository<BrevoConfigInterface>,
         private readonly httpService: HttpService,
         private readonly brevoApiCampaignService: BrevoApiCampaignsService,

@@ -30,7 +30,7 @@ export function createBrevoContactImportConsole({ Scope }: { Scope: Type<EmailCa
             private readonly orm: MikroORM, // necessary for @CreateRequestContext() to work
             @Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig,
             private readonly brevoContactImportService: BrevoContactImportService,
-            @InjectRepository("TargetGroup") private readonly targetGroupRepository: EntityRepository<TargetGroupInterface>,
+            @InjectRepository("BrevoTargetGroup") private readonly targetGroupRepository: EntityRepository<TargetGroupInterface>,
             @InjectRepository("BrevoConfig") private readonly brevoConfigRepository: EntityRepository<BrevoConfigInterface>,
         ) {}
 

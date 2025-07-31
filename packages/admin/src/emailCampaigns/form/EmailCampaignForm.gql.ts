@@ -1,13 +1,13 @@
 import { gql } from "@apollo/client";
 
 export const emailCampaignFormFragment = gql`
-    fragment EmailCampaignForm on EmailCampaign {
+    fragment EmailCampaignForm on BrevoEmailCampaign {
         title
         subject
         scheduledAt
         content
         sendingState
-        targetGroups {
+        brevoTargetGroups {
             id
             title
         }
@@ -16,7 +16,7 @@ export const emailCampaignFormFragment = gql`
 
 export const emailCampaignFormQuery = gql`
     query EmailCampaignForm($id: ID!) {
-        emailCampaign(id: $id) {
+        brevoEmailCampaign(id: $id) {
             id
             updatedAt
             ...EmailCampaignForm
@@ -27,7 +27,7 @@ export const emailCampaignFormQuery = gql`
 
 export const emailCampaignFormCheckForChangesQuery = gql`
     query EmailCampaignFormCheckForChanges($id: ID!) {
-        emailCampaign(id: $id) {
+        brevoEmailCampaign(id: $id) {
             updatedAt
         }
     }
@@ -35,7 +35,7 @@ export const emailCampaignFormCheckForChangesQuery = gql`
 
 export const createEmailCampaignMutation = gql`
     mutation CreateEmailCampaign($scope: EmailCampaignContentScopeInput!, $input: EmailCampaignInput!) {
-        emailCampaign: createEmailCampaign(scope: $scope, input: $input) {
+        brevoEmailCampaign: createBrevoEmailCampaign(scope: $scope, input: $input) {
             id
             updatedAt
             ...EmailCampaignForm
@@ -46,7 +46,7 @@ export const createEmailCampaignMutation = gql`
 
 export const updateEmailCampaignMutation = gql`
     mutation UpdateEmailCampaign($id: ID!, $input: EmailCampaignUpdateInput!, $lastUpdatedAt: DateTime) {
-        emailCampaign: updateEmailCampaign(id: $id, input: $input, lastUpdatedAt: $lastUpdatedAt) {
+        brevoEmailCampaign: updateBrevoEmailCampaign(id: $id, input: $input, lastUpdatedAt: $lastUpdatedAt) {
             id
             updatedAt
             ...EmailCampaignForm

@@ -19,25 +19,25 @@ import { EmailCampaignInterface } from "./entities/email-campaign-entity.factory
 import { SendingState } from "./sending-state.enum";
 
 export function createEmailCampaignsResolver({
-    EmailCampaign,
+    BrevoEmailCampaign,
     EmailCampaignInput,
     EmailCampaignUpdateInput,
     Scope,
-    TargetGroup,
+    BrevoTargetGroup,
 }: {
-    EmailCampaign: Type<EmailCampaignInterface>;
+    BrevoEmailCampaign: Type<EmailCampaignInterface>;
     EmailCampaignInput: Type<EmailCampaignInputInterface>;
     EmailCampaignUpdateInput: Type<Partial<EmailCampaignInputInterface>>;
     Scope: Type<EmailCampaignScopeInterface>;
-    TargetGroup: Type<TargetGroupInterface>;
+    BrevoTargetGroup: Type<TargetGroupInterface>;
 }): Type<unknown> {
     @ObjectType()
-    class PaginatedEmailCampaigns extends PaginatedResponseFactory.create(EmailCampaign) {}
+    class PaginatedEmailCampaigns extends PaginatedResponseFactory.create(BrevoEmailCampaign) {}
 
     @ArgsType()
     class EmailCampaignsArgs extends EmailCampaignArgsFactory.create({ Scope }) {}
 
-    @Resolver(() => EmailCampaign)
+    @Resolver(() => BrevoEmailCampaign)
     @RequiredPermission(["brevo-newsletter"])
     class EmailCampaignsResolver {
         constructor(
@@ -45,19 +45,19 @@ export function createEmailCampaignsResolver({
             private readonly brevoApiCampaignsService: BrevoApiCampaignsService,
             private readonly ecgRtrListService: EcgRtrListService,
             private readonly entityManager: EntityManager,
-            @InjectRepository("EmailCampaign") private readonly repository: EntityRepository<EmailCampaignInterface>,
-            @InjectRepository("TargetGroup") private readonly targetGroupRepository: EntityRepository<TargetGroupInterface>,
+            @InjectRepository("BrevoEmailCampaign") private readonly repository: EntityRepository<EmailCampaignInterface>,
+            @InjectRepository("BrevoTargetGroup") private readonly targetGroupRepository: EntityRepository<TargetGroupInterface>,
         ) {}
 
-        @Query(() => EmailCampaign)
-        @AffectedEntity(EmailCampaign)
-        async emailCampaign(@Args("id", { type: () => ID }) id: string): Promise<EmailCampaignInterface> {
+        @Query(() => BrevoEmailCampaign)
+        @AffectedEntity(BrevoEmailCampaign)
+        async brevoEmailCampaign(@Args("id", { type: () => ID }) id: string): Promise<EmailCampaignInterface> {
             const campaign = await this.repository.findOneOrFail(id);
             return campaign;
         }
 
         @Query(() => PaginatedEmailCampaigns)
-        async emailCampaigns(
+        async brevoEmailCampaigns(
             @Args() { search, filter, sort, offset, limit, scope }: EmailCampaignsArgs,
             @Info() info: GraphQLResolveInfo,
         ): Promise<PaginatedEmailCampaigns> {
@@ -88,8 +88,8 @@ export function createEmailCampaignsResolver({
             return new PaginatedEmailCampaigns(emailCampaigns, totalCount);
         }
 
-        @Mutation(() => EmailCampaign)
-        async createEmailCampaign(
+        @Mutation(() => BrevoEmailCampaign)
+        async createBrevoEmailCampaign(
             @Args("scope", { type: () => Scope }, new DynamicDtoValidationPipe(Scope))
             scope: typeof Scope,
             @Args("input", { type: () => EmailCampaignInput }, new DynamicDtoValidationPipe(EmailCampaignInput)) input: EmailCampaignInputInterface,
@@ -111,9 +111,9 @@ export function createEmailCampaignsResolver({
             return campaign;
         }
 
-        @Mutation(() => EmailCampaign)
-        @AffectedEntity(EmailCampaign)
-        async updateEmailCampaign(
+        @Mutation(() => BrevoEmailCampaign)
+        @AffectedEntity(BrevoEmailCampaign)
+        async updateBrevoEmailCampaign(
             @Args("id", { type: () => ID }) id: string,
             @Args("input", { type: () => EmailCampaignUpdateInput }, new DynamicDtoValidationPipe(EmailCampaignUpdateInput))
             input: Partial<EmailCampaignInputInterface>,
@@ -160,8 +160,8 @@ export function createEmailCampaignsResolver({
         }
 
         @Mutation(() => Boolean)
-        @AffectedEntity(EmailCampaign)
-        async deleteEmailCampaign(@Args("id", { type: () => ID }) id: string): Promise<boolean> {
+        @AffectedEntity(BrevoEmailCampaign)
+        async deleteBrevoEmailCampaign(@Args("id", { type: () => ID }) id: string): Promise<boolean> {
             const campaign = await this.repository.findOneOrFail(id);
 
             if (campaign.brevoId) {
@@ -174,8 +174,8 @@ export function createEmailCampaignsResolver({
         }
 
         @Mutation(() => Boolean)
-        @AffectedEntity(EmailCampaign)
-        async sendEmailCampaignNow(@Args("id", { type: () => ID }) id: string): Promise<boolean> {
+        @AffectedEntity(BrevoEmailCampaign)
+        async sendBrevoEmailCampaignNow(@Args("id", { type: () => ID }) id: string): Promise<boolean> {
             const campaign = await this.repository.findOneOrFail(id);
 
             const campaignSent = await this.campaignsService.sendEmailCampaignNow(campaign);
@@ -197,8 +197,8 @@ export function createEmailCampaignsResolver({
         }
 
         @Mutation(() => Boolean)
-        @AffectedEntity(EmailCampaign)
-        async sendEmailCampaignToTestEmails(
+        @AffectedEntity(BrevoEmailCampaign)
+        async sendBrevoEmailCampaignToTestEmails(
             @Args("id", { type: () => ID }) id: string,
             @Args("data", { type: () => SendTestEmailCampaignArgs }) data: SendTestEmailCampaignArgs,
         ): Promise<boolean> {
@@ -216,8 +216,8 @@ export function createEmailCampaignsResolver({
         }
 
         @Query(() => BrevoApiCampaignStatistics, { nullable: true })
-        @AffectedEntity(EmailCampaign)
-        async emailCampaignStatistics(@Args("id", { type: () => ID }) id: string): Promise<BrevoApiCampaignStatistics | null> {
+        @AffectedEntity(BrevoEmailCampaign)
+        async brevoEmailCampaignStatistics(@Args("id", { type: () => ID }) id: string): Promise<BrevoApiCampaignStatistics | null> {
             const campaign = await this.repository.findOneOrFail(id);
 
             return campaign.brevoId ? this.brevoApiCampaignsService.loadBrevoCampaignStatisticsById(campaign) : null;
@@ -237,8 +237,8 @@ export function createEmailCampaignsResolver({
             return campaign.sendingState;
         }
 
-        @ResolveField(() => [TargetGroup])
-        async targetGroups(@Parent() emailCampaign: EmailCampaignInterface): Promise<TargetGroupInterface[] | undefined> {
+        @ResolveField(() => [BrevoTargetGroup])
+        async brevoTargetGroups(@Parent() emailCampaign: EmailCampaignInterface): Promise<TargetGroupInterface[] | undefined> {
             return emailCampaign.targetGroups.loadItems();
         }
     }

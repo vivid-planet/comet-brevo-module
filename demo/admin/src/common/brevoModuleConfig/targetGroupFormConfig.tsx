@@ -34,7 +34,7 @@ const branchOptions: Array<{ label: React.ReactNode; value: GQLBrevoContactBranc
 
 export const additionalPageTreeNodeFieldsFragment = {
     fragment: gql`
-        fragment TargetGroupFilters on TargetGroup {
+        fragment TargetGroupFilters on BrevoTargetGroup {
             filters {
                 SALUTATION
                 BRANCH

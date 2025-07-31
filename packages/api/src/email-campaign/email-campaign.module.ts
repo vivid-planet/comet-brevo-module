@@ -17,21 +17,27 @@ import { EmailCampaignInterface } from "./entities/email-campaign-entity.factory
 interface EmailCampaignModuleConfig {
     Scope: Type<EmailCampaignScopeInterface>;
     EmailCampaignContentBlock: Block;
-    TargetGroup: Type<TargetGroupInterface>;
-    EmailCampaign: Type<EmailCampaignInterface>;
+    BrevoTargetGroup: Type<TargetGroupInterface>;
+    BrevoEmailCampaign: Type<EmailCampaignInterface>;
     BrevoConfig: Type<BrevoConfigInterface>;
 }
 
 @Module({})
 export class EmailCampaignModule {
-    static register({ Scope, EmailCampaignContentBlock, TargetGroup, EmailCampaign, BrevoConfig }: EmailCampaignModuleConfig): DynamicModule {
+    static register({
+        Scope,
+        EmailCampaignContentBlock,
+        BrevoTargetGroup,
+        BrevoEmailCampaign,
+        BrevoConfig,
+    }: EmailCampaignModuleConfig): DynamicModule {
         const [EmailCampaignInput, EmailCampaignUpdateInput] = EmailCampaignInputFactory.create({ EmailCampaignContentBlock });
         const EmailCampaignsResolver = createEmailCampaignsResolver({
-            EmailCampaign,
+            BrevoEmailCampaign,
             EmailCampaignInput,
             EmailCampaignUpdateInput,
             Scope,
-            TargetGroup,
+            BrevoTargetGroup,
         });
 
         return {
@@ -42,7 +48,7 @@ export class EmailCampaignModule {
                 HttpModule.register({
                     timeout: 5000,
                 }),
-                MikroOrmModule.forFeature([EmailCampaign, TargetGroup, BrevoConfig]),
+                MikroOrmModule.forFeature([BrevoEmailCampaign, BrevoTargetGroup, BrevoConfig]),
             ],
             providers: [EmailCampaignsResolver, EmailCampaignsService, EcgRtrListService],
         };

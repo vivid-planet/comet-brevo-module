@@ -81,15 +81,20 @@ async function generateSchema(): Promise<void> {
         Scope: EmailCampaignScope,
     });
 
-    const TargetGroup = createTargetGroupEntity({ Scope: EmailCampaignScope });
+    const BrevoTargetGroup = createTargetGroupEntity({ Scope: EmailCampaignScope });
     const [TargetGroupInput, TargetGroupUpdateInput] = TargetGroupInputFactory.create({ BrevoFilterAttributes: BrevoContactFilterAttributes });
-    const TargetGroupResolver = createTargetGroupsResolver({ TargetGroup, TargetGroupInput, TargetGroupUpdateInput, Scope: EmailCampaignScope });
+    const TargetGroupResolver = createTargetGroupsResolver({
+        BrevoTargetGroup,
+        TargetGroupInput,
+        TargetGroupUpdateInput,
+        Scope: EmailCampaignScope,
+    });
 
-    const EmailCampaign = createEmailCampaignEntity({ Scope: EmailCampaignScope, TargetGroup: TargetGroup, EmailCampaignContentBlock });
+    const BrevoEmailCampaign = createEmailCampaignEntity({ Scope: EmailCampaignScope, TargetGroup: BrevoTargetGroup, EmailCampaignContentBlock });
     const [EmailCampaignInput, EmailCampaignUpdateInput] = EmailCampaignInputFactory.create({ EmailCampaignContentBlock });
     const EmailCampaignResolver = createEmailCampaignsResolver({
-        EmailCampaign,
-        TargetGroup,
+        BrevoEmailCampaign,
+        BrevoTargetGroup,
         EmailCampaignInput,
         EmailCampaignUpdateInput,
         Scope: EmailCampaignScope,

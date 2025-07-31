@@ -2,7 +2,7 @@ import { AffectedEntity, PaginatedResponseFactory, RequiredPermission, validateN
 import { EntityManager, EntityRepository, FindOptions, wrap } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Type } from "@nestjs/common";
-import { Args, ArgsType, ID, Mutation, ObjectType, Parent, Query, ResolveField, Resolver } from "@nestjs/graphql";
+import { Args, ArgsType, ID, Int, Mutation, ObjectType, Parent, Query, ResolveField, Resolver } from "@nestjs/graphql";
 import { EmailCampaignScopeInterface } from "src/types";
 
 import { BrevoApiContactsService } from "../brevo-api/brevo-api-contact.service";
@@ -15,41 +15,41 @@ import { TargetGroupInterface } from "./entity/target-group-entity.factory";
 import { TargetGroupsService } from "./target-groups.service";
 
 export function createTargetGroupsResolver({
-    TargetGroup,
+    BrevoTargetGroup,
     TargetGroupInput,
     TargetGroupUpdateInput,
     Scope,
 }: {
-    TargetGroup: Type<TargetGroupInterface>;
+    BrevoTargetGroup: Type<TargetGroupInterface>;
     TargetGroupInput: Type<TargetGroupInputInterface>;
     TargetGroupUpdateInput: Type<Partial<TargetGroupInputInterface>>;
     Scope: Type<EmailCampaignScopeInterface>;
 }): Type<unknown> {
     @ObjectType()
-    class PaginatedTargetGroups extends PaginatedResponseFactory.create(TargetGroup) {}
+    class PaginatedTargetGroups extends PaginatedResponseFactory.create(BrevoTargetGroup) {}
 
     @ArgsType()
     class TargetGroupsArgs extends TargetGroupArgsFactory.create({ Scope }) {}
 
-    @Resolver(() => TargetGroup)
+    @Resolver(() => BrevoTargetGroup)
     @RequiredPermission(["brevo-newsletter"])
     class TargetGroupResolver {
         constructor(
             private readonly targetGroupsService: TargetGroupsService,
             private readonly brevoApiContactsService: BrevoApiContactsService,
             private readonly entityManager: EntityManager,
-            @InjectRepository("TargetGroup") private readonly repository: EntityRepository<TargetGroupInterface>,
+            @InjectRepository("BrevoTargetGroup") private readonly repository: EntityRepository<TargetGroupInterface>,
         ) {}
 
-        @Query(() => TargetGroup)
-        @AffectedEntity(TargetGroup)
-        async targetGroup(@Args("id", { type: () => ID }) id: string): Promise<TargetGroupInterface> {
+        @Query(() => BrevoTargetGroup)
+        @AffectedEntity(BrevoTargetGroup)
+        async brevoTargetGroup(@Args("id", { type: () => ID }) id: string): Promise<TargetGroupInterface> {
             const targetGroup = await this.repository.findOneOrFail(id);
             return targetGroup;
         }
 
         @Query(() => PaginatedTargetGroups)
-        async targetGroups(@Args() { search, filter, sort, offset, limit, scope }: TargetGroupsArgs): Promise<PaginatedTargetGroups> {
+        async brevoTargetGroups(@Args() { search, filter, sort, offset, limit, scope }: TargetGroupsArgs): Promise<PaginatedTargetGroups> {
             const where = this.targetGroupsService.getFindCondition({ search, filter });
             where.scope = scope;
             where.isTestList = false;
@@ -82,8 +82,8 @@ export function createTargetGroupsResolver({
             return new PaginatedTargetGroups(entities, totalCount);
         }
 
-        @Mutation(() => TargetGroup)
-        async createTargetGroup(
+        @Mutation(() => BrevoTargetGroup)
+        async createBrevoTargetGroup(
             @Args("scope", { type: () => Scope }, new DynamicDtoValidationPipe(Scope))
             scope: typeof Scope,
             @Args("input", { type: () => TargetGroupInput }, new DynamicDtoValidationPipe(TargetGroupInput)) input: TargetGroupInputInterface,
@@ -106,7 +106,7 @@ export function createTargetGroupsResolver({
         }
 
         @Mutation(() => Boolean)
-        @AffectedEntity(TargetGroup)
+        @AffectedEntity(BrevoTargetGroup)
         async addBrevoContactsToTargetGroup(
             @Args("id", { type: () => ID }) id: string,
             @Args("input", { type: () => AddBrevoContactsInput }) input: AddBrevoContactsInput,
@@ -126,7 +126,7 @@ export function createTargetGroupsResolver({
         }
 
         @Mutation(() => Boolean)
-        @AffectedEntity(TargetGroup)
+        @AffectedEntity(BrevoTargetGroup)
         async removeBrevoContactFromTargetGroup(
             @Args("id", { type: () => ID }) id: string,
             @Args("input", { type: () => RemoveBrevoContactInput }) input: RemoveBrevoContactInput,
@@ -161,9 +161,9 @@ export function createTargetGroupsResolver({
             return updatedBrevoContact ? true : false;
         }
 
-        @Mutation(() => TargetGroup)
-        @AffectedEntity(TargetGroup)
-        async updateTargetGroup(
+        @Mutation(() => BrevoTargetGroup)
+        @AffectedEntity(BrevoTargetGroup)
+        async updateBrevoTargetGroup(
             @Args("id", { type: () => ID }) id: string,
             @Args("input", { type: () => TargetGroupUpdateInput }, new DynamicDtoValidationPipe(TargetGroupUpdateInput))
             input: Partial<TargetGroupInputInterface>,
@@ -202,8 +202,8 @@ export function createTargetGroupsResolver({
         }
 
         @Mutation(() => Boolean)
-        @AffectedEntity(TargetGroup)
-        async deleteTargetGroup(@Args("id", { type: () => ID }) id: string): Promise<boolean> {
+        @AffectedEntity(BrevoTargetGroup)
+        async deleteBrevoTargetGroup(@Args("id", { type: () => ID }) id: string): Promise<boolean> {
             const targetGroup = await this.repository.findOneOrFail(id);
 
             if (targetGroup.isMainList) {
@@ -222,8 +222,8 @@ export function createTargetGroupsResolver({
             return true;
         }
 
-        @ResolveField()
-        async totalSubscribers(@Parent() targetGroup: TargetGroupInterface): Promise<number> {
+        @ResolveField(() => Int)
+        async brevoTotalSubscribers(@Parent() targetGroup: TargetGroupInterface): Promise<number> {
             if (targetGroup.totalSubscribers !== undefined) return targetGroup.totalSubscribers;
 
             const { uniqueSubscribers } = await this.brevoApiContactsService.findBrevoContactListById(targetGroup.brevoId, targetGroup.scope);

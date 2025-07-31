@@ -57,7 +57,7 @@ export function TargetGroupForm({ id, scope, additionalFormFields, input2State, 
     let targetGroupFormFragment: DocumentNode | undefined;
     if (additionalFormFields && nodeFragment) {
         targetGroupFormFragment = gql`
-            fragment TargetGroupForm on TargetGroup {
+            fragment TargetGroupForm on BrevoTargetGroup {
                 ${"...".concat(nodeFragment.name)}
             }
             ${nodeFragment.fragment}
@@ -73,16 +73,16 @@ export function TargetGroupForm({ id, scope, additionalFormFields, input2State, 
         let additionalInitialValues = {};
 
         if (input2State) {
-            additionalInitialValues = input2State(data?.targetGroup);
+            additionalInitialValues = input2State(data?.brevoTargetGroup);
         }
 
-        return data?.targetGroup ? { title: data.targetGroup.title, ...additionalInitialValues } : additionalInitialValues;
-    }, [data?.targetGroup, input2State]);
+        return data?.brevoTargetGroup ? { title: data.brevoTargetGroup.title, ...additionalInitialValues } : additionalInitialValues;
+    }, [data?.brevoTargetGroup, input2State]);
 
     const saveConflict = useFormSaveConflict({
         checkConflict: async () => {
-            const updatedAt = await queryUpdatedAt(client, "targetGroup", id);
-            return resolveHasSaveConflict(data?.targetGroup.updatedAt, updatedAt);
+            const updatedAt = await queryUpdatedAt(client, "brevoTargetGroup", id);
+            return resolveHasSaveConflict(data?.brevoTargetGroup.updatedAt, updatedAt);
         },
         formApiRef,
         loadLatestVersion: async () => {
@@ -105,7 +105,7 @@ export function TargetGroupForm({ id, scope, additionalFormFields, input2State, 
 
         await client.mutate<GQLUpdateTargetGroupMutation, GQLUpdateTargetGroupMutationVariables>({
             mutation: updateTargetGroupMutation(targetGroupFormFragment),
-            variables: { id, input: output, lastUpdatedAt: data?.targetGroup?.updatedAt },
+            variables: { id, input: output, lastUpdatedAt: data?.brevoTargetGroup?.updatedAt },
         });
     };
 
@@ -166,7 +166,7 @@ export function TargetGroupForm({ id, scope, additionalFormFields, input2State, 
                                 disablePadding
                             >
                                 <AddContactsGridSelect
-                                    assignedContactsTargetGroupBrevoId={data?.targetGroup.assignedContactsTargetGroupBrevoId ?? undefined}
+                                    assignedContactsTargetGroupBrevoId={data?.brevoTargetGroup.assignedContactsTargetGroupBrevoId ?? undefined}
                                     id={id}
                                     scope={scope}
                                 />
@@ -178,7 +178,7 @@ export function TargetGroupForm({ id, scope, additionalFormFields, input2State, 
                                 disablePadding
                                 initiallyExpanded={false}
                             >
-                                <AllAssignedContactsGrid brevoId={data?.targetGroup.brevoId ?? undefined} id={id} scope={scope} />
+                                <AllAssignedContactsGrid brevoId={data?.brevoTargetGroup.brevoId ?? undefined} id={id} scope={scope} />
                             </FieldSet>
                         </>
                     </MainContent>
