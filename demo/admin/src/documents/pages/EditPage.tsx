@@ -12,6 +12,8 @@ import {
     useCmsBlockContext,
     useSiteConfig,
 } from "@comet/cms-admin";
+// TODO v8: remove eslint-disable-next-line
+// eslint-disable-next-line no-restricted-imports
 import { Button, IconButton, Stack } from "@mui/material";
 import { useContentScope } from "@src/common/ContentScopeProvider";
 import { type GQLPageTreeNodeCategory } from "@src/graphql.generated";
