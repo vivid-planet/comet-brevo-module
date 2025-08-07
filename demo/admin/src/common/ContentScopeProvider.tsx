@@ -1,10 +1,10 @@
 import {
-    ContentScopeConfigProps,
+    type ContentScopeConfigProps,
     ContentScopeProvider as ContentScopeProviderLibrary,
-    ContentScopeProviderProps,
-    ContentScopeValues,
+    type ContentScopeProviderProps,
+    type ContentScopeValues,
     useContentScope as useContentScopeLibrary,
-    UseContentScopeApi,
+    type UseContentScopeApi,
     useContentScopeConfig as useContentScopeConfigLibrary,
     useCurrentUser,
 } from "@comet/cms-admin";

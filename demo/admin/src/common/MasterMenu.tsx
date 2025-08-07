@@ -7,18 +7,18 @@ import {
     createTargetGroupsPage,
 } from "@comet/brevo-admin";
 import {
-    AllCategories,
+    type AllCategories,
     ContentScopeIndicator,
     createRedirectsPage,
     DamPage,
-    DocumentInterface,
+    type DocumentInterface,
     MasterMenu,
-    MasterMenuData,
+    type MasterMenuData,
     MasterMenuRoutes,
     PagesPage,
     PublisherPage,
 } from "@comet/cms-admin";
-import { BrevoContactConfig, getBrevoContactConfig } from "@src/common/brevoModuleConfig/brevoContactsPageAttributesConfig";
+import { type BrevoContactConfig, getBrevoContactConfig } from "@src/common/brevoModuleConfig/brevoContactsPageAttributesConfig";
 import { additionalFormConfig } from "@src/common/brevoModuleConfig/targetGroupFormConfig";
 import { DashboardPage } from "@src/dashboard/DashboardPage";
 import { Link } from "@src/documents/links/Link";

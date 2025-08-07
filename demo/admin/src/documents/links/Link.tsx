@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 import { Link as LinkIcon } from "@comet/admin-icons";
-import { createDocumentRootBlocksMethods, DocumentInterface } from "@comet/cms-admin";
+import { createDocumentRootBlocksMethods, type DocumentInterface } from "@comet/cms-admin";
 import { LinkBlock } from "@src/common/blocks/LinkBlock";
-import { GQLLink, GQLLinkInput } from "@src/graphql.generated";
+import { type GQLLink, type GQLLinkInput } from "@src/graphql.generated";
 import * as React from "react";
 import { FormattedMessage } from "react-intl";
 

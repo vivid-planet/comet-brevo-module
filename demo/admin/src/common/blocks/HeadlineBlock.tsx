@@ -2,7 +2,7 @@ import { Field, FinalFormSelect } from "@comet/admin";
 import { BlockCategory, BlocksFinalForm, createCompositeBlock, createCompositeSetting } from "@comet/blocks-admin";
 import { createRichTextBlock } from "@comet/cms-admin";
 import { MenuItem } from "@mui/material";
-import { HeadlineBlockData } from "@src/blocks.generated";
+import { type HeadlineBlockData } from "@src/blocks.generated";
 import * as React from "react";
 import { FormattedMessage } from "react-intl";
 

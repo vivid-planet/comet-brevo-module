@@ -5,7 +5,7 @@ import { ApolloProvider } from "@apollo/client";
 import { ErrorDialogHandler, MasterLayout, MuiThemeProvider, RouterBrowserRouter, SnackbarProvider } from "@comet/admin";
 import { BrevoConfigProvider } from "@comet/brevo-admin";
 import {
-    AllCategories,
+    type AllCategories,
     BuildInformationProvider,
     CmsBlockContextProvider,
     createHttpClient,
@@ -15,7 +15,7 @@ import {
     SitesConfigProvider,
 } from "@comet/cms-admin";
 import { css, Global } from "@emotion/react";
-import { ContentScope, ContentScopeProvider } from "@src/common/ContentScopeProvider";
+import { type ContentScope, ContentScopeProvider } from "@src/common/ContentScopeProvider";
 import { MasterRoutes } from "@src/common/MasterMenu";
 import { getMessages } from "@src/lang";
 import { theme } from "@src/theme";
