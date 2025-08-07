@@ -62,7 +62,7 @@
     },
     "devDependencies": {
         "@comet/cli": "^7.21.1",
-        "@comet/eslint-config": "^7.21.1",
+        "@comet/eslint-config": "8.0.0",
         "@emotion/babel-plugin": "^11.0.0",
         "@formatjs/cli": "^3.2.0",
         "@gitbeaker/node": "^35.8.1",
