@@ -1,7 +1,6 @@
 import { PixelImageBlock, PreviewSkeleton, type PropsWithData, SvgImageBlock, withPreview } from "@comet/site-nextjs";
 import { type DamImageBlockData, type PixelImageBlockData, type SvgImageBlockData } from "@src/blocks.generated";
 import { type ImageProps } from "next/image";
-import * as React from "react";
 
 import { NextImageBottomPaddingFix } from "../NextImageBottomPaddingFix";
 

@@ -1,6 +1,5 @@
 import { type PropsWithData, withPreview } from "@comet/site-nextjs";
 import { type HeadlineBlockData } from "@src/blocks.generated";
-import * as React from "react";
 import { type Renderers } from "redraft";
 
 import { RichTextBlock } from "./RichTextBlock";

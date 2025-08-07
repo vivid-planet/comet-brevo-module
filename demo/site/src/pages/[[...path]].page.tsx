@@ -9,7 +9,6 @@ import { createGraphQLClient } from "@src/util/createGraphQLClient";
 import { gql } from "graphql-request";
 import { type GetStaticPaths, type GetStaticProps, type InferGetStaticPropsType } from "next";
 import { type ParsedUrlQuery } from "querystring";
-import * as React from "react";
 
 import { type GQLPagesQuery, type GQLPagesQueryVariables, type GQLPageTypeQuery, type GQLPageTypeQueryVariables } from "./[[...path]].page.generated";
 

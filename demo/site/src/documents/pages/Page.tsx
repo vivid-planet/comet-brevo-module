@@ -2,7 +2,6 @@ import { SeoBlock } from "@src/documents/pages/blocks/SeoBlock";
 import { Layout, type PropsWithLayout } from "@src/layout/Layout";
 import { gql } from "graphql-request";
 import Head from "next/head";
-import * as React from "react";
 
 import { PageContentBlock } from "./blocks/PageContentBlock";
 import { type GQLPageQuery } from "./Page.generated";
