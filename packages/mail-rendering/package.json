@@ -25,8 +25,8 @@
     },
     "devDependencies": {
         "@comet/cli": "^7.21.1",
-        "@comet/cms-site": "^7.21.1",
         "@comet/eslint-config": "^7.21.1",
+        "@comet/site-nextjs": "7",
         "@luma-team/mjml-react": "^0.2.1",
         "@types/react": "^18.3.12",
         "@types/react-dom": "^18.3.1",
@@ -42,7 +42,7 @@
         "typescript": "^5.8.3"
     },
     "peerDependencies": {
-        "@comet/cms-site": "^7.0.0",
+        "@comet/site-nextjs": "7",
         "@luma-team/mjml-react": "^0.2.1",
         "mjml": "^4.15.3",
         "next": "^14.2.25",

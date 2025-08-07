@@ -4,7 +4,7 @@ settings:
   autoInstallPeers: false
   excludeLinksFromLockfile: false
 
-packageExtensionsChecksum: 1765bd3cc36f4272c47f92ca9277c87a
+packageExtensionsChecksum: d49dd8bfa1afbaf0bd915a809f50d42b
 
 importers:
 
@@ -486,9 +486,9 @@ importers:
       '@comet/brevo-mail-rendering':
         specifier: workspace:*
         version: link:../../packages/mail-rendering
-      '@comet/cms-site':
-        specifier: ^7.21.1
-        version: 7.25.1(@types/react@18.3.12)(next@14.2.25)(react-dom@18.3.1)(react@18.3.1)(styled-components@6.1.19)
+      '@comet/site-nextjs':
+        specifier: '7'
+        version: 7.25.6(@types/react@18.3.12)(next@14.2.25)(react-dom@18.3.1)(react@18.3.1)
       '@faire/mjml-react':
         specifier: ^3.4.0
         version: 3.4.0(@types/react@18.3.12)(mjml@4.15.3)(react-dom@18.3.1)(react@18.3.1)
@@ -643,9 +643,9 @@ importers:
 
   demo/site:
     dependencies:
-      '@comet/cms-site':
-        specifier: ^7.21.1
-        version: 7.25.1(@types/react@18.3.12)(next@14.2.25)(react-dom@18.3.1)(react@18.3.1)(styled-components@6.1.19)
+      '@comet/site-nextjs':
+        specifier: '7'
+        version: 7.25.6(@types/react@18.3.12)(next@14.2.25)(react-dom@18.3.1)(react@18.3.1)
       '@next/bundle-analyzer':
         specifier: ^12.3.4
         version: 12.3.4
@@ -1060,12 +1060,12 @@ importers:
       '@comet/cli':
         specifier: ^7.21.1
         version: 7.25.1(ts-node@10.9.2)
-      '@comet/cms-site':
-        specifier: ^7.21.1
-        version: 7.25.1(@types/react@18.3.12)(next@14.2.25)(react-dom@18.3.1)(react@18.3.1)(styled-components@6.1.19)
       '@comet/eslint-config':
         specifier: ^7.21.1
         version: 7.25.1(eslint@8.56.0)(next@14.2.25)(prettier@2.8.8)(typescript@5.9.2)
+      '@comet/site-nextjs':
+        specifier: '7'
+        version: 7.25.6(@types/react@18.3.12)(next@14.2.25)(react-dom@18.3.1)(react@18.3.1)
       '@luma-team/mjml-react':
         specifier: ^0.2.1
         version: 0.2.1(react-dom@18.3.1)(react@18.3.1)
@@ -4279,27 +4279,6 @@ packages:
       - ws
       - zod
 
-  /@comet/cms-site@7.25.1(@types/react@18.3.12)(next@14.2.25)(react-dom@18.3.1)(react@18.3.1)(styled-components@6.1.19):
-    resolution: {integrity: sha512-TX4ioSzeK0kySMAzPh795+4OmF5ktCwEpvDSbMQfhKR7NAb1mVrDN3fmDs5sblfMvDQpqunX9EPY9eL2RhjA9g==}
-    peerDependencies:
-      '@types/react': ^18.0.0
-      next: ^14.2.0
-      react: ^18.0.0
-      react-dom: ^18.0.0
-      styled-components: ^5.0.0 || ^6.0.0
-    dependencies:
-      '@types/react': 18.3.12
-      jose: 5.9.6
-      lodash.isequal: 4.5.0
-      next: 14.2.25(@babel/core@7.26.0)(@opentelemetry/api@1.7.0)(@types/react@18.3.12)(react-dom@18.3.1)(react@18.3.1)
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-      rimraf: 3.0.2
-      scroll-into-view-if-needed: 2.2.31
-      server-only: 0.0.1
-      styled-components: 6.1.19(@types/react@18.3.12)(react-dom@18.3.1)(react@18.3.1)
-      usehooks-ts: 3.1.0(react@18.3.1)
-
   /@comet/dev-process-manager@2.7.0:
     resolution: {integrity: sha512-BtCOF687GO1ccwm7ecHfIV57glnLSG+OsReEolomZJe3OeToMWjUpMyfJ+/5zm2m5EpzePA+kABhbIZk/Va90g==}
     engines: {node: '>=14'}
@@ -4438,6 +4417,45 @@ packages:
     dependencies:
       eslint: 8.56.0
     dev: true
+
+  /@comet/site-nextjs@7.25.6(@types/react@18.3.12)(next@14.2.25)(react-dom@18.3.1)(react@18.3.1):
+    resolution: {integrity: sha512-4+Ftl+spgo1N10Hjk+IRcHMtGAwOfVxpMz2pUtAWeOVsZ/LxSAjxgyPOCKLpY3kEwIdjYGx3svR7xTurw1hjXA==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      '@types/react': ^18.0.0
+      next: ^14.2.0
+      react: ^18.0.0
+      react-dom: ^18.0.0
+    dependencies:
+      '@comet/site-react': 7.25.6(react-dom@18.3.1)(react@18.3.1)
+      '@types/react': 18.3.12
+      clsx: 2.1.1
+      jose: 5.9.6
+      lodash.isequal: 4.5.0
+      next: 14.2.25(@babel/core@7.26.0)(@opentelemetry/api@1.7.0)(@types/react@18.3.12)(react-dom@18.3.1)(react@18.3.1)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+      rimraf: 3.0.2
+      scroll-into-view-if-needed: 2.2.31
+      server-only: 0.0.1
+      usehooks-ts: 3.1.0(react@18.3.1)
+
+  /@comet/site-react@7.25.6(react-dom@18.3.1)(react@18.3.1):
+    resolution: {integrity: sha512-YUYOVIlUEuT/FVsx1wCBv5elNmlmwq921TkackUIguIK5kZNM8iYzGa+rghB8VwBTeOLAfJi14UTKde3xFzycg==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      react: ^18.0.0
+      react-dom: ^18.0.0
+    dependencies:
+      clsx: 2.1.1
+      jose: 5.9.6
+      lodash.isequal: 4.5.0
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+      rimraf: 3.0.2
+      scroll-into-view-if-needed: 2.2.31
+      server-only: 0.0.1
+      usehooks-ts: 3.1.0(react@18.3.1)
 
   /@cspotcode/source-map-support@0.8.1:
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}

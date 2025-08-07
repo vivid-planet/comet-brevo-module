@@ -50,7 +50,7 @@
                     "@types/react": "^18.0.0"
                 }
             },
-            "@comet/cms-site@7": {
+            "@comet/site-nextjs@7": {
                 "peerDependencies": {
                     "@types/react": "^18.0.0"
                 }
