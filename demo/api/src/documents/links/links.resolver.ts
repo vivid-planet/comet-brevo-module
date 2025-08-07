@@ -10,7 +10,10 @@ import { Link } from "./entities/link.entity";
 @Resolver(() => Link)
 @RequiredPermission(["pageTree"])
 export class LinksResolver {
-    constructor(@InjectRepository(Link) readonly repository: EntityRepository<Link>, private readonly pageTreeService: PageTreeService) {}
+    constructor(
+        @InjectRepository(Link) readonly repository: EntityRepository<Link>,
+        private readonly pageTreeService: PageTreeService,
+    ) {}
 
     @Query(() => Link, { nullable: true })
     @AffectedEntity(Link)
