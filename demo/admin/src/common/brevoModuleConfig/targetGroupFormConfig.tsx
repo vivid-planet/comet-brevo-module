@@ -3,7 +3,6 @@ import { Field, FinalFormSelect } from "@comet/admin";
 import { type EditTargetGroupFinalFormValues } from "@comet/brevo-admin";
 import { MenuItem } from "@mui/material";
 import { type GQLBrevoContactBranch, type GQLBrevoContactSalutation } from "@src/graphql.generated";
-import * as React from "react";
 import { FormattedMessage } from "react-intl";
 
 const salutationOptions: Array<{ label: React.ReactNode; value: GQLBrevoContactSalutation }> = [

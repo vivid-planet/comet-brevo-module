@@ -3,7 +3,6 @@ import { Link as LinkIcon } from "@comet/admin-icons";
 import { createDocumentRootBlocksMethods, type DocumentInterface } from "@comet/cms-admin";
 import { LinkBlock } from "@src/common/blocks/LinkBlock";
 import { type GQLLink, type GQLLinkInput } from "@src/graphql.generated";
-import * as React from "react";
 import { FormattedMessage } from "react-intl";
 
 import { EditLink } from "./EditLink";

@@ -3,7 +3,6 @@ import { LatestContentUpdatesDashboardWidget } from "@comet/cms-admin";
 import { useContentScope } from "@src/common/ContentScopeProvider";
 import { type GQLLatestContentUpdatesQueryVariables } from "@src/dashboard/LatestContentUpdates.generated";
 import { categoryToUrlParam } from "@src/pageTree/pageTreeCategories";
-import React from "react";
 
 import { type GQLLatestContentUpdatesQuery } from "./LatestContentUpdates.generated";
 

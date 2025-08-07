@@ -19,7 +19,6 @@ import { type ContentScope, ContentScopeProvider } from "@src/common/ContentScop
 import { MasterRoutes } from "@src/common/MasterMenu";
 import { getMessages } from "@src/lang";
 import { theme } from "@src/theme";
-import * as React from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { FormattedMessage, IntlProvider } from "react-intl";

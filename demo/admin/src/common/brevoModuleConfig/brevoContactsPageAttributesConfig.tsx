@@ -4,7 +4,6 @@ import { MenuItem } from "@mui/material";
 import { type GQLBrevoContactBranch, type GQLBrevoContactSalutation } from "@src/graphql.generated";
 import { type DocumentNode } from "graphql";
 import gql from "graphql-tag";
-import React from "react";
 import { FormattedMessage, type IntlShape } from "react-intl";
 
 import { type GQLBrevoContactAttributesFragmentFragment } from "./brevoContactsPageAttributesConfig.generated";

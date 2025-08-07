@@ -3,7 +3,6 @@ import { BlockCategory, BlocksFinalForm, createCompositeBlock, createCompositeSe
 import { createRichTextBlock } from "@comet/cms-admin";
 import { MenuItem } from "@mui/material";
 import { type HeadlineBlockData } from "@src/blocks.generated";
-import * as React from "react";
 import { FormattedMessage } from "react-intl";
 
 import { LinkBlock } from "./LinkBlock";

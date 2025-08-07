@@ -8,7 +8,6 @@ import {
     useContentScopeConfig as useContentScopeConfigLibrary,
     useCurrentUser,
 } from "@comet/cms-admin";
-import React from "react";
 
 type Domain = "main" | "secondary" | string;
 type Language = "en" | string;
