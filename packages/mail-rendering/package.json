@@ -25,7 +25,7 @@
     },
     "devDependencies": {
         "@comet/cli": "^7.21.1",
-        "@comet/eslint-config": "^7.21.1",
+        "@comet/eslint-config": "8.0.0",
         "@comet/site-nextjs": "7",
         "@luma-team/mjml-react": "^0.2.1",
         "@types/react": "^18.3.12",

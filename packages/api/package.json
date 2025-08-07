@@ -39,7 +39,7 @@
     "devDependencies": {
         "@comet/blocks-api": "^7.21.1",
         "@comet/cms-api": "^7.21.1",
-        "@comet/eslint-config": "^7.21.1",
+        "@comet/eslint-config": "8.0.0",
         "@kubernetes/client-node": "^0.18.0",
         "@mikro-orm/cli": "^5.9.8",
         "@mikro-orm/core": "^5.9.8",
