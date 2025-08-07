@@ -1,4 +1,4 @@
-import { PropsWithData } from "@comet/cms-site";
+import { PropsWithData } from "@comet/site-nextjs";
 import { MjmlColumn, MjmlSection } from "@luma-team/mjml-react";
 
 import { NewsletterImageBlockData } from "../blocks.generated";

@@ -1,4 +1,4 @@
-import { PreviewSkeleton, PropsWithData, withPreview } from "@comet/cms-site";
+import { PreviewSkeleton, PropsWithData, withPreview } from "@comet/site-nextjs";
 import { DamVideoBlockData } from "@src/blocks.generated";
 import * as React from "react";
 

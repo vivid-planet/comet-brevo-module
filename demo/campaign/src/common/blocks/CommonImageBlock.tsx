@@ -1,4 +1,4 @@
-import { calculateInheritAspectRatio, generateImageUrl } from "@comet/cms-site";
+import { calculateInheritAspectRatio, generateImageUrl } from "@comet/site-nextjs";
 import { MjmlImage, MjmlStyle } from "@luma-team/mjml-react";
 import { PixelImageBlockData } from "@src/blocks.generated";
 import { css } from "@src/util/stylesHelper";

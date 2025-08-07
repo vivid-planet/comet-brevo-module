@@ -1,4 +1,4 @@
-import { PropsWithData } from "@comet/cms-site";
+import { PropsWithData } from "@comet/site-nextjs";
 import { MjmlColumn, MjmlText } from "@luma-team/mjml-react";
 import { RichTextBlockData } from "@src/blocks.generated";
 import { IndentedSectionGroup } from "@src/components/IndentedSectionGroup";
