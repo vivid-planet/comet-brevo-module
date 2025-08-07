@@ -1,5 +1,6 @@
 {
     "name": "comet-brevo-module-demo-admin",
+    "version": "8.0.0",
     "private": true,
     "scripts": {
         "admin-generator": "rimraf 'src/*/generated' && comet-admin-generator generate crud-generator-config.ts",
