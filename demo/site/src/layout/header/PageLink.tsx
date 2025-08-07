@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import * as React from "react";
 
-import { GQLPageLinkFragment } from "./PageLink.generated";
+import { type GQLPageLinkFragment } from "./PageLink.generated";
 
 const pageLinkFragment = gql`
     fragment PageLink on PageTreeNode {

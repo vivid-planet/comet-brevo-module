@@ -1,7 +1,7 @@
 import { SitePreviewProvider } from "@comet/site-nextjs";
-import { ContentScope, ContentScopeProvider } from "@src/common/contentScope/ContentScope";
+import { type ContentScope, ContentScopeProvider } from "@src/common/contentScope/ContentScope";
 import { defaultLanguage, domain } from "@src/config";
-import App, { AppProps, NextWebVitalsMetric } from "next/app";
+import App, { type AppProps, type NextWebVitalsMetric } from "next/app";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import Script from "next/script";

@@ -1,5 +1,5 @@
-import { generateImageUrl, PropsWithData } from "@comet/site-nextjs";
-import { SeoBlockData } from "@src/blocks.generated";
+import { generateImageUrl, type PropsWithData } from "@comet/site-nextjs";
+import { type SeoBlockData } from "@src/blocks.generated";
 import Head from "next/head";
 import * as React from "react";
 

@@ -1,5 +1,5 @@
-import { PreviewSkeleton, PropsWithData, withPreview } from "@comet/site-nextjs";
-import { DamVideoBlockData } from "@src/blocks.generated";
+import { PreviewSkeleton, type PropsWithData, withPreview } from "@comet/site-nextjs";
+import { type DamVideoBlockData } from "@src/blocks.generated";
 import * as React from "react";
 
 export const DamVideoBlock = withPreview(

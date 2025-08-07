@@ -1,5 +1,5 @@
-import { BlocksBlock, DamVideoBlock, PropsWithData, SupportedBlocks, YouTubeVideoBlock } from "@comet/site-nextjs";
-import { PageContentBlockData } from "@src/blocks.generated";
+import { BlocksBlock, DamVideoBlock, type PropsWithData, type SupportedBlocks, YouTubeVideoBlock } from "@comet/site-nextjs";
+import { type PageContentBlockData } from "@src/blocks.generated";
 import { DamImageBlock } from "@src/common/blocks/DamImageBlock";
 import { HeadlineBlock } from "@src/common/blocks/HeadlineBlock";
 import { LinkListBlock } from "@src/common/blocks/LinkListBlock";
