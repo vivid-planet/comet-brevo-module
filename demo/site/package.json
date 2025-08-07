@@ -1,5 +1,6 @@
 {
     "name": "comet-brevo-module-demo-site",
+    "version": "8.0.0",
     "private": true,
     "scripts": {
         "build": "run-p gql:types generate-block-types && npm run build:preBuild",
