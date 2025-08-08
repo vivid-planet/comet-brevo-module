@@ -1,5 +1,5 @@
-import { CreateRequestContext, EntityRepository, MikroORM } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
+import { CreateRequestContext, EntityRepository, MikroORM } from "@mikro-orm/postgresql";
 import { Inject, Injectable, Logger, Type } from "@nestjs/common";
 import { isUUID, validateSync } from "class-validator";
 import { InvalidOptionArgumentError } from "commander";
