@@ -7,6 +7,7 @@ import {
     DamModule,
     DependenciesModule,
     FileUploadsModule,
+    ImgproxyModule,
     KubernetesModule,
     PageTreeModule,
     RedirectsModule,
@@ -118,6 +119,7 @@ export class AppModule {
                 RedirectsModule.register(),
                 BlobStorageModule.register({
                     backend: config.blob.storage,
+                    cacheDirectory: `${config.blob.storageDirectoryPrefix}-cache`,
                 }),
                 DamModule.register({
                     File: DamFile,
@@ -128,10 +130,9 @@ export class AppModule {
                         allowedImageSizes: config.dam.allowedImageSizes,
                         allowedAspectRatios: config.dam.allowedImageAspectRatios,
                         filesDirectory: `${config.blob.storageDirectoryPrefix}-files`,
-                        cacheDirectory: `${config.blob.storageDirectoryPrefix}-cache`,
                         maxFileSize: config.dam.uploadsMaxFileSize,
+                        maxSrcResolution: config.dam.maxSrcResolution,
                     },
-                    imgproxyConfig: config.imgproxy,
                 }),
                 StatusModule,
                 MenusModule,
@@ -190,6 +191,7 @@ export class AppModule {
                 BrevoContactSubscribeModule,
                 BrevoTransactionalMailsModule,
                 FileUploadDummyModule,
+                ImgproxyModule.register(config.imgproxy),
             ],
         };
     }
