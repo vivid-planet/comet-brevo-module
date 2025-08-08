@@ -1,5 +1,4 @@
-import { Block, BlockDataInterface, RootBlock } from "@comet/blocks-api";
-import { DocumentInterface, RootBlockDataScalar, RootBlockType } from "@comet/cms-api";
+import { Block, BlockDataInterface, DocumentInterface, RootBlock, RootBlockDataScalar, RootBlockType } from "@comet/cms-api";
 import { Collection, Embedded, Entity, Enum, ManyToMany, OptionalProps, PrimaryKey, Property } from "@mikro-orm/postgresql";
 import { Type } from "@nestjs/common";
 import { Field, ID, Int, ObjectType } from "@nestjs/graphql";
