@@ -1,4 +1,4 @@
-import { MikroORM, UseRequestContext } from "@mikro-orm/core";
+import { CreateRequestContext, MikroORM } from "@mikro-orm/core";
 import { Injectable, Logger } from "@nestjs/common";
 import { MultiBar, Options, Presets } from "cli-progress";
 import { Command, Console } from "nestjs-console";
@@ -19,7 +19,7 @@ export class FixturesConsole {
         command: "fixtures [total]",
         description: "Create fixtures with faker.js",
     })
-    @UseRequestContext()
+    @CreateRequestContext()
     async execute(total?: string | number): Promise<void> {
         total = total === undefined ? 10 : Number(total);
 
