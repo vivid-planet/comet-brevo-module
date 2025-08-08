@@ -125,8 +125,9 @@ export function createEmailCampaignsResolver({
                 validateNotModified(campaign, lastUpdatedAt);
             }
 
+            const { brevoTargetGroups, ...restInput } = input;
             wrap(campaign).assign({
-                ...input,
+                ...restInput,
                 content: input.content ? input.content.transformToBlockData() : undefined,
             });
 

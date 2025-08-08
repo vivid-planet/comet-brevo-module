@@ -21,7 +21,7 @@ export enum ContactSource {
     csvImport = "csvImport",
 }
 
-export function createBrevoEmailImportLogEntity({ Scope }: { Scope: EmailCampaignScopeInterface }): Type<BrevoEmailImportLogInterface> {
+export function createBrevoEmailImportLogEntity({ Scope }: { Scope: Type<EmailCampaignScopeInterface> }): Type<BrevoEmailImportLogInterface> {
     @Entity()
     @ObjectType({
         implements: () => [DocumentInterface],

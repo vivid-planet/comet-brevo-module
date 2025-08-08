@@ -30,7 +30,7 @@ export function createEmailCampaignEntity({
     TargetGroup: BrevoTargetGroup,
 }: {
     EmailCampaignContentBlock: Block;
-    Scope: EmailCampaignScopeInterface;
+    Scope: Type<EmailCampaignScopeInterface>;
     TargetGroup: Type<TargetGroupInterface>;
 }): Type<EmailCampaignInterface> {
     @Entity()

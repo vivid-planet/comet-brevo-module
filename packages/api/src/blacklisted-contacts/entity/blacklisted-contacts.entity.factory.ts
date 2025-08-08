@@ -13,7 +13,7 @@ export interface BlacklistedContactsInterface {
     updatedAt: Date;
 }
 
-export function createBlacklistedContactsEntity({ Scope }: { Scope: EmailCampaignScopeInterface }): Type<BlacklistedContactsInterface> {
+export function createBlacklistedContactsEntity({ Scope }: { Scope: Type<EmailCampaignScopeInterface> }): Type<BlacklistedContactsInterface> {
     @Entity()
     @ObjectType({
         implements: () => [DocumentInterface],
