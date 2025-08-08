@@ -52,7 +52,7 @@
     "dependencies": {
         "@apollo/server": "^4.0.0",
         "@comet/brevo-api": "workspace:*",
-        "@comet/cms-api": "^7.21.1",
+        "@comet/cms-api": "^8.0.0",
         "@faker-js/faker": "^8.4.1",
         "@hapi/accept": "^5.0.2",
         "@kubernetes/client-node": "^1.0.0",
