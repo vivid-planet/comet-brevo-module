@@ -96,6 +96,7 @@
         "webpack": "^5.64.2"
     },
     "devDependencies": {
+        "@comet/api-generator": "8.0.0",
         "@comet/eslint-config": "8.0.0",
         "@nestjs/cli": "^11.0.7",
         "@nestjs/schematics": "^11.0.5",
