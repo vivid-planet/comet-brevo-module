@@ -12,7 +12,7 @@ import {
     RedirectsModule,
     UserPermissionsModule,
 } from "@comet/cms-api";
-import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo";
+import { ApolloDriver, ApolloDriverConfig, ValidationError } from "@nestjs/apollo";
 import { DynamicModule, Module } from "@nestjs/common";
 import { ModuleRef } from "@nestjs/core";
 import { Enhancer, GraphQLModule } from "@nestjs/graphql";
@@ -24,7 +24,6 @@ import { PagesModule } from "@src/documents/pages/pages.module";
 import { PageTreeNodeScope } from "@src/page-tree/dto/page-tree-node-scope";
 import { PageTreeNode } from "@src/page-tree/entities/page-tree-node.entity";
 import { FileUploadDummyModule } from "@src/workaround-remove-in-future/file-upload/file-upload-dummy.module";
-import { ValidationError } from "apollo-server-express";
 import { Request } from "express";
 
 import { AccessControlService } from "./auth/access-control.service";
@@ -66,7 +65,7 @@ export class AppModule {
                         formatError: (error) => {
                             // Disable GraphQL field suggestions in production
                             if (process.env.NODE_ENV !== "development") {
-                                if (error instanceof ValidationError) {
+                                if (error.extensions?.code === "GRAPHQL_VALIDATION_FAILED") {
                                     return new ValidationError("Invalid request.");
                                 }
                             }
