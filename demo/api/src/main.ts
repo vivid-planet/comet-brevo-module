@@ -1,6 +1,6 @@
 if (process.env.TRACING_ENABLED) {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
-    require("./tracing");
+    import("./tracing");
 }
 
 import { ExceptionInterceptor, ValidationExceptionFactory } from "@comet/cms-api";
