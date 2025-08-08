@@ -82,7 +82,7 @@ export function createEmailCampaignEntity({
         targetGroups = new Collection<TargetGroupInterface>(this);
 
         @RootBlock(EmailCampaignContentBlock)
-        @Property({ customType: new RootBlockType(EmailCampaignContentBlock) })
+        @Property({ type: new RootBlockType(EmailCampaignContentBlock) })
         @Field(() => RootBlockDataScalar(EmailCampaignContentBlock))
         content: BlockDataInterface;
 
