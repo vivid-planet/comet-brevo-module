@@ -17,7 +17,7 @@ export class Link extends BaseEntity implements DocumentInterface {
     @Field(() => ID)
     id: string = v4();
 
-    @Property({ customType: new RootBlockType(LinkBlock) })
+    @Property({ type: new RootBlockType(LinkBlock) })
     @Field(() => RootBlockDataScalar(LinkBlock))
     content: BlockDataInterface;
 

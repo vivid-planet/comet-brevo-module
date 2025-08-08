@@ -21,12 +21,12 @@ export class Page extends BaseEntity implements DocumentInterface {
     id: string = v4();
 
     @RootBlock(PageContentBlock)
-    @Property({ customType: new RootBlockType(PageContentBlock) })
+    @Property({ type: new RootBlockType(PageContentBlock) })
     @Field(() => RootBlockDataScalar(PageContentBlock))
     content: BlockDataInterface;
 
     @RootBlock(SeoBlock)
-    @Property({ customType: new RootBlockType(SeoBlock) })
+    @Property({ type: new RootBlockType(SeoBlock) })
     @Field(() => RootBlockDataScalar(SeoBlock))
     seo: BlockDataInterface;
 
