@@ -10,7 +10,7 @@ import { v4 } from "uuid";
     implements: () => [DocumentInterface],
 })
 @ScopedEntity(PageTreeNodeDocumentEntityScopeService)
-export class Link extends BaseEntity<Link, "id"> implements DocumentInterface {
+export class Link extends BaseEntity implements DocumentInterface {
     [OptionalProps]?: "createdAt" | "updatedAt";
 
     @PrimaryKey({ columnType: "uuid" })

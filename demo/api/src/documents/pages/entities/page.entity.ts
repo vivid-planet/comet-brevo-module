@@ -13,7 +13,7 @@ import { SeoBlock } from "../blocks/seo.block";
 })
 @RootBlockEntity()
 @ScopedEntity(PageTreeNodeDocumentEntityScopeService)
-export class Page extends BaseEntity<Page, "id"> implements DocumentInterface {
+export class Page extends BaseEntity implements DocumentInterface {
     [OptionalProps]?: "createdAt" | "updatedAt";
 
     @PrimaryKey({ columnType: "uuid" })
