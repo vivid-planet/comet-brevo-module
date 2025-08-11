@@ -4,6 +4,9 @@ import eslintConfigNextJs from "@comet/eslint-config/nextjs.js";
 const config = [
     {
         ignores: ["**/**/*.generated.ts", "dist/**", "lang/**", "lang-compiled/**", "lang-extracted/**", ".next/**", "public/**", "lib/**"],
+    },
+    ...eslintConfigNextJs,
+    {
         rules: {
             "@comet/no-other-module-relative-import": "off",
             "react/react-in-jsx-scope": "off",
@@ -20,8 +23,6 @@ const config = [
             ],
         },
     },
-
-    ...eslintConfigNextJs,
 ];
 
 export default config;
