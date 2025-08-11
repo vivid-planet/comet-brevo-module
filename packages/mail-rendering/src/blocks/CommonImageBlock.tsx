@@ -1,6 +1,6 @@
 import { MjmlImage } from "@luma-team/mjml-react";
 
-import { PixelImageBlockData } from "../blocks.generated";
+import { type PixelImageBlockData } from "../blocks.generated";
 import { calculateInheritAspectRatio, generateImageUrl, getDamAllowedImageWidth } from "./helpers/imageBlockHelpers";
 
 interface Props extends React.ComponentProps<typeof MjmlImage> {
