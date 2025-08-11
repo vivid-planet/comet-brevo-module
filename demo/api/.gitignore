@@ -36,3 +36,7 @@ junit.xml
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+
+# API generator
+src/**/generated
