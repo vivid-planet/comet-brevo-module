@@ -3,11 +3,10 @@ import { MainContent, StackLink, Toolbar, ToolbarActions, ToolbarBackButton, Too
 import { Add as AddIcon } from "@comet/admin-icons";
 import { ContentScopeIndicator, useContentScopeConfig } from "@comet/cms-admin";
 import { Button, Grid } from "@mui/material";
-import React from "react";
 import { FormattedMessage } from "react-intl";
 
 import { emailCampaignStatistics } from "./EmailCampaignStatistics.gql";
-import { GQLEmailCampaignStatisticsQuery, GQLEmailCampaignStatisticsQueryVariables } from "./EmailCampaignStatistics.gql.generated";
+import { type GQLEmailCampaignStatisticsQuery, type GQLEmailCampaignStatisticsQueryVariables } from "./EmailCampaignStatistics.gql.generated";
 import { PercentageCard } from "./PercentageCard";
 
 interface Props {

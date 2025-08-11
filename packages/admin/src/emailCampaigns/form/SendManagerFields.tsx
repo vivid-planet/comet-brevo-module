@@ -3,19 +3,19 @@ import { Field, FinalFormSelect, SaveButton, Tooltip, useAsyncOptionsProps, useS
 import { FinalFormDateTimePicker } from "@comet/admin-date-time";
 import { Info, Newsletter } from "@comet/admin-icons";
 import { AdminComponentPaper, AdminComponentSectionGroup } from "@comet/blocks-admin";
-import { ContentScopeInterface } from "@comet/cms-admin";
+import { type ContentScopeInterface } from "@comet/cms-admin";
 import { Card } from "@mui/material";
-import * as React from "react";
+import { useState } from "react";
 import { FormattedMessage } from "react-intl";
 
 import { SendEmailCampaignNowDialog } from "./SendEmailCampaignNowDialog";
 import { sendEmailCampaignNowMutation, targetGroupsSelectQuery } from "./SendManagerFields.gql";
 import {
-    GQLSendEmailCampaignNowMutation,
-    GQLSendEmailCampaignNowMutationVariables,
-    GQLTargetGroupSelectFragment,
-    GQLTargetGroupsSelectQuery,
-    GQLTargetGroupsSelectQueryVariables,
+    type GQLSendEmailCampaignNowMutation,
+    type GQLSendEmailCampaignNowMutationVariables,
+    type GQLTargetGroupSelectFragment,
+    type GQLTargetGroupsSelectQuery,
+    type GQLTargetGroupsSelectQueryVariables,
 } from "./SendManagerFields.gql.generated";
 
 interface SendManagerFieldsProps {
@@ -42,7 +42,7 @@ export const SendManagerFields = ({ isCampaignCreated, scope, id, isSendable }: 
     const stackSwitchApi = useStackSwitchApi();
     const apolloClient = useApolloClient();
 
-    const [isSendEmailCampaignNowDialogOpen, setIsSendEmailCampaignNowDialogOpen] = React.useState(false);
+    const [isSendEmailCampaignNowDialogOpen, setIsSendEmailCampaignNowDialogOpen] = useState(false);
 
     const selectAsyncMultipleProps = useAsyncOptionsProps(async () => {
         return (

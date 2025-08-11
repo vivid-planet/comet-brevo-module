@@ -1,8 +1,8 @@
-import { DocumentNode, gql, useApolloClient, useQuery } from "@apollo/client";
+import { type DocumentNode, gql, useApolloClient, useQuery } from "@apollo/client";
 import {
     Alert,
     DataGridToolbar,
-    GridColDef,
+    type GridColDef,
     MainContent,
     messages,
     RowActionsItem,
@@ -18,19 +18,18 @@ import {
     usePersistentColumnState,
 } from "@comet/admin";
 import { Add, Delete, Edit } from "@comet/admin-icons";
-import { ContentScopeInterface } from "@comet/cms-admin";
+import { type ContentScopeInterface } from "@comet/cms-admin";
 import { Box, Button, IconButton } from "@mui/material";
 import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
-import * as React from "react";
-import { FormattedMessage, IntlShape, useIntl } from "react-intl";
+import { FormattedMessage, type IntlShape, useIntl } from "react-intl";
 
-import { GQLEmailCampaignContentScopeInput } from "../graphql.generated";
+import { type GQLEmailCampaignContentScopeInput } from "../graphql.generated";
 import {
-    GQLBrevoContactsListFragment,
-    GQLBrevoTestContactsGridQuery,
-    GQLBrevoTestContactsGridQueryVariables,
-    GQLDeleteBrevoTestContactMutation,
-    GQLDeleteBrevoTestContactMutationVariables,
+    type GQLBrevoContactsListFragment,
+    type GQLBrevoTestContactsGridQuery,
+    type GQLBrevoTestContactsGridQueryVariables,
+    type GQLDeleteBrevoTestContactMutation,
+    type GQLDeleteBrevoTestContactMutationVariables,
 } from "./BrevoTestContactsGrid.generated";
 
 const brevoContactsFragment = gql`

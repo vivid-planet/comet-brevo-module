@@ -1,7 +1,7 @@
-import { DocumentNode, gql, useApolloClient, useQuery } from "@apollo/client";
+import { type DocumentNode, gql, useApolloClient, useQuery } from "@apollo/client";
 import {
     DataGridToolbar,
-    GridColDef,
+    type GridColDef,
     MainContent,
     messages,
     RowActionsItem,
@@ -16,23 +16,22 @@ import {
     usePersistentColumnState,
 } from "@comet/admin";
 import { Add, Block, Check, Delete, Edit } from "@comet/admin-icons";
-import { ContentScopeInterface } from "@comet/cms-admin";
+import { type ContentScopeInterface } from "@comet/cms-admin";
 import { Button, IconButton } from "@mui/material";
 import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
-import * as React from "react";
-import { FormattedMessage, IntlShape, useIntl } from "react-intl";
+import { FormattedMessage, type IntlShape, useIntl } from "react-intl";
 
 import { useContactImportFromCsv } from "../common/contactImport/useContactImportFromCsv";
-import { GQLEmailCampaignContentScopeInput } from "../graphql.generated";
+import { type GQLEmailCampaignContentScopeInput } from "../graphql.generated";
 import { CrudMoreActionsMenu } from "../temp/CrudMoreActionsMenu";
 import {
-    GQLBrevoContactsGridQuery,
-    GQLBrevoContactsGridQueryVariables,
-    GQLBrevoContactsListFragment,
-    GQLDeleteBrevoContactMutation,
-    GQLDeleteBrevoContactMutationVariables,
-    GQLUpdateBrevoContactMutation,
-    GQLUpdateBrevoContactMutationVariables,
+    type GQLBrevoContactsGridQuery,
+    type GQLBrevoContactsGridQueryVariables,
+    type GQLBrevoContactsListFragment,
+    type GQLDeleteBrevoContactMutation,
+    type GQLDeleteBrevoContactMutationVariables,
+    type GQLUpdateBrevoContactMutation,
+    type GQLUpdateBrevoContactMutationVariables,
     namedOperations,
 } from "./BrevoContactsGrid.generated";
 

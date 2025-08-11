@@ -1,13 +1,12 @@
 import { useApolloClient } from "@apollo/client";
-import { Field, FinalForm, FinalFormInput, FinalFormSubmitEvent, useStackSwitchApi } from "@comet/admin";
-import { ContentScopeInterface } from "@comet/cms-admin";
-import { FormApi } from "final-form";
-import React from "react";
+import { Field, FinalForm, FinalFormInput, type FinalFormSubmitEvent, useStackSwitchApi } from "@comet/admin";
+import { type ContentScopeInterface } from "@comet/cms-admin";
+import { type FormApi } from "final-form";
 import { FormattedMessage } from "react-intl";
 
 import { createTargetGroupMutation } from "./TargetGroupDialog.gql";
-import { GQLCreateTargetGroupMutation, GQLCreateTargetGroupMutationVariables } from "./TargetGroupDialog.gql.generated";
-import { EditTargetGroupFinalFormValues } from "./TargetGroupForm";
+import { type GQLCreateTargetGroupMutation, type GQLCreateTargetGroupMutationVariables } from "./TargetGroupDialog.gql.generated";
+import { type EditTargetGroupFinalFormValues } from "./TargetGroupForm";
 
 interface TargetGroupDialogProps {
     scope: ContentScopeInterface;

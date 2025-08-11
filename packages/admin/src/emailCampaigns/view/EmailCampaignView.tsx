@@ -1,16 +1,15 @@
 import { useQuery } from "@apollo/client";
 import { Loading, MainContent, Toolbar, ToolbarFillSpace, ToolbarItem, ToolbarTitleItem, useStackApi } from "@comet/admin";
 import { ArrowLeft } from "@comet/admin-icons";
-import { BlockInterface, IFrameBridgeProvider } from "@comet/blocks-admin";
+import { type BlockInterface, IFrameBridgeProvider } from "@comet/blocks-admin";
 import { BlockPreview, ContentScopeIndicator, useBlockPreview, useCmsBlockContext, useContentScope } from "@comet/cms-admin";
 import { IconButton } from "@mui/material";
-import React from "react";
 import { FormattedMessage } from "react-intl";
 import { useRouteMatch } from "react-router";
 
 import { useBrevoConfig } from "../../common/BrevoConfigProvider";
 import { emailCampaignViewQuery } from "./EmailCampaignView.gql";
-import { GQLEmailCampaignViewQuery, GQLEmailCampaignViewQueryVariables } from "./EmailCampaignView.gql.generated";
+import { type GQLEmailCampaignViewQuery, type GQLEmailCampaignViewQueryVariables } from "./EmailCampaignView.gql.generated";
 
 interface EmailCampaignViewProps {
     id: string;

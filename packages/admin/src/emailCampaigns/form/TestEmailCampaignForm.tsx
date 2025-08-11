@@ -4,14 +4,16 @@ import { Info, Newsletter } from "@comet/admin-icons";
 import { AdminComponentPaper, AdminComponentSectionGroup } from "@comet/blocks-admin";
 import { useContentScope } from "@comet/cms-admin";
 import { Card } from "@mui/material";
-import React from "react";
 import { FormattedMessage } from "react-intl";
 
 import { useBrevoConfig } from "../../common/BrevoConfigProvider";
-import { GQLEmailCampaignContentScopeInput } from "../../graphql.generated";
-import { GQLBrevoTestContactsSelectListFragment } from "./TestEmailCampaignForm.generated";
+import { type GQLEmailCampaignContentScopeInput } from "../../graphql.generated";
+import { type GQLBrevoTestContactsSelectListFragment } from "./TestEmailCampaignForm.generated";
 import { SendEmailCampaignToTestEmailsMutation } from "./TestEmailCampaignForm.gql";
-import { GQLSendEmailCampaignToTestEmailsMutation, GQLSendEmailCampaignToTestEmailsMutationVariables } from "./TestEmailCampaignForm.gql.generated";
+import {
+    type GQLSendEmailCampaignToTestEmailsMutation,
+    type GQLSendEmailCampaignToTestEmailsMutationVariables,
+} from "./TestEmailCampaignForm.gql.generated";
 
 interface FormProps {
     testEmails: string[];
@@ -49,10 +51,13 @@ export const TestEmailCampaignForm = ({ id, isSendable = false, isCampaignCreate
     const { scopeParts } = useBrevoConfig();
     const { scope: completeScope } = useContentScope();
 
-    const scope = scopeParts.reduce((acc, scopePart) => {
-        acc[scopePart] = completeScope[scopePart];
-        return acc;
-    }, {} as { [key: string]: unknown });
+    const scope = scopeParts.reduce(
+        (acc, scopePart) => {
+            acc[scopePart] = completeScope[scopePart];
+            return acc;
+        },
+        {} as { [key: string]: unknown },
+    );
 
     // Contact creation is limited to 100 at a time. Therefore, 100 contacts are queried without using pagination.
     const { data, loading, error } = useQuery(brevoTestContactsSelectQuery, {

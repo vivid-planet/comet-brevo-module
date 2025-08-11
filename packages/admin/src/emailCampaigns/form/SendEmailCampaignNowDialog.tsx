@@ -1,6 +1,5 @@
 import { CancelButton, SaveButton } from "@comet/admin";
 import { Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
-import React from "react";
 import { FormattedMessage } from "react-intl";
 
 interface SendEmailCampaignNowDialogProps {

@@ -2,7 +2,7 @@ import { gql, useApolloClient, useQuery } from "@apollo/client";
 import {
     CrudContextMenu,
     DataGridToolbar,
-    GridColDef,
+    type GridColDef,
     GridFilterButton,
     MainContent,
     muiGridFilterToGql,
@@ -17,22 +17,21 @@ import {
     usePersistentColumnState,
 } from "@comet/admin";
 import { Add as AddIcon, Edit, Statistics, Visible } from "@comet/admin-icons";
-import { BlockInterface } from "@comet/blocks-admin";
-import { ContentScopeInterface } from "@comet/cms-admin";
+import { type BlockInterface } from "@comet/blocks-admin";
+import { type ContentScopeInterface } from "@comet/cms-admin";
 import { Button, IconButton } from "@mui/material";
 import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import { isBefore } from "date-fns";
-import * as React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
 import {
-    GQLCreateEmailCampaignMutation,
-    GQLCreateEmailCampaignMutationVariables,
-    GQLDeleteEmailCampaignMutation,
-    GQLDeleteEmailCampaignMutationVariables,
-    GQLEmailCampaignsGridQuery,
-    GQLEmailCampaignsGridQueryVariables,
-    GQLEmailCampaignsListFragment,
+    type GQLCreateEmailCampaignMutation,
+    type GQLCreateEmailCampaignMutationVariables,
+    type GQLDeleteEmailCampaignMutation,
+    type GQLDeleteEmailCampaignMutationVariables,
+    type GQLEmailCampaignsGridQuery,
+    type GQLEmailCampaignsGridQueryVariables,
+    type GQLEmailCampaignsListFragment,
 } from "./EmailCampaignsGrid.generated";
 import { SendingStateColumn } from "./SendingStateColumn";
 

@@ -4,7 +4,7 @@ import {
     FinalForm,
     FinalFormAutocomplete,
     FinalFormSaveSplitButton,
-    FinalFormSubmitEvent,
+    type FinalFormSubmitEvent,
     Loading,
     MainContent,
     NumberField,
@@ -18,9 +18,9 @@ import {
     useStackSwitchApi,
 } from "@comet/admin";
 import { Info } from "@comet/admin-icons";
-import { ContentScopeIndicator, ContentScopeInterface, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
-import { FormApi } from "final-form";
-import React from "react";
+import { ContentScopeIndicator, type ContentScopeInterface, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
+import { type FormApi } from "final-form";
+import { useMemo } from "react";
 import { FormattedMessage } from "react-intl";
 
 import {
@@ -31,16 +31,16 @@ import {
     updateBrevoConfigMutation,
 } from "./BrevoConfigForm.gql";
 import {
-    GQLBrevoConfigFormQuery,
-    GQLBrevoConfigFormQueryVariables,
-    GQLCreateBrevoConfigMutation,
-    GQLCreateBrevoConfigMutationVariables,
-    GQLDoubleOptInTemplatesSelectQuery,
-    GQLDoubleOptInTemplatesSelectQueryVariables,
-    GQLSendersSelectQuery,
-    GQLSendersSelectQueryVariables,
-    GQLUpdateBrevoConfigMutation,
-    GQLUpdateBrevoConfigMutationVariables,
+    type GQLBrevoConfigFormQuery,
+    type GQLBrevoConfigFormQueryVariables,
+    type GQLCreateBrevoConfigMutation,
+    type GQLCreateBrevoConfigMutationVariables,
+    type GQLDoubleOptInTemplatesSelectQuery,
+    type GQLDoubleOptInTemplatesSelectQueryVariables,
+    type GQLSendersSelectQuery,
+    type GQLSendersSelectQueryVariables,
+    type GQLUpdateBrevoConfigMutation,
+    type GQLUpdateBrevoConfigMutationVariables,
 } from "./BrevoConfigForm.gql.generated";
 
 interface Option {
@@ -108,7 +108,7 @@ export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
             label: `${doubleOptInTemplate.id}: ${doubleOptInTemplate.name}`,
         })) ?? [];
 
-    const initialValues = React.useMemo<Partial<FormValues>>(() => {
+    const initialValues = useMemo<Partial<FormValues>>(() => {
         const sender = sendersData?.brevoSenders?.find((s) => s.email === data?.brevoConfig?.senderMail && s.name === data?.brevoConfig?.senderName);
 
         const doubleOptInTemplate = doubleOptInTemplatesData?.brevoDoubleOptInTemplates?.find(
