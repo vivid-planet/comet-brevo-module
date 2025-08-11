@@ -3,7 +3,6 @@ import { generateMjmlMailContent, type IntlProviderValues, RenderedMail } from "
 import { defaultLanguage } from "@src/config";
 import { getMessages } from "@src/lang";
 import { type GetServerSidePropsContext } from "next";
-import * as React from "react";
 
 interface Props {
     intlProviderValues: IntlProviderValues;

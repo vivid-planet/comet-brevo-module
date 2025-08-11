@@ -1,6 +1,5 @@
 import { type PropsWithData, withPreview } from "@comet/site-nextjs";
 import { type TextImageBlockData } from "@src/blocks.generated";
-import * as React from "react";
 import styled from "styled-components";
 
 import { DamImageBlock } from "./DamImageBlock";

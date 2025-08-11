@@ -2,7 +2,6 @@ import { LinkBlock } from "@src/common/blocks/LinkBlock";
 import { gql } from "graphql-request";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import * as React from "react";
 
 import { type GQLPageLinkFragment } from "./PageLink.generated";
 

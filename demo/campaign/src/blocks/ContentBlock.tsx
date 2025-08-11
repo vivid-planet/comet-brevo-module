@@ -3,7 +3,6 @@ import { BlocksBlock, type SupportedBlocks } from "@comet/site-nextjs";
 import { type EmailCampaignContentBlockData } from "@src/blocks.generated";
 import { RichTextBlock } from "@src/blocks//RichTextBlock";
 import { DividerBlock } from "@src/blocks/DividerBlock";
-import React from "react";
 
 import { SalutationBlock } from "./SalutationBlock";
 

@@ -1,7 +1,6 @@
 import "@comet/site-nextjs/css";
 
 import { gql, type GraphQLClient } from "graphql-request";
-import * as React from "react";
 
 import { Header, headerFragment } from "./header/Header";
 import { type GQLLayoutQuery, type GQLLayoutQueryVariables } from "./Layout.generated";
