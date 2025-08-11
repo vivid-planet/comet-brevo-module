@@ -1,9 +1,9 @@
 import { renderToMjml } from "@luma-team/mjml-react";
-import { EmailCampaignContentBlockData } from "@src/blocks.generated";
+import { type EmailCampaignContentBlockData } from "@src/blocks.generated";
 import { ContentBlock } from "@src/blocks/ContentBlock";
 import { replaceMailHtmlPlaceholders } from "@src/util/replaceMailHtmlPlaceholders";
 import * as React from "react";
-import { IntlConfig, IntlProvider } from "react-intl";
+import { type IntlConfig, IntlProvider } from "react-intl";
 
 import { Root } from "./Root";
 
@@ -33,13 +33,11 @@ export const RenderedMail: React.FC<Props> = ({ mjmlContent }) => {
     const [mailHtml, setMailHtml] = React.useState<string>("");
 
     React.useEffect(() => {
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
         const mjml2htmlBrowser = require("mjml-browser");
         const { html: mjmlHtml, errors } = mjml2htmlBrowser(mjmlContent);
         const html = replaceMailHtmlPlaceholders(mjmlHtml, "preview");
 
         if (errors.length) {
-            // eslint-disable-next-line no-console
             console.error(`${errors.length} MJML render errors:`, errors);
         }
 

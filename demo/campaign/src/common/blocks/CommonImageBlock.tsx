@@ -1,6 +1,6 @@
 import { calculateInheritAspectRatio, generateImageUrl } from "@comet/site-nextjs";
 import { MjmlImage, MjmlStyle } from "@luma-team/mjml-react";
-import { PixelImageBlockData } from "@src/blocks.generated";
+import { type PixelImageBlockData } from "@src/blocks.generated";
 import { css } from "@src/util/stylesHelper";
 import { theme } from "@src/util/theme";
 import * as React from "react";

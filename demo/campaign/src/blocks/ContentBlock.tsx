@@ -1,6 +1,6 @@
 import { NewsletterImageBlock } from "@comet/brevo-mail-rendering";
-import { BlocksBlock, SupportedBlocks } from "@comet/site-nextjs";
-import { EmailCampaignContentBlockData } from "@src/blocks.generated";
+import { BlocksBlock, type SupportedBlocks } from "@comet/site-nextjs";
+import { type EmailCampaignContentBlockData } from "@src/blocks.generated";
 import { RichTextBlock } from "@src/blocks//RichTextBlock";
 import { DividerBlock } from "@src/blocks/DividerBlock";
 import React from "react";

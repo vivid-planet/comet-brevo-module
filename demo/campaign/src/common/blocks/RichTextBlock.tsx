@@ -1,8 +1,8 @@
-import { PreviewSkeleton, PropsWithData, withPreview } from "@comet/site-nextjs";
-import { LinkBlockData, RichTextBlockData } from "@src/blocks.generated";
-import { RawDraftContentState } from "draft-js";
+import { PreviewSkeleton, type PropsWithData, withPreview } from "@comet/site-nextjs";
+import { type LinkBlockData, type RichTextBlockData } from "@src/blocks.generated";
+import { type RawDraftContentState } from "draft-js";
 import * as React from "react";
-import redraft, { Renderers } from "redraft";
+import redraft, { type Renderers } from "redraft";
 import styled from "styled-components";
 
 import { LinkBlock } from "./LinkBlock";

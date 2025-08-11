@@ -1,5 +1,5 @@
-import { PropsWithData, withPreview } from "@comet/site-nextjs";
-import { SpaceBlockData } from "@src/blocks.generated";
+import { type PropsWithData, withPreview } from "@comet/site-nextjs";
+import { type SpaceBlockData } from "@src/blocks.generated";
 import * as React from "react";
 
 export const SpaceBlock = withPreview(
