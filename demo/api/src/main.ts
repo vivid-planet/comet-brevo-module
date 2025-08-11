@@ -1,5 +1,4 @@
 if (process.env.TRACING_ENABLED) {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
     import("./tracing");
 }
 

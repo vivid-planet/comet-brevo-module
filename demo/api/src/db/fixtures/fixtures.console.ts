@@ -1,24 +1,25 @@
 import { CreateRequestContext, MikroORM } from "@mikro-orm/core";
-import { Injectable, Logger } from "@nestjs/common";
+import { Logger } from "@nestjs/common";
 import { MultiBar, Options, Presets } from "cli-progress";
 import { Command, CommandRunner } from "nest-commander";
 
-  @Command({
-        name: "fixtures [total]",
-        arguments: "<total>",
-        description: "Create fixtures with faker.js",
-    })
+@Command({
+    name: "fixtures [total]",
+    arguments: "<total>",
+    description: "Create fixtures with faker.js",
+})
 export class FixturesConsole extends CommandRunner {
     private readonly logger = new Logger(FixturesConsole.name);
 
-    constructor(private readonly orm: MikroORM) {super()}
+    constructor(private readonly orm: MikroORM) {
+        super();
+    }
 
     barOptions: Options = {
         format: `{bar} {percentage}% | {value}/{total} {title} | ETA: {eta_formatted} | Duration: {duration_formatted}`,
         noTTYOutput: true,
     };
 
-  
     @CreateRequestContext()
     async run([total]: string[] | number[]): Promise<void> {
         total = total === undefined ? 10 : Number(total);
