@@ -7,7 +7,7 @@ import {
     validateNotModified,
 } from "@comet/cms-api";
 import { InjectRepository } from "@mikro-orm/nestjs";
-import { EntityRepository } from "@mikro-orm/postgresql";
+import { EntityManager, EntityRepository } from "@mikro-orm/postgresql";
 import { UnauthorizedException } from "@nestjs/common";
 import { Args, ID, Mutation, Parent, Query, ResolveField, Resolver } from "@nestjs/graphql";
 import { PageTreeNode } from "@src/page-tree/entities/page-tree-node.entity";
@@ -21,6 +21,7 @@ export class PagesResolver {
     constructor(
         @InjectRepository(Page) private readonly repository: EntityRepository<Page>,
         private readonly pageTreeService: PageTreeService,
+        private readonly entityManager: EntityManager,
     ) {}
 
     @Query(() => Page, { nullable: true })
@@ -65,14 +66,14 @@ export class PagesResolver {
                 seo: input.seo.transformToBlockData(),
             });
 
-            this.repository.persist(page);
+            this.entityManager.persist(page);
         }
 
         if (attachedPageTreeNodeId) {
             await this.pageTreeService.attachDocument({ id: pageId, type: "Page" }, attachedPageTreeNodeId);
         }
 
-        await this.repository.flush();
+        await this.entityManager.flush();
 
         return page;
     }

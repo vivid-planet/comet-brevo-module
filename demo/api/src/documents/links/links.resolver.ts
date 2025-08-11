@@ -1,6 +1,6 @@
 import { AffectedEntity, PageTreeNodeVisibility, PageTreeService, RequiredPermission, validateNotModified } from "@comet/cms-api";
 import { InjectRepository } from "@mikro-orm/nestjs";
-import { EntityRepository } from "@mikro-orm/postgresql";
+import { EntityManager, EntityRepository } from "@mikro-orm/postgresql";
 import { UnauthorizedException } from "@nestjs/common";
 import { Args, ID, Mutation, Query, Resolver } from "@nestjs/graphql";
 
@@ -13,6 +13,7 @@ export class LinksResolver {
     constructor(
         @InjectRepository(Link) readonly repository: EntityRepository<Link>,
         private readonly pageTreeService: PageTreeService,
+        private readonly entityManager: EntityManager,
     ) {}
 
     @Query(() => Link, { nullable: true })
@@ -51,14 +52,14 @@ export class LinksResolver {
                 content: input.content.transformToBlockData(),
             });
 
-            this.repository.persist(link);
+            this.entityManager.persist(link);
         }
 
         if (attachedPageTreeNodeId) {
             await this.pageTreeService.attachDocument({ id: linkId, type: "Link" }, attachedPageTreeNodeId);
         }
 
-        await this.repository.flush();
+        await this.entityManager.flush();
 
         return link;
     }
