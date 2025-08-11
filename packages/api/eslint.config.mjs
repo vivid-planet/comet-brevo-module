@@ -9,6 +9,11 @@ const config = [
         },
     },
     ...eslintConfigNestJs,
+    {
+        rules: {
+            "@comet/no-other-module-relative-import": "off",
+        },
+    },
 ];
 
 export default config;
