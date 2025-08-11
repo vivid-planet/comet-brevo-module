@@ -15,7 +15,10 @@ import { BrevoApiCampaignStatistics } from "./dto/brevo-api-campaign-statistics"
 export class BrevoApiCampaignsService {
     private readonly campaignsApis = new Map<string, Brevo.EmailCampaignsApi>();
 
-    constructor(@Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig, @Inject(CACHE_MANAGER) private cacheManager: Cache) {}
+    constructor(
+        @Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig,
+        @Inject(CACHE_MANAGER) private cacheManager: Cache,
+    ) {}
 
     private getCampaignsApi(scope: EmailCampaignScopeInterface): Brevo.EmailCampaignsApi {
         try {

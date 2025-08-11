@@ -18,7 +18,10 @@ import { TargetGroupModule } from "./target-group/target-group.module";
 @Global()
 @Module({})
 export class BrevoModule {
-    constructor(private readonly moduleRef: ModuleRef, @Optional() private readonly myGlobalService: FileUploadsService) {
+    constructor(
+        private readonly moduleRef: ModuleRef,
+        @Optional() private readonly myGlobalService: FileUploadsService,
+    ) {
         let fileUploadsConfig: FileUploadsConfig | undefined;
         try {
             fileUploadsConfig = this.moduleRef.get(FILE_UPLOADS_CONFIG, { strict: false });
