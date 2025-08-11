@@ -25,7 +25,7 @@ export class BrevoModule {
         let fileUploadsConfig: FileUploadsConfig | undefined;
         try {
             fileUploadsConfig = this.moduleRef.get(FILE_UPLOADS_CONFIG, { strict: false });
-        } catch (error) {
+        } catch {
             throw new Error("FileUploadsModule is an required import for BrevoModule");
         }
 
