@@ -55,6 +55,11 @@
                     "@types/react": "^18.0.0"
                 }
             },
+            "@comet/site-react@7": {
+                "peerDependencies": {
+                    "@types/react": "^18.0.0"
+                }
+            },
             "@faire/mjml-react@3": {
                 "peerDependencies": {
                     "@types/react": "^18.0.0"

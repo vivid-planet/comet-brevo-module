@@ -4,7 +4,7 @@ settings:
   autoInstallPeers: false
   excludeLinksFromLockfile: false
 
-packageExtensionsChecksum: d49dd8bfa1afbaf0bd915a809f50d42b
+packageExtensionsChecksum: cd8d6b2790db40677bdcaf71c6d0471a
 
 importers:
 
@@ -4427,7 +4427,7 @@ packages:
       react: ^18.0.0
       react-dom: ^18.0.0
     dependencies:
-      '@comet/site-react': 7.25.6(react-dom@18.3.1)(react@18.3.1)
+      '@comet/site-react': 7.25.6(@types/react@18.3.12)(react-dom@18.3.1)(react@18.3.1)
       '@types/react': 18.3.12
       clsx: 2.1.1
       jose: 5.9.6
@@ -4440,13 +4440,15 @@ packages:
       server-only: 0.0.1
       usehooks-ts: 3.1.0(react@18.3.1)
 
-  /@comet/site-react@7.25.6(react-dom@18.3.1)(react@18.3.1):
+  /@comet/site-react@7.25.6(@types/react@18.3.12)(react-dom@18.3.1)(react@18.3.1):
     resolution: {integrity: sha512-YUYOVIlUEuT/FVsx1wCBv5elNmlmwq921TkackUIguIK5kZNM8iYzGa+rghB8VwBTeOLAfJi14UTKde3xFzycg==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
+      '@types/react': ^18.0.0
       react: ^18.0.0
       react-dom: ^18.0.0
     dependencies:
+      '@types/react': 18.3.12
       clsx: 2.1.1
       jose: 5.9.6
       lodash.isequal: 4.5.0
