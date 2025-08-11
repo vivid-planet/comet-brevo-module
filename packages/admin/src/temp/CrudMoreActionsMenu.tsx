@@ -1,10 +1,10 @@
 // temporary copy from https://github.com/vivid-planet/comet/pull/2115/files
 // remove as soon as it's available in COMET
 
+import { Button } from "@comet/admin";
 import { MoreVertical } from "@comet/admin-icons";
 // TODO v8: remove eslint-disable-next-line
 import {
-    Button,
     Chip,
     type ChipProps,
     Divider,
@@ -96,7 +96,7 @@ export function CrudMoreActionsMenu({
     return (
         <>
             <Button
-                variant="text"
+                variant="textDark"
                 color="inherit"
                 endIcon={<MoreVertical />}
                 sx={{ mx: 2 }}
