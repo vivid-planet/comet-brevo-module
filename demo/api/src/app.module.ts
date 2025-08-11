@@ -125,7 +125,6 @@ export class AppModule {
                     File: DamFile,
                     Folder: DamFolder,
                     damConfig: {
-                        apiUrl: config.apiUrl,
                         secret: config.dam.secret,
                         allowedImageSizes: config.dam.allowedImageSizes,
                         allowedAspectRatios: config.dam.allowedImageAspectRatios,
