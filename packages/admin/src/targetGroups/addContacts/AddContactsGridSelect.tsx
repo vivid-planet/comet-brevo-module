@@ -15,6 +15,8 @@ import {
 } from "@comet/admin";
 import { Add, Close, Remove, Save } from "@comet/admin-icons";
 import { type ContentScopeInterface } from "@comet/cms-admin";
+// TODO v8: remove eslint-disable-next-line
+// eslint-disable-next-line no-restricted-imports
 import { Button, Dialog, DialogActions, DialogTitle, IconButton, useTheme } from "@mui/material";
 import { Box } from "@mui/system";
 import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";

@@ -2,6 +2,7 @@
 // remove as soon as it's available in COMET
 
 import { MoreVertical } from "@comet/admin-icons";
+// TODO v8: remove eslint-disable-next-line
 import {
     Button,
     Chip,
