@@ -1,4 +1,4 @@
-import { Stack, StackPage, StackSwitch, Toolbar } from "@comet/admin";
+import { Stack, StackPage, StackSwitch, Toolbar, Tooltip } from "@comet/admin";
 import { ContentScopeIndicator, useContentScope } from "@comet/cms-admin";
 import { type DocumentNode } from "graphql";
 import { useIntl } from "react-intl";

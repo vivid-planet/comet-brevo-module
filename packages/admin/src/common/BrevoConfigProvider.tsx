@@ -1,6 +1,7 @@
 import { type ContentScopeInterface, useContentScope } from "@comet/cms-admin";
 import { createContext, useContext } from "react";
 import { DialogContent } from "@mui/material";
+import { Tooltip } from "@comet/admin";
 
 export interface BrevoConfig {
     apiUrl: string;

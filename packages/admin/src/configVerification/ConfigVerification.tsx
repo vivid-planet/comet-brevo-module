@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import { Alert, Loading, MainContent } from "@comet/admin";
+import { Alert, Loading, MainContent, Tooltip } from "@comet/admin";
 import { type ContentScopeInterface } from "@comet/cms-admin";
 import { FormattedMessage } from "react-intl";
 

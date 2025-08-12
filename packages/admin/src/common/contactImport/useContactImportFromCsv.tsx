@@ -1,6 +1,6 @@
 import { useApolloClient } from "@apollo/client";
 import { type RefetchQueriesInclude } from "@apollo/client/core/types";
-import { Alert, CheckboxField, FinalForm, Loading, messages, useErrorDialog, Dialog } from "@comet/admin";
+import { Alert, CheckboxField, FinalForm, Loading, messages, useErrorDialog, Dialog, Tooltip } from "@comet/admin";
 import { Upload } from "@comet/admin-icons";
 import { Box, DialogActions, DialogContent, DialogTitle, styled } from "@mui/material";
 import Button from "@mui/material/Button";

@@ -1,7 +1,7 @@
 import { Paper, Skeleton as MuiSkeleton, Typography, DialogContent } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { FormattedNumber } from "react-intl";
-import { Dialog } from "@comet/admin";
+import { Dialog, Tooltip } from "@comet/admin";
 
 interface Props {
     title: React.ReactNode;

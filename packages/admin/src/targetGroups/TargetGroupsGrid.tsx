@@ -13,7 +13,7 @@ import {
     useBufferedRowCount,
     useDataGridRemote,
     useEditDialog,
-    usePersistentColumnState, Dialog } from "@comet/admin";
+    usePersistentColumnState, Dialog, Tooltip } from "@comet/admin";
 import { Add as AddIcon, Download, Edit } from "@comet/admin-icons";
 import { type ContentScopeInterface } from "@comet/cms-admin";
 import { Button, IconButton, DialogContent } from "@mui/material";

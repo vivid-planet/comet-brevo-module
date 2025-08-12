@@ -10,7 +10,7 @@ import {
     ToolbarFillSpace,
     useBufferedRowCount,
     useDataGridRemote,
-    usePersistentColumnState, Dialog } from "@comet/admin";
+    usePersistentColumnState, Dialog, Tooltip } from "@comet/admin";
 import { Add, Block, Check, Delete, Edit } from "@comet/admin-icons";
 import { type ContentScopeInterface } from "@comet/cms-admin";
 import { Button, IconButton, DialogContent } from "@mui/material";

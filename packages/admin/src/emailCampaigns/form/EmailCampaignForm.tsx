@@ -10,7 +10,7 @@ import {
     ToolbarTitleItem,
     useFormApiRef,
     useStackApi,
-    useStackSwitchApi, Dialog } from "@comet/admin";
+    useStackSwitchApi, Dialog, Tooltip } from "@comet/admin";
 import { ArrowLeft } from "@comet/admin-icons";
 import {
     BlockAdminComponentRoot,

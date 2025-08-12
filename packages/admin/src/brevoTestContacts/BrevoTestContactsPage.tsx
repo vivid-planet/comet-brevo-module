@@ -1,4 +1,4 @@
-import { type GridColDef, Stack, StackPage, StackSwitch, StackToolbar } from "@comet/admin";
+import { type GridColDef, Stack, StackPage, StackSwitch, StackToolbar, Tooltip } from "@comet/admin";
 import { ContentScopeIndicator, useContentScope } from "@comet/cms-admin";
 import { type DocumentNode } from "graphql";
 import { useIntl } from "react-intl";
