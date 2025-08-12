@@ -7,6 +7,7 @@ import { useBrevoConfig } from "../common/BrevoConfigProvider";
 import { ConfigVerification } from "../configVerification/ConfigVerification";
 import { BrevoContactsGrid } from "./BrevoContactsGrid";
 import { BrevoContactForm, type EditBrevoContactFormValues } from "./form/BrevoContactForm";
+import { DialogContent } from "@mui/material";
 
 interface CreateContactsPageOptions {
     additionalAttributesFragment?: { name: string; fragment: DocumentNode };

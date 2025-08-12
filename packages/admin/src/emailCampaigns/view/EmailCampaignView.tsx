@@ -10,7 +10,7 @@ import {
     useCmsBlockContext,
     useContentScope,
 } from "@comet/cms-admin";
-import { IconButton } from "@mui/material";
+import { IconButton, DialogContent } from "@mui/material";
 import { FormattedMessage } from "react-intl";
 import { useRouteMatch } from "react-router";
 

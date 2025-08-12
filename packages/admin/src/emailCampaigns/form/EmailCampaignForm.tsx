@@ -31,7 +31,7 @@ import {
     useFormSaveConflict,
     useSaveState,
 } from "@comet/cms-admin";
-import { IconButton } from "@mui/material";
+import { IconButton, DialogContent } from "@mui/material";
 import { isBefore } from "date-fns";
 import { useMemo } from "react";
 import { FormattedMessage } from "react-intl";

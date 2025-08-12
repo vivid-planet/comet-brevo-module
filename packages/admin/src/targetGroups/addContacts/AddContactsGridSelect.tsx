@@ -13,7 +13,7 @@ import {
     usePersistentColumnState, Dialog } from "@comet/admin";
 import { Add, Close, Remove, Save } from "@comet/admin-icons";
 import { type ContentScopeInterface } from "@comet/cms-admin";
-import { Button, DialogActions, DialogTitle, IconButton, useTheme } from "@mui/material";
+import { Button, DialogActions, DialogTitle, IconButton, useTheme, DialogContent } from "@mui/material";
 import { Box } from "@mui/system";
 import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import { useState } from "react";

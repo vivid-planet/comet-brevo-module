@@ -7,6 +7,7 @@ import { useBrevoConfig } from "../common/BrevoConfigProvider";
 import { ConfigVerification } from "../configVerification/ConfigVerification";
 import { type EditTargetGroupFinalFormValues, TargetGroupForm } from "./TargetGroupForm";
 import { type AdditionalContactAttributesType, TargetGroupsGrid } from "./TargetGroupsGrid";
+import { DialogContent } from "@mui/material";
 
 interface CreateContactsPageOptions {
     additionalFormFields?: React.ReactNode;

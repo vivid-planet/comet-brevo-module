@@ -7,6 +7,7 @@ import { FormattedMessage } from "react-intl";
 import { createTargetGroupMutation } from "./TargetGroupDialog.gql";
 import { type GQLCreateTargetGroupMutation, type GQLCreateTargetGroupMutationVariables } from "./TargetGroupDialog.gql.generated";
 import { type EditTargetGroupFinalFormValues } from "./TargetGroupForm";
+import { DialogContent } from "@mui/material";
 
 interface TargetGroupDialogProps {
     scope: ContentScopeInterface;

@@ -5,6 +5,7 @@ import { FormattedMessage } from "react-intl";
 
 import { brevoConfigCheckQuery } from "./ConfigVerification.gql";
 import { type GQLBrevoConfigCheckQuery, type GQLBrevoConfigCheckQueryVariables } from "./ConfigVerification.gql.generated";
+import { DialogContent } from "@mui/material";
 
 interface ConfigCheckProps {
     scope: ContentScopeInterface;

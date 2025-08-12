@@ -17,7 +17,7 @@ import {
     useStackApi, Dialog } from "@comet/admin";
 import { ArrowLeft } from "@comet/admin-icons";
 import { type ContentScopeInterface, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
-import { Card, IconButton } from "@mui/material";
+import { Card, IconButton, DialogContent } from "@mui/material";
 import { Box } from "@mui/system";
 import { type FormApi } from "final-form";
 import { useMemo } from "react";

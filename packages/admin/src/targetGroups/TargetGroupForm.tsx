@@ -17,7 +17,7 @@ import {
     useStackApi, Dialog } from "@comet/admin";
 import { ArrowLeft } from "@comet/admin-icons";
 import { ContentScopeIndicator, type ContentScopeInterface, queryUpdatedAt, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
-import { IconButton } from "@mui/material";
+import { IconButton, DialogContent } from "@mui/material";
 import { type FormApi } from "final-form";
 import { FormattedMessage } from "react-intl";
 

@@ -3,7 +3,7 @@ import { Field, FinalFormSelect, SaveButton, Tooltip, useAsyncOptionsProps, useS
 import { FinalFormDateTimePicker } from "@comet/admin-date-time";
 import { Info, Newsletter } from "@comet/admin-icons";
 import { BlockAdminComponentPaper, BlockAdminComponentSectionGroup, type ContentScopeInterface } from "@comet/cms-admin";
-import { Card } from "@mui/material";
+import { Card, DialogContent } from "@mui/material";
 import { useState } from "react";
 import { FormattedMessage } from "react-intl";
 

@@ -17,8 +17,7 @@ import {
     type MenuListProps,
     type MenuProps,
     Typography,
-    type TypographyProps,
-} from "@mui/material";
+    type TypographyProps, DialogContent } from "@mui/material";
 import { type Maybe } from "graphql/jsutils/Maybe";
 import { type ComponentProps, type PropsWithChildren, useState } from "react";
 import { FormattedMessage } from "react-intl";

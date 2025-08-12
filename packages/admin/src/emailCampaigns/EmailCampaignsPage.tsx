@@ -8,6 +8,7 @@ import { EmailCampaignsGrid } from "./EmailCampaignsGrid";
 import { EmailCampaignForm } from "./form/EmailCampaignForm";
 import { EmailCampaignStatistics } from "./statistics/EmailCampaignStatistics";
 import { EmailCampaignView } from "./view/EmailCampaignView";
+import { DialogContent } from "@mui/material";
 
 interface CreateEmailCampaignsPageOptions {
     EmailCampaignContentBlock: BlockInterface;

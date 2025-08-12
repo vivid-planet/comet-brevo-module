@@ -7,6 +7,7 @@ import { useBrevoConfig } from "../common/BrevoConfigProvider";
 import { ConfigVerification } from "../configVerification/ConfigVerification";
 import { BrevoTestContactsGrid } from "./BrevoTestContactsGrid";
 import { BrevoTestContactForm, type EditBrevoContactFormValues } from "./form/BrevoTestContactForm";
+import { DialogContent } from "@mui/material";
 
 interface CreateContactsPageOptions {
     /** @deprecated Pass via BrevoConfigProvider instead */

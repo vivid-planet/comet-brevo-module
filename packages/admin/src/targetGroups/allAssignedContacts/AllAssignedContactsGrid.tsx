@@ -10,6 +10,7 @@ import {
     type GQLBrevoContactsQueryVariables,
     type GQLTargetGroupBrevoContactsListFragment,
 } from "./AllAssignedContactsGrid.gql.generated";
+import { DialogContent } from "@mui/material";
 
 const AssignedContactsGridToolbar = () => {
     const intl = useIntl();

@@ -42,6 +42,7 @@ import {
     type GQLUpdateBrevoConfigMutation,
     type GQLUpdateBrevoConfigMutationVariables,
 } from "./BrevoConfigForm.gql.generated";
+import { DialogContent } from "@mui/material";
 
 interface Option {
     value: string;

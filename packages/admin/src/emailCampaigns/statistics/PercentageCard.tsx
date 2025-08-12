@@ -1,4 +1,4 @@
-import { Paper, Skeleton as MuiSkeleton, Typography } from "@mui/material";
+import { Paper, Skeleton as MuiSkeleton, Typography, DialogContent } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { FormattedNumber } from "react-intl";
 import { Dialog } from "@comet/admin";

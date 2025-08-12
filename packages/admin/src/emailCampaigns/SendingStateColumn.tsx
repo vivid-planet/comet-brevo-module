@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material";
+import { Typography, DialogContent } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { FormattedMessage, useIntl } from "react-intl";
 

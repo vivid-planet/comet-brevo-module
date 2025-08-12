@@ -1,5 +1,6 @@
 import { BlockCategory, createCompositeBlock, PixelImageBlock } from "@comet/cms-admin";
 import { FormattedMessage } from "react-intl";
+import { DialogContent } from "@mui/material";
 
 export const NewsletterImageBlock = createCompositeBlock({
     name: "NewsletterImage",

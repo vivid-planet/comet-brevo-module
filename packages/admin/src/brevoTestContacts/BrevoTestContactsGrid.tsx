@@ -16,7 +16,7 @@ import {
     usePersistentColumnState, Dialog } from "@comet/admin";
 import { Add, Delete, Edit } from "@comet/admin-icons";
 import { type ContentScopeInterface } from "@comet/cms-admin";
-import { Box, Button, IconButton } from "@mui/material";
+import { Box, Button, IconButton, DialogContent } from "@mui/material";
 import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import { FormattedMessage, type IntlShape, useIntl } from "react-intl";
 

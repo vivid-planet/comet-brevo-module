@@ -16,7 +16,7 @@ import {
     usePersistentColumnState, Dialog } from "@comet/admin";
 import { Add as AddIcon, Download, Edit } from "@comet/admin-icons";
 import { type ContentScopeInterface } from "@comet/cms-admin";
-import { Button, IconButton } from "@mui/material";
+import { Button, IconButton, DialogContent } from "@mui/material";
 import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import saveAs from "file-saver";
 import { type DocumentNode } from "graphql";
@@ -275,7 +275,11 @@ export function TargetGroupsGrid({
                 }}
             />
             <EditDialog disableCloseAfterSave componentsProps={{ dialog: { maxWidth: "sm" } }}>
-                <TargetGroupDialog scope={scope} />
+            <DialogContent>
+
+            <TargetGroupDialog scope={scope} />
+
+            </DialogContent>
             </EditDialog>
         </MainContent>
     );

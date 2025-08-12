@@ -2,7 +2,7 @@ import { gql, useApolloClient, useQuery } from "@apollo/client";
 import { Field, FinalForm, FinalFormSelect, SaveButton, Tooltip, Dialog } from "@comet/admin";
 import { Info, Newsletter } from "@comet/admin-icons";
 import { BlockAdminComponentPaper, BlockAdminComponentSectionGroup, useContentScope } from "@comet/cms-admin";
-import { Card } from "@mui/material";
+import { Card, DialogContent } from "@mui/material";
 import { FormattedMessage } from "react-intl";
 
 import { useBrevoConfig } from "../../common/BrevoConfigProvider";
