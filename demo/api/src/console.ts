@@ -6,7 +6,6 @@ if (process.env.TRACING_ENABLED) {
 
 import opentelemetry from "@opentelemetry/api";
 import { AppModule } from "@src/app.module";
-import { useContainer } from "class-validator";
 import { CommandFactory } from "nest-commander";
 
 import { createConfig } from "./config/config";
