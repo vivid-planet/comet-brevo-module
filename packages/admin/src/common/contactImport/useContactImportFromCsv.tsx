@@ -1,9 +1,8 @@
 import { useApolloClient } from "@apollo/client";
 import { type RefetchQueriesInclude } from "@apollo/client/core/types";
-import { Alert, CheckboxField, FinalForm, Loading, messages, useErrorDialog, Dialog, Tooltip } from "@comet/admin";
+import { Alert, CheckboxField, FinalForm, Loading, messages, useErrorDialog, Dialog, Tooltip, Button } from "@comet/admin";
 import { Upload } from "@comet/admin-icons";
 import { Box, DialogActions, DialogContent, DialogTitle, styled } from "@mui/material";
-import Button from "@mui/material/Button";
 import saveAs from "file-saver";
 import { useMemo, useRef, useState } from "react";
 import { useDropzone } from "react-dropzone";
@@ -103,7 +102,7 @@ export const useContactImportFromCsv = ({ scope, targetGroupId, refetchQueries }
                 <Button onClick={handleClose}>
                     <FormattedMessage {...messages.cancel} />
                 </Button>
-                <Button variant="contained" onClick={() => fileInputRef.current?.click()}>
+                <Button variant="primary" onClick={() => fileInputRef.current?.click()}>
                     <FormattedMessage id="cometBrevoModule.contactImport.importContacts" defaultMessage="Import Contacts" />
                 </Button>
             </DialogActions>
@@ -366,7 +365,7 @@ const ContactImportComponent = ({ scope, targetGroupId, fileInputRef, sendDouble
                 </DialogContent>
                 <DialogActions>
                     {importInformation && (
-                        <Button onClick={() => setImportInformation(null)} variant="contained">
+                        <Button onClick={() => setImportInformation(null)} variant="primary">
                             <FormattedMessage {...messages.ok} />
                         </Button>
                     )}

@@ -10,10 +10,11 @@ import {
     ToolbarTitleItem,
     useBufferedRowCount,
     useDataGridRemote,
-    usePersistentColumnState, Dialog, Tooltip } from "@comet/admin";
+    usePersistentColumnState, Dialog, Tooltip, 
+    Button} from "@comet/admin";
 import { Add, Close, Remove, Save } from "@comet/admin-icons";
 import { type ContentScopeInterface } from "@comet/cms-admin";
-import { Button, DialogActions, DialogTitle, IconButton, useTheme, DialogContent } from "@mui/material";
+import {  DialogActions, DialogTitle, IconButton, useTheme, DialogContent } from "@mui/material";
 import { Box } from "@mui/system";
 import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import { useState } from "react";
@@ -77,7 +78,7 @@ const AssignedContactsGridToolbar = ({
                 />
                 <ToolbarFillSpace />
                 <CrudMoreActionsMenu overallItems={[moreActionsMenuItem]} />
-                <Button startIcon={<Add />} variant="contained" color="primary" onClick={onOpenDialog}>
+                <Button startIcon={<Add />} variant="primary" onClick={onOpenDialog}>
                     <FormattedMessage id="cometBrevoModule.targetGroup.assignedContacts.addContact" defaultMessage="Add contacts" />
                 </Button>
             </DataGridToolbar>
@@ -311,8 +312,7 @@ export function AddContactsGridSelect({ id, scope, assignedContactsTargetGroupBr
                                             await handleSubmit();
                                             setIsDialogOpen(false);
                                         }}
-                                        variant="contained"
-                                        color="primary"
+                                        variant="primary"
                                     >
                                         <FormattedMessage id="cometBrevoModule.targetGroup.addBrevoContacts.dialog.save" defaultMessage="Save" />
                                     </Button>

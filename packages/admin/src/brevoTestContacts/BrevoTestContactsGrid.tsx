@@ -13,10 +13,11 @@ import {
     Tooltip,
     useBufferedRowCount,
     useDataGridRemote,
-    usePersistentColumnState, Dialog } from "@comet/admin";
+    usePersistentColumnState, Dialog, 
+    Button} from "@comet/admin";
 import { Add, Delete, Edit } from "@comet/admin-icons";
 import { type ContentScopeInterface } from "@comet/cms-admin";
-import { Box, Button, IconButton, DialogContent } from "@mui/material";
+import { Box,IconButton, DialogContent } from "@mui/material";
 import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import { FormattedMessage, type IntlShape, useIntl } from "react-intl";
 
@@ -79,8 +80,7 @@ function BrevoTestContactsGridToolbar({
                         component={StackLink}
                         pageName="add"
                         payload="add"
-                        variant="contained"
-                        color="primary"
+                        variant="primary"
                         disabled={disableButton}
                     >
                         <FormattedMessage id="cometBrevoModule.brevoTestContact.newContact" defaultMessage="New test contact" />

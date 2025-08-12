@@ -14,10 +14,11 @@ import {
     ToolbarItem,
     useBufferedRowCount,
     useDataGridRemote,
-    usePersistentColumnState, Dialog, Tooltip } from "@comet/admin";
+    usePersistentColumnState, Dialog, Tooltip, 
+    Button} from "@comet/admin";
 import { Add as AddIcon, Edit, Statistics, Visible } from "@comet/admin-icons";
 import { type BlockInterface, type ContentScopeInterface } from "@comet/cms-admin";
-import { Button, IconButton, DialogContent } from "@mui/material";
+import {  IconButton, DialogContent } from "@mui/material";
 import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import { isBefore } from "date-fns";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -96,7 +97,7 @@ function EmailCampaignsGridToolbar() {
             </ToolbarItem>
             <ToolbarFillSpace />
             <ToolbarActions>
-                <Button startIcon={<AddIcon />} component={StackLink} pageName="add" payload="add" variant="contained" color="primary">
+                <Button startIcon={<AddIcon />} component={StackLink} pageName="add" payload="add" variant="primary">
                     <FormattedMessage id="cometBrevoModule.emailCampaign.newEmailCampaign" defaultMessage="New email campaign" />
                 </Button>
             </ToolbarActions>

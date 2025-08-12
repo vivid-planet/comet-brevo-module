@@ -1,8 +1,8 @@
 import { useQuery } from "@apollo/client";
-import { MainContent, StackLink, Toolbar, ToolbarActions, ToolbarBackButton, ToolbarFillSpace, Dialog, Tooltip } from "@comet/admin";
+import { MainContent, StackLink, Toolbar, ToolbarActions, ToolbarBackButton, ToolbarFillSpace, Dialog, Tooltip, Button } from "@comet/admin";
 import { Add as AddIcon } from "@comet/admin-icons";
 import { ContentScopeIndicator, useContentScopeConfig } from "@comet/cms-admin";
-import { Button, Grid, DialogContent } from "@mui/material";
+import {  Grid, DialogContent } from "@mui/material";
 import { FormattedMessage } from "react-intl";
 
 import { emailCampaignStatistics } from "./EmailCampaignStatistics.gql";
@@ -30,7 +30,7 @@ export const EmailCampaignStatistics = ({ id }: Props): React.ReactElement => {
                 <ToolbarBackButton />
                 <ToolbarFillSpace />
                 <ToolbarActions>
-                    <Button startIcon={<AddIcon />} component={StackLink} pageName="add" payload="add" variant="contained" color="primary">
+                    <Button startIcon={<AddIcon />} component={StackLink} pageName="add" payload="add" variant="primary">
                         <FormattedMessage id="cometBrevoModule.emailCampaign.newEmailCampaign" defaultMessage="New email campaign" />
                     </Button>
                 </ToolbarActions>

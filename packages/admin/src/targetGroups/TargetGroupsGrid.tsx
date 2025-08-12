@@ -13,10 +13,11 @@ import {
     useBufferedRowCount,
     useDataGridRemote,
     useEditDialog,
-    usePersistentColumnState, Dialog, Tooltip } from "@comet/admin";
+    usePersistentColumnState, Dialog, Tooltip, 
+    Button} from "@comet/admin";
 import { Add as AddIcon, Download, Edit } from "@comet/admin-icons";
 import { type ContentScopeInterface } from "@comet/cms-admin";
-import { Button, IconButton, DialogContent } from "@mui/material";
+import {  IconButton, DialogContent } from "@mui/material";
 import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import saveAs from "file-saver";
 import { type DocumentNode } from "graphql";
@@ -115,8 +116,7 @@ export function TargetGroupsGrid({
                 <ToolbarFillSpace />
                 <Button
                     startIcon={<AddIcon />}
-                    variant="contained"
-                    color="primary"
+                    variant="primary"
                     onClick={() => {
                         editDialogApi.openAddDialog();
                     }}
