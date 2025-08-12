@@ -1,4 +1,4 @@
-import { PropsWithData, withPreview } from "@comet/cms-site";
+import { PropsWithData, withPreview } from "@comet/site-nextjs";
 import { TextImageBlockData } from "@src/blocks.generated";
 import * as React from "react";
 import styled from "styled-components";

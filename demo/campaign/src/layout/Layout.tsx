@@ -1,3 +1,5 @@
+import "@comet/site-nextjs/css";
+
 import { gql, GraphQLClient } from "graphql-request";
 import * as React from "react";
 

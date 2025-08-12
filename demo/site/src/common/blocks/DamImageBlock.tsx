@@ -1,4 +1,4 @@
-import { PixelImageBlock, PreviewSkeleton, PropsWithData, SvgImageBlock, withPreview } from "@comet/cms-site";
+import { PixelImageBlock, PreviewSkeleton, PropsWithData, SvgImageBlock, withPreview } from "@comet/site-nextjs";
 import { DamImageBlockData, PixelImageBlockData, SvgImageBlockData } from "@src/blocks.generated";
 import { ImageProps } from "next/image";
 import * as React from "react";

@@ -1,4 +1,4 @@
-import { generateImageUrl, PropsWithData } from "@comet/cms-site";
+import { generateImageUrl, PropsWithData } from "@comet/site-nextjs";
 import { SeoBlockData } from "@src/blocks.generated";
 import Head from "next/head";
 import * as React from "react";

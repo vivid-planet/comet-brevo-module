@@ -1,4 +1,4 @@
-import { BlockPreviewProvider, IFrameBridgeProvider, useIFrameBridge } from "@comet/cms-site";
+import { BlockPreviewProvider, IFrameBridgeProvider, useIFrameBridge } from "@comet/site-nextjs";
 import { generateMjmlMailContent, IntlProviderValues, RenderedMail } from "@src/components/RenderedMail";
 import { defaultLanguage } from "@src/config";
 import { getMessages } from "@src/lang";

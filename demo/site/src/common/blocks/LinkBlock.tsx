@@ -1,4 +1,4 @@
-import { ExternalLinkBlock, InternalLinkBlock, PropsWithData, withPreview } from "@comet/cms-site";
+import { ExternalLinkBlock, InternalLinkBlock, PropsWithData, withPreview } from "@comet/site-nextjs";
 import { ExternalLinkBlockData, InternalLinkBlockData, LinkBlockData } from "@src/blocks.generated";
 import * as React from "react";
 

@@ -1,4 +1,4 @@
-import { SitePreviewParams } from "@comet/cms-site";
+import { SitePreviewParams } from "@comet/site-nextjs";
 import { ContentScope } from "@src/common/contentScope/ContentScope";
 import { defaultLanguage, domain as configuredDomain, domain } from "@src/config";
 import { Page as PageTypePage, pageQuery as PageTypePageQuery } from "@src/documents/pages/Page";

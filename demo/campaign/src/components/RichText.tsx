@@ -1,4 +1,4 @@
-import { PropsWithData } from "@comet/cms-site";
+import { PropsWithData } from "@comet/site-nextjs";
 import { RichTextBlockData } from "@src/blocks.generated";
 import { RawDraftContentState } from "draft-js";
 import * as React from "react";
