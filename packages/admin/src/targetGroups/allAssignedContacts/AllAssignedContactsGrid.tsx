@@ -1,13 +1,5 @@
 import { useQuery } from "@apollo/client";
-import {
-    DataGridToolbar,
-    type GridColDef,
-    ToolbarItem,
-    ToolbarTitleItem,
-    useBufferedRowCount,
-    useDataGridRemote,
-    usePersistentColumnState,
-} from "@comet/admin";
+import { DataGridToolbar, type GridColDef, ToolbarTitleItem, useBufferedRowCount, useDataGridRemote, usePersistentColumnState } from "@comet/admin";
 import { type ContentScopeInterface } from "@comet/cms-admin";
 import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -27,14 +19,12 @@ const AssignedContactsGridToolbar = () => {
             <ToolbarTitleItem>
                 <FormattedMessage id="cometBrevoModule.targetGroup.allAssignedContacts.title" defaultMessage="All assigned contacts" />
             </ToolbarTitleItem>
-            <ToolbarItem>
-                <GridToolbarQuickFilter
-                    placeholder={intl.formatMessage({
-                        id: "cometBrevoModule.targetGroup.assignedContacts.searchEmail",
-                        defaultMessage: "Search email address",
-                    })}
-                />
-            </ToolbarItem>
+            <GridToolbarQuickFilter
+                placeholder={intl.formatMessage({
+                    id: "cometBrevoModule.targetGroup.assignedContacts.searchEmail",
+                    defaultMessage: "Search email address",
+                })}
+            />
         </DataGridToolbar>
     );
 };

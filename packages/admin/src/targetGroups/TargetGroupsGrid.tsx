@@ -8,10 +8,8 @@ import {
     muiGridFilterToGql,
     muiGridSortToGql,
     StackLink,
-    ToolbarActions,
     ToolbarAutomaticTitleItem,
     ToolbarFillSpace,
-    ToolbarItem,
     useBufferedRowCount,
     useDataGridRemote,
     useEditDialog,
@@ -113,25 +111,19 @@ export function TargetGroupsGrid({
         return (
             <DataGridToolbar>
                 <ToolbarAutomaticTitleItem />
-                <ToolbarItem>
-                    <GridToolbarQuickFilter />
-                </ToolbarItem>
-                <ToolbarItem>
-                    <GridFilterButton />
-                </ToolbarItem>
+                <GridToolbarQuickFilter />
+                <GridFilterButton />
                 <ToolbarFillSpace />
-                <ToolbarActions>
-                    <Button
-                        startIcon={<AddIcon />}
-                        variant="contained"
-                        color="primary"
-                        onClick={() => {
-                            editDialogApi.openAddDialog();
-                        }}
-                    >
-                        <FormattedMessage id="cometBrevoModule.targetGroup.newTargetGroup" defaultMessage="New target group" />
-                    </Button>
-                </ToolbarActions>
+                <Button
+                    startIcon={<AddIcon />}
+                    variant="contained"
+                    color="primary"
+                    onClick={() => {
+                        editDialogApi.openAddDialog();
+                    }}
+                >
+                    <FormattedMessage id="cometBrevoModule.targetGroup.newTargetGroup" defaultMessage="New target group" />
+                </Button>
             </DataGridToolbar>
         );
     }

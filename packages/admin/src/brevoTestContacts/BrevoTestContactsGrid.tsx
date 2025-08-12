@@ -8,9 +8,7 @@ import {
     RowActionsItem,
     RowActionsMenu,
     StackLink,
-    ToolbarActions,
     ToolbarFillSpace,
-    ToolbarItem,
     ToolbarTitleItem,
     Tooltip,
     useBufferedRowCount,
@@ -68,32 +66,28 @@ function BrevoTestContactsGridToolbar({
             <ToolbarTitleItem>
                 <FormattedMessage id="cometBrevoModule.brevoTestContact.title" defaultMessage="Test contacts" />
             </ToolbarTitleItem>
-            <ToolbarItem>
-                <GridToolbarQuickFilter
-                    placeholder={intl.formatMessage({
-                        id: "cometBrevoModule.brevoTestContact.searchEmail",
-                        defaultMessage: "Search email address",
-                    })}
-                />
-            </ToolbarItem>
+            <GridToolbarQuickFilter
+                placeholder={intl.formatMessage({
+                    id: "cometBrevoModule.brevoTestContact.searchEmail",
+                    defaultMessage: "Search email address",
+                })}
+            />
             <ToolbarFillSpace />
-            <ToolbarActions>
-                <Tooltip title={disableButton ? tooltipMessage : ""}>
-                    <span>
-                        <Button
-                            startIcon={<Add />}
-                            component={StackLink}
-                            pageName="add"
-                            payload="add"
-                            variant="contained"
-                            color="primary"
-                            disabled={disableButton}
-                        >
-                            <FormattedMessage id="cometBrevoModule.brevoTestContact.newContact" defaultMessage="New test contact" />
-                        </Button>
-                    </span>
-                </Tooltip>
-            </ToolbarActions>
+            <Tooltip title={disableButton ? tooltipMessage : ""}>
+                <span>
+                    <Button
+                        startIcon={<Add />}
+                        component={StackLink}
+                        pageName="add"
+                        payload="add"
+                        variant="contained"
+                        color="primary"
+                        disabled={disableButton}
+                    >
+                        <FormattedMessage id="cometBrevoModule.brevoTestContact.newContact" defaultMessage="New test contact" />
+                    </Button>
+                </span>
+            </Tooltip>
         </DataGridToolbar>
     );
 }

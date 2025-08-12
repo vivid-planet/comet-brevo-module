@@ -7,10 +7,7 @@ import {
     RowActionsItem,
     RowActionsMenu,
     StackLink,
-    ToolbarActions,
     ToolbarFillSpace,
-    ToolbarItem,
-    ToolbarTitleItem,
     useBufferedRowCount,
     useDataGridRemote,
     usePersistentColumnState,
@@ -70,21 +67,15 @@ function BrevoContactsGridToolbar({ intl, scope }: { intl: IntlShape; scope: GQL
     return (
         <>
             <DataGridToolbar>
-                <ToolbarTitleItem>
-                    <FormattedMessage id="cometBrevoModule.brevoContact.title" defaultMessage="Contacts" />
-                </ToolbarTitleItem>
-                <ToolbarItem>
-                    <GridToolbarQuickFilter
-                        placeholder={intl.formatMessage({ id: "cometBrevoModule.brevoContact.searchEmail", defaultMessage: "Search email address" })}
-                    />
-                </ToolbarItem>
+                <FormattedMessage id="cometBrevoModule.brevoContact.title" defaultMessage="Contacts" />
+                <GridToolbarQuickFilter
+                    placeholder={intl.formatMessage({ id: "cometBrevoModule.brevoContact.searchEmail", defaultMessage: "Search email address" })}
+                />
                 <ToolbarFillSpace />
-                <ToolbarActions>
-                    <CrudMoreActionsMenu overallItems={[moreActionsMenuItem]} />
-                    <Button startIcon={<Add />} component={StackLink} pageName="add" payload="add" variant="contained" color="primary">
-                        <FormattedMessage id="cometBrevoModule.brevoContact.newContact" defaultMessage="New contact" />
-                    </Button>
-                </ToolbarActions>
+                <CrudMoreActionsMenu overallItems={[moreActionsMenuItem]} />
+                <Button startIcon={<Add />} component={StackLink} pageName="add" payload="add" variant="contained" color="primary">
+                    <FormattedMessage id="cometBrevoModule.brevoContact.newContact" defaultMessage="New contact" />
+                </Button>
             </DataGridToolbar>
             {contactImportComponent}
         </>

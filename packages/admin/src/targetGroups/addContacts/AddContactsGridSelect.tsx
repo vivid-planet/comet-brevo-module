@@ -5,7 +5,6 @@ import {
     Field,
     FinalForm,
     type GridColDef,
-    ToolbarActions,
     ToolbarFillSpace,
     ToolbarItem,
     ToolbarTitleItem,
@@ -71,21 +70,17 @@ const AssignedContactsGridToolbar = ({
                 <ToolbarTitleItem>
                     <FormattedMessage id="cometBrevoModule.targetGroup.manuallyAssignedContacts.title" defaultMessage="Manually assigned contacts" />
                 </ToolbarTitleItem>
-                <ToolbarItem>
-                    <GridToolbarQuickFilter
-                        placeholder={intl.formatMessage({
-                            id: "cometBrevoModule.targetGroup.assignedContacts.searchEmail",
-                            defaultMessage: "Search email address",
-                        })}
-                    />
-                </ToolbarItem>
+                <GridToolbarQuickFilter
+                    placeholder={intl.formatMessage({
+                        id: "cometBrevoModule.targetGroup.assignedContacts.searchEmail",
+                        defaultMessage: "Search email address",
+                    })}
+                />
                 <ToolbarFillSpace />
-                <ToolbarActions>
-                    <CrudMoreActionsMenu overallItems={[moreActionsMenuItem]} />
-                    <Button startIcon={<Add />} variant="contained" color="primary" onClick={onOpenDialog}>
-                        <FormattedMessage id="cometBrevoModule.targetGroup.assignedContacts.addContact" defaultMessage="Add contacts" />
-                    </Button>
-                </ToolbarActions>
+                <CrudMoreActionsMenu overallItems={[moreActionsMenuItem]} />
+                <Button startIcon={<Add />} variant="contained" color="primary" onClick={onOpenDialog}>
+                    <FormattedMessage id="cometBrevoModule.targetGroup.assignedContacts.addContact" defaultMessage="Add contacts" />
+                </Button>
             </DataGridToolbar>
             {component}
         </>
