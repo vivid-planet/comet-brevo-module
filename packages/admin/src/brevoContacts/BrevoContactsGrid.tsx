@@ -1,5 +1,6 @@
 import { type DocumentNode, gql, useApolloClient, useQuery } from "@apollo/client";
 import {
+    Button,
     DataGridToolbar,
     type GridColDef,
     MainContent,
@@ -10,11 +11,11 @@ import {
     ToolbarFillSpace,
     useBufferedRowCount,
     useDataGridRemote,
-    usePersistentColumnState, Dialog, Tooltip, 
-    Button} from "@comet/admin";
+    usePersistentColumnState,
+} from "@comet/admin";
 import { Add, Block, Check, Delete, Edit } from "@comet/admin-icons";
 import { type ContentScopeInterface } from "@comet/cms-admin";
-import {  IconButton, DialogContent } from "@mui/material";
+import { IconButton } from "@mui/material";
 import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import { FormattedMessage, type IntlShape, useIntl } from "react-intl";
 
@@ -73,7 +74,7 @@ function BrevoContactsGridToolbar({ intl, scope }: { intl: IntlShape; scope: GQL
                 />
                 <ToolbarFillSpace />
                 <CrudMoreActionsMenu overallItems={[moreActionsMenuItem]} />
-                <Button startIcon={<Add />} component={StackLink} pageName="add" payload="add" variant="primary" >
+                <Button startIcon={<Add />} component={StackLink} pageName="add" payload="add" variant="primary">
                     <FormattedMessage id="cometBrevoModule.brevoContact.newContact" defaultMessage="New contact" />
                 </Button>
             </DataGridToolbar>

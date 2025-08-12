@@ -1,5 +1,6 @@
 import { gql, useApolloClient, useQuery } from "@apollo/client";
 import {
+    Button,
     CrudContextMenu,
     DataGridToolbar,
     type GridColDef,
@@ -13,11 +14,11 @@ import {
     useBufferedRowCount,
     useDataGridRemote,
     useEditDialog,
-    usePersistentColumnState, Dialog, Tooltip, 
-    Button} from "@comet/admin";
+    usePersistentColumnState,
+} from "@comet/admin";
 import { Add as AddIcon, Download, Edit } from "@comet/admin-icons";
 import { type ContentScopeInterface } from "@comet/cms-admin";
-import {  IconButton, DialogContent } from "@mui/material";
+import { DialogContent, IconButton } from "@mui/material";
 import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import saveAs from "file-saver";
 import { type DocumentNode } from "graphql";
@@ -275,11 +276,9 @@ export function TargetGroupsGrid({
                 }}
             />
             <EditDialog disableCloseAfterSave componentsProps={{ dialog: { maxWidth: "sm" } }}>
-            <DialogContent>
-
-            <TargetGroupDialog scope={scope} />
-
-            </DialogContent>
+                <DialogContent>
+                    <TargetGroupDialog scope={scope} />
+                </DialogContent>
             </EditDialog>
         </MainContent>
     );

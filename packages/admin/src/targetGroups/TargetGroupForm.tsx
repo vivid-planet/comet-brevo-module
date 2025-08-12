@@ -14,10 +14,11 @@ import {
     ToolbarItem,
     ToolbarTitleItem,
     useFormApiRef,
-    useStackApi, Dialog, Tooltip } from "@comet/admin";
+    useStackApi,
+} from "@comet/admin";
 import { ArrowLeft } from "@comet/admin-icons";
 import { ContentScopeIndicator, type ContentScopeInterface, queryUpdatedAt, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
-import { IconButton, DialogContent } from "@mui/material";
+import { IconButton } from "@mui/material";
 import { type FormApi } from "final-form";
 import { FormattedMessage } from "react-intl";
 

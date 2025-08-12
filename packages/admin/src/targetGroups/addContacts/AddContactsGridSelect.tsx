@@ -1,7 +1,9 @@
 import { useMutation, useQuery } from "@apollo/client";
 import {
+    Button,
     CancelButton,
     DataGridToolbar,
+    Dialog,
     Field,
     FinalForm,
     type GridColDef,
@@ -10,11 +12,11 @@ import {
     ToolbarTitleItem,
     useBufferedRowCount,
     useDataGridRemote,
-    usePersistentColumnState, Dialog, Tooltip, 
-    Button} from "@comet/admin";
+    usePersistentColumnState,
+} from "@comet/admin";
 import { Add, Close, Remove, Save } from "@comet/admin-icons";
 import { type ContentScopeInterface } from "@comet/cms-admin";
-import {  DialogActions, DialogTitle, IconButton, useTheme, DialogContent } from "@mui/material";
+import { DialogActions, DialogTitle, IconButton, useTheme } from "@mui/material";
 import { Box } from "@mui/system";
 import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import { useState } from "react";

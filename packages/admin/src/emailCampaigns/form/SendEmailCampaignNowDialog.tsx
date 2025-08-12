@@ -1,4 +1,4 @@
-import { CancelButton, SaveButton, Dialog, Tooltip } from "@comet/admin";
+import { CancelButton, Dialog, SaveButton } from "@comet/admin";
 import { DialogActions, DialogContent, DialogTitle } from "@mui/material";
 import { FormattedMessage } from "react-intl";
 

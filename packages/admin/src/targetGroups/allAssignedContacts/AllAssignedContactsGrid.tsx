@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import { DataGridToolbar, type GridColDef, ToolbarTitleItem, useBufferedRowCount, useDataGridRemote, usePersistentColumnState, Tooltip } from "@comet/admin";
+import { DataGridToolbar, type GridColDef, ToolbarTitleItem, useBufferedRowCount, useDataGridRemote, usePersistentColumnState } from "@comet/admin";
 import { type ContentScopeInterface } from "@comet/cms-admin";
 import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -10,7 +10,6 @@ import {
     type GQLBrevoContactsQueryVariables,
     type GQLTargetGroupBrevoContactsListFragment,
 } from "./AllAssignedContactsGrid.gql.generated";
-import { DialogContent } from "@mui/material";
 
 const AssignedContactsGridToolbar = () => {
     const intl = useIntl();

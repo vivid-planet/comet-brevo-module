@@ -1,4 +1,4 @@
-import { Stack, StackPage, StackSwitch, Toolbar, Tooltip } from "@comet/admin";
+import { Stack, StackPage, StackSwitch, Toolbar } from "@comet/admin";
 import { ContentScopeIndicator, useContentScope } from "@comet/cms-admin";
 import { type DocumentNode } from "graphql";
 import { useIntl } from "react-intl";
@@ -7,7 +7,6 @@ import { useBrevoConfig } from "../common/BrevoConfigProvider";
 import { ConfigVerification } from "../configVerification/ConfigVerification";
 import { type EditTargetGroupFinalFormValues, TargetGroupForm } from "./TargetGroupForm";
 import { type AdditionalContactAttributesType, TargetGroupsGrid } from "./TargetGroupsGrid";
-import { DialogContent } from "@mui/material";
 
 interface CreateContactsPageOptions {
     additionalFormFields?: React.ReactNode;

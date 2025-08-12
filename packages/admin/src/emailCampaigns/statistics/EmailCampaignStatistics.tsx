@@ -1,8 +1,8 @@
 import { useQuery } from "@apollo/client";
-import { MainContent, StackLink, Toolbar, ToolbarActions, ToolbarBackButton, ToolbarFillSpace, Dialog, Tooltip, Button } from "@comet/admin";
+import { Button, MainContent, StackLink, Toolbar, ToolbarActions, ToolbarBackButton, ToolbarFillSpace } from "@comet/admin";
 import { Add as AddIcon } from "@comet/admin-icons";
 import { ContentScopeIndicator, useContentScopeConfig } from "@comet/cms-admin";
-import {  Grid, DialogContent } from "@mui/material";
+import { Grid } from "@mui/material";
 import { FormattedMessage } from "react-intl";
 
 import { emailCampaignStatistics } from "./EmailCampaignStatistics.gql";

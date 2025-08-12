@@ -1,5 +1,6 @@
 import { gql, useApolloClient, useQuery } from "@apollo/client";
 import {
+    Button,
     CrudContextMenu,
     DataGridToolbar,
     type GridColDef,
@@ -14,11 +15,11 @@ import {
     ToolbarItem,
     useBufferedRowCount,
     useDataGridRemote,
-    usePersistentColumnState, Dialog, Tooltip, 
-    Button} from "@comet/admin";
+    usePersistentColumnState,
+} from "@comet/admin";
 import { Add as AddIcon, Edit, Statistics, Visible } from "@comet/admin-icons";
 import { type BlockInterface, type ContentScopeInterface } from "@comet/cms-admin";
-import {  IconButton, DialogContent } from "@mui/material";
+import { IconButton } from "@mui/material";
 import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import { isBefore } from "date-fns";
 import { FormattedMessage, useIntl } from "react-intl";

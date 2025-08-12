@@ -1,7 +1,7 @@
 import { useQuery } from "@apollo/client";
-import { Alert, Loading, Dialog, Tooltip } from "@comet/admin";
+import { Alert, Loading } from "@comet/admin";
 import { type ContentScopeInterface } from "@comet/cms-admin";
-import { Typography, DialogContent } from "@mui/material";
+import { Typography } from "@mui/material";
 import { FormattedMessage } from "react-intl";
 
 import { brevoConfigQuery } from "./SendManagerWrapper.gql";

@@ -1,4 +1,4 @@
-import { type GridColDef, Stack, StackPage, StackSwitch, StackToolbar, Tooltip } from "@comet/admin";
+import { type GridColDef, Stack, StackPage, StackSwitch, StackToolbar } from "@comet/admin";
 import { ContentScopeIndicator, useContentScope } from "@comet/cms-admin";
 import { type DocumentNode } from "graphql";
 import { useIntl } from "react-intl";
@@ -7,7 +7,6 @@ import { useBrevoConfig } from "../common/BrevoConfigProvider";
 import { ConfigVerification } from "../configVerification/ConfigVerification";
 import { BrevoTestContactsGrid } from "./BrevoTestContactsGrid";
 import { BrevoTestContactForm, type EditBrevoContactFormValues } from "./form/BrevoTestContactForm";
-import { DialogContent } from "@mui/material";
 
 interface CreateContactsPageOptions {
     /** @deprecated Pass via BrevoConfigProvider instead */

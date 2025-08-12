@@ -10,7 +10,8 @@ import {
     ToolbarTitleItem,
     useFormApiRef,
     useStackApi,
-    useStackSwitchApi, Dialog, Tooltip } from "@comet/admin";
+    useStackSwitchApi,
+} from "@comet/admin";
 import { ArrowLeft } from "@comet/admin-icons";
 import {
     BlockAdminComponentRoot,
@@ -31,7 +32,7 @@ import {
     useFormSaveConflict,
     useSaveState,
 } from "@comet/cms-admin";
-import { IconButton, DialogContent } from "@mui/material";
+import { IconButton } from "@mui/material";
 import { isBefore } from "date-fns";
 import { useMemo } from "react";
 import { FormattedMessage } from "react-intl";

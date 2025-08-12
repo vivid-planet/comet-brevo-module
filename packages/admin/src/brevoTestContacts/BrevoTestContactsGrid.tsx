@@ -1,6 +1,7 @@
 import { type DocumentNode, gql, useApolloClient, useQuery } from "@apollo/client";
 import {
     Alert,
+    Button,
     DataGridToolbar,
     type GridColDef,
     MainContent,
@@ -13,11 +14,11 @@ import {
     Tooltip,
     useBufferedRowCount,
     useDataGridRemote,
-    usePersistentColumnState, Dialog, 
-    Button} from "@comet/admin";
+    usePersistentColumnState,
+} from "@comet/admin";
 import { Add, Delete, Edit } from "@comet/admin-icons";
 import { type ContentScopeInterface } from "@comet/cms-admin";
-import { Box,IconButton, DialogContent } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import { FormattedMessage, type IntlShape, useIntl } from "react-intl";
 
@@ -75,14 +76,7 @@ function BrevoTestContactsGridToolbar({
             <ToolbarFillSpace />
             <Tooltip title={disableButton ? tooltipMessage : ""}>
                 <span>
-                    <Button
-                        startIcon={<Add />}
-                        component={StackLink}
-                        pageName="add"
-                        payload="add"
-                        variant="primary"
-                        disabled={disableButton}
-                    >
+                    <Button startIcon={<Add />} component={StackLink} pageName="add" payload="add" variant="primary" disabled={disableButton}>
                         <FormattedMessage id="cometBrevoModule.brevoTestContact.newContact" defaultMessage="New test contact" />
                     </Button>
                 </span>
