@@ -258,16 +258,16 @@ export function AddContactsGridSelect({ id, scope, assignedContactsTargetGroupBr
         <>
             <DataGrid
                 {...dataGridAssignedContactsProps}
-                disableSelectionOnClick
+                disableRowSelectionOnClick
                 rows={assignedContactsData?.manuallyAssignedBrevoContacts.nodes ?? []}
                 rowCount={assignedContactsRowCount}
                 columns={assignedContactsColumns}
                 autoHeight
                 loading={assignedContactsLoading}
-                components={{
-                    Toolbar: AssignedContactsGridToolbar,
+                slots={{
+                    toolbar: AssignedContactsGridToolbar,
                 }}
-                componentsProps={{
+                slotProps={{
                     toolbar: {
                         onOpenDialog: () => setIsDialogOpen(true),
                         scope,
@@ -275,7 +275,6 @@ export function AddContactsGridSelect({ id, scope, assignedContactsTargetGroupBr
                     },
                 }}
             />
-
             <FinalForm<FormProps> mode="edit" onSubmit={submit}>
                 {({ handleSubmit, submitting }) => {
                     return (
@@ -297,11 +296,11 @@ export function AddContactsGridSelect({ id, scope, assignedContactsTargetGroupBr
                                                 columns={assignableContactsColumns}
                                                 autoHeight
                                                 loading={assignableContactsLoading || submitting}
-                                                components={{
-                                                    Toolbar: AssignableContactsGridToolbar,
+                                                slots={{
+                                                    toolbar: AssignableContactsGridToolbar,
                                                 }}
-                                                selectionModel={props.value}
-                                                onSelectionModelChange={(newSelectionModel) => {
+                                                rowSelectionModel={props.value}
+                                                onRowSelectionModelChange={(newSelectionModel) => {
                                                     props.input.onChange(newSelectionModel);
                                                 }}
                                                 checkboxSelection

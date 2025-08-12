@@ -274,13 +274,13 @@ export function TargetGroupsGrid({
         <MainContent fullHeight>
             <DataGrid
                 {...dataGridProps}
-                disableSelectionOnClick
+                disableRowSelectionOnClick
                 rows={rows}
                 rowCount={rowCount}
                 columns={columns}
                 loading={loading}
-                components={{
-                    Toolbar: TargetGroupsGridToolbar,
+                slots={{
+                    toolbar: TargetGroupsGridToolbar,
                 }}
             />
             <EditDialog disableCloseAfterSave componentsProps={{ dialog: { maxWidth: "sm" } }}>

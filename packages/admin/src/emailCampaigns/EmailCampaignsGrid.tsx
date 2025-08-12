@@ -251,13 +251,13 @@ export function EmailCampaignsGrid({
         <MainContent fullHeight>
             <DataGrid
                 {...dataGridProps}
-                disableSelectionOnClick
+                disableRowSelectionOnClick
                 rows={rows}
                 rowCount={rowCount}
                 columns={columns}
                 loading={loading}
-                components={{
-                    Toolbar: EmailCampaignsGridToolbar,
+                slots={{
+                    toolbar: EmailCampaignsGridToolbar,
                 }}
             />
         </MainContent>

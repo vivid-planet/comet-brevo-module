@@ -108,14 +108,14 @@ export function AllAssignedContactsGrid({ id, scope, brevoId }: AllAssignedConta
     return (
         <DataGrid
             {...dataGridAllAssignedContactsProps}
-            disableSelectionOnClick
+            disableRowSelectionOnClick
             rows={allAssignedContactsData?.brevoContacts.nodes ?? []}
             rowCount={allAssignedContactsRowCount}
             columns={allAssignedContactsColumns}
             autoHeight
             loading={assignedContactsLoading}
-            components={{
-                Toolbar: AssignedContactsGridToolbar,
+            slots={{
+                toolbar: AssignedContactsGridToolbar,
             }}
         />
     );

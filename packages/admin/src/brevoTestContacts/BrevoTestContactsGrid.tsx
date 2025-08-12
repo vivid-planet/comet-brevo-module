@@ -210,15 +210,15 @@ export function BrevoTestContactsGrid({
             </Box>
             <DataGrid
                 {...dataGridProps}
-                disableSelectionOnClick
+                disableRowSelectionOnClick
                 rows={rows}
                 rowCount={rowCount}
                 columns={columns}
                 loading={loading}
-                components={{
-                    Toolbar: BrevoTestContactsGridToolbar,
+                slots={{
+                    toolbar: BrevoTestContactsGridToolbar,
                 }}
-                componentsProps={{
+                slotProps={{
                     toolbar: {
                         intl,
                         scope,
