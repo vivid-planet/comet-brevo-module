@@ -1,7 +1,7 @@
 // temporary copy from https://github.com/vivid-planet/comet/pull/2115/files
 // remove as soon as it's available in COMET
 
-import { Button } from "@comet/admin";
+import { Button, Dialog } from "@comet/admin";
 import { MoreVertical } from "@comet/admin-icons";
 // TODO v8: remove eslint-disable-next-line
 import {

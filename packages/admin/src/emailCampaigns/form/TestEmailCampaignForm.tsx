@@ -1,5 +1,5 @@
 import { gql, useApolloClient, useQuery } from "@apollo/client";
-import { Field, FinalForm, FinalFormSelect, SaveButton, Tooltip } from "@comet/admin";
+import { Field, FinalForm, FinalFormSelect, SaveButton, Tooltip, Dialog } from "@comet/admin";
 import { Info, Newsletter } from "@comet/admin-icons";
 import { BlockAdminComponentPaper, BlockAdminComponentSectionGroup, useContentScope } from "@comet/cms-admin";
 import { Card } from "@mui/material";

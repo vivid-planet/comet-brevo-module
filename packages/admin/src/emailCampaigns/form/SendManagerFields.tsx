@@ -1,5 +1,5 @@
 import { useApolloClient, useMutation } from "@apollo/client";
-import { Field, FinalFormSelect, SaveButton, Tooltip, useAsyncOptionsProps, useStackSwitchApi } from "@comet/admin";
+import { Field, FinalFormSelect, SaveButton, Tooltip, useAsyncOptionsProps, useStackSwitchApi, Dialog } from "@comet/admin";
 import { FinalFormDateTimePicker } from "@comet/admin-date-time";
 import { Info, Newsletter } from "@comet/admin-icons";
 import { BlockAdminComponentPaper, BlockAdminComponentSectionGroup, type ContentScopeInterface } from "@comet/cms-admin";

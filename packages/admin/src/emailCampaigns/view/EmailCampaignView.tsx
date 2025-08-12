@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import { Loading, MainContent, Toolbar, ToolbarFillSpace, ToolbarItem, ToolbarTitleItem, useStackApi } from "@comet/admin";
+import { Loading, MainContent, Toolbar, ToolbarFillSpace, ToolbarItem, ToolbarTitleItem, useStackApi, Dialog } from "@comet/admin";
 import { ArrowLeft } from "@comet/admin-icons";
 import {
     type BlockInterface,

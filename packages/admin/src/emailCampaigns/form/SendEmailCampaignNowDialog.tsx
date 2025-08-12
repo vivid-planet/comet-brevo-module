@@ -1,5 +1,5 @@
-import { CancelButton, SaveButton } from "@comet/admin";
-import { Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
+import { CancelButton, SaveButton, Dialog } from "@comet/admin";
+import { DialogActions, DialogContent, DialogTitle } from "@mui/material";
 import { FormattedMessage } from "react-intl";
 
 interface SendEmailCampaignNowDialogProps {

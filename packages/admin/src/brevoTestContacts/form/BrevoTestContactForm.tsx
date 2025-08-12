@@ -14,8 +14,7 @@ import {
     ToolbarItem,
     ToolbarTitleItem,
     useFormApiRef,
-    useStackApi,
-} from "@comet/admin";
+    useStackApi, Dialog } from "@comet/admin";
 import { ArrowLeft } from "@comet/admin-icons";
 import { type ContentScopeInterface, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
 import { Card, IconButton } from "@mui/material";
