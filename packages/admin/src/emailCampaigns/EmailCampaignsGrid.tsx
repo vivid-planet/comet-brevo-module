@@ -19,8 +19,6 @@ import {
 import { Add as AddIcon, Edit, Statistics, Visible } from "@comet/admin-icons";
 import { type BlockInterface } from "@comet/blocks-admin";
 import { type ContentScopeInterface } from "@comet/cms-admin";
-// TODO v8: remove eslint-disable-next-line
-// eslint-disable-next-line no-restricted-imports
 import { Button, IconButton } from "@mui/material";
 import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import { isBefore } from "date-fns";
