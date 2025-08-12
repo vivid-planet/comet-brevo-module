@@ -274,7 +274,7 @@ importers:
     dependencies:
       '@comet/blocks-api':
         specifier: ^7.21.1
-        version: 7.25.3(@nestjs/common@9.4.3)(class-validator@0.13.2)
+        version: 7.25.7(@nestjs/common@9.4.3)(class-validator@0.13.2)
       '@comet/brevo-api':
         specifier: workspace:*
         version: link:../../packages/api
@@ -938,8 +938,8 @@ importers:
         version: 2.7.0
     devDependencies:
       '@comet/blocks-api':
-        specifier: ^7.21.1
-        version: 7.25.3(@nestjs/common@9.4.3)(class-validator@0.13.2)
+        specifier: 7.25.7
+        version: 7.25.7(@nestjs/common@9.4.3)(class-validator@0.13.2)
       '@comet/cms-api':
         specifier: ^7.21.1
         version: 7.25.7(@kubernetes/client-node@0.18.1)(@mikro-orm/core@5.9.8)(@mikro-orm/migrations@5.9.8)(@mikro-orm/nestjs@5.2.3)(@mikro-orm/postgresql@5.9.8)(@nestjs/common@9.4.3)(@nestjs/core@9.4.3)(@nestjs/graphql@10.2.1)(@nestjs/platform-express@9.4.3)(class-validator@0.13.2)(express@4.21.2)(graphql@15.9.0)(nestjs-console@8.0.0)(rxjs@7.8.1)
@@ -5437,17 +5437,6 @@ packages:
       - final-form
       - graphql
       - history
-
-  /@comet/blocks-api@7.25.3(@nestjs/common@9.4.3)(class-validator@0.13.2):
-    resolution: {integrity: sha512-YxIKGof9ejp7LJ5GP0R+wLe0GuJIdkdy+a/WsWP0hO0JS57DAga3/1/BV+FMFAKHUUUcW1jRFx01bKT0YVcVKA==}
-    peerDependencies:
-      '@nestjs/common': ^9.0.0
-      class-validator: ^0.11.1 || ^0.12.0 || ^0.13.0
-    dependencies:
-      '@nestjs/common': 9.4.3(cache-manager@5.7.6)(class-transformer@0.5.1)(class-validator@0.13.2)(reflect-metadata@0.1.14)(rxjs@7.8.1)
-      class-transformer: 0.5.1
-      class-validator: 0.13.2
-      rimraf: 3.0.2
 
   /@comet/blocks-api@7.25.7(@nestjs/common@9.4.3)(class-validator@0.13.2):
     resolution: {integrity: sha512-vG8WTYbejVRl9+1YkLwJ9UNB51s5HoLJI2WCwL2pOhVKvnbwhqbrNkN8/xeKmMPw8K6mUzXYILB4tqTM8mc25A==}
