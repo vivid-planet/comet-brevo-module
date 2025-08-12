@@ -1,5 +1,6 @@
 {
     "name": "comet-brevo-module-demo-campaign",
+    "version": "8.0.0",
     "private": true,
     "scripts": {
         "copy-schema-files": "node copy-schema-files.js",

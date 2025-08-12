@@ -33,6 +33,7 @@ export const RenderedMail: React.FC<Props> = ({ mjmlContent }) => {
     const [mailHtml, setMailHtml] = useState<string>("");
 
     useEffect(() => {
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
         const mjml2htmlBrowser = require("mjml-browser");
         const { html: mjmlHtml, errors } = mjml2htmlBrowser(mjmlContent);
         const html = replaceMailHtmlPlaceholders(mjmlHtml, "preview");
