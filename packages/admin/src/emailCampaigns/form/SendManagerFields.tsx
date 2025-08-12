@@ -2,7 +2,7 @@ import { useApolloClient, useMutation } from "@apollo/client";
 import { Field, FinalFormSelect, SaveButton, Tooltip, useAsyncOptionsProps, useStackSwitchApi } from "@comet/admin";
 import { FinalFormDateTimePicker } from "@comet/admin-date-time";
 import { Info, Newsletter } from "@comet/admin-icons";
-import { BlockAdminComponentPaper, BlockAdminComponentSectionGroup, type ContentScopeInterface } from "@comet/cms-admin";
+import { BlockAdminComponentPaper, BlockAdminComponentSectionGroup, type ContentScope } from "@comet/cms-admin";
 import { Card } from "@mui/material";
 import { useState } from "react";
 import { FormattedMessage } from "react-intl";
@@ -18,7 +18,7 @@ import {
 } from "./SendManagerFields.gql.generated";
 
 interface SendManagerFieldsProps {
-    scope: ContentScopeInterface;
+    scope: ContentScope;
     id?: string;
     isSendable: boolean;
     isCampaignCreated?: boolean;

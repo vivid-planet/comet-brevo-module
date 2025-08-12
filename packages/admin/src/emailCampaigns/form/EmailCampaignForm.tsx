@@ -21,7 +21,7 @@ import {
     BlocksFinalForm,
     type BlockState,
     ContentScopeIndicator,
-    type ContentScopeInterface,
+    type ContentScope,
     createFinalFormBlock,
     parallelAsyncEvery,
     queryUpdatedAt,
@@ -58,7 +58,7 @@ import { TestEmailCampaignForm } from "./TestEmailCampaignForm";
 interface FormProps {
     id?: string;
     EmailCampaignContentBlock: BlockInterface;
-    scope: ContentScopeInterface;
+    scope: ContentScope;
 }
 
 export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope }: FormProps) {

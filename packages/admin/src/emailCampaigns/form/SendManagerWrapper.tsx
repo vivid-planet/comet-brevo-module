@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client";
 import { Alert, Loading } from "@comet/admin";
-import { type ContentScopeInterface } from "@comet/cms-admin";
+import { type ContentScope } from "@comet/cms-admin";
 import { Typography } from "@mui/material";
 import { FormattedMessage } from "react-intl";
 
@@ -8,7 +8,7 @@ import { brevoConfigQuery } from "./SendManagerWrapper.gql";
 import { type GQLIsBrevoConfigDefinedQuery, type GQLIsBrevoConfigDefinedQueryVariables } from "./SendManagerWrapper.gql.generated";
 
 interface SendManagerWrapperProps {
-    scope: ContentScopeInterface;
+    scope: ContentScope;
 }
 
 export const SendManagerWrapper = ({ scope, children }: React.PropsWithChildren<SendManagerWrapperProps>) => {

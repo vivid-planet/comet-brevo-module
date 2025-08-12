@@ -15,7 +15,7 @@ import {
     usePersistentColumnState,
 } from "@comet/admin";
 import { Add, Close, Remove, Save } from "@comet/admin-icons";
-import { type ContentScopeInterface } from "@comet/cms-admin";
+import { type ContentScope } from "@comet/cms-admin";
 import { DialogActions, DialogTitle, IconButton, useTheme } from "@mui/material";
 import { Box } from "@mui/system";
 import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
@@ -133,7 +133,7 @@ const useSubmitMutation = (id: string) => {
 };
 
 interface AddContactsGridSelectProps {
-    scope: ContentScopeInterface;
+    scope: ContentScope;
     id: string;
     assignedContactsTargetGroupBrevoId?: number;
 }

@@ -19,7 +19,7 @@ import {
     useStackApi,
 } from "@comet/admin";
 import { ArrowLeft } from "@comet/admin-icons";
-import { ContentScopeIndicator, type ContentScopeInterface, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
+import { ContentScopeIndicator, type ContentScope, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
 import { Card, IconButton } from "@mui/material";
 import { Box } from "@mui/system";
 import { type FormApi } from "final-form";
@@ -55,7 +55,7 @@ type EditBrevoContactFormValuesWithAttributes = EditBrevoContactFormValues & {
 
 interface FormProps {
     id?: number;
-    scope: ContentScopeInterface;
+    scope: ContentScope;
     additionalFormFields?: React.ReactNode;
     additionalAttributesFragment?: { name: string; fragment: DocumentNode };
     input2State?: (values?: EditBrevoContactFormValues) => EditBrevoContactFormValues;

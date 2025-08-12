@@ -1,13 +1,13 @@
 import { useQuery } from "@apollo/client";
 import { Alert, Loading, MainContent } from "@comet/admin";
-import { type ContentScopeInterface } from "@comet/cms-admin";
+import { type ContentScope } from "@comet/cms-admin";
 import { FormattedMessage } from "react-intl";
 
 import { brevoConfigCheckQuery } from "./ConfigVerification.gql";
 import { type GQLBrevoConfigCheckQuery, type GQLBrevoConfigCheckQueryVariables } from "./ConfigVerification.gql.generated";
 
 interface ConfigCheckProps {
-    scope: ContentScopeInterface;
+    scope: ContentScope;
 }
 
 export function ConfigVerification({ scope, children }: React.PropsWithChildren<ConfigCheckProps>): JSX.Element {

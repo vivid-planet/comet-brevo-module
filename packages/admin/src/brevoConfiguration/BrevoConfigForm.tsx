@@ -18,7 +18,7 @@ import {
     useStackSwitchApi,
 } from "@comet/admin";
 import { Info } from "@comet/admin-icons";
-import { ContentScopeIndicator, type ContentScopeInterface, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
+import { type ContentScope, ContentScopeIndicator, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
 import { type FormApi } from "final-form";
 import { useMemo } from "react";
 import { FormattedMessage } from "react-intl";
@@ -56,7 +56,7 @@ type FormValues = {
 };
 
 interface FormProps {
-    scope: ContentScopeInterface;
+    scope: ContentScope;
 }
 
 function validateUrl(value: string): React.ReactNode | undefined {

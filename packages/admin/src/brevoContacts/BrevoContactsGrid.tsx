@@ -14,7 +14,7 @@ import {
     usePersistentColumnState,
 } from "@comet/admin";
 import { Add, Block, Check, Delete, Edit } from "@comet/admin-icons";
-import { type ContentScopeInterface } from "@comet/cms-admin";
+import { type ContentScope } from "@comet/cms-admin";
 import { IconButton } from "@mui/material";
 import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import { FormattedMessage, type IntlShape, useIntl } from "react-intl";
@@ -88,7 +88,7 @@ export function BrevoContactsGrid({
     additionalAttributesFragment,
     additionalGridFields = [],
 }: {
-    scope: ContentScopeInterface;
+    scope: ContentScope;
     additionalAttributesFragment?: { name: string; fragment: DocumentNode };
     additionalGridFields?: GridColDef[];
 }): React.ReactElement {

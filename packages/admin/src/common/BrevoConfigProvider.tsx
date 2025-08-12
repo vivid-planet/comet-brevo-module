@@ -1,10 +1,10 @@
-import { type ContentScopeInterface, useContentScope } from "@comet/cms-admin";
+import { type ContentScope, useContentScope } from "@comet/cms-admin";
 import { createContext, useContext } from "react";
 
 export interface BrevoConfig {
     apiUrl: string;
     scopeParts: string[];
-    resolvePreviewUrlForScope: (scope: ContentScopeInterface) => string;
+    resolvePreviewUrlForScope: (scope: ContentScope) => string;
     allowAddingContactsWithoutDoi?: boolean;
 }
 

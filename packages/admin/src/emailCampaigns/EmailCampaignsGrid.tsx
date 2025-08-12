@@ -18,7 +18,7 @@ import {
     usePersistentColumnState,
 } from "@comet/admin";
 import { Add as AddIcon, Edit, Statistics, Visible } from "@comet/admin-icons";
-import { type BlockInterface, type ContentScopeInterface } from "@comet/cms-admin";
+import { type BlockInterface, type ContentScope } from "@comet/cms-admin";
 import { IconButton } from "@mui/material";
 import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import { isBefore } from "date-fns";
@@ -110,7 +110,7 @@ export function EmailCampaignsGrid({
     scope,
     EmailCampaignContentBlock,
 }: {
-    scope: ContentScopeInterface;
+    scope: ContentScope;
     EmailCampaignContentBlock: BlockInterface;
 }): React.ReactElement {
     const client = useApolloClient();

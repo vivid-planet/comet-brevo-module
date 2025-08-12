@@ -17,7 +17,7 @@ import {
     usePersistentColumnState,
 } from "@comet/admin";
 import { Add as AddIcon, Download, Edit } from "@comet/admin-icons";
-import { type ContentScopeInterface } from "@comet/cms-admin";
+import { type ContentScope } from "@comet/cms-admin";
 import { DialogContent, IconButton } from "@mui/material";
 import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import saveAs from "file-saver";
@@ -97,7 +97,7 @@ export function TargetGroupsGrid({
     scope,
     exportTargetGroupOptions,
 }: {
-    scope: ContentScopeInterface;
+    scope: ContentScope;
     exportTargetGroupOptions?: {
         additionalAttributesFragment: { name: string; fragment: DocumentNode };
         exportFields: { renderValue: (row: AdditionalContactAttributesType) => string; headerName: string }[];

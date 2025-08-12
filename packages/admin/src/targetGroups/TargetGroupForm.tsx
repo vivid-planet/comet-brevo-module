@@ -17,7 +17,7 @@ import {
     useStackApi,
 } from "@comet/admin";
 import { ArrowLeft } from "@comet/admin-icons";
-import { ContentScopeIndicator, type ContentScopeInterface, queryUpdatedAt, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
+import { ContentScopeIndicator, type ContentScope, queryUpdatedAt, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
 import { IconButton } from "@mui/material";
 import { type FormApi } from "final-form";
 import { FormattedMessage } from "react-intl";
@@ -43,7 +43,7 @@ export interface EditTargetGroupFinalFormValues {
 
 interface FormProps {
     id: string;
-    scope: ContentScopeInterface;
+    scope: ContentScope;
     additionalFormFields?: React.ReactNode;
     nodeFragment?: { name: string; fragment: DocumentNode };
     input2State?: (values?: EditTargetGroupFinalFormValues) => EditTargetGroupFinalFormValues;

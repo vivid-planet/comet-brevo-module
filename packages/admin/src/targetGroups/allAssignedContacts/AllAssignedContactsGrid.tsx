@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client";
 import { DataGridToolbar, type GridColDef, ToolbarTitleItem, useBufferedRowCount, useDataGridRemote, usePersistentColumnState } from "@comet/admin";
-import { type ContentScopeInterface } from "@comet/cms-admin";
+import { type ContentScope } from "@comet/cms-admin";
 import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import { FormattedMessage, useIntl } from "react-intl";
 
@@ -30,7 +30,7 @@ const AssignedContactsGridToolbar = () => {
 };
 
 interface AllAssignedContactsGridProps {
-    scope: ContentScopeInterface;
+    scope: ContentScope;
     id: string;
     brevoId?: number;
 }
