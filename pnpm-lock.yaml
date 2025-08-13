@@ -647,8 +647,8 @@ importers:
   demo/site:
     dependencies:
       '@comet/site-nextjs':
-        specifier: '7'
-        version: 7.25.7(@types/react@18.3.12)(next@14.2.25)(react-dom@18.3.1)(react@18.3.1)
+        specifier: 8.0.0
+        version: 8.0.0(next@14.2.25)(react-dom@18.3.1)(react@18.3.1)
       '@next/bundle-analyzer':
         specifier: ^12.3.4
         version: 12.3.4
@@ -714,8 +714,8 @@ importers:
         specifier: ^7.26.0
         version: 7.26.0
       '@comet/cli':
-        specifier: ^7.21.1
-        version: 7.25.1(ts-node@10.9.2)
+        specifier: 8.0.0
+        version: 8.0.0(@types/node@22.16.2)(typescript@5.9.2)
       '@comet/eslint-config':
         specifier: 8.0.0
         version: 8.0.0(eslint@9.18.0)(next@14.2.25)(prettier@3.6.2)(typescript@5.9.2)
@@ -5933,6 +5933,24 @@ packages:
       server-only: 0.0.1
       usehooks-ts: 3.1.0(react@18.3.1)
 
+  /@comet/site-nextjs@8.0.0(next@14.2.25)(react-dom@18.3.1)(react@18.3.1):
+    resolution: {integrity: sha512-sKQ/R12+Y2KkLFOywusp+0I91rpPHZ7sOZhqwuMtp162OoY2332UzTUxYpKPBnrN17etH7kfTWQ1lwWMc+LVqQ==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      next: ^14.2.0
+      react: ^18.0.0
+      react-dom: ^18.0.0
+    dependencies:
+      '@comet/site-react': 8.0.0(react@18.3.1)
+      clsx: 2.1.1
+      jose: 5.10.0
+      next: 14.2.25(@babel/core@7.26.0)(@opentelemetry/api@1.7.0)(@types/react@18.3.12)(react-dom@18.3.1)(react@18.3.1)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+      rimraf: 3.0.2
+      server-only: 0.0.1
+    dev: false
+
   /@comet/site-react@7.25.7(@types/react@18.3.12)(react-dom@18.3.1)(react@18.3.1):
     resolution: {integrity: sha512-c22kAyOki+cSUdXBxzRs/K6145VwzoWNgvhoyNP8I/OLvSCOBA/y7TXC4pHxZEY+0/FUWmNKwxuP08VVtsCXFQ==}
     engines: {node: '>=18.0.0'}
@@ -5951,6 +5969,21 @@ packages:
       scroll-into-view-if-needed: 2.2.31
       server-only: 0.0.1
       usehooks-ts: 3.1.0(react@18.3.1)
+
+  /@comet/site-react@8.0.0(react@18.3.1):
+    resolution: {integrity: sha512-xlEu6Z+ND94Y3RUUdEV5uI6Ne+iHEjl8mkXhfM/OXmPJXcQbUb2/P1VWHAMhLu3US7d8/NBG55Jm1GZGFgO1QA==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      react: ^18.0.0
+    dependencies:
+      clsx: 2.1.1
+      jose: 5.10.0
+      lodash.isequal: 4.5.0
+      react: 18.3.1
+      rimraf: 3.0.2
+      scroll-into-view-if-needed: 2.2.31
+      usehooks-ts: 3.1.1(react@18.3.1)
+    dev: false
 
   /@cspotcode/source-map-support@0.8.1:
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
@@ -22957,6 +22990,16 @@ packages:
     dependencies:
       lodash.debounce: 4.0.8
       react: 18.3.1
+
+  /usehooks-ts@3.1.1(react@18.3.1):
+    resolution: {integrity: sha512-I4diPp9Cq6ieSUH2wu+fDAVQO43xwtulo+fKEidHUwZPnYImbtkTjzIJYcDcJqxgmX31GVqNFURodvcgHcW0pA==}
+    engines: {node: '>=16.15.0'}
+    peerDependencies:
+      react: ^16.8.0  || ^17 || ^18 || ^19 || ^19.0.0-rc
+    dependencies:
+      lodash.debounce: 4.0.8
+      react: 18.3.1
+    dev: false
 
   /util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
