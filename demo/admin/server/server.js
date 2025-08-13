@@ -5,6 +5,7 @@ const helmet = require("helmet");
 
 const app = express();
 const port = process.env.APP_PORT ?? 3000;
+const { createProxyMiddleware } = require("http-proxy-middleware");
 
 app.use(compression());
 app.use(
@@ -50,6 +51,12 @@ app.use(
 app.get("*", (req, res) => {
     res.sendFile(`index.html`, { root: `${__dirname}/../build/` });
 });
+
+const proxyMiddleware = createProxyMiddleware({
+    target: process.env.API_URL_INTERNAL + "/dam",
+    changeOrigin: true,
+});
+app.use("/dam", proxyMiddleware);
 
 app.listen(port, () => {
     console.log(`Admin app listening at http://localhost:${port}`);
