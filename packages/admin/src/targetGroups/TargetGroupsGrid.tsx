@@ -22,6 +22,7 @@ import { DialogContent, IconButton } from "@mui/material";
 import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import saveAs from "file-saver";
 import { type DocumentNode } from "graphql";
+import { type ReactElement } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
 import { TargetGroupDialog } from "./TargetGroupDialog";
@@ -102,7 +103,7 @@ export function TargetGroupsGrid({
         additionalAttributesFragment: { name: string; fragment: DocumentNode };
         exportFields: { renderValue: (row: AdditionalContactAttributesType) => string; headerName: string }[];
     };
-}): React.ReactElement {
+}): ReactElement {
     const client = useApolloClient();
     const intl = useIntl();
     const dataGridProps = { ...useDataGridRemote(), ...usePersistentColumnState("TargetGroupsGrid") };

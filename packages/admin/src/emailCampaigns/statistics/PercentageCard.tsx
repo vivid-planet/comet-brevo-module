@@ -1,15 +1,16 @@
 import { Paper, Skeleton as MuiSkeleton, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import { type FC, type ReactNode } from "react";
 import { FormattedNumber } from "react-intl";
 
 interface Props {
-    title: React.ReactNode;
+    title: ReactNode;
     currentNumber?: number;
     targetNumber?: number;
     variant?: "normal" | "circle";
 }
 
-export const PercentageCard: React.FC<Props> = ({ title, currentNumber, targetNumber, variant = "normal" }) => {
+export const PercentageCard: FC<Props> = ({ title, currentNumber, targetNumber, variant = "normal" }) => {
     const percentage = currentNumber === undefined || targetNumber === undefined || targetNumber <= 0 ? null : (currentNumber / targetNumber) * 100;
     const renderSkeleton = currentNumber === undefined || targetNumber === undefined;
 

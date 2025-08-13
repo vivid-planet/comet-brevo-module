@@ -5,7 +5,7 @@ import { Upload } from "@comet/admin-icons";
 import { Box, DialogActions, DialogContent, DialogTitle } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import saveAs from "file-saver";
-import { useMemo, useRef, useState } from "react";
+import { type ReactNode, type RefObject, useMemo, useRef, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { FormattedMessage, useIntl } from "react-intl";
 
@@ -26,7 +26,7 @@ type ContactImportFromCsvForm = {
     sendDoubleOptIn: boolean;
 };
 
-export const useContactImportFromCsv = ({ scope, targetGroupId, refetchQueries }: UseContactImportProps): [CrudMoreActionsItem, React.ReactNode] => {
+export const useContactImportFromCsv = ({ scope, targetGroupId, refetchQueries }: UseContactImportProps): [CrudMoreActionsItem, ReactNode] => {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [open, setOpen] = useState(false);
     const [sendDoubleOptIn, setSendDoubleOptIn] = useState(true);
@@ -133,7 +133,7 @@ export const useContactImportFromCsv = ({ scope, targetGroupId, refetchQueries }
 };
 
 interface ComponentProps extends UseContactImportProps {
-    fileInputRef: React.RefObject<HTMLInputElement>;
+    fileInputRef: RefObject<HTMLInputElement>;
 }
 
 const ContactImportComponent = ({ scope, targetGroupId, fileInputRef, sendDoubleOptIn, refetchQueries }: ComponentProps) => {
@@ -325,9 +325,7 @@ const ContactImportComponent = ({ scope, targetGroupId, fileInputRef, sendDouble
                                             defaultMessage="{amount} contact(s) could not be imported. <link>Download this file</link> to get the failing row(s)."
                                             values={{
                                                 amount: importInformation.failed,
-                                                link: (chunks: React.ReactNode) => (
-                                                    <CsvDownloadLink onClick={saveErrorFile}>{chunks}</CsvDownloadLink>
-                                                ),
+                                                link: (chunks: ReactNode) => <CsvDownloadLink onClick={saveErrorFile}>{chunks}</CsvDownloadLink>,
                                             }}
                                         />
                                     </Alert>
@@ -342,7 +340,7 @@ const ContactImportComponent = ({ scope, targetGroupId, fileInputRef, sendDouble
                                             defaultMessage="{amount} contacts could not be imported as they are blacklisted.  <link>Download this file</link> to get the blacklisted contact(s)."
                                             values={{
                                                 amount: importInformation.blacklisted,
-                                                link: (chunks: React.ReactNode) => (
+                                                link: (chunks: ReactNode) => (
                                                     <CsvDownloadLink onClick={saveBlacklistedContactsFile}>{chunks}</CsvDownloadLink>
                                                 ),
                                             }}

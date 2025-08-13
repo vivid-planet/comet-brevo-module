@@ -2,6 +2,7 @@ import { useQuery } from "@apollo/client";
 import { Alert, Loading } from "@comet/admin";
 import { type ContentScope } from "@comet/cms-admin";
 import { Typography } from "@mui/material";
+import { type PropsWithChildren } from "react";
 import { FormattedMessage } from "react-intl";
 
 import { brevoConfigQuery } from "./SendManagerWrapper.gql";
@@ -11,7 +12,7 @@ interface SendManagerWrapperProps {
     scope: ContentScope;
 }
 
-export const SendManagerWrapper = ({ scope, children }: React.PropsWithChildren<SendManagerWrapperProps>) => {
+export const SendManagerWrapper = ({ scope, children }: PropsWithChildren<SendManagerWrapperProps>) => {
     const {
         data: brevoConfig,
         loading,

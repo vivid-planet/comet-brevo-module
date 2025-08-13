@@ -3,6 +3,7 @@ import { Button, MainContent, StackLink, Toolbar, ToolbarActions, ToolbarBackBut
 import { Add as AddIcon } from "@comet/admin-icons";
 import { ContentScopeIndicator, useContentScopeConfig } from "@comet/cms-admin";
 import { Grid } from "@mui/material";
+import { type ReactElement } from "react";
 import { FormattedMessage } from "react-intl";
 
 import { emailCampaignStatistics } from "./EmailCampaignStatistics.gql";
@@ -13,7 +14,7 @@ interface Props {
     id: string;
 }
 
-export const EmailCampaignStatistics = ({ id }: Props): React.ReactElement => {
+export const EmailCampaignStatistics = ({ id }: Props): ReactElement => {
     useContentScopeConfig({ redirectPathAfterChange: "/newsletter/email-campaigns" });
 
     const { data: campaignStatistics } = useQuery<GQLEmailCampaignStatisticsQuery, GQLEmailCampaignStatisticsQueryVariables>(

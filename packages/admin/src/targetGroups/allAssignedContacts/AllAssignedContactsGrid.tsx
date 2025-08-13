@@ -2,6 +2,7 @@ import { useQuery } from "@apollo/client";
 import { DataGridToolbar, type GridColDef, ToolbarTitleItem, useBufferedRowCount, useDataGridRemote, usePersistentColumnState } from "@comet/admin";
 import { type ContentScope } from "@comet/cms-admin";
 import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
+import { type ReactElement } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
 import { allAssignedBrevoContactsGridQuery } from "./AllAssignedContactsGrid.gql";
@@ -35,7 +36,7 @@ interface AllAssignedContactsGridProps {
     brevoId?: number;
 }
 
-export function AllAssignedContactsGrid({ id, scope, brevoId }: AllAssignedContactsGridProps): React.ReactElement {
+export function AllAssignedContactsGrid({ id, scope, brevoId }: AllAssignedContactsGridProps): ReactElement {
     const intl = useIntl();
     const dataGridAllAssignedContactsProps = { ...useDataGridRemote(), ...usePersistentColumnState("TargetGroupAssignedBrevoContactsGrid") };
 

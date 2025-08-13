@@ -17,6 +17,7 @@ import { Add, Block, Check, Delete, Edit } from "@comet/admin-icons";
 import { type ContentScope } from "@comet/cms-admin";
 import { IconButton } from "@mui/material";
 import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
+import { type ReactElement } from "react";
 import { FormattedMessage, type IntlShape, useIntl } from "react-intl";
 
 import { useContactImportFromCsv } from "../common/contactImport/useContactImportFromCsv";
@@ -91,7 +92,7 @@ export function BrevoContactsGrid({
     scope: ContentScope;
     additionalAttributesFragment?: { name: string; fragment: DocumentNode };
     additionalGridFields?: GridColDef[];
-}): React.ReactElement {
+}): ReactElement {
     const brevoContactsQuery = gql`
         query BrevoContactsGrid($offset: Int, $limit: Int, $email: String, $scope: EmailCampaignContentScopeInput!) {
             brevoContacts(offset: $offset, limit: $limit, email: $email, scope: $scope) {

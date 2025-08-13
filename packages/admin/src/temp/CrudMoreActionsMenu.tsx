@@ -20,7 +20,7 @@ import {
     type TypographyProps,
 } from "@mui/material";
 import { type Maybe } from "graphql/jsutils/Maybe";
-import { type ComponentProps, type PropsWithChildren, useState } from "react";
+import { type ComponentProps, type PropsWithChildren, type ReactNode, useState } from "react";
 import { FormattedMessage } from "react-intl";
 
 function CrudMoreActionsDivider(props: DividerProps) {
@@ -28,9 +28,9 @@ function CrudMoreActionsDivider(props: DividerProps) {
 }
 
 interface CrudMoreActionsGroupProps {
-    groupTitle: React.ReactNode;
+    groupTitle: ReactNode;
     menuListProps?: MenuListProps;
-    typographyProps?: React.ComponentProps<typeof Typography>;
+    typographyProps?: ComponentProps<typeof Typography>;
 }
 
 function CrudMoreActionsGroup({ groupTitle, children, menuListProps, typographyProps }: PropsWithChildren<CrudMoreActionsGroupProps>) {
@@ -46,8 +46,8 @@ function CrudMoreActionsGroup({ groupTitle, children, menuListProps, typographyP
 
 export interface ActionItem extends ComponentProps<typeof MenuItem> {
     type: "action";
-    label: React.ReactNode;
-    startAdornment?: React.ReactNode;
+    label: ReactNode;
+    startAdornment?: ReactNode;
 }
 
 export interface DividerItem extends ComponentProps<typeof Divider> {
@@ -58,7 +58,7 @@ export type CrudMoreActionsItem = ActionItem | DividerItem;
 
 export interface CrudMoreActionsMenuProps {
     selectionSize?: number;
-    buttonProps?: React.ComponentProps<typeof Button>;
+    buttonProps?: ComponentProps<typeof Button>;
     menuProps?: Partial<MenuProps>;
     chipProps?: Partial<ChipProps>;
     groupTypographyProps?: Partial<TypographyProps>;
@@ -89,7 +89,7 @@ export function CrudMoreActionsMenu({
 }: CrudMoreActionsMenuProps) {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
-    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => setAnchorEl(event.currentTarget);
+    const handleClick = (event: MouseEvent<HTMLButtonElement>) => setAnchorEl(event.currentTarget);
 
     const handleClose = () => setAnchorEl(null);
 

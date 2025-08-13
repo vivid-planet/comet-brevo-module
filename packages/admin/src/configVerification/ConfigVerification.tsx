@@ -1,6 +1,7 @@
 import { useQuery } from "@apollo/client";
 import { Alert, Loading, MainContent } from "@comet/admin";
 import { type ContentScope } from "@comet/cms-admin";
+import { type PropsWithChildren } from "react";
 import { FormattedMessage } from "react-intl";
 
 import { brevoConfigCheckQuery } from "./ConfigVerification.gql";
@@ -10,7 +11,7 @@ interface ConfigCheckProps {
     scope: ContentScope;
 }
 
-export function ConfigVerification({ scope, children }: React.PropsWithChildren<ConfigCheckProps>): JSX.Element {
+export function ConfigVerification({ scope, children }: PropsWithChildren<ConfigCheckProps>): JSX.Element {
     const { data, error, loading } = useQuery<GQLBrevoConfigCheckQuery, GQLBrevoConfigCheckQueryVariables>(brevoConfigCheckQuery, {
         variables: { scope },
         fetchPolicy: "cache-and-network",

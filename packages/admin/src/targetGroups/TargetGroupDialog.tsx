@@ -2,6 +2,7 @@ import { useApolloClient } from "@apollo/client";
 import { Field, FinalForm, FinalFormInput, type FinalFormSubmitEvent, useStackSwitchApi } from "@comet/admin";
 import { type ContentScope } from "@comet/cms-admin";
 import { type FormApi } from "final-form";
+import { type ReactElement } from "react";
 import { FormattedMessage } from "react-intl";
 
 import { createTargetGroupMutation } from "./TargetGroupDialog.gql";
@@ -12,7 +13,7 @@ interface TargetGroupDialogProps {
     scope: ContentScope;
 }
 
-export function TargetGroupDialog({ scope }: TargetGroupDialogProps): React.ReactElement {
+export function TargetGroupDialog({ scope }: TargetGroupDialogProps): ReactElement {
     const client = useApolloClient();
     const mode = "add";
     const stackSwitchApi = useStackSwitchApi();

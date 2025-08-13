@@ -138,7 +138,7 @@ interface AddContactsGridSelectProps {
     assignedContactsTargetGroupBrevoId?: number;
 }
 
-export function AddContactsGridSelect({ id, scope, assignedContactsTargetGroupBrevoId }: AddContactsGridSelectProps): React.ReactElement {
+export function AddContactsGridSelect({ id, scope, assignedContactsTargetGroupBrevoId }: AddContactsGridSelectProps): ReactElement {
     const intl = useIntl();
     const submit = useSubmitMutation(id);
     const theme = useTheme();
