@@ -6,28 +6,29 @@ if (process.env.TRACING_ENABLED) {
 
 import opentelemetry from "@opentelemetry/api";
 import { AppModule } from "@src/app.module";
+import { useContainer } from "class-validator";
 import { CommandFactory } from "nest-commander";
 
 import { createConfig } from "./config/config";
 
 const tracer = opentelemetry.trace.getTracer("console");
 const config = createConfig(process.env);
+const appModule = AppModule.forRoot(config);
 
 async function bootstrap() {
-    const appModule = AppModule.forRoot(config);
-
     tracer.startActiveSpan(process.argv.slice(2).join(" "), async (span) => {
         try {
-            const app = await CommandFactory.run(appModule, {
+            const app = await CommandFactory.createWithoutRunning(appModule, {
                 logger: ["error", "warn", "log"],
                 serviceErrorHandler: async (error) => {
                     console.error(error);
                     span.end();
-                    await tracing?.sdk?.shutdown();
+                    await (await tracing)?.sdk?.shutdown();
                     process.exit(1);
                 },
             });
 
+            await CommandFactory.runApplication(app);
             span.end();
             await tracing?.sdk?.shutdown();
             process.exit(0);
