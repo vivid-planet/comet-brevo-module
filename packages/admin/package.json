@@ -80,7 +80,6 @@
         "@comet/admin": "^8.0.0",
         "@comet/admin-date-time": "8.0.0",
         "@comet/admin-icons": "8.0.0",
-        "@comet/blocks-admin": "8.0.0",
         "@comet/cms-admin": "8.0.0",
         "@emotion/react": "^11.9.3",
         "@emotion/styled": "^11.9.3",

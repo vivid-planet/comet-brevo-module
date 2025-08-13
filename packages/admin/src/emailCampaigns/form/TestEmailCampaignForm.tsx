@@ -1,8 +1,7 @@
 import { gql, useApolloClient, useQuery } from "@apollo/client";
 import { Field, FinalForm, FinalFormSelect, SaveButton, Tooltip } from "@comet/admin";
 import { Info, Newsletter } from "@comet/admin-icons";
-import { AdminComponentPaper, AdminComponentSectionGroup } from "@comet/blocks-admin";
-import { useContentScope } from "@comet/cms-admin";
+import { BlockAdminComponentPaper, BlockAdminComponentSectionGroup, useContentScope } from "@comet/cms-admin";
 import { Card } from "@mui/material";
 import { FormattedMessage } from "react-intl";
 
@@ -78,8 +77,8 @@ export const TestEmailCampaignForm = ({ id, isSendable = false, isCampaignCreate
 
     return (
         <Card sx={{ mt: 4 }}>
-            <AdminComponentPaper>
-                <AdminComponentSectionGroup
+            <BlockAdminComponentPaper>
+                <BlockAdminComponentSectionGroup
                     title={
                         <FormattedMessage id="cometBrevoModule.emailCampaigns.testEmailCampaign.title" defaultMessage="Send test email campaign" />
                     }
@@ -152,8 +151,8 @@ export const TestEmailCampaignForm = ({ id, isSendable = false, isCampaignCreate
                             );
                         }}
                     </FinalForm>
-                </AdminComponentSectionGroup>
-            </AdminComponentPaper>
+                </BlockAdminComponentSectionGroup>
+            </BlockAdminComponentPaper>
         </Card>
     );
 };

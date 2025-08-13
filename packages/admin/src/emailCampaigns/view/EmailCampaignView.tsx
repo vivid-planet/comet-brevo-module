@@ -1,8 +1,15 @@
 import { useQuery } from "@apollo/client";
 import { Loading, MainContent, Toolbar, ToolbarFillSpace, ToolbarItem, ToolbarTitleItem, useStackApi } from "@comet/admin";
 import { ArrowLeft } from "@comet/admin-icons";
-import { type BlockInterface, IFrameBridgeProvider } from "@comet/blocks-admin";
-import { BlockPreview, ContentScopeIndicator, useBlockPreview, useCmsBlockContext, useContentScope } from "@comet/cms-admin";
+import {
+    type BlockInterface,
+    BlockPreview,
+    ContentScopeIndicator,
+    IFrameBridgeProvider,
+    useBlockPreview,
+    useCmsBlockContext,
+    useContentScope,
+} from "@comet/cms-admin";
 import { IconButton } from "@mui/material";
 import { FormattedMessage } from "react-intl";
 import { useRouteMatch } from "react-router";

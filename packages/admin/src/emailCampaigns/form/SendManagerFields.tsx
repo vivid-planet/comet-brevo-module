@@ -2,8 +2,7 @@ import { useApolloClient, useMutation } from "@apollo/client";
 import { Field, FinalFormSelect, SaveButton, Tooltip, useAsyncOptionsProps, useStackSwitchApi } from "@comet/admin";
 import { FinalFormDateTimePicker } from "@comet/admin-date-time";
 import { Info, Newsletter } from "@comet/admin-icons";
-import { AdminComponentPaper, AdminComponentSectionGroup } from "@comet/blocks-admin";
-import { type ContentScopeInterface } from "@comet/cms-admin";
+import { BlockAdminComponentPaper, BlockAdminComponentSectionGroup, type ContentScopeInterface } from "@comet/cms-admin";
 import { Card } from "@mui/material";
 import { useState } from "react";
 import { FormattedMessage } from "react-intl";
@@ -62,8 +61,8 @@ export const SendManagerFields = ({ isCampaignCreated, scope, id, isSendable }: 
     const now = new Date();
     return (
         <Card>
-            <AdminComponentPaper>
-                <AdminComponentSectionGroup
+            <BlockAdminComponentPaper>
+                <BlockAdminComponentSectionGroup
                     title={<FormattedMessage id="cometBrevoModule.emailCampaigns.sendManager.title" defaultMessage="Send Manager" />}
                 >
                     <Field
@@ -140,8 +139,8 @@ export const SendManagerFields = ({ isCampaignCreated, scope, id, isSendable }: 
                             }
                         }}
                     />
-                </AdminComponentSectionGroup>
-            </AdminComponentPaper>
+                </BlockAdminComponentSectionGroup>
+            </BlockAdminComponentPaper>
         </Card>
     );
 };

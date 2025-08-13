@@ -1,6 +1,5 @@
 import { Stack, StackPage, StackSwitch, StackToolbar } from "@comet/admin";
-import { type BlockInterface } from "@comet/blocks-admin";
-import { ContentScopeIndicator, useContentScope } from "@comet/cms-admin";
+import { type BlockInterface, ContentScopeIndicator, useContentScope } from "@comet/cms-admin";
 import { useIntl } from "react-intl";
 
 import { useBrevoConfig } from "../common/BrevoConfigProvider";
