@@ -166,8 +166,8 @@ export function AddContactsGridSelect({ id, scope, assignedContactsTargetGroupBr
         error: assignableContactsError,
     } = useQuery<GQLAllBrevoContactsGridQuery, GQLAllBrevoContactsGridQueryVariables>(brevoContactsQuery, {
         variables: {
-            offset: dataGridAssignableContactsProps.page * dataGridAssignableContactsProps.pageSize,
-            limit: dataGridAssignableContactsProps.pageSize,
+            offset: dataGridAssignableContactsProps.paginationModel.page * dataGridAssignableContactsProps.paginationModel.pageSize,
+            limit: dataGridAssignableContactsProps.paginationModel.pageSize,
             email: dataGridAssignableContactsProps.filterModel?.quickFilterValues
                 ? dataGridAssignableContactsProps.filterModel?.quickFilterValues[0]
                 : undefined,
@@ -183,8 +183,8 @@ export function AddContactsGridSelect({ id, scope, assignedContactsTargetGroupBr
         manuallyAssignedBrevoContactsGridQuery,
         {
             variables: {
-                offset: dataGridAssignedContactsProps.page * dataGridAssignedContactsProps.pageSize,
-                limit: dataGridAssignedContactsProps.pageSize,
+                offset: dataGridAssignedContactsProps.paginationModel.page * dataGridAssignedContactsProps.paginationModel.pageSize,
+                limit: dataGridAssignedContactsProps.paginationModel.pageSize,
                 email: dataGridAssignedContactsProps.filterModel?.quickFilterValues
                     ? dataGridAssignedContactsProps.filterModel?.quickFilterValues[0]
                     : undefined,

@@ -45,8 +45,8 @@ export function AllAssignedContactsGrid({ id, scope, brevoId }: AllAssignedConta
         error: allAssignedContactsError,
     } = useQuery<GQLBrevoContactsQuery, GQLBrevoContactsQueryVariables>(allAssignedBrevoContactsGridQuery, {
         variables: {
-            offset: dataGridAllAssignedContactsProps.page * dataGridAllAssignedContactsProps.pageSize,
-            limit: dataGridAllAssignedContactsProps.pageSize,
+            offset: dataGridAllAssignedContactsProps.paginationModel.page * dataGridAllAssignedContactsProps.paginationModel.pageSize,
+            limit: dataGridAllAssignedContactsProps.paginationModel.pageSize,
             email: dataGridAllAssignedContactsProps.filterModel?.quickFilterValues
                 ? dataGridAllAssignedContactsProps.filterModel?.quickFilterValues[0]
                 : undefined,
