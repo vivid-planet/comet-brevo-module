@@ -62,6 +62,7 @@
         "react-router-dom": "^5.3.4"
     },
     "devDependencies": {
+        "@comet/admin-generator": "8.0.0",
         "@comet/cli": "^7.21.1",
         "@comet/eslint-config": "8.0.0",
         "@emotion/babel-plugin": "^11.0.0",
