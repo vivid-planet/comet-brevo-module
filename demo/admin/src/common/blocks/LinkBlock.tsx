@@ -1,5 +1,4 @@
-import { type BlockInterface, createOneOfBlock } from "@comet/blocks-admin";
-import { ExternalLinkBlock, InternalLinkBlock } from "@comet/cms-admin";
+import { type BlockInterface, createOneOfBlock, ExternalLinkBlock, InternalLinkBlock } from "@comet/cms-admin";
 import { FormattedMessage } from "react-intl";
 
 export const LinkBlock: BlockInterface = createOneOfBlock({

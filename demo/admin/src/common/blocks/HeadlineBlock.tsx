@@ -1,6 +1,5 @@
 import { Field, FinalFormSelect } from "@comet/admin";
-import { BlockCategory, BlocksFinalForm, createCompositeBlock, createCompositeSetting } from "@comet/blocks-admin";
-import { createRichTextBlock } from "@comet/cms-admin";
+import { BlockCategory, BlocksFinalForm, createCompositeBlock, createCompositeBlockField, createRichTextBlock } from "@comet/cms-admin";
 import { MenuItem } from "@mui/material";
 import { type HeadlineBlockData } from "@src/blocks.generated";
 import { FormattedMessage } from "react-intl";
@@ -27,7 +26,7 @@ export const HeadlineBlock = createCompositeBlock({
             title: <FormattedMessage id="headlineBlock.title" defaultMessage="Headline" />,
         },
         level: {
-            block: createCompositeSetting<HeadlineBlockData["level"]>({
+            block: createCompositeBlockField<HeadlineBlockData["level"]>({
                 defaultValue: "header-one",
                 AdminComponent: ({ state, updateState }) => (
                     <BlocksFinalForm<Pick<HeadlineBlockData, "level">> onSubmit={({ level }) => updateState(level)} initialValues={{ level: state }}>

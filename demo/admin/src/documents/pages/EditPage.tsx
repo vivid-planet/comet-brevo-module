@@ -1,8 +1,9 @@
 import { gql } from "@apollo/client";
 import { Loading, MainContent, RouterPrompt, Toolbar, ToolbarActions, ToolbarFillSpace, ToolbarItem, useStackApi } from "@comet/admin";
 import { ArrowLeft, Preview } from "@comet/admin-icons";
-import { AdminComponentRoot, AdminTabLabel } from "@comet/blocks-admin";
 import {
+    BlockAdminComponentRoot,
+    BlockAdminTabLabel,
     BlockPreviewWithTabs,
     ContentScopeIndicator,
     createUsePage,
@@ -155,24 +156,24 @@ export const EditPage: React.FC<Props> = ({ id, category }) => {
                         {
                             key: "content",
                             label: (
-                                <AdminTabLabel isValid={rootBlocksApi.content.isValid}>
+                                <BlockAdminTabLabel isValid={rootBlocksApi.content.isValid}>
                                     <FormattedMessage id="generic.blocks" defaultMessage="Blocks" />
-                                </AdminTabLabel>
+                                </BlockAdminTabLabel>
                             ),
                             content: (
-                                <AdminComponentRoot
+                                <BlockAdminComponentRoot
                                     title={intl.formatMessage({ id: "pages.pages.page.edit.pageBlocks.title", defaultMessage: "Page" })}
                                 >
                                     {rootBlocksApi.content.adminUI}
-                                </AdminComponentRoot>
+                                </BlockAdminComponentRoot>
                             ),
                         },
                         {
                             key: "config",
                             label: (
-                                <AdminTabLabel isValid={rootBlocksApi.seo.isValid}>
+                                <BlockAdminTabLabel isValid={rootBlocksApi.seo.isValid}>
                                     <FormattedMessage id="pages.pages.page.edit.config" defaultMessage="Config" />{" "}
-                                </AdminTabLabel>
+                                </BlockAdminTabLabel>
                             ),
                             content: rootBlocksApi.seo.adminUI,
                         },
