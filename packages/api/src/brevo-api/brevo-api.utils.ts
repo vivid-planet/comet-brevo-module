@@ -1,4 +1,4 @@
-import { ErrorModel } from "@getbrevo/brevo";
+import { type ErrorModel } from "@getbrevo/brevo";
 import * as http from "http";
 
 export function isErrorFromBrevo(error: unknown): error is { response: http.IncomingMessage; body: ErrorModel } {

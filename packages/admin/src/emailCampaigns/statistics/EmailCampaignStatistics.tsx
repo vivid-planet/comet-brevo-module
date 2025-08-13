@@ -2,12 +2,13 @@ import { useQuery } from "@apollo/client";
 import { MainContent, StackLink, Toolbar, ToolbarActions, ToolbarBackButton, ToolbarFillSpace } from "@comet/admin";
 import { Add as AddIcon } from "@comet/admin-icons";
 import { ContentScopeIndicator, useContentScopeConfig } from "@comet/cms-admin";
+// TODO v8: remove eslint-disable-next-line
+// eslint-disable-next-line no-restricted-imports
 import { Button, Grid } from "@mui/material";
-import React from "react";
 import { FormattedMessage } from "react-intl";
 
 import { emailCampaignStatistics } from "./EmailCampaignStatistics.gql";
-import { GQLEmailCampaignStatisticsQuery, GQLEmailCampaignStatisticsQueryVariables } from "./EmailCampaignStatistics.gql.generated";
+import { type GQLEmailCampaignStatisticsQuery, type GQLEmailCampaignStatisticsQueryVariables } from "./EmailCampaignStatistics.gql.generated";
 import { PercentageCard } from "./PercentageCard";
 
 interface Props {

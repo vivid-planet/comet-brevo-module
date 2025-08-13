@@ -1,5 +1,6 @@
 {
     "name": "comet-brevo-module-demo-admin",
+    "version": "8.0.0",
     "private": true,
     "scripts": {
         "admin-generator": "rimraf 'src/*/generated' && comet-admin-generator generate crud-generator-config.ts",
@@ -8,7 +9,6 @@
         "generate-block-types:watch": "chokidar -s \"**/block-meta.json\" -c \"npm run generate-block-types\"",
         "gql:types": "graphql-codegen",
         "gql:watch": "graphql-codegen --watch",
-        "postinstall": "cd server && npm install",
         "intl:compile": "run-p intl:compile:comet intl:compile:comet-brevo-module-demo intl:compile:comet-brevo-module",
         "intl:compile:comet": "formatjs compile-folder --format simple --ast lang/comet-lang lang-compiled/comet-lang",
         "intl:compile:comet-brevo-module": "formatjs compile-folder --format simple --ast lang/comet-brevo-module-lang lang-compiled/comet-brevo-module-lang",
@@ -19,6 +19,7 @@
         "lint:generated-files-not-modified": "$npm_execpath admin-generator && git diff --exit-code HEAD --",
         "lint:prettier": "npx prettier --check './**/*.{js,json,md,yml,yaml}'",
         "lint:tsc": "tsc --project .",
+        "postinstall": "cd server && npm install",
         "serve": "cd server && npm run serve",
         "start": "npm run intl:compile && run-p gql:types generate-block-types && dotenv -c secrets -- cross-env BABEL_ENV=development webpack serve --config ./webpack.config.ts --mode development"
     },
@@ -56,13 +57,13 @@
         "react-dnd-html5-backend": "^16.0.1",
         "react-dom": "^17.0.0",
         "react-final-form": "^6.3.1",
-        "react-intl": "^5.25.1",
+        "react-intl": "^7.1.11",
         "react-router": "^5.3.4",
         "react-router-dom": "^5.3.4"
     },
     "devDependencies": {
         "@comet/cli": "^7.21.1",
-        "@comet/eslint-config": "^7.21.1",
+        "@comet/eslint-config": "8.0.0",
         "@emotion/babel-plugin": "^11.0.0",
         "@formatjs/cli": "^3.2.0",
         "@gitbeaker/node": "^35.8.1",
@@ -87,14 +88,14 @@
         "cross-env": "^7.0.3",
         "css-loader": "^6.11.0",
         "dotenv-cli": "^6.0.0",
-        "eslint": "^8.0.0",
+        "eslint": "^9.18.0",
         "html-webpack-plugin": "^5.6.3",
         "npm-run-all2": "^5.0.2",
-        "prettier": "^2.2.1",
+        "prettier": "^3.4.2",
         "rimraf": "^3.0.2",
         "style-loader": "^3.3.4",
         "ts-node": "^10.9.2",
-        "typescript": "^4.9.5",
+        "typescript": "^5.8.3",
         "webpack": "^5.0.0",
         "webpack-cli": "^4.10.0",
         "webpack-dev-server": "^4.15.2"

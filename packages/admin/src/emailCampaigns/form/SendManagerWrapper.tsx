@@ -1,12 +1,11 @@
 import { useQuery } from "@apollo/client";
 import { Alert, Loading } from "@comet/admin";
-import { ContentScopeInterface } from "@comet/cms-admin";
+import { type ContentScopeInterface } from "@comet/cms-admin";
 import { Typography } from "@mui/material";
-import * as React from "react";
 import { FormattedMessage } from "react-intl";
 
 import { brevoConfigQuery } from "./SendManagerWrapper.gql";
-import { GQLIsBrevoConfigDefinedQuery, GQLIsBrevoConfigDefinedQueryVariables } from "./SendManagerWrapper.gql.generated";
+import { type GQLIsBrevoConfigDefinedQuery, type GQLIsBrevoConfigDefinedQueryVariables } from "./SendManagerWrapper.gql.generated";
 
 interface SendManagerWrapperProps {
     scope: ContentScopeInterface;

@@ -1,5 +1,6 @@
 {
     "name": "comet-brevo-module-demo-campaign",
+    "version": "8.0.0",
     "private": true,
     "scripts": {
         "copy-schema-files": "node copy-schema-files.js",
@@ -11,7 +12,7 @@
         "gql:watch": "graphql-codegen --watch",
         "intl:extract": "formatjs extract \"src/**/*.ts*\" --ignore ./**.d.ts --out-file lang-extracted/en.json --format simple",
         "lint": "run-p gql:types generate-block-types && run-p lint:prettier lint:eslint lint:tsc",
-        "lint:eslint": "eslint --max-warnings 0 --config ./.eslintrc.cli.js --ext .ts,.tsx,.js,.jsx,.json,.md src/ package.json",
+        "lint:eslint": "eslint --max-warnings 0 --ext .ts,.tsx,.js,.jsx,.json,.md src/ package.json",
         "lint:prettier": "npx prettier --check './**/*.{js,json,md,yml,yaml}'",
         "lint:tsc": "tsc --project .",
         "next-build": "next build",
@@ -20,7 +21,7 @@
     },
     "dependencies": {
         "@comet/brevo-mail-rendering": "workspace:*",
-        "@comet/cms-site": "^7.21.1",
+        "@comet/site-nextjs": "7",
         "@faire/mjml-react": "^3.4.0",
         "@luma-team/mjml-react": "^0.2.1",
         "@next/bundle-analyzer": "^12.3.4",
@@ -39,7 +40,7 @@
         "next": "^14.2.24",
         "react": "^18.0.0",
         "react-dom": "^18.0.0",
-        "react-intl": "^5.25.1",
+        "react-intl": "^7.1.11",
         "react-is": "^17.0.2",
         "redraft": "^0.10.2",
         "sitemap": "^6.4.0",
@@ -50,7 +51,7 @@
     "devDependencies": {
         "@babel/core": "^7.26.0",
         "@comet/cli": "^7.21.1",
-        "@comet/eslint-config": "^7.21.1",
+        "@comet/eslint-config": "8.0.0",
         "@formatjs/cli": "^4.8.4",
         "@gitbeaker/node": "^35.8.1",
         "@graphql-codegen/add": "^3.2.3",
@@ -67,12 +68,12 @@
         "@types/styled-components": "^5.1.34",
         "chokidar-cli": "^2.1.0",
         "dotenv-cli": "^6.0.0",
-        "eslint": "^8.0.0",
+        "eslint": "^9.18.0",
         "npm-run-all2": "^5.0.2",
-        "prettier": "^2.0.0",
+        "prettier": "^3.4.2",
         "rimraf": "^3.0.2",
         "tsconfig-paths": "^3.15.0",
-        "typescript": "^4.9.5"
+        "typescript": "^5.8.3"
     },
     "peerDependencies": {
         "mjml": "^4.15.3"

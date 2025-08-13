@@ -1,13 +1,12 @@
-import { GridColDef, Stack, StackPage, StackSwitch, StackToolbar } from "@comet/admin";
+import { type GridColDef, Stack, StackPage, StackSwitch, StackToolbar } from "@comet/admin";
 import { ContentScopeIndicator, useContentScope } from "@comet/cms-admin";
-import { DocumentNode } from "graphql";
-import * as React from "react";
+import { type DocumentNode } from "graphql";
 import { useIntl } from "react-intl";
 
 import { useBrevoConfig } from "../common/BrevoConfigProvider";
 import { ConfigVerification } from "../configVerification/ConfigVerification";
 import { BrevoContactsGrid } from "./BrevoContactsGrid";
-import { BrevoContactForm, EditBrevoContactFormValues } from "./form/BrevoContactForm";
+import { BrevoContactForm, type EditBrevoContactFormValues } from "./form/BrevoContactForm";
 
 interface CreateContactsPageOptions {
     additionalAttributesFragment?: { name: string; fragment: DocumentNode };
@@ -27,10 +26,13 @@ function createBrevoContactsPage({
         const { scopeParts } = useBrevoConfig();
         const { scope: completeScope } = useContentScope();
 
-        const scope = scopeParts.reduce((acc, scopePart) => {
-            acc[scopePart] = completeScope[scopePart];
-            return acc;
-        }, {} as { [key: string]: unknown });
+        const scope = scopeParts.reduce(
+            (acc, scopePart) => {
+                acc[scopePart] = completeScope[scopePart];
+                return acc;
+            },
+            {} as { [key: string]: unknown },
+        );
 
         return (
             <ConfigVerification scope={scope}>

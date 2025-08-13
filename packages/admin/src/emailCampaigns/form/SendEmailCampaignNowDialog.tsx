@@ -1,6 +1,7 @@
 import { CancelButton, SaveButton } from "@comet/admin";
+// TODO v8: remove eslint-disable-next-line
+// eslint-disable-next-line no-restricted-imports
 import { Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
-import React from "react";
 import { FormattedMessage } from "react-intl";
 
 interface SendEmailCampaignNowDialogProps {

@@ -5,10 +5,14 @@ import { AdminComponentRoot } from "@comet/blocks-admin";
 import { ContentScopeIndicator, createUsePage, PageName } from "@comet/cms-admin";
 import { IconButton } from "@mui/material";
 import { LinkBlock } from "@src/common/blocks/LinkBlock";
-import * as React from "react";
 import { useIntl } from "react-intl";
 
-import { GQLEditLinkQuery, GQLEditLinkQueryVariables, GQLUpdateLinkMutation, GQLUpdateLinkMutationVariables } from "./EditLink.generated";
+import {
+    type GQLEditLinkQuery,
+    type GQLEditLinkQueryVariables,
+    type GQLUpdateLinkMutation,
+    type GQLUpdateLinkMutationVariables,
+} from "./EditLink.generated";
 
 const usePage = createUsePage({
     rootBlocks: {

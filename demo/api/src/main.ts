@@ -1,11 +1,12 @@
 if (process.env.TRACING_ENABLED) {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     require("./tracing");
 }
 
 import { ExceptionInterceptor, ValidationExceptionFactory } from "@comet/cms-api";
 import { Logger, ValidationPipe } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
-import { NestExpressApplication } from "@nestjs/platform-express";
+import { type NestExpressApplication } from "@nestjs/platform-express";
 import { AppModule } from "@src/app.module";
 import { useContainer } from "class-validator";
 import compression from "compression";

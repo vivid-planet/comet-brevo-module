@@ -18,7 +18,10 @@ import { Page } from "./entities/page.entity";
 @Resolver(() => Page)
 @RequiredPermission(["pageTree"])
 export class PagesResolver {
-    constructor(@InjectRepository(Page) private readonly repository: EntityRepository<Page>, private readonly pageTreeService: PageTreeService) {}
+    constructor(
+        @InjectRepository(Page) private readonly repository: EntityRepository<Page>,
+        private readonly pageTreeService: PageTreeService,
+    ) {}
 
     @Query(() => Page, { nullable: true })
     @AffectedEntity(Page)

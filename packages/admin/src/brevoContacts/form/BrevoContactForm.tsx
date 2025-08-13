@@ -1,10 +1,10 @@
-import { DocumentNode, gql, useApolloClient, useQuery } from "@apollo/client";
+import { type DocumentNode, gql, useApolloClient, useQuery } from "@apollo/client";
 import {
     Alert,
     CheckboxField,
     FinalForm,
     FinalFormSaveButton,
-    FinalFormSubmitEvent,
+    type FinalFormSubmitEvent,
     FormSection,
     Loading,
     MainContent,
@@ -19,11 +19,11 @@ import {
     useStackApi,
 } from "@comet/admin";
 import { ArrowLeft } from "@comet/admin-icons";
-import { ContentScopeIndicator, ContentScopeInterface, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
+import { ContentScopeIndicator, type ContentScopeInterface, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
 import { Card, IconButton } from "@mui/material";
 import { Box } from "@mui/system";
-import { FormApi } from "final-form";
-import React from "react";
+import { type FormApi } from "final-form";
+import { useMemo } from "react";
 import { FormattedMessage } from "react-intl";
 
 import { useBrevoConfig } from "../../common/BrevoConfigProvider";
@@ -34,14 +34,14 @@ import {
     updateBrevoContactMutation,
 } from "./BrevoContactForm.gql";
 import {
-    GQLBrevoContactFormCheckForChangesQuery,
-    GQLBrevoContactFormCheckForChangesQueryVariables,
-    GQLBrevoContactFormQuery,
-    GQLBrevoContactFormQueryVariables,
-    GQLCreateBrevoContactMutation,
-    GQLCreateBrevoContactMutationVariables,
-    GQLUpdateBrevoContactMutation,
-    GQLUpdateBrevoContactMutationVariables,
+    type GQLBrevoContactFormCheckForChangesQuery,
+    type GQLBrevoContactFormCheckForChangesQueryVariables,
+    type GQLBrevoContactFormQuery,
+    type GQLBrevoContactFormQueryVariables,
+    type GQLCreateBrevoContactMutation,
+    type GQLCreateBrevoContactMutationVariables,
+    type GQLUpdateBrevoContactMutation,
+    type GQLUpdateBrevoContactMutationVariables,
 } from "./BrevoContactForm.gql.generated";
 
 export type EditBrevoContactFormValues = {
@@ -81,7 +81,7 @@ export function BrevoContactForm({ id, scope, input2State, additionalFormFields,
         id ? { variables: { id, scope } } : { skip: true },
     );
 
-    const initialValues = React.useMemo<Partial<EditBrevoContactFormValuesWithAttributes>>(() => {
+    const initialValues = useMemo<Partial<EditBrevoContactFormValuesWithAttributes>>(() => {
         let baseInitialValues = {
             email: "",
             redirectionUrl: "",

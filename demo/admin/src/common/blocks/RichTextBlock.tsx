@@ -1,7 +1,6 @@
 import { CopyToClipboardButton } from "@comet/admin";
 import { createRichTextBlock } from "@comet/cms-admin";
 import { Box, FormLabel, List, ListItem, ListItemText, Paper } from "@mui/material";
-import React from "react";
 import { FormattedMessage } from "react-intl";
 
 import { LinkBlock } from "./LinkBlock";

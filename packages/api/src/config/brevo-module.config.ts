@@ -4,9 +4,9 @@ import { type EmailCampaignInterface } from "src/email-campaign/entities/email-c
 import { type TargetGroupInterface } from "src/target-group/entity/target-group-entity.factory";
 import { type BrevoContactAttributesInterface, type EmailCampaignScopeInterface } from "src/types";
 
-import { BlacklistedContactsInterface } from "../blacklisted-contacts/entity/blacklisted-contacts.entity.factory";
-import { BrevoEmailImportLogInterface } from "../brevo-email-import-log/entity/brevo-email-import-log.entity.factory";
-import { BrevoContactFilterAttributesInterface } from "../types";
+import { type BlacklistedContactsInterface } from "../blacklisted-contacts/entity/blacklisted-contacts.entity.factory";
+import { type BrevoEmailImportLogInterface } from "../brevo-email-import-log/entity/brevo-email-import-log.entity.factory";
+import { type BrevoContactFilterAttributesInterface } from "../types";
 
 export interface BrevoModuleConfig {
     brevo: {

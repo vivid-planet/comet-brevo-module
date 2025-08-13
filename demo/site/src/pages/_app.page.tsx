@@ -1,11 +1,10 @@
-import { SitePreviewProvider } from "@comet/cms-site";
-import { ContentScope, ContentScopeProvider } from "@src/common/contentScope/ContentScope";
+import { SitePreviewProvider } from "@comet/site-nextjs";
+import { type ContentScope, ContentScopeProvider } from "@src/common/contentScope/ContentScope";
 import { defaultLanguage, domain } from "@src/config";
-import App, { AppProps, NextWebVitalsMetric } from "next/app";
+import App, { type AppProps, type NextWebVitalsMetric } from "next/app";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import Script from "next/script";
-import * as React from "react";
 import { IntlProvider } from "react-intl";
 import { createGlobalStyle } from "styled-components";
 

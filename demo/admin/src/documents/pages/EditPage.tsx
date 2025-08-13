@@ -12,16 +12,22 @@ import {
     useCmsBlockContext,
     useSiteConfig,
 } from "@comet/cms-admin";
+// TODO v8: remove eslint-disable-next-line
+// eslint-disable-next-line no-restricted-imports
 import { Button, IconButton, Stack } from "@mui/material";
 import { useContentScope } from "@src/common/ContentScopeProvider";
-import { GQLPageTreeNodeCategory } from "@src/graphql.generated";
-import * as React from "react";
+import { type GQLPageTreeNodeCategory } from "@src/graphql.generated";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useRouteMatch } from "react-router";
 
 import { PageContentBlock } from "./blocks/PageContentBlock";
 import { SeoBlock } from "./blocks/SeoBlock";
-import { GQLEditPageQuery, GQLEditPageQueryVariables, GQLUpdatePageMutation, GQLUpdatePageMutationVariables } from "./EditPage.generated";
+import {
+    type GQLEditPageQuery,
+    type GQLEditPageQueryVariables,
+    type GQLUpdatePageMutation,
+    type GQLUpdatePageMutationVariables,
+} from "./EditPage.generated";
 
 interface Props {
     id: string;

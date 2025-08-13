@@ -1,17 +1,16 @@
-import { SitePreviewParams } from "@comet/cms-site";
-import { ContentScope } from "@src/common/contentScope/ContentScope";
+import { type SitePreviewParams } from "@comet/site-nextjs";
+import { type ContentScope } from "@src/common/contentScope/ContentScope";
 import { defaultLanguage, domain as configuredDomain, domain } from "@src/config";
 import { Page as PageTypePage, pageQuery as PageTypePageQuery } from "@src/documents/pages/Page";
-import { GQLPage, GQLPageTreeNodeScopeInput } from "@src/graphql.generated";
+import { type GQLPage, type GQLPageTreeNodeScopeInput } from "@src/graphql.generated";
 import { getLayout } from "@src/layout/Layout";
 import NotFound404 from "@src/pages/404.page";
 import { createGraphQLClient } from "@src/util/createGraphQLClient";
 import { gql } from "graphql-request";
-import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
-import { ParsedUrlQuery } from "querystring";
-import * as React from "react";
+import { type GetStaticPaths, type GetStaticProps, type InferGetStaticPropsType } from "next";
+import { type ParsedUrlQuery } from "querystring";
 
-import { GQLPagesQuery, GQLPagesQueryVariables, GQLPageTypeQuery, GQLPageTypeQueryVariables } from "./[[...path]].page.generated";
+import { type GQLPagesQuery, type GQLPagesQueryVariables, type GQLPageTypeQuery, type GQLPageTypeQueryVariables } from "./[[...path]].page.generated";
 
 interface PageProps {
     documentType: string;

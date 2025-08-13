@@ -1,11 +1,10 @@
 import { useQuery } from "@apollo/client";
 import { Alert, Loading, MainContent } from "@comet/admin";
-import { ContentScopeInterface } from "@comet/cms-admin";
-import * as React from "react";
+import { type ContentScopeInterface } from "@comet/cms-admin";
 import { FormattedMessage } from "react-intl";
 
 import { brevoConfigCheckQuery } from "./ConfigVerification.gql";
-import { GQLBrevoConfigCheckQuery, GQLBrevoConfigCheckQueryVariables } from "./ConfigVerification.gql.generated";
+import { type GQLBrevoConfigCheckQuery, type GQLBrevoConfigCheckQueryVariables } from "./ConfigVerification.gql.generated";
 
 interface ConfigCheckProps {
     scope: ContentScopeInterface;

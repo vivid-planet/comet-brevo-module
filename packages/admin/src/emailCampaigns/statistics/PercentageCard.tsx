@@ -1,6 +1,5 @@
 import { Paper, Skeleton as MuiSkeleton, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import * as React from "react";
 import { FormattedNumber } from "react-intl";
 
 interface Props {
