@@ -490,8 +490,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/mail-rendering
       '@comet/site-nextjs':
-        specifier: '7'
-        version: 7.25.7(@types/react@18.3.12)(next@14.2.25)(react-dom@18.3.1)(react@18.3.1)
+        specifier: 8.0.0
+        version: 8.0.0(next@14.2.25)(react-dom@18.3.1)(react@18.3.1)
       '@faire/mjml-react':
         specifier: ^3.4.0
         version: 3.4.0(@types/react@18.3.12)(mjml@4.15.3)(react-dom@18.3.1)(react@18.3.1)
@@ -572,8 +572,8 @@ importers:
         specifier: ^7.26.0
         version: 7.26.0
       '@comet/cli':
-        specifier: ^7.21.1
-        version: 7.25.1(ts-node@10.9.2)
+        specifier: 8.0.0
+        version: 8.0.0(@types/node@22.16.2)(typescript@5.9.2)
       '@comet/eslint-config':
         specifier: 8.0.0
         version: 8.0.0(eslint@9.18.0)(next@14.2.25)(prettier@3.6.2)(typescript@5.9.2)
@@ -5494,17 +5494,6 @@ packages:
       - zod
     dev: true
 
-  /@comet/cli@7.25.1(ts-node@10.9.2):
-    resolution: {integrity: sha512-/VypsiSlCZFqyP24fVyiLgesBgiKZrSy08EOO3mRwpytwvbgjH6SGELT28UiNIGwANbirTLrdJxPrk/E0+zXeg==}
-    hasBin: true
-    peerDependencies:
-      ts-node: ^10.9.1
-    dependencies:
-      commander: 9.5.0
-      prettier: 2.8.8
-      ts-node: 10.9.2(@types/node@22.16.2)(typescript@5.9.2)
-    dev: true
-
   /@comet/cli@8.0.0(@types/node@22.16.2)(typescript@5.9.2):
     resolution: {integrity: sha512-FWtncq+dPPJuTQKZf6rB7so98aetpOpX0VPA6MMJURvV27S3qUHfy5N404UFo3vQ30ubKGKM9J84Fzw3/MEzBA==}
     engines: {node: '>=22.0.0'}
@@ -5911,29 +5900,6 @@ packages:
       prettier: 3.6.2
     dev: true
 
-  /@comet/site-nextjs@7.25.7(@types/react@18.3.12)(next@14.2.25)(react-dom@18.3.1)(react@18.3.1):
-    resolution: {integrity: sha512-K7DsgXiMcCGkM91H0yj9dNTbd2rB8E/dNNj7tCq51Q3cj+tLVlphWTdxQ0MEOYClpAFBSrd2UFSDZcKKQdHe8A==}
-    engines: {node: '>=18.0.0'}
-    peerDependencies:
-      '@types/react': ^18.0.0
-      next: ^14.2.0
-      react: ^18.0.0
-      react-dom: ^18.0.0
-    dependencies:
-      '@comet/site-react': 7.25.7(@types/react@18.3.12)(react-dom@18.3.1)(react@18.3.1)
-      '@types/react': 18.3.12
-      clsx: 2.1.1
-      jose: 5.10.0
-      lodash.isequal: 4.5.0
-      next: 14.2.25(@babel/core@7.26.0)(@opentelemetry/api@1.7.0)(@types/react@18.3.12)(react-dom@18.3.1)(react@18.3.1)
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-      rimraf: 3.0.2
-      scroll-into-view-if-needed: 2.2.31
-      server-only: 0.0.1
-      usehooks-ts: 3.1.0(react@18.3.1)
-    dev: false
-
   /@comet/site-nextjs@8.0.0(next@14.2.25)(react-dom@18.3.1)(react@18.3.1):
     resolution: {integrity: sha512-sKQ/R12+Y2KkLFOywusp+0I91rpPHZ7sOZhqwuMtp162OoY2332UzTUxYpKPBnrN17etH7kfTWQ1lwWMc+LVqQ==}
     engines: {node: '>=18.0.0'}
@@ -5950,26 +5916,6 @@ packages:
       react-dom: 18.3.1(react@18.3.1)
       rimraf: 3.0.2
       server-only: 0.0.1
-
-  /@comet/site-react@7.25.7(@types/react@18.3.12)(react-dom@18.3.1)(react@18.3.1):
-    resolution: {integrity: sha512-c22kAyOki+cSUdXBxzRs/K6145VwzoWNgvhoyNP8I/OLvSCOBA/y7TXC4pHxZEY+0/FUWmNKwxuP08VVtsCXFQ==}
-    engines: {node: '>=18.0.0'}
-    peerDependencies:
-      '@types/react': ^18.0.0
-      react: ^18.0.0
-      react-dom: ^18.0.0
-    dependencies:
-      '@types/react': 18.3.12
-      clsx: 2.1.1
-      jose: 5.10.0
-      lodash.isequal: 4.5.0
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-      rimraf: 3.0.2
-      scroll-into-view-if-needed: 2.2.31
-      server-only: 0.0.1
-      usehooks-ts: 3.1.0(react@18.3.1)
-    dev: false
 
   /@comet/site-react@8.0.0(react@18.3.1):
     resolution: {integrity: sha512-xlEu6Z+ND94Y3RUUdEV5uI6Ne+iHEjl8mkXhfM/OXmPJXcQbUb2/P1VWHAMhLu3US7d8/NBG55Jm1GZGFgO1QA==}
@@ -22981,16 +22927,6 @@ packages:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
     dependencies:
       react: 18.3.1
-
-  /usehooks-ts@3.1.0(react@18.3.1):
-    resolution: {integrity: sha512-bBIa7yUyPhE1BCc0GmR96VU/15l/9gP1Ch5mYdLcFBaFGQsdmXkvjV0TtOqW1yUd6VjIwDunm+flSciCQXujiw==}
-    engines: {node: '>=16.15.0'}
-    peerDependencies:
-      react: ^16.8.0  || ^17 || ^18
-    dependencies:
-      lodash.debounce: 4.0.8
-      react: 18.3.1
-    dev: false
 
   /usehooks-ts@3.1.1(react@18.3.1):
     resolution: {integrity: sha512-I4diPp9Cq6ieSUH2wu+fDAVQO43xwtulo+fKEidHUwZPnYImbtkTjzIJYcDcJqxgmX31GVqNFURodvcgHcW0pA==}

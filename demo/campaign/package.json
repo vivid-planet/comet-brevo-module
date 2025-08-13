@@ -21,7 +21,7 @@
     },
     "dependencies": {
         "@comet/brevo-mail-rendering": "workspace:*",
-        "@comet/site-nextjs": "7",
+        "@comet/site-nextjs": "8.0.0",
         "@faire/mjml-react": "^3.4.0",
         "@luma-team/mjml-react": "^0.2.1",
         "@next/bundle-analyzer": "^12.3.4",
@@ -50,7 +50,7 @@
     },
     "devDependencies": {
         "@babel/core": "^7.26.0",
-        "@comet/cli": "^7.21.1",
+        "@comet/cli": "8.0.0",
         "@comet/eslint-config": "8.0.0",
         "@formatjs/cli": "^4.8.4",
         "@gitbeaker/node": "^35.8.1",
