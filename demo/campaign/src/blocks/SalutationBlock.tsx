@@ -1,8 +1,7 @@
-import { PropsWithData } from "@comet/site-nextjs";
+import { type PropsWithData } from "@comet/site-nextjs";
 import { MjmlColumn, MjmlText } from "@luma-team/mjml-react";
-import { RichTextBlockData } from "@src/blocks.generated";
+import { type RichTextBlockData } from "@src/blocks.generated";
 import { IndentedSectionGroup } from "@src/components/IndentedSectionGroup";
-import * as React from "react";
 import { FormattedMessage } from "react-intl";
 
 export const SalutationBlock: React.FC<PropsWithData<RichTextBlockData>> = ({ data }) => {

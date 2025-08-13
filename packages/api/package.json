@@ -4,7 +4,7 @@
     "repository": {
         "type": "git",
         "url": "https://github.com/vivid-planet/comet-brevo-module/",
-        "directory": "packages/api/"
+        "directory": "packages/api"
     },
     "license": "BSD-2-Clause",
     "main": "lib/index.js",
@@ -37,9 +37,9 @@
         "node-fetch": "^2.7.0"
     },
     "devDependencies": {
-        "@comet/blocks-api": "^7.21.1",
+        "@comet/blocks-api": "7.25.7",
         "@comet/cms-api": "^7.21.1",
-        "@comet/eslint-config": "^7.21.1",
+        "@comet/eslint-config": "8.0.0",
         "@kubernetes/client-node": "^0.18.0",
         "@mikro-orm/cli": "^5.9.8",
         "@mikro-orm/core": "^5.9.8",
@@ -60,7 +60,7 @@
         "chokidar-cli": "^2.1.0",
         "class-transformer": "^0.5.1",
         "class-validator": "^0.13.1",
-        "eslint": "^8.0.0",
+        "eslint": "^9.18.0",
         "express": "^4.21.2",
         "graphql": "^15.9.0",
         "graphql-scalars": "1.24.1",
@@ -68,7 +68,7 @@
         "jest-junit": "^15.0.0",
         "lodash.isequal": "^4.5.0",
         "nestjs-console": "^8.0.0",
-        "prettier": "^2.0.0",
+        "prettier": "^3.4.2",
         "reflect-metadata": "^0.1.13",
         "rimraf": "^3.0.2",
         "rxjs": "^7.0.0",

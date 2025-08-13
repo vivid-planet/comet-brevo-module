@@ -1,7 +1,6 @@
 import { Stack, StackPage, StackSwitch, StackToolbar } from "@comet/admin";
-import { BlockInterface } from "@comet/blocks-admin";
+import { type BlockInterface } from "@comet/blocks-admin";
 import { ContentScopeIndicator, useContentScope } from "@comet/cms-admin";
-import * as React from "react";
 import { useIntl } from "react-intl";
 
 import { useBrevoConfig } from "../common/BrevoConfigProvider";
@@ -21,10 +20,13 @@ export function createEmailCampaignsPage({ EmailCampaignContentBlock }: CreateEm
         const { scope: completeScope } = useContentScope();
         const intl = useIntl();
 
-        const scope = scopeParts.reduce((acc, scopePart) => {
-            acc[scopePart] = completeScope[scopePart];
-            return acc;
-        }, {} as { [key: string]: unknown });
+        const scope = scopeParts.reduce(
+            (acc, scopePart) => {
+                acc[scopePart] = completeScope[scopePart];
+                return acc;
+            },
+            {} as { [key: string]: unknown },
+        );
 
         return (
             <ConfigVerification scope={scope}>

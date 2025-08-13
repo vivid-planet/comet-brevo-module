@@ -1,13 +1,13 @@
 import { calculateInheritAspectRatio, generateImageUrl } from "@comet/site-nextjs";
 import { MjmlImage, MjmlStyle } from "@luma-team/mjml-react";
-import { PixelImageBlockData } from "@src/blocks.generated";
+import { type PixelImageBlockData } from "@src/blocks.generated";
 import { css } from "@src/util/stylesHelper";
 import { theme } from "@src/util/theme";
-import * as React from "react";
+import { type ComponentProps } from "react";
 
 import { getDamAllowedImageWidth } from "../helpers/imageBlockHelpers";
 
-interface Props extends React.ComponentProps<typeof MjmlImage> {
+interface Props extends ComponentProps<typeof MjmlImage> {
     data: PixelImageBlockData;
     desktopRenderWidth: number;
 }

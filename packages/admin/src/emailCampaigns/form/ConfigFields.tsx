@@ -1,5 +1,4 @@
 import { Field, FinalFormInput } from "@comet/admin";
-import * as React from "react";
 import { FormattedMessage } from "react-intl";
 
 export const ConfigFields = () => {

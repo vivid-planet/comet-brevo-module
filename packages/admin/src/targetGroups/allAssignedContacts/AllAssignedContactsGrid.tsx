@@ -1,23 +1,22 @@
 import { useQuery } from "@apollo/client";
 import {
     DataGridToolbar,
-    GridColDef,
+    type GridColDef,
     ToolbarItem,
     ToolbarTitleItem,
     useBufferedRowCount,
     useDataGridRemote,
     usePersistentColumnState,
 } from "@comet/admin";
-import { ContentScopeInterface } from "@comet/cms-admin";
+import { type ContentScopeInterface } from "@comet/cms-admin";
 import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
-import * as React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
 import { allAssignedBrevoContactsGridQuery } from "./AllAssignedContactsGrid.gql";
 import {
-    GQLBrevoContactsQuery,
-    GQLBrevoContactsQueryVariables,
-    GQLTargetGroupBrevoContactsListFragment,
+    type GQLBrevoContactsQuery,
+    type GQLBrevoContactsQueryVariables,
+    type GQLTargetGroupBrevoContactsListFragment,
 } from "./AllAssignedContactsGrid.gql.generated";
 
 const AssignedContactsGridToolbar = () => {

@@ -1,4 +1,0 @@
-{
-    "extends": "@comet/eslint-config/react",
-    "ignorePatterns": ["schema.json", "src/fragmentTypes.json", "src/**/*.generated.ts"]
-}

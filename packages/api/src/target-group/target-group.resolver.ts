@@ -112,9 +112,8 @@ export function createTargetGroupsResolver({
             @Args("input", { type: () => AddBrevoContactsInput }) input: AddBrevoContactsInput,
         ): Promise<boolean> {
             const targetGroup = await this.repository.findOneOrFail(id);
-            const assignedContactsTargetGroupBrevoId = await this.targetGroupsService.createIfNotExistsManuallyAssignedContactsTargetGroup(
-                targetGroup,
-            );
+            const assignedContactsTargetGroupBrevoId =
+                await this.targetGroupsService.createIfNotExistsManuallyAssignedContactsTargetGroup(targetGroup);
 
             return this.brevoApiContactsService.updateMultipleContacts(
                 input.brevoContactIds.map((brevoContactId) => ({

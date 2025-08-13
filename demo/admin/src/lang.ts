@@ -1,4 +1,4 @@
-import { ResolvedIntlConfig } from "react-intl";
+import { type ResolvedIntlConfig } from "react-intl";
 
 import project_messages_de from "../lang-compiled/comet-brevo-module-demo-lang/de.json";
 import project_messages_en from "../lang-compiled/comet-brevo-module-demo-lang/en.json";

@@ -1,9 +1,8 @@
 import { Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import * as React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
-import { GQLSendingState } from "../graphql.generated";
+import { type GQLSendingState } from "../graphql.generated";
 
 interface Props {
     sendingState?: GQLSendingState;

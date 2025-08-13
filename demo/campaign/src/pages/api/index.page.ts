@@ -1,7 +1,7 @@
 import { generateMjmlMailContent } from "@src/components/RenderedMail";
 import { getMessages } from "@src/lang";
 import mjml2html from "mjml";
-import { NextApiRequest, NextApiResponse } from "next";
+import { type NextApiRequest, type NextApiResponse } from "next";
 import { z } from "zod";
 
 const requestQueryValidationSchema = z.object({

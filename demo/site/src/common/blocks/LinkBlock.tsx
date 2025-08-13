@@ -1,6 +1,5 @@
-import { ExternalLinkBlock, InternalLinkBlock, PropsWithData, withPreview } from "@comet/site-nextjs";
-import { ExternalLinkBlockData, InternalLinkBlockData, LinkBlockData } from "@src/blocks.generated";
-import * as React from "react";
+import { ExternalLinkBlock, InternalLinkBlock, type PropsWithData, withPreview } from "@comet/site-nextjs";
+import { type ExternalLinkBlockData, type InternalLinkBlockData, type LinkBlockData } from "@src/blocks.generated";
 
 interface LinkBlockProps extends PropsWithData<LinkBlockData> {
     children: React.ReactElement;

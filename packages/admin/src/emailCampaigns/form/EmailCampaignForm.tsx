@@ -16,16 +16,16 @@ import { ArrowLeft } from "@comet/admin-icons";
 import {
     AdminComponentRoot,
     AdminTabLabel,
-    BlockInterface,
+    type BlockInterface,
     BlocksFinalForm,
-    BlockState,
+    type BlockState,
     createFinalFormBlock,
     parallelAsyncEvery,
 } from "@comet/blocks-admin";
 import {
     BlockPreviewWithTabs,
     ContentScopeIndicator,
-    ContentScopeInterface,
+    type ContentScopeInterface,
     queryUpdatedAt,
     resolveHasSaveConflict,
     useBlockPreview,
@@ -36,22 +36,22 @@ import {
 } from "@comet/cms-admin";
 import { IconButton } from "@mui/material";
 import { isBefore } from "date-fns";
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import { FormattedMessage } from "react-intl";
 import { useRouteMatch } from "react-router";
 
 import { useBrevoConfig } from "../../common/BrevoConfigProvider";
-import { GQLEmailCampaignInput } from "../../graphql.generated";
+import { type GQLEmailCampaignInput } from "../../graphql.generated";
 import { ConfigFields } from "./ConfigFields";
 import { createEmailCampaignMutation, emailCampaignFormQuery, updateEmailCampaignMutation } from "./EmailCampaignForm.gql";
 import {
-    GQLCreateEmailCampaignMutation,
-    GQLCreateEmailCampaignMutationVariables,
-    GQLEmailCampaignFormFragment,
-    GQLEmailCampaignFormQuery,
-    GQLEmailCampaignFormQueryVariables,
-    GQLUpdateEmailCampaignMutation,
-    GQLUpdateEmailCampaignMutationVariables,
+    type GQLCreateEmailCampaignMutation,
+    type GQLCreateEmailCampaignMutationVariables,
+    type GQLEmailCampaignFormFragment,
+    type GQLEmailCampaignFormQuery,
+    type GQLEmailCampaignFormQueryVariables,
+    type GQLUpdateEmailCampaignMutation,
+    type GQLUpdateEmailCampaignMutationVariables,
 } from "./EmailCampaignForm.gql.generated";
 import { SendManagerFields } from "./SendManagerFields";
 import { SendManagerWrapper } from "./SendManagerWrapper";
@@ -111,7 +111,7 @@ export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope }: Form
         state2Output: (state) => ({
             ...state,
             content: EmailCampaignContentBlock.state2Output(state.content),
-            scheduledAt: state.brevoTargetGroups.length > 0 ? state.scheduledAt ?? null : null,
+            scheduledAt: state.brevoTargetGroups.length > 0 ? (state.scheduledAt ?? null) : null,
             sendingState: undefined,
             brevoTargetGroups: state.brevoTargetGroups.map((brevoTargetGroup) => brevoTargetGroup.id),
         }),

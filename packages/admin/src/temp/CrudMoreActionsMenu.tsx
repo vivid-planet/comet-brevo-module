@@ -1,26 +1,26 @@
 // temporary copy from https://github.com/vivid-planet/comet/pull/2115/files
 // remove as soon as it's available in COMET
 
+import { Button } from "@comet/admin";
 import { MoreVertical } from "@comet/admin-icons";
+// TODO v8: remove eslint-disable-next-line
 import {
-    Button,
     Chip,
-    ChipProps,
+    type ChipProps,
     Divider,
-    DividerProps,
+    type DividerProps,
     ListItemIcon,
     ListItemText,
     Menu,
     MenuItem,
     MenuList,
-    MenuListProps,
-    MenuProps,
+    type MenuListProps,
+    type MenuProps,
     Typography,
-    TypographyProps,
+    type TypographyProps,
 } from "@mui/material";
-import { Maybe } from "graphql/jsutils/Maybe";
-import * as React from "react";
-import { PropsWithChildren } from "react";
+import { type Maybe } from "graphql/jsutils/Maybe";
+import { type ComponentProps, type PropsWithChildren, useState } from "react";
 import { FormattedMessage } from "react-intl";
 
 function CrudMoreActionsDivider(props: DividerProps) {
@@ -44,13 +44,13 @@ function CrudMoreActionsGroup({ groupTitle, children, menuListProps, typographyP
     );
 }
 
-export interface ActionItem extends React.ComponentProps<typeof MenuItem> {
+export interface ActionItem extends ComponentProps<typeof MenuItem> {
     type: "action";
     label: React.ReactNode;
     startAdornment?: React.ReactNode;
 }
 
-export interface DividerItem extends React.ComponentProps<typeof Divider> {
+export interface DividerItem extends ComponentProps<typeof Divider> {
     type: "divider";
 }
 
@@ -87,7 +87,7 @@ export function CrudMoreActionsMenu({
     groupTypographyProps,
     selectionSize,
 }: CrudMoreActionsMenuProps) {
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => setAnchorEl(event.currentTarget);
 
@@ -96,7 +96,7 @@ export function CrudMoreActionsMenu({
     return (
         <>
             <Button
-                variant="text"
+                variant="textDark"
                 color="inherit"
                 endIcon={<MoreVertical />}
                 sx={{ mx: 2 }}

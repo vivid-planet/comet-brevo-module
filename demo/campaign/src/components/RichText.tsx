@@ -1,10 +1,9 @@
-import { PropsWithData } from "@comet/site-nextjs";
-import { RichTextBlockData } from "@src/blocks.generated";
-import { RawDraftContentState } from "draft-js";
-import * as React from "react";
-import redraft, { Renderers, TextBlockRenderFn } from "redraft";
+import { type PropsWithData } from "@comet/site-nextjs";
+import { type RichTextBlockData } from "@src/blocks.generated";
+import { type RawDraftContentState } from "draft-js";
+import redraft, { type Renderers, type TextBlockRenderFn } from "redraft";
 
-import { Typography, TypographyProps } from "./Typography";
+import { Typography, type TypographyProps } from "./Typography";
 
 function createTextBlockRenderFn(props: TypographyProps): TextBlockRenderFn {
     return (children, { keys }) =>

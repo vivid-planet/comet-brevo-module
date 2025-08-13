@@ -1,6 +1,5 @@
-import { PropsWithData, withPreview } from "@comet/site-nextjs";
-import { LinkListBlockData } from "@src/blocks.generated";
-import * as React from "react";
+import { type PropsWithData, withPreview } from "@comet/site-nextjs";
+import { type LinkListBlockData } from "@src/blocks.generated";
 
 import { TextLinkBlock } from "./TextLinkBlock";
 

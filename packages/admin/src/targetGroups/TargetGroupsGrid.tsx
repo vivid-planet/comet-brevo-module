@@ -2,7 +2,7 @@ import { gql, useApolloClient, useQuery } from "@apollo/client";
 import {
     CrudContextMenu,
     DataGridToolbar,
-    GridColDef,
+    type GridColDef,
     GridFilterButton,
     MainContent,
     muiGridFilterToGql,
@@ -18,26 +18,27 @@ import {
     usePersistentColumnState,
 } from "@comet/admin";
 import { Add as AddIcon, Download, Edit } from "@comet/admin-icons";
-import { ContentScopeInterface } from "@comet/cms-admin";
+import { type ContentScopeInterface } from "@comet/cms-admin";
+// TODO v8: remove eslint-disable-next-line
+// eslint-disable-next-line no-restricted-imports
 import { Button, IconButton } from "@mui/material";
 import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import saveAs from "file-saver";
-import { DocumentNode } from "graphql";
-import * as React from "react";
+import { type DocumentNode } from "graphql";
 import { FormattedMessage, useIntl } from "react-intl";
 
 import { TargetGroupDialog } from "./TargetGroupDialog";
 import {
-    GQLCreateTargetGroupMutation,
-    GQLCreateTargetGroupMutationVariables,
-    GQLDeleteTargetGroupMutation,
-    GQLDeleteTargetGroupMutationVariables,
-    GQLTargetGroupContactItemFragment,
-    GQLTargetGroupContactsQuery,
-    GQLTargetGroupContactsQueryVariables,
-    GQLTargetGroupsGridQuery,
-    GQLTargetGroupsGridQueryVariables,
-    GQLTargetGroupsListFragment,
+    type GQLCreateTargetGroupMutation,
+    type GQLCreateTargetGroupMutationVariables,
+    type GQLDeleteTargetGroupMutation,
+    type GQLDeleteTargetGroupMutationVariables,
+    type GQLTargetGroupContactItemFragment,
+    type GQLTargetGroupContactsQuery,
+    type GQLTargetGroupContactsQueryVariables,
+    type GQLTargetGroupsGridQuery,
+    type GQLTargetGroupsGridQueryVariables,
+    type GQLTargetGroupsListFragment,
 } from "./TargetGroupsGrid.generated";
 
 export type AdditionalContactAttributesType = Record<string, unknown>;

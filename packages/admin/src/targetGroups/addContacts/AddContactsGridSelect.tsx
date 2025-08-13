@@ -4,7 +4,7 @@ import {
     DataGridToolbar,
     Field,
     FinalForm,
-    GridColDef,
+    type GridColDef,
     ToolbarActions,
     ToolbarFillSpace,
     ToolbarItem,
@@ -14,16 +14,18 @@ import {
     usePersistentColumnState,
 } from "@comet/admin";
 import { Add, Close, Remove, Save } from "@comet/admin-icons";
-import { ContentScopeInterface } from "@comet/cms-admin";
+import { type ContentScopeInterface } from "@comet/cms-admin";
+// TODO v8: remove eslint-disable-next-line
+// eslint-disable-next-line no-restricted-imports
 import { Button, Dialog, DialogActions, DialogTitle, IconButton, useTheme } from "@mui/material";
 import { Box } from "@mui/system";
 import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
-import * as React from "react";
+import { useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { MemoryRouter } from "react-router";
 
 import { useContactImportFromCsv } from "../../common/contactImport/useContactImportFromCsv";
-import { GQLEmailCampaignContentScopeInput } from "../../graphql.generated";
+import { type GQLEmailCampaignContentScopeInput } from "../../graphql.generated";
 import { CrudMoreActionsMenu } from "../../temp/CrudMoreActionsMenu";
 import { targetGroupFormNamedOperations } from "../TargetGroupForm";
 import {
@@ -33,15 +35,15 @@ import {
     removeBrevoContactFromTargetGroupMutation,
 } from "./AddContactsGridSelect.gql";
 import {
-    GQLAddBrevoContactsToTargetGroupMutation,
-    GQLAddBrevoContactsToTargetGroupMutationVariables,
-    GQLAllBrevoContactsGridQuery,
-    GQLAllBrevoContactsGridQueryVariables,
-    GQLManuallyAssignedBrevoContactsGridQuery,
-    GQLManuallyAssignedBrevoContactsGridQueryVariables,
-    GQLRemoveBrevoContactFromTargetGroupMutation,
-    GQLRemoveBrevoContactFromTargetGroupMutationVariables,
-    GQLTargetGroupBrevoContactsListFragment,
+    type GQLAddBrevoContactsToTargetGroupMutation,
+    type GQLAddBrevoContactsToTargetGroupMutationVariables,
+    type GQLAllBrevoContactsGridQuery,
+    type GQLAllBrevoContactsGridQueryVariables,
+    type GQLManuallyAssignedBrevoContactsGridQuery,
+    type GQLManuallyAssignedBrevoContactsGridQueryVariables,
+    type GQLRemoveBrevoContactFromTargetGroupMutation,
+    type GQLRemoveBrevoContactFromTargetGroupMutationVariables,
+    type GQLTargetGroupBrevoContactsListFragment,
     namedOperations,
 } from "./AddContactsGridSelect.gql.generated";
 
@@ -148,7 +150,7 @@ export function AddContactsGridSelect({ id, scope, assignedContactsTargetGroupBr
     const dataGridAssignedContactsProps = { ...useDataGridRemote(), ...usePersistentColumnState("TargetGroupAssignedBrevoContactsGrid") };
     const dataGridAssignableContactsProps = { ...useDataGridRemote(), ...usePersistentColumnState("TargetGroupAssignableBrevoContactsGrid") };
 
-    const [isDialogOpen, setIsDialogOpen] = React.useState<boolean>(false);
+    const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
     const [removeContacts, { loading: removeLoading }] = useMutation<
         GQLRemoveBrevoContactFromTargetGroupMutation,
