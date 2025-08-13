@@ -15,10 +15,13 @@ import {
     SitesConfigProvider,
 } from "@comet/cms-admin";
 import { css, Global } from "@emotion/react";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
 import { type ContentScope, ContentScopeProvider } from "@src/common/ContentScopeProvider";
 import { MasterRoutes } from "@src/common/MasterMenu";
 import { getMessages } from "@src/lang";
 import { theme } from "@src/theme";
+import { enUS } from "date-fns/locale";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { FormattedMessage, IntlProvider } from "react-intl";
@@ -76,56 +79,68 @@ export function App() {
                 >
                     <IntlProvider locale="en" defaultLocale="en" messages={getMessages()}>
                         <LocaleProvider resolveLocaleForScope={(scope: ContentScope) => scope.domain}>
-                            <MuiThemeProvider theme={theme}>
-                                <ErrorDialogHandler />
-                                <CurrentUserProvider>
-                                    <DndProvider backend={HTML5Backend}>
-                                        <SnackbarProvider>
-                                            <BrevoConfigProvider
-                                                value={{
-                                                    scopeParts: ["domain", "language"],
-                                                    apiUrl: config.apiUrl,
-                                                    resolvePreviewUrlForScope: (scope: ContentScope) => {
-                                                        return `${config.campaignUrl}/block-preview/${scope.domain}/${scope.language}`;
-                                                    },
-                                                    allowAddingContactsWithoutDoi: config.allowAddingContactsWithoutDoi,
-                                                }}
-                                            >
-                                                <CmsBlockContextProvider
-                                                    damConfig={{
+                            <LocalizationProvider
+                                dateAdapter={AdapterDateFns}
+                                /*
+                                 * TODO: If the application uses internationalization or another language than enUS,
+                                 * the locale must be adapted to the correct one from date-fns/locale
+                                 */
+                                adapterLocale={enUS}
+                            >
+                                <MuiThemeProvider theme={theme}>
+                                    <ErrorDialogHandler />
+                                    <CurrentUserProvider>
+                                        <DndProvider backend={HTML5Backend}>
+                                            <SnackbarProvider>
+                                                <BrevoConfigProvider
+                                                    value={{
+                                                        scopeParts: ["domain", "language"],
                                                         apiUrl: config.apiUrl,
-                                                        apiClient,
-                                                        maxFileSize: config.dam.uploadsMaxFileSize,
-                                                        maxSrcResolution: config.imgproxy.maxSrcResolution,
-                                                        allowedImageAspectRatios: config.dam.allowedImageAspectRatios,
+                                                        resolvePreviewUrlForScope: (scope: ContentScope) => {
+                                                            return `${config.campaignUrl}/block-preview/${scope.domain}/${scope.language}`;
+                                                        },
+                                                        allowAddingContactsWithoutDoi: config.allowAddingContactsWithoutDoi,
                                                     }}
-                                                    pageTreeCategories={categories}
-                                                    pageTreeDocumentTypes={pageTreeDocumentTypes}
                                                 >
-                                                    <RouterBrowserRouter>
-                                                        <GlobalStyle />
-                                                        <ContentScopeProvider>
-                                                            {({ match }) => (
-                                                                <Switch>
-                                                                    <Route
-                                                                        path={`${match.path}/preview`}
-                                                                        render={(props) => <SitePreview {...props} />}
-                                                                    />
-                                                                    <Route>
-                                                                        <MasterLayout headerComponent={MasterHeader} menuComponent={AppMasterMenu}>
-                                                                            <MasterRoutes />
-                                                                        </MasterLayout>
-                                                                    </Route>
-                                                                </Switch>
-                                                            )}
-                                                        </ContentScopeProvider>
-                                                    </RouterBrowserRouter>
-                                                </CmsBlockContextProvider>
-                                            </BrevoConfigProvider>
-                                        </SnackbarProvider>
-                                    </DndProvider>
-                                </CurrentUserProvider>
-                            </MuiThemeProvider>
+                                                    <CmsBlockContextProvider
+                                                        damConfig={{
+                                                            apiUrl: config.apiUrl,
+                                                            apiClient,
+                                                            maxFileSize: config.dam.uploadsMaxFileSize,
+                                                            maxSrcResolution: config.imgproxy.maxSrcResolution,
+                                                            allowedImageAspectRatios: config.dam.allowedImageAspectRatios,
+                                                        }}
+                                                        pageTreeCategories={categories}
+                                                        pageTreeDocumentTypes={pageTreeDocumentTypes}
+                                                    >
+                                                        <RouterBrowserRouter>
+                                                            <GlobalStyle />
+                                                            <ContentScopeProvider>
+                                                                {({ match }) => (
+                                                                    <Switch>
+                                                                        <Route
+                                                                            path={`${match.path}/preview`}
+                                                                            render={(props) => <SitePreview {...props} />}
+                                                                        />
+                                                                        <Route>
+                                                                            <MasterLayout
+                                                                                headerComponent={MasterHeader}
+                                                                                menuComponent={AppMasterMenu}
+                                                                            >
+                                                                                <MasterRoutes />
+                                                                            </MasterLayout>
+                                                                        </Route>
+                                                                    </Switch>
+                                                                )}
+                                                            </ContentScopeProvider>
+                                                        </RouterBrowserRouter>
+                                                    </CmsBlockContextProvider>
+                                                </BrevoConfigProvider>
+                                            </SnackbarProvider>
+                                        </DndProvider>
+                                    </CurrentUserProvider>
+                                </MuiThemeProvider>
+                            </LocalizationProvider>
                         </LocaleProvider>
                     </IntlProvider>
                 </SitesConfigProvider>
