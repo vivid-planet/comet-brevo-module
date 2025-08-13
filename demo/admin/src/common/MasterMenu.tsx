@@ -89,7 +89,6 @@ const getMasterMenuData = ({ brevoContactConfig }: { brevoContactConfig: BrevoCo
                 render: () => (
                     <PagesPage
                         path="/pages/pagetree/main-navigation"
-                        allCategories={pageTreeCategories}
                         documentTypes={pageTreeDocumentTypes}
                         category="MainNavigation"
                         renderContentScopeIndicator={(scope) => <ContentScopeIndicator scope={scope} />}

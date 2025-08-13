@@ -9,8 +9,8 @@ import {
     createUsePage,
     openSitePreviewWindow,
     PageName,
+    useBlockContext,
     useBlockPreview,
-    useCmsBlockContext,
     useSiteConfig,
 } from "@comet/cms-admin";
 import { Button, IconButton, Stack } from "@mui/material";
@@ -83,7 +83,7 @@ export const EditPage: React.FC<Props> = ({ id, category }) => {
     const siteConfig = useSiteConfig({ scope });
     const previewApi = useBlockPreview();
 
-    const blockContext = useCmsBlockContext();
+    const blockContext = useBlockContext();
 
     let previewState = undefined;
 
