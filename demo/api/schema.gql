@@ -63,6 +63,17 @@ type CurrentUserPermission {
   contentScopes: [JSONObject!]!
 }
 
+type CurrentUser {
+  id: String!
+  name: String!
+  email: String!
+  permissions: [CurrentUserPermission!]!
+  impersonated: Boolean
+  authenticatedUser: UserPermissionsUser
+  permissionsForScope(scope: JSONObject!): [String!]!
+  allowedContentScopes: [ContentScopeWithLabel!]!
+}
+
 type Dependency {
   rootId: String!
   rootGraphqlObjectType: String!
@@ -645,6 +656,7 @@ input BrevoContactFilterAttributesInput {
 }
 
 type Query {
+  currentUser: CurrentUser!
   userPermissionsUserById(id: String!): UserPermissionsUser!
   userPermissionsUsers(offset: Int! = 0, limit: Int! = 25, search: String, filter: UserPermissionsUserFilter, sort: [UserPermissionsUserSort!]): UserPermissionPaginatedUserList!
   userPermissionsPermissionList(userId: String!): [UserPermission!]!
@@ -945,6 +957,7 @@ enum TargetGroupSortField {
 }
 
 type Mutation {
+  currentUserSignOut: String!
   userPermissionsCreatePermission(userId: String!, input: UserPermissionInput!): UserPermission!
   userPermissionsUpdatePermission(id: String!, input: UserPermissionInput!): UserPermission!
   userPermissionsDeletePermission(id: ID!): Boolean!

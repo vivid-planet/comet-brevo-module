@@ -14,7 +14,7 @@ export function createGraphQLClient(options: Partial<GraphQLClientOptions> = {})
     const { includeInvisibleBlocks, includeInvisiblePages, previewDamUrls } = { ...defaultOptions, ...options };
 
     const headers: Record<string, string> = {
-        authorization: `Basic ${Buffer.from(`vivid:${process.env.API_PASSWORD}`).toString("base64")}`,
+        authorization: `Basic ${Buffer.from(`system-user:${process.env.API_PASSWORD}`).toString("base64")}`,
     };
 
     const includeInvisibleBlocksHeaderEntries: string[] = [];
