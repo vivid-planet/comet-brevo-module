@@ -7,12 +7,13 @@ import {
     DamModule,
     DependenciesModule,
     FileUploadsModule,
+    ImgproxyModule,
     KubernetesModule,
     PageTreeModule,
     RedirectsModule,
     UserPermissionsModule,
 } from "@comet/cms-api";
-import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo";
+import { ApolloDriver, ApolloDriverConfig, ValidationError } from "@nestjs/apollo";
 import { DynamicModule, Module } from "@nestjs/common";
 import { ModuleRef } from "@nestjs/core";
 import { Enhancer, GraphQLModule } from "@nestjs/graphql";
@@ -24,7 +25,6 @@ import { PagesModule } from "@src/documents/pages/pages.module";
 import { PageTreeNodeScope } from "@src/page-tree/dto/page-tree-node-scope";
 import { PageTreeNode } from "@src/page-tree/entities/page-tree-node.entity";
 import { FileUploadDummyModule } from "@src/workaround-remove-in-future/file-upload/file-upload-dummy.module";
-import { ValidationError } from "apollo-server-express";
 import { Request } from "express";
 
 import { AccessControlService } from "./auth/access-control.service";
@@ -61,12 +61,13 @@ export class AppModule {
                     imports: [BlocksModule],
                     useFactory: (moduleRef: ModuleRef) => ({
                         debug: config.debug,
-                        playground: config.debug,
+                        graphiql: config.debug ? { url: "/api/graphql" } : undefined,
+                        playground: false,
                         autoSchemaFile: "schema.gql",
                         formatError: (error) => {
                             // Disable GraphQL field suggestions in production
                             if (process.env.NODE_ENV !== "development") {
-                                if (error instanceof ValidationError) {
+                                if (error.extensions?.code === "GRAPHQL_VALIDATION_FAILED") {
                                     return new ValidationError("Invalid request.");
                                 }
                             }
@@ -119,20 +120,19 @@ export class AppModule {
                 RedirectsModule.register(),
                 BlobStorageModule.register({
                     backend: config.blob.storage,
+                    cacheDirectory: `${config.blob.storageDirectoryPrefix}-cache`,
                 }),
                 DamModule.register({
                     File: DamFile,
                     Folder: DamFolder,
                     damConfig: {
-                        apiUrl: config.apiUrl,
                         secret: config.dam.secret,
                         allowedImageSizes: config.dam.allowedImageSizes,
                         allowedAspectRatios: config.dam.allowedImageAspectRatios,
                         filesDirectory: `${config.blob.storageDirectoryPrefix}-files`,
-                        cacheDirectory: `${config.blob.storageDirectoryPrefix}-cache`,
                         maxFileSize: config.dam.uploadsMaxFileSize,
+                        maxSrcResolution: config.dam.maxSrcResolution,
                     },
-                    imgproxyConfig: config.imgproxy,
                 }),
                 StatusModule,
                 MenusModule,
@@ -191,6 +191,7 @@ export class AppModule {
                 BrevoContactSubscribeModule,
                 BrevoTransactionalMailsModule,
                 FileUploadDummyModule,
+                ImgproxyModule.register(config.imgproxy),
             ],
         };
     }

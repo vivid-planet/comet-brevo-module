@@ -1,11 +1,11 @@
-import { DocumentNode, gql, useApolloClient, useQuery } from "@apollo/client";
+import { type DocumentNode, gql, useApolloClient, useQuery } from "@apollo/client";
 import {
     Field,
     FieldSet,
     FinalForm,
     FinalFormInput,
     FinalFormSaveButton,
-    FinalFormSubmitEvent,
+    type FinalFormSubmitEvent,
     Loading,
     MainContent,
     Toolbar,
@@ -17,22 +17,22 @@ import {
     useStackApi,
 } from "@comet/admin";
 import { ArrowLeft } from "@comet/admin-icons";
-import { ContentScopeIndicator, ContentScopeInterface, queryUpdatedAt, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
+import { type ContentScope, ContentScopeIndicator, queryUpdatedAt, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
 import { IconButton } from "@mui/material";
-import { FormApi } from "final-form";
-import React from "react";
+import { type FormApi } from "final-form";
 import { FormattedMessage } from "react-intl";
 
 export { namedOperations as targetGroupFormNamedOperations } from "./TargetGroupForm.gql.generated";
+import { type ReactElement, type ReactNode, useMemo } from "react";
 
 import { AddContactsGridSelect } from "./addContacts/AddContactsGridSelect";
 import { AllAssignedContactsGrid } from "./allAssignedContacts/AllAssignedContactsGrid";
 import { targetGroupFormQuery, updateTargetGroupMutation } from "./TargetGroupForm.gql";
 import {
-    GQLTargetGroupFormQuery,
-    GQLTargetGroupFormQueryVariables,
-    GQLUpdateTargetGroupMutation,
-    GQLUpdateTargetGroupMutationVariables,
+    type GQLTargetGroupFormQuery,
+    type GQLTargetGroupFormQueryVariables,
+    type GQLUpdateTargetGroupMutation,
+    type GQLUpdateTargetGroupMutationVariables,
 } from "./TargetGroupForm.gql.generated";
 
 export interface EditTargetGroupFinalFormValues {
@@ -42,13 +42,13 @@ export interface EditTargetGroupFinalFormValues {
 
 interface FormProps {
     id: string;
-    scope: ContentScopeInterface;
-    additionalFormFields?: React.ReactNode;
+    scope: ContentScope;
+    additionalFormFields?: ReactNode;
     nodeFragment?: { name: string; fragment: DocumentNode };
     input2State?: (values?: EditTargetGroupFinalFormValues) => EditTargetGroupFinalFormValues;
 }
 
-export function TargetGroupForm({ id, scope, additionalFormFields, input2State, nodeFragment }: FormProps): React.ReactElement {
+export function TargetGroupForm({ id, scope, additionalFormFields, input2State, nodeFragment }: FormProps): ReactElement {
     const stackApi = useStackApi();
     const client = useApolloClient();
     const mode = "edit";
@@ -69,7 +69,7 @@ export function TargetGroupForm({ id, scope, additionalFormFields, input2State, 
         { variables: { id } },
     );
 
-    const initialValues = React.useMemo<Partial<EditTargetGroupFinalFormValues>>(() => {
+    const initialValues = useMemo<Partial<EditTargetGroupFinalFormValues>>(() => {
         let additionalInitialValues = {};
 
         if (input2State) {

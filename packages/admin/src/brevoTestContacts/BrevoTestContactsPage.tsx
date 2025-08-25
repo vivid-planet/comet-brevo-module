@@ -1,20 +1,20 @@
-import { GridColDef, Stack, StackPage, StackSwitch, StackToolbar } from "@comet/admin";
+import { type GridColDef, Stack, StackPage, StackSwitch, StackToolbar } from "@comet/admin";
 import { ContentScopeIndicator, useContentScope } from "@comet/cms-admin";
-import { DocumentNode } from "graphql";
-import * as React from "react";
+import { type DocumentNode } from "graphql";
+import { type ReactNode } from "react";
 import { useIntl } from "react-intl";
 
 import { useBrevoConfig } from "../common/BrevoConfigProvider";
 import { ConfigVerification } from "../configVerification/ConfigVerification";
 import { BrevoTestContactsGrid } from "./BrevoTestContactsGrid";
-import { BrevoTestContactForm, EditBrevoContactFormValues } from "./form/BrevoTestContactForm";
+import { BrevoTestContactForm, type EditBrevoContactFormValues } from "./form/BrevoTestContactForm";
 
 interface CreateContactsPageOptions {
     /** @deprecated Pass via BrevoConfigProvider instead */
     scopeParts?: string[];
     additionalAttributesFragment?: { name: string; fragment: DocumentNode };
     additionalGridFields?: GridColDef[];
-    additionalFormFields?: React.ReactNode;
+    additionalFormFields?: ReactNode;
     input2State?: (values?: EditBrevoContactFormValues) => EditBrevoContactFormValues;
 }
 
@@ -31,10 +31,13 @@ function createBrevoTestContactsPage({
         const scopeParts = passedScopeParts ?? brevoConfig.scopeParts;
         const { scope: completeScope } = useContentScope();
 
-        const scope = scopeParts.reduce((acc, scopePart) => {
-            acc[scopePart] = completeScope[scopePart];
-            return acc;
-        }, {} as { [key: string]: unknown });
+        const scope = scopeParts.reduce(
+            (acc, scopePart) => {
+                acc[scopePart] = completeScope[scopePart];
+                return acc;
+            },
+            {} as { [key: string]: unknown },
+        );
 
         return (
             <ConfigVerification scope={scope}>

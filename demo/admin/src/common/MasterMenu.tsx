@@ -7,24 +7,24 @@ import {
     createTargetGroupsPage,
 } from "@comet/brevo-admin";
 import {
-    AllCategories,
+    type AllCategories,
     ContentScopeIndicator,
     createRedirectsPage,
     DamPage,
-    DocumentInterface,
+    type DocumentInterface,
     MasterMenu,
-    MasterMenuData,
+    type MasterMenuData,
     MasterMenuRoutes,
     PagesPage,
     PublisherPage,
 } from "@comet/cms-admin";
-import { BrevoContactConfig, getBrevoContactConfig } from "@src/common/brevoModuleConfig/brevoContactsPageAttributesConfig";
+import { type BrevoContactConfig, getBrevoContactConfig } from "@src/common/brevoModuleConfig/brevoContactsPageAttributesConfig";
 import { additionalFormConfig } from "@src/common/brevoModuleConfig/targetGroupFormConfig";
 import { DashboardPage } from "@src/dashboard/DashboardPage";
 import { Link } from "@src/documents/links/Link";
 import { Page } from "@src/documents/pages/Page";
 import { EmailCampaignContentBlock } from "@src/emailCampaigns/blocks/EmailCampaignContentBlock";
-import React from "react";
+import { useMemo } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
 export const pageTreeCategories: AllCategories = [
@@ -39,7 +39,7 @@ export const pageTreeDocumentTypes: Record<string, DocumentInterface<any, any>> 
     Page,
     Link,
 };
-const RedirectsPage = createRedirectsPage({ scopeParts: ["domain"] });
+const RedirectsPage = createRedirectsPage();
 
 const getMasterMenuData = ({ brevoContactConfig }: { brevoContactConfig: BrevoContactConfig }): MasterMenuData => {
     const BrevoContactsPage = createBrevoContactsPage({
@@ -89,7 +89,6 @@ const getMasterMenuData = ({ brevoContactConfig }: { brevoContactConfig: BrevoCo
                 render: () => (
                     <PagesPage
                         path="/pages/pagetree/main-navigation"
-                        allCategories={pageTreeCategories}
                         documentTypes={pageTreeDocumentTypes}
                         category="MainNavigation"
                         renderContentScopeIndicator={(scope) => <ContentScopeIndicator scope={scope} />}
@@ -189,7 +188,7 @@ const getMasterMenuData = ({ brevoContactConfig }: { brevoContactConfig: BrevoCo
 export const AppMasterMenu = () => {
     const intl = useIntl();
 
-    const masterMenuDataForScope = React.useMemo(() => getMasterMenuData({ brevoContactConfig: getBrevoContactConfig(intl) }), [intl]);
+    const masterMenuDataForScope = useMemo(() => getMasterMenuData({ brevoContactConfig: getBrevoContactConfig(intl) }), [intl]);
 
     return <MasterMenu menu={masterMenuDataForScope} />;
 };
@@ -197,7 +196,7 @@ export const AppMasterMenu = () => {
 export const MasterRoutes = () => {
     const intl = useIntl();
 
-    const masterMenuDataForScope = React.useMemo(() => getMasterMenuData({ brevoContactConfig: getBrevoContactConfig(intl) }), [intl]);
+    const masterMenuDataForScope = useMemo(() => getMasterMenuData({ brevoContactConfig: getBrevoContactConfig(intl) }), [intl]);
 
     return <MasterMenuRoutes menu={masterMenuDataForScope} />;
 };

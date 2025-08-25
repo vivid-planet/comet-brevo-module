@@ -2,24 +2,23 @@ import { useApolloClient, useMutation } from "@apollo/client";
 import { Field, FinalFormSelect, SaveButton, Tooltip, useAsyncOptionsProps, useStackSwitchApi } from "@comet/admin";
 import { FinalFormDateTimePicker } from "@comet/admin-date-time";
 import { Info, Newsletter } from "@comet/admin-icons";
-import { AdminComponentPaper, AdminComponentSectionGroup } from "@comet/blocks-admin";
-import { ContentScopeInterface } from "@comet/cms-admin";
+import { BlockAdminComponentPaper, BlockAdminComponentSectionGroup, type ContentScope } from "@comet/cms-admin";
 import { Card } from "@mui/material";
-import * as React from "react";
+import { useState } from "react";
 import { FormattedMessage } from "react-intl";
 
 import { SendEmailCampaignNowDialog } from "./SendEmailCampaignNowDialog";
 import { sendEmailCampaignNowMutation, targetGroupsSelectQuery } from "./SendManagerFields.gql";
 import {
-    GQLSendEmailCampaignNowMutation,
-    GQLSendEmailCampaignNowMutationVariables,
-    GQLTargetGroupSelectFragment,
-    GQLTargetGroupsSelectQuery,
-    GQLTargetGroupsSelectQueryVariables,
+    type GQLSendEmailCampaignNowMutation,
+    type GQLSendEmailCampaignNowMutationVariables,
+    type GQLTargetGroupSelectFragment,
+    type GQLTargetGroupsSelectQuery,
+    type GQLTargetGroupsSelectQueryVariables,
 } from "./SendManagerFields.gql.generated";
 
 interface SendManagerFieldsProps {
-    scope: ContentScopeInterface;
+    scope: ContentScope;
     id?: string;
     isSendable: boolean;
     isCampaignCreated?: boolean;
@@ -42,7 +41,7 @@ export const SendManagerFields = ({ isCampaignCreated, scope, id, isSendable }: 
     const stackSwitchApi = useStackSwitchApi();
     const apolloClient = useApolloClient();
 
-    const [isSendEmailCampaignNowDialogOpen, setIsSendEmailCampaignNowDialogOpen] = React.useState(false);
+    const [isSendEmailCampaignNowDialogOpen, setIsSendEmailCampaignNowDialogOpen] = useState(false);
 
     const selectAsyncMultipleProps = useAsyncOptionsProps(async () => {
         return (
@@ -62,8 +61,8 @@ export const SendManagerFields = ({ isCampaignCreated, scope, id, isSendable }: 
     const now = new Date();
     return (
         <Card>
-            <AdminComponentPaper>
-                <AdminComponentSectionGroup
+            <BlockAdminComponentPaper>
+                <BlockAdminComponentSectionGroup
                     title={<FormattedMessage id="cometBrevoModule.emailCampaigns.sendManager.title" defaultMessage="Send Manager" />}
                 >
                     <Field
@@ -140,8 +139,8 @@ export const SendManagerFields = ({ isCampaignCreated, scope, id, isSendable }: 
                             }
                         }}
                     />
-                </AdminComponentSectionGroup>
-            </AdminComponentPaper>
+                </BlockAdminComponentSectionGroup>
+            </BlockAdminComponentPaper>
         </Card>
     );
 };

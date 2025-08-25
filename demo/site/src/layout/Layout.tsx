@@ -1,8 +1,9 @@
-import { gql, GraphQLClient } from "graphql-request";
-import * as React from "react";
+import "@comet/site-nextjs/css";
+
+import { gql, type GraphQLClient } from "graphql-request";
 
 import { Header, headerFragment } from "./header/Header";
-import { GQLLayoutQuery, GQLLayoutQueryVariables } from "./Layout.generated";
+import { type GQLLayoutQuery, type GQLLayoutQueryVariables } from "./Layout.generated";
 
 function Layout({ children, header }: React.PropsWithChildren<GQLLayoutQuery>): JSX.Element {
     return (

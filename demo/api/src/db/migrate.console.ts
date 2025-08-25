@@ -1,13 +1,17 @@
 import { MikroORM } from "@mikro-orm/core";
-import { Injectable, Logger } from "@nestjs/common";
-import { Command, Console } from "nestjs-console";
+import { Logger } from "@nestjs/common";
+import { Command, CommandRunner } from "nest-commander";
 
-@Injectable()
-@Console()
-export class MigrateConsole {
+@Command({
+    name: "migrate",
+    description: "Runs all migrations",
+})
+export class MigrateConsole extends CommandRunner {
     private readonly logger = new Logger(MigrateConsole.name);
 
-    constructor(private readonly orm: MikroORM) {}
+    constructor(private readonly orm: MikroORM) {
+        super();
+    }
 
     private async sleep(s: number): Promise<unknown> {
         return new Promise((resolve) => {
@@ -15,11 +19,7 @@ export class MigrateConsole {
         });
     }
 
-    @Command({
-        command: "migrate",
-        description: "Runs all migrations",
-    })
-    async migrate(): Promise<void> {
+    async run(): Promise<void> {
         this.logger.log("Running migrations...");
         const em = this.orm.em.fork();
 

@@ -1,5 +1,5 @@
-import { createBlocksBlock } from "@comet/blocks-admin";
 import { NewsletterImageBlock } from "@comet/brevo-admin";
+import { createBlocksBlock } from "@comet/cms-admin";
 import { RichTextBlock } from "@src/common/blocks/RichTextBlock";
 
 import { DividerBlock } from "./DividerBlock";

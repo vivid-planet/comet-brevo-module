@@ -14,18 +14,16 @@ import {
 } from "@comet/admin";
 import { ArrowLeft } from "@comet/admin-icons";
 import {
-    AdminComponentRoot,
-    AdminTabLabel,
-    BlockInterface,
+    BlockAdminComponentRoot,
+    BlockAdminTabLabel,
+    type BlockInterface,
+    BlockPreviewWithTabs,
     BlocksFinalForm,
-    BlockState,
+    type BlockState,
+    type ContentScope,
+    ContentScopeIndicator,
     createFinalFormBlock,
     parallelAsyncEvery,
-} from "@comet/blocks-admin";
-import {
-    BlockPreviewWithTabs,
-    ContentScopeIndicator,
-    ContentScopeInterface,
     queryUpdatedAt,
     resolveHasSaveConflict,
     useBlockPreview,
@@ -36,22 +34,22 @@ import {
 } from "@comet/cms-admin";
 import { IconButton } from "@mui/material";
 import { isBefore } from "date-fns";
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import { FormattedMessage } from "react-intl";
 import { useRouteMatch } from "react-router";
 
 import { useBrevoConfig } from "../../common/BrevoConfigProvider";
-import { GQLEmailCampaignInput } from "../../graphql.generated";
+import { type GQLEmailCampaignInput } from "../../graphql.generated";
 import { ConfigFields } from "./ConfigFields";
 import { createEmailCampaignMutation, emailCampaignFormQuery, updateEmailCampaignMutation } from "./EmailCampaignForm.gql";
 import {
-    GQLCreateEmailCampaignMutation,
-    GQLCreateEmailCampaignMutationVariables,
-    GQLEmailCampaignFormFragment,
-    GQLEmailCampaignFormQuery,
-    GQLEmailCampaignFormQueryVariables,
-    GQLUpdateEmailCampaignMutation,
-    GQLUpdateEmailCampaignMutationVariables,
+    type GQLCreateEmailCampaignMutation,
+    type GQLCreateEmailCampaignMutationVariables,
+    type GQLEmailCampaignFormFragment,
+    type GQLEmailCampaignFormQuery,
+    type GQLEmailCampaignFormQueryVariables,
+    type GQLUpdateEmailCampaignMutation,
+    type GQLUpdateEmailCampaignMutationVariables,
 } from "./EmailCampaignForm.gql.generated";
 import { SendManagerFields } from "./SendManagerFields";
 import { SendManagerWrapper } from "./SendManagerWrapper";
@@ -60,7 +58,7 @@ import { TestEmailCampaignForm } from "./TestEmailCampaignForm";
 interface FormProps {
     id?: string;
     EmailCampaignContentBlock: BlockInterface;
-    scope: ContentScopeInterface;
+    scope: ContentScope;
 }
 
 export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope }: FormProps) {
@@ -111,7 +109,7 @@ export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope }: Form
         state2Output: (state) => ({
             ...state,
             content: EmailCampaignContentBlock.state2Output(state.content),
-            scheduledAt: state.brevoTargetGroups.length > 0 ? state.scheduledAt ?? null : null,
+            scheduledAt: state.brevoTargetGroups.length > 0 ? (state.scheduledAt ?? null) : null,
             sendingState: undefined,
             brevoTargetGroups: state.brevoTargetGroups.map((brevoTargetGroup) => brevoTargetGroup.id),
         }),
@@ -243,9 +241,9 @@ export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope }: Form
                         {
                             key: "config",
                             label: (
-                                <AdminTabLabel>
+                                <BlockAdminTabLabel>
                                     <FormattedMessage id="cometBrevoModule.emailCampaigns.config" defaultMessage="Config" />
-                                </AdminTabLabel>
+                                </BlockAdminTabLabel>
                             ),
                             content: (
                                 <BlocksFinalForm
@@ -262,9 +260,9 @@ export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope }: Form
                         {
                             key: "blocks",
                             label: (
-                                <AdminTabLabel>
+                                <BlockAdminTabLabel>
                                     <FormattedMessage id="cometBrevoModule.emailCampaigns.blocks" defaultMessage="Blocks" />
-                                </AdminTabLabel>
+                                </BlockAdminTabLabel>
                             ),
                             content: (
                                 <BlocksFinalForm
@@ -273,18 +271,18 @@ export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope }: Form
                                         content: state?.content,
                                     }}
                                 >
-                                    <AdminComponentRoot>
+                                    <BlockAdminComponentRoot>
                                         <Field name="content" fullWidth required component={FinalFormEmailCampaignContentBlock} />
-                                    </AdminComponentRoot>
+                                    </BlockAdminComponentRoot>
                                 </BlocksFinalForm>
                             ),
                         },
                         {
                             key: "send-manager",
                             label: (
-                                <AdminTabLabel>
+                                <BlockAdminTabLabel>
                                     <FormattedMessage id="cometBrevoModule.emailCampaigns.sendManager" defaultMessage="Send manager" />
-                                </AdminTabLabel>
+                                </BlockAdminTabLabel>
                             ),
                             content: (
                                 <BlocksFinalForm

@@ -1,5 +1,5 @@
 import { ValidationExceptionFactory } from "@comet/cms-api";
-import { Type, ValidationPipe } from "@nestjs/common";
+import { type Type, ValidationPipe } from "@nestjs/common";
 
 export class DynamicDtoValidationPipe extends ValidationPipe {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

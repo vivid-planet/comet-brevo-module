@@ -1,4 +1,4 @@
-import { DocumentNode, gql } from "@apollo/client";
+import { type DocumentNode, gql } from "@apollo/client";
 
 export const brevoContactFormQuery = (brevoTestContactFormFragment: DocumentNode) => gql`
     query BrevoContactForm($id: Int!, $scope: EmailCampaignContentScopeInput!) {

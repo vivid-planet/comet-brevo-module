@@ -1,6 +1,6 @@
 import { AffectedEntity, extractGraphqlFields, PaginatedResponseFactory, RequiredPermission, validateNotModified } from "@comet/cms-api";
-import { EntityManager, EntityRepository, FindOptions, wrap } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
+import { EntityManager, EntityRepository, FindOptions, wrap } from "@mikro-orm/postgresql";
 import { Type } from "@nestjs/common";
 import { Args, ArgsType, ID, Info, Mutation, ObjectType, Parent, Query, ResolveField, Resolver } from "@nestjs/graphql";
 import { GraphQLResolveInfo } from "graphql";
@@ -125,8 +125,9 @@ export function createEmailCampaignsResolver({
                 validateNotModified(campaign, lastUpdatedAt);
             }
 
+            const { brevoTargetGroups, ...restInput } = input;
             wrap(campaign).assign({
-                ...input,
+                ...restInput,
                 content: input.content ? input.content.transformToBlockData() : undefined,
             });
 

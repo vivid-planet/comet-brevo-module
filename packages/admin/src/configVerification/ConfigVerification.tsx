@@ -1,17 +1,17 @@
 import { useQuery } from "@apollo/client";
 import { Alert, Loading, MainContent } from "@comet/admin";
-import { ContentScopeInterface } from "@comet/cms-admin";
-import * as React from "react";
+import { type ContentScope } from "@comet/cms-admin";
+import { type PropsWithChildren } from "react";
 import { FormattedMessage } from "react-intl";
 
 import { brevoConfigCheckQuery } from "./ConfigVerification.gql";
-import { GQLBrevoConfigCheckQuery, GQLBrevoConfigCheckQueryVariables } from "./ConfigVerification.gql.generated";
+import { type GQLBrevoConfigCheckQuery, type GQLBrevoConfigCheckQueryVariables } from "./ConfigVerification.gql.generated";
 
 interface ConfigCheckProps {
-    scope: ContentScopeInterface;
+    scope: ContentScope;
 }
 
-export function ConfigVerification({ scope, children }: React.PropsWithChildren<ConfigCheckProps>): JSX.Element {
+export function ConfigVerification({ scope, children }: PropsWithChildren<ConfigCheckProps>): JSX.Element {
     const { data, error, loading } = useQuery<GQLBrevoConfigCheckQuery, GQLBrevoConfigCheckQueryVariables>(brevoConfigCheckQuery, {
         variables: { scope },
         fetchPolicy: "cache-and-network",

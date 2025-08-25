@@ -1,3 +1,0 @@
-{
-    "extends": "@comet/eslint-config/nestjs"
-}

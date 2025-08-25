@@ -1,7 +1,7 @@
 import { BlocksTransformerService, filtersToMikroOrmQuery, searchToMikroOrmQuery } from "@comet/cms-api";
 import { UpdateCampaignStatus } from "@getbrevo/brevo";
-import { EntityManager, EntityRepository, ObjectQuery, wrap } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
+import { EntityManager, EntityRepository, ObjectQuery, wrap } from "@mikro-orm/postgresql";
 import { HttpService } from "@nestjs/axios";
 import { Inject, Injectable } from "@nestjs/common";
 import { BrevoConfigInterface } from "src/brevo-config/entities/brevo-config-entity.factory";

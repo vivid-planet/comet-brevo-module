@@ -1,4 +1,4 @@
-import { ImageLoaderProps } from "next/image";
+import { type ImageLoaderProps } from "next/image";
 
 export const validSizes: number[] = (process.env.DAM_ALLOWED_IMAGE_SIZES as string)
     .split(",")

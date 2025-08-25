@@ -1,9 +1,8 @@
-import { BlockPreviewProvider, IFrameBridgeProvider, useIFrameBridge } from "@comet/cms-site";
-import { generateMjmlMailContent, IntlProviderValues, RenderedMail } from "@src/components/RenderedMail";
+import { BlockPreviewProvider, IFrameBridgeProvider, useIFrameBridge } from "@comet/site-nextjs";
+import { generateMjmlMailContent, type IntlProviderValues, RenderedMail } from "@src/components/RenderedMail";
 import { defaultLanguage } from "@src/config";
 import { getMessages } from "@src/lang";
-import { GetServerSidePropsContext } from "next";
-import * as React from "react";
+import { type GetServerSidePropsContext } from "next";
 
 interface Props {
     intlProviderValues: IntlProviderValues;

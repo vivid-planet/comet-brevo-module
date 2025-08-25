@@ -64,7 +64,7 @@ const nextConfig = {
         styledComponents: true,
     },
     experimental: {
-        optimizePackageImports: ["@comet/cms-site"],
+        optimizePackageImports: ["@comet/site-nextjs"],
     },
     // https://nextjs.org/docs/advanced-features/security-headers
     headers: async () => [

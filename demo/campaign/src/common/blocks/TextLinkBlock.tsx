@@ -1,5 +1,5 @@
-import { PropsWithData, withPreview } from "@comet/cms-site";
-import { TextLinkBlockData } from "@src/blocks.generated";
+import { type PropsWithData, withPreview } from "@comet/site-nextjs";
+import { type TextLinkBlockData } from "@src/blocks.generated";
 
 import { LinkBlock } from "./LinkBlock";
 

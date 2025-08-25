@@ -1,6 +1,6 @@
-import { PropsWithData } from "@comet/cms-site";
+import { type PropsWithData } from "@comet/site-nextjs";
 import { MjmlColumn, MjmlSection } from "@luma-team/mjml-react";
-import { PixelImageBlockData } from "@src/blocks.generated";
+import { type PixelImageBlockData } from "@src/blocks.generated";
 import { CommonImageBlock } from "@src/common/blocks/CommonImageBlock";
 import { theme } from "@src/util/theme";
 

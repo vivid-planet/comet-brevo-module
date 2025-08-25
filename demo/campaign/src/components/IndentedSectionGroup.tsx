@@ -1,10 +1,10 @@
 import { MjmlGroup, MjmlSection, MjmlStyle } from "@luma-team/mjml-react";
 import { css } from "@src/util/stylesHelper";
 import { theme } from "@src/util/theme";
-import * as React from "react";
+import { type ComponentProps, type ReactNode } from "react";
 
-export interface IndentedSectionGroupProps extends React.ComponentProps<typeof MjmlSection> {
-    children?: React.ReactNode;
+export interface IndentedSectionGroupProps extends ComponentProps<typeof MjmlSection> {
+    children?: ReactNode;
     cssClass?: string;
 }
 

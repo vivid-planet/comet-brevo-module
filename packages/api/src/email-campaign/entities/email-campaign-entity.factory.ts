@@ -1,6 +1,5 @@
-import { Block, BlockDataInterface, RootBlock } from "@comet/blocks-api";
-import { DocumentInterface, RootBlockDataScalar, RootBlockType } from "@comet/cms-api";
-import { Collection, Embedded, Entity, Enum, ManyToMany, OptionalProps, PrimaryKey, Property } from "@mikro-orm/core";
+import { Block, BlockDataInterface, DocumentInterface, RootBlock, RootBlockDataScalar, RootBlockType } from "@comet/cms-api";
+import { Collection, Embedded, Entity, Enum, ManyToMany, OptionalProps, PrimaryKey, Property } from "@mikro-orm/postgresql";
 import { Type } from "@nestjs/common";
 import { Field, ID, Int, ObjectType } from "@nestjs/graphql";
 import { v4 } from "uuid";
@@ -31,7 +30,7 @@ export function createEmailCampaignEntity({
     TargetGroup: BrevoTargetGroup,
 }: {
     EmailCampaignContentBlock: Block;
-    Scope: EmailCampaignScopeInterface;
+    Scope: Type<EmailCampaignScopeInterface>;
     TargetGroup: Type<TargetGroupInterface>;
 }): Type<EmailCampaignInterface> {
     @Entity()
@@ -82,7 +81,7 @@ export function createEmailCampaignEntity({
         targetGroups = new Collection<TargetGroupInterface>(this);
 
         @RootBlock(EmailCampaignContentBlock)
-        @Property({ customType: new RootBlockType(EmailCampaignContentBlock) })
+        @Property({ type: new RootBlockType(EmailCampaignContentBlock) })
         @Field(() => RootBlockDataScalar(EmailCampaignContentBlock))
         content: BlockDataInterface;
 

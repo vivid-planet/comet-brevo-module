@@ -1,10 +1,10 @@
-import { BlockData, BlockInput, createBlock, inputToData } from "@comet/blocks-api";
+import { BlockData, BlockInput, blockInputToData, createBlock } from "@comet/cms-api";
 
 class EmailCampaignDividerBlockData extends BlockData {}
 
 class EmailCampaignDividerBlockInput extends BlockInput {
     transformToBlockData(): EmailCampaignDividerBlockData {
-        return inputToData(EmailCampaignDividerBlockData, this);
+        return blockInputToData(EmailCampaignDividerBlockData, this);
     }
 }
 

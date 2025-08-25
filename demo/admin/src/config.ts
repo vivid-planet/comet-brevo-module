@@ -1,4 +1,4 @@
-import { SiteConfig } from "@comet/cms-admin";
+import { type SiteConfig } from "@comet/cms-admin";
 
 import cometConfig from "../comet-config.json";
 import { environment } from "./environment";
@@ -12,7 +12,6 @@ export function createConfig() {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             environmentVariables[variableName] = (window as any)[externalVariableName];
         } else {
-            // eslint-disable-next-line no-console
             console.warn(`External variable ${externalVariableName} not set"`);
         }
     }
@@ -21,7 +20,7 @@ export function createConfig() {
         ...cometConfig,
         apiUrl: environmentVariables.API_URL,
         adminUrl: environmentVariables.ADMIN_URL,
-        sitesConfig: JSON.parse(environmentVariables.SITES_CONFIG) as SitesConfig,
+        siteConfigs: JSON.parse(environmentVariables.SITES_CONFIG) as SitesConfig,
         buildDate: environmentVariables.BUILD_DATE,
         buildNumber: environmentVariables.BUILD_NUMBER,
         commitSha: environmentVariables.COMMIT_SHA,
@@ -31,7 +30,5 @@ export function createConfig() {
 }
 
 export const config = createConfig();
-
-export type Config = ReturnType<typeof createConfig>;
 
 export type SitesConfig = Record<string, SiteConfig>;

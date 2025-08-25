@@ -1,6 +1,5 @@
-import { BlockPreviewProvider, IFrameBridgeProvider, useIFrameBridge } from "@comet/cms-site";
+import { BlockPreviewProvider, IFrameBridgeProvider, useIFrameBridge } from "@comet/site-nextjs";
 import { PageContentBlock } from "@src/documents/pages/blocks/PageContentBlock";
-import * as React from "react";
 
 const PreviewPage: React.FunctionComponent = () => {
     const iFrameBridge = useIFrameBridge();

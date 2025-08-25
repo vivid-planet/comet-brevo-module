@@ -1,5 +1,5 @@
-import { createBlocksBlock } from "@comet/blocks-api";
 import { NewsletterImageBlock } from "@comet/brevo-api";
+import { createBlocksBlock } from "@comet/cms-api";
 
 import { EmailCampaignDividerBlock } from "./email-campaign-divider.block";
 import { EmailCampaignRichTextBlock } from "./email-campaign-rich-text.block";

@@ -1,26 +1,26 @@
 // temporary copy from https://github.com/vivid-planet/comet/pull/2115/files
 // remove as soon as it's available in COMET
 
+import { Button } from "@comet/admin";
 import { MoreVertical } from "@comet/admin-icons";
+// TODO v8: remove eslint-disable-next-line
 import {
-    Button,
     Chip,
-    ChipProps,
+    type ChipProps,
     Divider,
-    DividerProps,
+    type DividerProps,
     ListItemIcon,
     ListItemText,
     Menu,
     MenuItem,
     MenuList,
-    MenuListProps,
-    MenuProps,
+    type MenuListProps,
+    type MenuProps,
     Typography,
-    TypographyProps,
+    type TypographyProps,
 } from "@mui/material";
-import { Maybe } from "graphql/jsutils/Maybe";
-import * as React from "react";
-import { PropsWithChildren } from "react";
+import { type Maybe } from "graphql/jsutils/Maybe";
+import { type ComponentProps, type PropsWithChildren, type ReactNode, useState } from "react";
 import { FormattedMessage } from "react-intl";
 
 function CrudMoreActionsDivider(props: DividerProps) {
@@ -28,9 +28,9 @@ function CrudMoreActionsDivider(props: DividerProps) {
 }
 
 interface CrudMoreActionsGroupProps {
-    groupTitle: React.ReactNode;
+    groupTitle: ReactNode;
     menuListProps?: MenuListProps;
-    typographyProps?: React.ComponentProps<typeof Typography>;
+    typographyProps?: ComponentProps<typeof Typography>;
 }
 
 function CrudMoreActionsGroup({ groupTitle, children, menuListProps, typographyProps }: PropsWithChildren<CrudMoreActionsGroupProps>) {
@@ -44,13 +44,13 @@ function CrudMoreActionsGroup({ groupTitle, children, menuListProps, typographyP
     );
 }
 
-export interface ActionItem extends React.ComponentProps<typeof MenuItem> {
+export interface ActionItem extends ComponentProps<typeof MenuItem> {
     type: "action";
-    label: React.ReactNode;
-    startAdornment?: React.ReactNode;
+    label: ReactNode;
+    startAdornment?: ReactNode;
 }
 
-export interface DividerItem extends React.ComponentProps<typeof Divider> {
+export interface DividerItem extends ComponentProps<typeof Divider> {
     type: "divider";
 }
 
@@ -58,7 +58,7 @@ export type CrudMoreActionsItem = ActionItem | DividerItem;
 
 export interface CrudMoreActionsMenuProps {
     selectionSize?: number;
-    buttonProps?: React.ComponentProps<typeof Button>;
+    buttonProps?: ComponentProps<typeof Button>;
     menuProps?: Partial<MenuProps>;
     chipProps?: Partial<ChipProps>;
     groupTypographyProps?: Partial<TypographyProps>;
@@ -87,16 +87,16 @@ export function CrudMoreActionsMenu({
     groupTypographyProps,
     selectionSize,
 }: CrudMoreActionsMenuProps) {
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
-    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => setAnchorEl(event.currentTarget);
+    const handleClick = (event: MouseEvent<HTMLButtonElement>) => setAnchorEl(event.currentTarget);
 
     const handleClose = () => setAnchorEl(null);
 
     return (
         <>
             <Button
-                variant="text"
+                variant="textDark"
                 color="inherit"
                 endIcon={<MoreVertical />}
                 sx={{ mx: 2 }}

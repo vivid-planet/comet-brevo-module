@@ -1,4 +1,4 @@
-import { Block } from "@comet/blocks-api";
+import { Block } from "@comet/cms-api";
 import { MikroOrmModule } from "@mikro-orm/nestjs";
 import { HttpModule } from "@nestjs/axios";
 import { DynamicModule, Module, Type } from "@nestjs/common";

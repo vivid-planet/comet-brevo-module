@@ -1,9 +1,8 @@
 import { gql } from "@apollo/client";
 import { Field, FinalFormSelect } from "@comet/admin";
-import { EditTargetGroupFinalFormValues } from "@comet/brevo-admin";
+import { type EditTargetGroupFinalFormValues } from "@comet/brevo-admin";
 import { MenuItem } from "@mui/material";
-import { GQLBrevoContactBranch, GQLBrevoContactSalutation } from "@src/graphql.generated";
-import * as React from "react";
+import { type GQLBrevoContactBranch, type GQLBrevoContactSalutation } from "@src/graphql.generated";
 import { FormattedMessage } from "react-intl";
 
 const salutationOptions: Array<{ label: React.ReactNode; value: GQLBrevoContactSalutation }> = [

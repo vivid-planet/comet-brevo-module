@@ -1,6 +1,4 @@
-import { BlockCategory, createCompositeBlock } from "@comet/blocks-admin";
-import { PixelImageBlock } from "@comet/cms-admin";
-import React from "react";
+import { BlockCategory, createCompositeBlock, PixelImageBlock } from "@comet/cms-admin";
 import { FormattedMessage } from "react-intl";
 
 export const NewsletterImageBlock = createCompositeBlock({

@@ -1,6 +1,6 @@
-import * as React from "react";
+import { type SVGProps } from "react";
 
-interface SvgUseProps extends React.SVGProps<SVGSVGElement> {
+interface SvgUseProps extends SVGProps<SVGSVGElement> {
     href: string;
 }
 

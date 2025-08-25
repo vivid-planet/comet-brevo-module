@@ -1,8 +1,9 @@
 import { gql, useApolloClient, useQuery } from "@apollo/client";
 import {
+    Button,
     CrudContextMenu,
     DataGridToolbar,
-    GridColDef,
+    type GridColDef,
     GridFilterButton,
     MainContent,
     muiGridFilterToGql,
@@ -17,22 +18,21 @@ import {
     usePersistentColumnState,
 } from "@comet/admin";
 import { Add as AddIcon, Edit, Statistics, Visible } from "@comet/admin-icons";
-import { BlockInterface } from "@comet/blocks-admin";
-import { ContentScopeInterface } from "@comet/cms-admin";
-import { Button, IconButton } from "@mui/material";
+import { type BlockInterface, type ContentScope } from "@comet/cms-admin";
+import { IconButton } from "@mui/material";
 import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import { isBefore } from "date-fns";
-import * as React from "react";
+import { type ReactElement } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
 import {
-    GQLCreateEmailCampaignMutation,
-    GQLCreateEmailCampaignMutationVariables,
-    GQLDeleteEmailCampaignMutation,
-    GQLDeleteEmailCampaignMutationVariables,
-    GQLEmailCampaignsGridQuery,
-    GQLEmailCampaignsGridQueryVariables,
-    GQLEmailCampaignsListFragment,
+    type GQLCreateEmailCampaignMutation,
+    type GQLCreateEmailCampaignMutationVariables,
+    type GQLDeleteEmailCampaignMutation,
+    type GQLDeleteEmailCampaignMutationVariables,
+    type GQLEmailCampaignsGridQuery,
+    type GQLEmailCampaignsGridQueryVariables,
+    type GQLEmailCampaignsListFragment,
 } from "./EmailCampaignsGrid.generated";
 import { SendingStateColumn } from "./SendingStateColumn";
 
@@ -99,7 +99,7 @@ function EmailCampaignsGridToolbar() {
             </ToolbarItem>
             <ToolbarFillSpace />
             <ToolbarActions>
-                <Button startIcon={<AddIcon />} component={StackLink} pageName="add" payload="add" variant="contained" color="primary">
+                <Button startIcon={<AddIcon />} component={StackLink} pageName="add" payload="add" variant="primary">
                     <FormattedMessage id="cometBrevoModule.emailCampaign.newEmailCampaign" defaultMessage="New email campaign" />
                 </Button>
             </ToolbarActions>
@@ -111,9 +111,9 @@ export function EmailCampaignsGrid({
     scope,
     EmailCampaignContentBlock,
 }: {
-    scope: ContentScopeInterface;
+    scope: ContentScope;
     EmailCampaignContentBlock: BlockInterface;
-}): React.ReactElement {
+}): ReactElement {
     const client = useApolloClient();
     const intl = useIntl();
     const dataGridProps = {
@@ -135,7 +135,7 @@ export function EmailCampaignsGrid({
             field: "updatedAt",
             headerName: intl.formatMessage({ id: "cometBrevoModule.emailCampaign.updatedAt", defaultMessage: "Updated At" }),
             type: "dateTime",
-            valueGetter: ({ value }) => value && new Date(value),
+            valueGetter: (value) => value && new Date(value),
             width: 150,
             filterable: false,
         },
@@ -143,7 +143,7 @@ export function EmailCampaignsGrid({
             field: "createdAt",
             headerName: intl.formatMessage({ id: "cometBrevoModule.emailCampaign.createdAt", defaultMessage: "Created At" }),
             type: "dateTime",
-            valueGetter: ({ value }) => value && new Date(value),
+            valueGetter: (value) => value && new Date(value),
             width: 150,
             filterable: false,
         },
@@ -162,7 +162,7 @@ export function EmailCampaignsGrid({
             field: "scheduledAt",
             headerName: intl.formatMessage({ id: "cometBrevoModule.emailCampaign.scheduledAt", defaultMessage: "Scheduled At" }),
             type: "dateTime",
-            valueGetter: ({ value }) => (value ? new Date(value) : "-"),
+            valueGetter: (value) => (value ? new Date(value) : "-"),
             width: 200,
         },
         {
@@ -253,13 +253,13 @@ export function EmailCampaignsGrid({
         <MainContent fullHeight>
             <DataGrid
                 {...dataGridProps}
-                disableSelectionOnClick
+                disableRowSelectionOnClick
                 rows={rows}
                 rowCount={rowCount}
                 columns={columns}
                 loading={loading}
-                components={{
-                    Toolbar: EmailCampaignsGridToolbar,
+                slots={{
+                    toolbar: EmailCampaignsGridToolbar,
                 }}
             />
         </MainContent>

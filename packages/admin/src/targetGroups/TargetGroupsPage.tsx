@@ -1,16 +1,16 @@
 import { Stack, StackPage, StackSwitch, Toolbar } from "@comet/admin";
 import { ContentScopeIndicator, useContentScope } from "@comet/cms-admin";
-import { DocumentNode } from "graphql";
-import * as React from "react";
+import { type DocumentNode } from "graphql";
+import { type ReactNode } from "react";
 import { useIntl } from "react-intl";
 
 import { useBrevoConfig } from "../common/BrevoConfigProvider";
 import { ConfigVerification } from "../configVerification/ConfigVerification";
-import { EditTargetGroupFinalFormValues, TargetGroupForm } from "./TargetGroupForm";
-import { AdditionalContactAttributesType, TargetGroupsGrid } from "./TargetGroupsGrid";
+import { type EditTargetGroupFinalFormValues, TargetGroupForm } from "./TargetGroupForm";
+import { type AdditionalContactAttributesType, TargetGroupsGrid } from "./TargetGroupsGrid";
 
 interface CreateContactsPageOptions {
-    additionalFormFields?: React.ReactNode;
+    additionalFormFields?: ReactNode;
     exportTargetGroupOptions?: {
         additionalAttributesFragment: { name: string; fragment: DocumentNode };
         exportFields: { renderValue: (row: AdditionalContactAttributesType) => string; headerName: string }[];
@@ -26,10 +26,13 @@ export function createTargetGroupsPage({ additionalFormFields, nodeFragment, inp
         const { scope: completeScope } = useContentScope();
         const intl = useIntl();
 
-        const scope = scopeParts.reduce((acc, scopePart) => {
-            acc[scopePart] = completeScope[scopePart];
-            return acc;
-        }, {} as { [key: string]: unknown });
+        const scope = scopeParts.reduce(
+            (acc, scopePart) => {
+                acc[scopePart] = completeScope[scopePart];
+                return acc;
+            },
+            {} as { [key: string]: unknown },
+        );
 
         return (
             <ConfigVerification scope={scope}>

@@ -1,4 +1,4 @@
-import { createRichTextBlock } from "@comet/blocks-api";
+import { createRichTextBlock } from "@comet/cms-api";
 
 import { EmailCampaignLinkBlock } from "./email-campaign-link.block";
 

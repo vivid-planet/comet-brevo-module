@@ -1,20 +1,20 @@
 import { useQuery } from "@apollo/client";
-import { MainContent, StackLink, Toolbar, ToolbarActions, ToolbarBackButton, ToolbarFillSpace } from "@comet/admin";
+import { Button, MainContent, StackLink, Toolbar, ToolbarActions, ToolbarBackButton, ToolbarFillSpace } from "@comet/admin";
 import { Add as AddIcon } from "@comet/admin-icons";
 import { ContentScopeIndicator, useContentScopeConfig } from "@comet/cms-admin";
-import { Button, Grid } from "@mui/material";
-import React from "react";
+import { Grid } from "@mui/material";
+import { type ReactElement } from "react";
 import { FormattedMessage } from "react-intl";
 
 import { emailCampaignStatistics } from "./EmailCampaignStatistics.gql";
-import { GQLEmailCampaignStatisticsQuery, GQLEmailCampaignStatisticsQueryVariables } from "./EmailCampaignStatistics.gql.generated";
+import { type GQLEmailCampaignStatisticsQuery, type GQLEmailCampaignStatisticsQueryVariables } from "./EmailCampaignStatistics.gql.generated";
 import { PercentageCard } from "./PercentageCard";
 
 interface Props {
     id: string;
 }
 
-export const EmailCampaignStatistics = ({ id }: Props): React.ReactElement => {
+export const EmailCampaignStatistics = ({ id }: Props): ReactElement => {
     useContentScopeConfig({ redirectPathAfterChange: "/newsletter/email-campaigns" });
 
     const { data: campaignStatistics } = useQuery<GQLEmailCampaignStatisticsQuery, GQLEmailCampaignStatisticsQueryVariables>(
@@ -31,7 +31,7 @@ export const EmailCampaignStatistics = ({ id }: Props): React.ReactElement => {
                 <ToolbarBackButton />
                 <ToolbarFillSpace />
                 <ToolbarActions>
-                    <Button startIcon={<AddIcon />} component={StackLink} pageName="add" payload="add" variant="contained" color="primary">
+                    <Button startIcon={<AddIcon />} component={StackLink} pageName="add" payload="add" variant="primary">
                         <FormattedMessage id="cometBrevoModule.emailCampaign.newEmailCampaign" defaultMessage="New email campaign" />
                     </Button>
                 </ToolbarActions>

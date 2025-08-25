@@ -1,5 +1,3 @@
-import * as React from "react";
-
 interface NotFound404Props {
     children: React.ReactNode;
 }

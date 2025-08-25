@@ -1,7 +1,7 @@
 import { defaultLanguage, domain } from "@src/config";
-import { GetServerSidePropsContext, GetStaticPropsContext } from "next";
+import { type GetServerSidePropsContext, type GetStaticPropsContext } from "next";
 
-import { ContentScope } from "./ContentScope";
+import { type ContentScope } from "./ContentScope";
 
 function inferContentScopeFromContext(context: GetStaticPropsContext | GetServerSidePropsContext): ContentScope {
     if (typeof context.params?.domain === "string" && typeof context.params?.language === "string") {

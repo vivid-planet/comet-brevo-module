@@ -4,7 +4,6 @@ import { validateSync } from "class-validator";
 
 import { EnvironmentVariables } from "./environment-variables";
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function createConfig(processEnv: NodeJS.ProcessEnv) {
     const envVars = plainToClass(EnvironmentVariables, { ...processEnv });
     const errors = validateSync(envVars, { skipMissingProperties: false });
@@ -50,8 +49,10 @@ export function createConfig(processEnv: NodeJS.ProcessEnv) {
                     region: envVars.S3_REGION,
                     endpoint: envVars.S3_ENDPOINT,
                     bucket: envVars.S3_BUCKET,
-                    accessKeyId: envVars.S3_ACCESS_KEY_ID,
-                    secretAccessKey: envVars.S3_SECRET_ACCESS_KEY,
+                    credentials: {
+                        accessKeyId: envVars.S3_ACCESS_KEY_ID,
+                        secretAccessKey: envVars.S3_SECRET_ACCESS_KEY,
+                    },
                 },
             },
             storageDirectoryPrefix: envVars.BLOB_STORAGE_DIRECTORY_PREFIX,

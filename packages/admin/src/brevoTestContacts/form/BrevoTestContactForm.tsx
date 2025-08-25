@@ -1,9 +1,9 @@
-import { DocumentNode, gql, useApolloClient, useQuery } from "@apollo/client";
+import { type DocumentNode, gql, useApolloClient, useQuery } from "@apollo/client";
 import {
     Alert,
     FinalForm,
     FinalFormSaveSplitButton,
-    FinalFormSubmitEvent,
+    type FinalFormSubmitEvent,
     FormSection,
     Loading,
     MainContent,
@@ -17,11 +17,11 @@ import {
     useStackApi,
 } from "@comet/admin";
 import { ArrowLeft } from "@comet/admin-icons";
-import { ContentScopeInterface, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
+import { type ContentScope, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
 import { Card, IconButton } from "@mui/material";
 import { Box } from "@mui/system";
-import { FormApi } from "final-form";
-import React from "react";
+import { type FormApi } from "final-form";
+import { type ReactElement, type ReactNode, useMemo } from "react";
 import { FormattedMessage } from "react-intl";
 
 import {
@@ -31,14 +31,14 @@ import {
     updateBrevoContactMutation,
 } from "./BrevoTestContactForm.gql";
 import {
-    GQLBrevoContactFormCheckForChangesQuery,
-    GQLBrevoContactFormCheckForChangesQueryVariables,
-    GQLBrevoContactFormQuery,
-    GQLBrevoContactFormQueryVariables,
-    GQLCreateBrevoTestContactMutation,
-    GQLCreateBrevoTestContactMutationVariables,
-    GQLUpdateBrevoContactMutation,
-    GQLUpdateBrevoContactMutationVariables,
+    type GQLBrevoContactFormCheckForChangesQuery,
+    type GQLBrevoContactFormCheckForChangesQueryVariables,
+    type GQLBrevoContactFormQuery,
+    type GQLBrevoContactFormQueryVariables,
+    type GQLCreateBrevoTestContactMutation,
+    type GQLCreateBrevoTestContactMutationVariables,
+    type GQLUpdateBrevoContactMutation,
+    type GQLUpdateBrevoContactMutationVariables,
 } from "./BrevoTestContactForm.gql.generated";
 
 export type EditBrevoContactFormValues = {
@@ -51,13 +51,13 @@ type EditBrevoContactFormValuesWithAttributes = EditBrevoContactFormValues & {
 
 interface FormProps {
     id?: number;
-    scope: ContentScopeInterface;
-    additionalFormFields?: React.ReactNode;
+    scope: ContentScope;
+    additionalFormFields?: ReactNode;
     additionalAttributesFragment?: { name: string; fragment: DocumentNode };
     input2State?: (values?: EditBrevoContactFormValues) => EditBrevoContactFormValues;
 }
 
-export function BrevoTestContactForm({ id, scope, input2State, additionalFormFields, additionalAttributesFragment }: FormProps): React.ReactElement {
+export function BrevoTestContactForm({ id, scope, input2State, additionalFormFields, additionalAttributesFragment }: FormProps): ReactElement {
     const stackApi = useStackApi();
     const client = useApolloClient();
     const mode = id ? "edit" : "add";
@@ -78,7 +78,7 @@ export function BrevoTestContactForm({ id, scope, input2State, additionalFormFie
         id ? { variables: { id, scope } } : { skip: true },
     );
 
-    const initialValues = React.useMemo<Partial<EditBrevoContactFormValuesWithAttributes>>(() => {
+    const initialValues = useMemo<Partial<EditBrevoContactFormValuesWithAttributes>>(() => {
         let baseInitialValues = {
             email: "",
         };

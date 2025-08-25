@@ -1,6 +1,6 @@
 import { filtersToMikroOrmQuery, searchToMikroOrmQuery } from "@comet/cms-api";
-import { EntityManager, EntityRepository, FilterQuery, ObjectQuery, wrap } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
+import { EntityManager, EntityRepository, FilterQuery, ObjectQuery, wrap } from "@mikro-orm/postgresql";
 import { Injectable } from "@nestjs/common";
 import { stringify } from "querystring";
 
