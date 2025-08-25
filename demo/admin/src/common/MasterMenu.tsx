@@ -39,7 +39,7 @@ export const pageTreeDocumentTypes: Record<string, DocumentInterface<any, any>> 
     Page,
     Link,
 };
-const RedirectsPage = createRedirectsPage({ scopeParts: ["domain"] });
+const RedirectsPage = createRedirectsPage();
 
 const getMasterMenuData = ({ brevoContactConfig }: { brevoContactConfig: BrevoContactConfig }): MasterMenuData => {
     const BrevoContactsPage = createBrevoContactsPage({
@@ -89,7 +89,6 @@ const getMasterMenuData = ({ brevoContactConfig }: { brevoContactConfig: BrevoCo
                 render: () => (
                     <PagesPage
                         path="/pages/pagetree/main-navigation"
-                        allCategories={pageTreeCategories}
                         documentTypes={pageTreeDocumentTypes}
                         category="MainNavigation"
                         renderContentScopeIndicator={(scope) => <ContentScopeIndicator scope={scope} />}

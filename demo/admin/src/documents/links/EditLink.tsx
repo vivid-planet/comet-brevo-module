@@ -1,8 +1,7 @@
 import { gql } from "@apollo/client";
 import { Loading, MainContent, RouterPrompt, RouterTab, RouterTabs, Toolbar, ToolbarFillSpace, ToolbarItem, useStackApi } from "@comet/admin";
 import { ArrowLeft } from "@comet/admin-icons";
-import { AdminComponentRoot } from "@comet/blocks-admin";
-import { ContentScopeIndicator, createUsePage, PageName } from "@comet/cms-admin";
+import { BlockAdminComponentRoot, ContentScopeIndicator, createUsePage, PageName } from "@comet/cms-admin";
 import { IconButton } from "@mui/material";
 import { LinkBlock } from "@src/common/blocks/LinkBlock";
 import { useIntl } from "react-intl";
@@ -110,7 +109,7 @@ export const EditLink: React.FC<Props> = ({ id }) => {
             <MainContent>
                 <RouterTabs>
                     <RouterTab label={intl.formatMessage({ id: "generic.content", defaultMessage: "Content" })} path="">
-                        <AdminComponentRoot>{rootBlocksApi.content.adminUI}</AdminComponentRoot>
+                        <BlockAdminComponentRoot>{rootBlocksApi.content.adminUI}</BlockAdminComponentRoot>
                     </RouterTab>
                 </RouterTabs>
             </MainContent>
