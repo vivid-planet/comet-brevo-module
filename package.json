@@ -42,49 +42,5 @@
         "prettier": "^2.3.2",
         "ts-node": "^10.9.2",
         "typescript": "^5.8.3"
-    },
-    "pnpm": {
-        "packageExtensions": {
-            "next@14": {
-                "peerDependencies": {
-                    "@types/react": "^18.0.0"
-                }
-            },
-            "@comet/site-nextjs@7": {
-                "peerDependencies": {
-                    "@types/react": "^18.0.0"
-                }
-            },
-            "@comet/site-react@7": {
-                "peerDependencies": {
-                    "@types/react": "^18.0.0"
-                }
-            },
-            "@faire/mjml-react@3": {
-                "peerDependencies": {
-                    "@types/react": "^18.0.0"
-                }
-            },
-            "styled-components": {
-                "peerDependencies": {
-                    "@types/react": "^18.0.0"
-                }
-            },
-            "react-intl": {
-                "peerDependencies": {
-                    "@types/react": "*"
-                }
-            },
-            "@types/hoist-non-react-statics": {
-                "peerDependencies": {
-                    "@types/react": "*"
-                }
-            },
-            "@types/react-transition-group": {
-                "peerDependencies": {
-                    "@types/react": "^18.0.0"
-                }
-            }
-        }
     }
 }
