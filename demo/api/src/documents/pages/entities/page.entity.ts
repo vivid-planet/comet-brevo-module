@@ -1,6 +1,14 @@
-import { BlockDataInterface, RootBlock, RootBlockEntity } from "@comet/blocks-api";
-import { DocumentInterface, PageTreeNodeDocumentEntityScopeService, RootBlockDataScalar, RootBlockType, ScopedEntity } from "@comet/cms-api";
-import { BaseEntity, Entity, OptionalProps, PrimaryKey, Property } from "@mikro-orm/core";
+import {
+    BlockDataInterface,
+    DocumentInterface,
+    PageTreeNodeDocumentEntityScopeService,
+    RootBlock,
+    RootBlockDataScalar,
+    RootBlockEntity,
+    RootBlockType,
+    ScopedEntity,
+} from "@comet/cms-api";
+import { BaseEntity, Entity, OptionalProps, PrimaryKey, Property } from "@mikro-orm/postgresql";
 import { Field, ID, ObjectType } from "@nestjs/graphql";
 import { v4 } from "uuid";
 
@@ -13,7 +21,7 @@ import { SeoBlock } from "../blocks/seo.block";
 })
 @RootBlockEntity()
 @ScopedEntity(PageTreeNodeDocumentEntityScopeService)
-export class Page extends BaseEntity<Page, "id"> implements DocumentInterface {
+export class Page extends BaseEntity implements DocumentInterface {
     [OptionalProps]?: "createdAt" | "updatedAt";
 
     @PrimaryKey({ columnType: "uuid" })
@@ -21,12 +29,12 @@ export class Page extends BaseEntity<Page, "id"> implements DocumentInterface {
     id: string = v4();
 
     @RootBlock(PageContentBlock)
-    @Property({ customType: new RootBlockType(PageContentBlock) })
+    @Property({ type: new RootBlockType(PageContentBlock) })
     @Field(() => RootBlockDataScalar(PageContentBlock))
     content: BlockDataInterface;
 
     @RootBlock(SeoBlock)
-    @Property({ customType: new RootBlockType(SeoBlock) })
+    @Property({ type: new RootBlockType(SeoBlock) })
     @Field(() => RootBlockDataScalar(SeoBlock))
     seo: BlockDataInterface;
 
