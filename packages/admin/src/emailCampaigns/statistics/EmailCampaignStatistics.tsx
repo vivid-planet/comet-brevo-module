@@ -1,10 +1,9 @@
 import { useQuery } from "@apollo/client";
-import { MainContent, StackLink, Toolbar, ToolbarActions, ToolbarBackButton, ToolbarFillSpace } from "@comet/admin";
+import { Button, MainContent, StackLink, Toolbar, ToolbarActions, ToolbarBackButton, ToolbarFillSpace } from "@comet/admin";
 import { Add as AddIcon } from "@comet/admin-icons";
 import { ContentScopeIndicator, useContentScopeConfig } from "@comet/cms-admin";
-// TODO v8: remove eslint-disable-next-line
-// eslint-disable-next-line no-restricted-imports
-import { Button, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
+import { type ReactElement } from "react";
 import { FormattedMessage } from "react-intl";
 
 import { emailCampaignStatistics } from "./EmailCampaignStatistics.gql";
@@ -15,7 +14,7 @@ interface Props {
     id: string;
 }
 
-export const EmailCampaignStatistics = ({ id }: Props): React.ReactElement => {
+export const EmailCampaignStatistics = ({ id }: Props): ReactElement => {
     useContentScopeConfig({ redirectPathAfterChange: "/newsletter/email-campaigns" });
 
     const { data: campaignStatistics } = useQuery<GQLEmailCampaignStatisticsQuery, GQLEmailCampaignStatisticsQueryVariables>(
@@ -32,7 +31,7 @@ export const EmailCampaignStatistics = ({ id }: Props): React.ReactElement => {
                 <ToolbarBackButton />
                 <ToolbarFillSpace />
                 <ToolbarActions>
-                    <Button startIcon={<AddIcon />} component={StackLink} pageName="add" payload="add" variant="contained" color="primary">
+                    <Button startIcon={<AddIcon />} component={StackLink} pageName="add" payload="add" variant="primary">
                         <FormattedMessage id="cometBrevoModule.emailCampaign.newEmailCampaign" defaultMessage="New email campaign" />
                     </Button>
                 </ToolbarActions>

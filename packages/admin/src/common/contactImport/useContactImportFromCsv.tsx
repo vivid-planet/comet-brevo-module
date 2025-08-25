@@ -1,13 +1,11 @@
 import { useApolloClient } from "@apollo/client";
 import { type RefetchQueriesInclude } from "@apollo/client/core/types";
-import { Alert, CheckboxField, FinalForm, Loading, messages, useErrorDialog } from "@comet/admin";
+import { Alert, Button, CheckboxField, Dialog, FinalForm, Loading, messages, useErrorDialog } from "@comet/admin";
 import { Upload } from "@comet/admin-icons";
-// TODO v8: remove eslint-disable-next-line
-// eslint-disable-next-line no-restricted-imports
-import { Box, Dialog, DialogActions, DialogContent, DialogTitle, styled } from "@mui/material";
-import Button from "@mui/material/Button";
+import { Box, DialogActions, DialogContent, DialogTitle } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import saveAs from "file-saver";
-import { useMemo, useRef, useState } from "react";
+import { type ReactNode, type RefObject, useMemo, useRef, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { FormattedMessage, useIntl } from "react-intl";
 
@@ -28,7 +26,7 @@ type ContactImportFromCsvForm = {
     sendDoubleOptIn: boolean;
 };
 
-export const useContactImportFromCsv = ({ scope, targetGroupId, refetchQueries }: UseContactImportProps): [CrudMoreActionsItem, React.ReactNode] => {
+export const useContactImportFromCsv = ({ scope, targetGroupId, refetchQueries }: UseContactImportProps): [CrudMoreActionsItem, ReactNode] => {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [open, setOpen] = useState(false);
     const [sendDoubleOptIn, setSendDoubleOptIn] = useState(true);
@@ -105,7 +103,7 @@ export const useContactImportFromCsv = ({ scope, targetGroupId, refetchQueries }
                 <Button onClick={handleClose}>
                     <FormattedMessage {...messages.cancel} />
                 </Button>
-                <Button variant="contained" onClick={() => fileInputRef.current?.click()}>
+                <Button variant="primary" onClick={() => fileInputRef.current?.click()}>
                     <FormattedMessage id="cometBrevoModule.contactImport.importContacts" defaultMessage="Import Contacts" />
                 </Button>
             </DialogActions>
@@ -135,7 +133,7 @@ export const useContactImportFromCsv = ({ scope, targetGroupId, refetchQueries }
 };
 
 interface ComponentProps extends UseContactImportProps {
-    fileInputRef: React.RefObject<HTMLInputElement>;
+    fileInputRef: RefObject<HTMLInputElement>;
 }
 
 const ContactImportComponent = ({ scope, targetGroupId, fileInputRef, sendDoubleOptIn, refetchQueries }: ComponentProps) => {
@@ -327,9 +325,7 @@ const ContactImportComponent = ({ scope, targetGroupId, fileInputRef, sendDouble
                                             defaultMessage="{amount} contact(s) could not be imported. <link>Download this file</link> to get the failing row(s)."
                                             values={{
                                                 amount: importInformation.failed,
-                                                link: (chunks: React.ReactNode) => (
-                                                    <CsvDownloadLink onClick={saveErrorFile}>{chunks}</CsvDownloadLink>
-                                                ),
+                                                link: (chunks: ReactNode) => <CsvDownloadLink onClick={saveErrorFile}>{chunks}</CsvDownloadLink>,
                                             }}
                                         />
                                     </Alert>
@@ -344,7 +340,7 @@ const ContactImportComponent = ({ scope, targetGroupId, fileInputRef, sendDouble
                                             defaultMessage="{amount} contacts could not be imported as they are blacklisted.  <link>Download this file</link> to get the blacklisted contact(s)."
                                             values={{
                                                 amount: importInformation.blacklisted,
-                                                link: (chunks: React.ReactNode) => (
+                                                link: (chunks: ReactNode) => (
                                                     <CsvDownloadLink onClick={saveBlacklistedContactsFile}>{chunks}</CsvDownloadLink>
                                                 ),
                                             }}
@@ -368,7 +364,7 @@ const ContactImportComponent = ({ scope, targetGroupId, fileInputRef, sendDouble
                 </DialogContent>
                 <DialogActions>
                     {importInformation && (
-                        <Button onClick={() => setImportInformation(null)} variant="contained">
+                        <Button onClick={() => setImportInformation(null)} variant="primary">
                             <FormattedMessage {...messages.ok} />
                         </Button>
                     )}

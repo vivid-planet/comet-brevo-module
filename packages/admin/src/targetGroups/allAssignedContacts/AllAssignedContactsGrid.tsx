@@ -1,15 +1,8 @@
 import { useQuery } from "@apollo/client";
-import {
-    DataGridToolbar,
-    type GridColDef,
-    ToolbarItem,
-    ToolbarTitleItem,
-    useBufferedRowCount,
-    useDataGridRemote,
-    usePersistentColumnState,
-} from "@comet/admin";
-import { type ContentScopeInterface } from "@comet/cms-admin";
+import { DataGridToolbar, type GridColDef, ToolbarTitleItem, useBufferedRowCount, useDataGridRemote, usePersistentColumnState } from "@comet/admin";
+import { type ContentScope } from "@comet/cms-admin";
 import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
+import { type ReactElement } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
 import { allAssignedBrevoContactsGridQuery } from "./AllAssignedContactsGrid.gql";
@@ -27,25 +20,23 @@ const AssignedContactsGridToolbar = () => {
             <ToolbarTitleItem>
                 <FormattedMessage id="cometBrevoModule.targetGroup.allAssignedContacts.title" defaultMessage="All assigned contacts" />
             </ToolbarTitleItem>
-            <ToolbarItem>
-                <GridToolbarQuickFilter
-                    placeholder={intl.formatMessage({
-                        id: "cometBrevoModule.targetGroup.assignedContacts.searchEmail",
-                        defaultMessage: "Search email address",
-                    })}
-                />
-            </ToolbarItem>
+            <GridToolbarQuickFilter
+                placeholder={intl.formatMessage({
+                    id: "cometBrevoModule.targetGroup.assignedContacts.searchEmail",
+                    defaultMessage: "Search email address",
+                })}
+            />
         </DataGridToolbar>
     );
 };
 
 interface AllAssignedContactsGridProps {
-    scope: ContentScopeInterface;
+    scope: ContentScope;
     id: string;
     brevoId?: number;
 }
 
-export function AllAssignedContactsGrid({ id, scope, brevoId }: AllAssignedContactsGridProps): React.ReactElement {
+export function AllAssignedContactsGrid({ id, scope, brevoId }: AllAssignedContactsGridProps): ReactElement {
     const intl = useIntl();
     const dataGridAllAssignedContactsProps = { ...useDataGridRemote(), ...usePersistentColumnState("TargetGroupAssignedBrevoContactsGrid") };
 
@@ -55,8 +46,8 @@ export function AllAssignedContactsGrid({ id, scope, brevoId }: AllAssignedConta
         error: allAssignedContactsError,
     } = useQuery<GQLBrevoContactsQuery, GQLBrevoContactsQueryVariables>(allAssignedBrevoContactsGridQuery, {
         variables: {
-            offset: dataGridAllAssignedContactsProps.page * dataGridAllAssignedContactsProps.pageSize,
-            limit: dataGridAllAssignedContactsProps.pageSize,
+            offset: dataGridAllAssignedContactsProps.paginationModel.page * dataGridAllAssignedContactsProps.paginationModel.pageSize,
+            limit: dataGridAllAssignedContactsProps.paginationModel.pageSize,
             email: dataGridAllAssignedContactsProps.filterModel?.quickFilterValues
                 ? dataGridAllAssignedContactsProps.filterModel?.quickFilterValues[0]
                 : undefined,
@@ -108,14 +99,14 @@ export function AllAssignedContactsGrid({ id, scope, brevoId }: AllAssignedConta
     return (
         <DataGrid
             {...dataGridAllAssignedContactsProps}
-            disableSelectionOnClick
+            disableRowSelectionOnClick
             rows={allAssignedContactsData?.brevoContacts.nodes ?? []}
             rowCount={allAssignedContactsRowCount}
             columns={allAssignedContactsColumns}
             autoHeight
             loading={assignedContactsLoading}
-            components={{
-                Toolbar: AssignedContactsGridToolbar,
+            slots={{
+                toolbar: AssignedContactsGridToolbar,
             }}
         />
     );

@@ -1,6 +1,7 @@
 import { type GridColDef, Stack, StackPage, StackSwitch, StackToolbar } from "@comet/admin";
 import { ContentScopeIndicator, useContentScope } from "@comet/cms-admin";
 import { type DocumentNode } from "graphql";
+import { type ReactNode } from "react";
 import { useIntl } from "react-intl";
 
 import { useBrevoConfig } from "../common/BrevoConfigProvider";
@@ -13,7 +14,7 @@ interface CreateContactsPageOptions {
     scopeParts?: string[];
     additionalAttributesFragment?: { name: string; fragment: DocumentNode };
     additionalGridFields?: GridColDef[];
-    additionalFormFields?: React.ReactNode;
+    additionalFormFields?: ReactNode;
     input2State?: (values?: EditBrevoContactFormValues) => EditBrevoContactFormValues;
 }
 

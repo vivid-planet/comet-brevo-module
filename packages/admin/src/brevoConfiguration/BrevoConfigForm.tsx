@@ -18,9 +18,9 @@ import {
     useStackSwitchApi,
 } from "@comet/admin";
 import { Info } from "@comet/admin-icons";
-import { ContentScopeIndicator, type ContentScopeInterface, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
+import { type ContentScope, ContentScopeIndicator, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
 import { type FormApi } from "final-form";
-import { useMemo } from "react";
+import { type ReactNode, useMemo } from "react";
 import { FormattedMessage } from "react-intl";
 
 import {
@@ -56,10 +56,10 @@ type FormValues = {
 };
 
 interface FormProps {
-    scope: ContentScopeInterface;
+    scope: ContentScope;
 }
 
-function validateUrl(value: string): React.ReactNode | undefined {
+function validateUrl(value: string): ReactNode | undefined {
     const urlPattern = /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d{1,5})?(\/[^\s]*)?$/;
     if (!urlPattern.test(value)) {
         return (
@@ -69,7 +69,7 @@ function validateUrl(value: string): React.ReactNode | undefined {
     return undefined;
 }
 
-export function BrevoConfigForm({ scope }: FormProps): React.ReactElement {
+export function BrevoConfigForm({ scope }: FormProps): ReactElement {
     const client = useApolloClient();
     const formApiRef = useFormApiRef<FormValues>();
     const stackSwitchApi = useStackSwitchApi();

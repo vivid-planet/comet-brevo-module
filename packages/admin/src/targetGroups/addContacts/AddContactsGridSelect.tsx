@@ -1,11 +1,12 @@
 import { useMutation, useQuery } from "@apollo/client";
 import {
+    Button,
     CancelButton,
     DataGridToolbar,
+    Dialog,
     Field,
     FinalForm,
     type GridColDef,
-    ToolbarActions,
     ToolbarFillSpace,
     ToolbarItem,
     ToolbarTitleItem,
@@ -14,10 +15,8 @@ import {
     usePersistentColumnState,
 } from "@comet/admin";
 import { Add, Close, Remove, Save } from "@comet/admin-icons";
-import { type ContentScopeInterface } from "@comet/cms-admin";
-// TODO v8: remove eslint-disable-next-line
-// eslint-disable-next-line no-restricted-imports
-import { Button, Dialog, DialogActions, DialogTitle, IconButton, useTheme } from "@mui/material";
+import { type ContentScope } from "@comet/cms-admin";
+import { DialogActions, DialogTitle, IconButton, useTheme } from "@mui/material";
 import { Box } from "@mui/system";
 import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import { useState } from "react";
@@ -73,21 +72,17 @@ const AssignedContactsGridToolbar = ({
                 <ToolbarTitleItem>
                     <FormattedMessage id="cometBrevoModule.targetGroup.manuallyAssignedContacts.title" defaultMessage="Manually assigned contacts" />
                 </ToolbarTitleItem>
-                <ToolbarItem>
-                    <GridToolbarQuickFilter
-                        placeholder={intl.formatMessage({
-                            id: "cometBrevoModule.targetGroup.assignedContacts.searchEmail",
-                            defaultMessage: "Search email address",
-                        })}
-                    />
-                </ToolbarItem>
+                <GridToolbarQuickFilter
+                    placeholder={intl.formatMessage({
+                        id: "cometBrevoModule.targetGroup.assignedContacts.searchEmail",
+                        defaultMessage: "Search email address",
+                    })}
+                />
                 <ToolbarFillSpace />
-                <ToolbarActions>
-                    <CrudMoreActionsMenu overallItems={[moreActionsMenuItem]} />
-                    <Button startIcon={<Add />} variant="contained" color="primary" onClick={onOpenDialog}>
-                        <FormattedMessage id="cometBrevoModule.targetGroup.assignedContacts.addContact" defaultMessage="Add contacts" />
-                    </Button>
-                </ToolbarActions>
+                <CrudMoreActionsMenu overallItems={[moreActionsMenuItem]} />
+                <Button startIcon={<Add />} variant="primary" onClick={onOpenDialog}>
+                    <FormattedMessage id="cometBrevoModule.targetGroup.assignedContacts.addContact" defaultMessage="Add contacts" />
+                </Button>
             </DataGridToolbar>
             {component}
         </>
@@ -138,12 +133,12 @@ const useSubmitMutation = (id: string) => {
 };
 
 interface AddContactsGridSelectProps {
-    scope: ContentScopeInterface;
+    scope: ContentScope;
     id: string;
     assignedContactsTargetGroupBrevoId?: number;
 }
 
-export function AddContactsGridSelect({ id, scope, assignedContactsTargetGroupBrevoId }: AddContactsGridSelectProps): React.ReactElement {
+export function AddContactsGridSelect({ id, scope, assignedContactsTargetGroupBrevoId }: AddContactsGridSelectProps): ReactElement {
     const intl = useIntl();
     const submit = useSubmitMutation(id);
     const theme = useTheme();
@@ -171,8 +166,8 @@ export function AddContactsGridSelect({ id, scope, assignedContactsTargetGroupBr
         error: assignableContactsError,
     } = useQuery<GQLAllBrevoContactsGridQuery, GQLAllBrevoContactsGridQueryVariables>(brevoContactsQuery, {
         variables: {
-            offset: dataGridAssignableContactsProps.page * dataGridAssignableContactsProps.pageSize,
-            limit: dataGridAssignableContactsProps.pageSize,
+            offset: dataGridAssignableContactsProps.paginationModel.page * dataGridAssignableContactsProps.paginationModel.pageSize,
+            limit: dataGridAssignableContactsProps.paginationModel.pageSize,
             email: dataGridAssignableContactsProps.filterModel?.quickFilterValues
                 ? dataGridAssignableContactsProps.filterModel?.quickFilterValues[0]
                 : undefined,
@@ -188,8 +183,8 @@ export function AddContactsGridSelect({ id, scope, assignedContactsTargetGroupBr
         manuallyAssignedBrevoContactsGridQuery,
         {
             variables: {
-                offset: dataGridAssignedContactsProps.page * dataGridAssignedContactsProps.pageSize,
-                limit: dataGridAssignedContactsProps.pageSize,
+                offset: dataGridAssignedContactsProps.paginationModel.page * dataGridAssignedContactsProps.paginationModel.pageSize,
+                limit: dataGridAssignedContactsProps.paginationModel.pageSize,
                 email: dataGridAssignedContactsProps.filterModel?.quickFilterValues
                     ? dataGridAssignedContactsProps.filterModel?.quickFilterValues[0]
                     : undefined,
@@ -260,16 +255,16 @@ export function AddContactsGridSelect({ id, scope, assignedContactsTargetGroupBr
         <>
             <DataGrid
                 {...dataGridAssignedContactsProps}
-                disableSelectionOnClick
+                disableRowSelectionOnClick
                 rows={assignedContactsData?.manuallyAssignedBrevoContacts.nodes ?? []}
                 rowCount={assignedContactsRowCount}
                 columns={assignedContactsColumns}
                 autoHeight
                 loading={assignedContactsLoading}
-                components={{
-                    Toolbar: AssignedContactsGridToolbar,
+                slots={{
+                    toolbar: AssignedContactsGridToolbar,
                 }}
-                componentsProps={{
+                slotProps={{
                     toolbar: {
                         onOpenDialog: () => setIsDialogOpen(true),
                         scope,
@@ -277,7 +272,6 @@ export function AddContactsGridSelect({ id, scope, assignedContactsTargetGroupBr
                     },
                 }}
             />
-
             <FinalForm<FormProps> mode="edit" onSubmit={submit}>
                 {({ handleSubmit, submitting }) => {
                     return (
@@ -299,11 +293,11 @@ export function AddContactsGridSelect({ id, scope, assignedContactsTargetGroupBr
                                                 columns={assignableContactsColumns}
                                                 autoHeight
                                                 loading={assignableContactsLoading || submitting}
-                                                components={{
-                                                    Toolbar: AssignableContactsGridToolbar,
+                                                slots={{
+                                                    toolbar: AssignableContactsGridToolbar,
                                                 }}
-                                                selectionModel={props.value}
-                                                onSelectionModelChange={(newSelectionModel) => {
+                                                rowSelectionModel={props.value}
+                                                onRowSelectionModelChange={(newSelectionModel) => {
                                                     props.input.onChange(newSelectionModel);
                                                 }}
                                                 checkboxSelection
@@ -320,8 +314,7 @@ export function AddContactsGridSelect({ id, scope, assignedContactsTargetGroupBr
                                             await handleSubmit();
                                             setIsDialogOpen(false);
                                         }}
-                                        variant="contained"
-                                        color="primary"
+                                        variant="primary"
                                     >
                                         <FormattedMessage id="cometBrevoModule.targetGroup.addBrevoContacts.dialog.save" defaultMessage="Save" />
                                     </Button>

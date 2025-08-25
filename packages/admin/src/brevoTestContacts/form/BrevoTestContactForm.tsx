@@ -17,11 +17,11 @@ import {
     useStackApi,
 } from "@comet/admin";
 import { ArrowLeft } from "@comet/admin-icons";
-import { type ContentScopeInterface, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
+import { type ContentScope, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
 import { Card, IconButton } from "@mui/material";
 import { Box } from "@mui/system";
 import { type FormApi } from "final-form";
-import { useMemo } from "react";
+import { type ReactElement, type ReactNode, useMemo } from "react";
 import { FormattedMessage } from "react-intl";
 
 import {
@@ -51,13 +51,13 @@ type EditBrevoContactFormValuesWithAttributes = EditBrevoContactFormValues & {
 
 interface FormProps {
     id?: number;
-    scope: ContentScopeInterface;
-    additionalFormFields?: React.ReactNode;
+    scope: ContentScope;
+    additionalFormFields?: ReactNode;
     additionalAttributesFragment?: { name: string; fragment: DocumentNode };
     input2State?: (values?: EditBrevoContactFormValues) => EditBrevoContactFormValues;
 }
 
-export function BrevoTestContactForm({ id, scope, input2State, additionalFormFields, additionalAttributesFragment }: FormProps): React.ReactElement {
+export function BrevoTestContactForm({ id, scope, input2State, additionalFormFields, additionalAttributesFragment }: FormProps): ReactElement {
     const stackApi = useStackApi();
     const client = useApolloClient();
     const mode = id ? "edit" : "add";

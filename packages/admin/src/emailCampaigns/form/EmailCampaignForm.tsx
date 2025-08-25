@@ -14,18 +14,16 @@ import {
 } from "@comet/admin";
 import { ArrowLeft } from "@comet/admin-icons";
 import {
-    AdminComponentRoot,
-    AdminTabLabel,
+    BlockAdminComponentRoot,
+    BlockAdminTabLabel,
     type BlockInterface,
+    BlockPreviewWithTabs,
     BlocksFinalForm,
     type BlockState,
+    type ContentScope,
+    ContentScopeIndicator,
     createFinalFormBlock,
     parallelAsyncEvery,
-} from "@comet/blocks-admin";
-import {
-    BlockPreviewWithTabs,
-    ContentScopeIndicator,
-    type ContentScopeInterface,
     queryUpdatedAt,
     resolveHasSaveConflict,
     useBlockPreview,
@@ -60,7 +58,7 @@ import { TestEmailCampaignForm } from "./TestEmailCampaignForm";
 interface FormProps {
     id?: string;
     EmailCampaignContentBlock: BlockInterface;
-    scope: ContentScopeInterface;
+    scope: ContentScope;
 }
 
 export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope }: FormProps) {
@@ -243,9 +241,9 @@ export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope }: Form
                         {
                             key: "config",
                             label: (
-                                <AdminTabLabel>
+                                <BlockAdminTabLabel>
                                     <FormattedMessage id="cometBrevoModule.emailCampaigns.config" defaultMessage="Config" />
-                                </AdminTabLabel>
+                                </BlockAdminTabLabel>
                             ),
                             content: (
                                 <BlocksFinalForm
@@ -262,9 +260,9 @@ export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope }: Form
                         {
                             key: "blocks",
                             label: (
-                                <AdminTabLabel>
+                                <BlockAdminTabLabel>
                                     <FormattedMessage id="cometBrevoModule.emailCampaigns.blocks" defaultMessage="Blocks" />
-                                </AdminTabLabel>
+                                </BlockAdminTabLabel>
                             ),
                             content: (
                                 <BlocksFinalForm
@@ -273,18 +271,18 @@ export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope }: Form
                                         content: state?.content,
                                     }}
                                 >
-                                    <AdminComponentRoot>
+                                    <BlockAdminComponentRoot>
                                         <Field name="content" fullWidth required component={FinalFormEmailCampaignContentBlock} />
-                                    </AdminComponentRoot>
+                                    </BlockAdminComponentRoot>
                                 </BlocksFinalForm>
                             ),
                         },
                         {
                             key: "send-manager",
                             label: (
-                                <AdminTabLabel>
+                                <BlockAdminTabLabel>
                                     <FormattedMessage id="cometBrevoModule.emailCampaigns.sendManager" defaultMessage="Send manager" />
-                                </AdminTabLabel>
+                                </BlockAdminTabLabel>
                             ),
                             content: (
                                 <BlocksFinalForm

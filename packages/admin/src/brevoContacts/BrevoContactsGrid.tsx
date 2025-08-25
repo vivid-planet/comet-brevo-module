@@ -1,5 +1,6 @@
 import { type DocumentNode, gql, useApolloClient, useQuery } from "@apollo/client";
 import {
+    Button,
     DataGridToolbar,
     type GridColDef,
     MainContent,
@@ -7,20 +8,16 @@ import {
     RowActionsItem,
     RowActionsMenu,
     StackLink,
-    ToolbarActions,
     ToolbarFillSpace,
-    ToolbarItem,
-    ToolbarTitleItem,
     useBufferedRowCount,
     useDataGridRemote,
     usePersistentColumnState,
 } from "@comet/admin";
 import { Add, Block, Check, Delete, Edit } from "@comet/admin-icons";
-import { type ContentScopeInterface } from "@comet/cms-admin";
-// TODO v8: remove eslint-disable-next-line
-// eslint-disable-next-line no-restricted-imports
-import { Button, IconButton } from "@mui/material";
+import { type ContentScope } from "@comet/cms-admin";
+import { IconButton } from "@mui/material";
 import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
+import { type ReactElement } from "react";
 import { FormattedMessage, type IntlShape, useIntl } from "react-intl";
 
 import { useContactImportFromCsv } from "../common/contactImport/useContactImportFromCsv";
@@ -72,21 +69,15 @@ function BrevoContactsGridToolbar({ intl, scope }: { intl: IntlShape; scope: GQL
     return (
         <>
             <DataGridToolbar>
-                <ToolbarTitleItem>
-                    <FormattedMessage id="cometBrevoModule.brevoContact.title" defaultMessage="Contacts" />
-                </ToolbarTitleItem>
-                <ToolbarItem>
-                    <GridToolbarQuickFilter
-                        placeholder={intl.formatMessage({ id: "cometBrevoModule.brevoContact.searchEmail", defaultMessage: "Search email address" })}
-                    />
-                </ToolbarItem>
+                <FormattedMessage id="cometBrevoModule.brevoContact.title" defaultMessage="Contacts" />
+                <GridToolbarQuickFilter
+                    placeholder={intl.formatMessage({ id: "cometBrevoModule.brevoContact.searchEmail", defaultMessage: "Search email address" })}
+                />
                 <ToolbarFillSpace />
-                <ToolbarActions>
-                    <CrudMoreActionsMenu overallItems={[moreActionsMenuItem]} />
-                    <Button startIcon={<Add />} component={StackLink} pageName="add" payload="add" variant="contained" color="primary">
-                        <FormattedMessage id="cometBrevoModule.brevoContact.newContact" defaultMessage="New contact" />
-                    </Button>
-                </ToolbarActions>
+                <CrudMoreActionsMenu overallItems={[moreActionsMenuItem]} />
+                <Button startIcon={<Add />} component={StackLink} pageName="add" payload="add" variant="primary">
+                    <FormattedMessage id="cometBrevoModule.brevoContact.newContact" defaultMessage="New contact" />
+                </Button>
             </DataGridToolbar>
             {contactImportComponent}
         </>
@@ -98,10 +89,10 @@ export function BrevoContactsGrid({
     additionalAttributesFragment,
     additionalGridFields = [],
 }: {
-    scope: ContentScopeInterface;
+    scope: ContentScope;
     additionalAttributesFragment?: { name: string; fragment: DocumentNode };
     additionalGridFields?: GridColDef[];
-}): React.ReactElement {
+}): ReactElement {
     const brevoContactsQuery = gql`
         query BrevoContactsGrid($offset: Int, $limit: Int, $email: String, $scope: EmailCampaignContentScopeInput!) {
             brevoContacts(offset: $offset, limit: $limit, email: $email, scope: $scope) {
@@ -206,8 +197,8 @@ export function BrevoContactsGrid({
 
     const { data, loading, error } = useQuery<GQLBrevoContactsGridQuery, GQLBrevoContactsGridQueryVariables>(brevoContactsQuery, {
         variables: {
-            offset: dataGridProps.page * dataGridProps.pageSize,
-            limit: dataGridProps.pageSize,
+            offset: dataGridProps.paginationModel.page * dataGridProps.paginationModel.pageSize,
+            limit: dataGridProps.paginationModel.pageSize,
             email: dataGridProps.filterModel?.quickFilterValues ? dataGridProps.filterModel?.quickFilterValues[0] : undefined,
             scope,
         },
@@ -221,15 +212,15 @@ export function BrevoContactsGrid({
         <MainContent fullHeight>
             <DataGrid
                 {...dataGridProps}
-                disableSelectionOnClick
+                disableRowSelectionOnClick
                 rows={rows}
                 rowCount={rowCount}
                 columns={columns}
                 loading={loading}
-                components={{
-                    Toolbar: BrevoContactsGridToolbar,
+                slots={{
+                    toolbar: BrevoContactsGridToolbar,
                 }}
-                componentsProps={{
+                slotProps={{
                     toolbar: {
                         intl,
                         scope,

@@ -1,5 +1,6 @@
 import { gql, useApolloClient, useQuery } from "@apollo/client";
 import {
+    Button,
     CrudContextMenu,
     DataGridToolbar,
     type GridColDef,
@@ -8,23 +9,20 @@ import {
     muiGridFilterToGql,
     muiGridSortToGql,
     StackLink,
-    ToolbarActions,
     ToolbarAutomaticTitleItem,
     ToolbarFillSpace,
-    ToolbarItem,
     useBufferedRowCount,
     useDataGridRemote,
     useEditDialog,
     usePersistentColumnState,
 } from "@comet/admin";
 import { Add as AddIcon, Download, Edit } from "@comet/admin-icons";
-import { type ContentScopeInterface } from "@comet/cms-admin";
-// TODO v8: remove eslint-disable-next-line
-// eslint-disable-next-line no-restricted-imports
-import { Button, IconButton } from "@mui/material";
+import { type ContentScope } from "@comet/cms-admin";
+import { DialogContent, IconButton } from "@mui/material";
 import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import saveAs from "file-saver";
 import { type DocumentNode } from "graphql";
+import { type ReactElement } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
 import { TargetGroupDialog } from "./TargetGroupDialog";
@@ -100,12 +98,12 @@ export function TargetGroupsGrid({
     scope,
     exportTargetGroupOptions,
 }: {
-    scope: ContentScopeInterface;
+    scope: ContentScope;
     exportTargetGroupOptions?: {
         additionalAttributesFragment: { name: string; fragment: DocumentNode };
         exportFields: { renderValue: (row: AdditionalContactAttributesType) => string; headerName: string }[];
     };
-}): React.ReactElement {
+}): ReactElement {
     const client = useApolloClient();
     const intl = useIntl();
     const dataGridProps = { ...useDataGridRemote(), ...usePersistentColumnState("TargetGroupsGrid") };
@@ -115,25 +113,18 @@ export function TargetGroupsGrid({
         return (
             <DataGridToolbar>
                 <ToolbarAutomaticTitleItem />
-                <ToolbarItem>
-                    <GridToolbarQuickFilter />
-                </ToolbarItem>
-                <ToolbarItem>
-                    <GridFilterButton />
-                </ToolbarItem>
+                <GridToolbarQuickFilter />
+                <GridFilterButton />
                 <ToolbarFillSpace />
-                <ToolbarActions>
-                    <Button
-                        startIcon={<AddIcon />}
-                        variant="contained"
-                        color="primary"
-                        onClick={() => {
-                            editDialogApi.openAddDialog();
-                        }}
-                    >
-                        <FormattedMessage id="cometBrevoModule.targetGroup.newTargetGroup" defaultMessage="New target group" />
-                    </Button>
-                </ToolbarActions>
+                <Button
+                    startIcon={<AddIcon />}
+                    variant="primary"
+                    onClick={() => {
+                        editDialogApi.openAddDialog();
+                    }}
+                >
+                    <FormattedMessage id="cometBrevoModule.targetGroup.newTargetGroup" defaultMessage="New target group" />
+                </Button>
             </DataGridToolbar>
         );
     }
@@ -263,8 +254,8 @@ export function TargetGroupsGrid({
             scope,
             filter: gqlFilter,
             search: gqlSearch,
-            offset: dataGridProps.page * dataGridProps.pageSize,
-            limit: dataGridProps.pageSize,
+            offset: dataGridProps.paginationModel.page * dataGridProps.paginationModel.pageSize,
+            limit: dataGridProps.paginationModel.pageSize,
             sort: muiGridSortToGql(dataGridProps.sortModel),
         },
     });
@@ -276,17 +267,19 @@ export function TargetGroupsGrid({
         <MainContent fullHeight>
             <DataGrid
                 {...dataGridProps}
-                disableSelectionOnClick
+                disableRowSelectionOnClick
                 rows={rows}
                 rowCount={rowCount}
                 columns={columns}
                 loading={loading}
-                components={{
-                    Toolbar: TargetGroupsGridToolbar,
+                slots={{
+                    toolbar: TargetGroupsGridToolbar,
                 }}
             />
             <EditDialog disableCloseAfterSave componentsProps={{ dialog: { maxWidth: "sm" } }}>
-                <TargetGroupDialog scope={scope} />
+                <DialogContent>
+                    <TargetGroupDialog scope={scope} />
+                </DialogContent>
             </EditDialog>
         </MainContent>
     );

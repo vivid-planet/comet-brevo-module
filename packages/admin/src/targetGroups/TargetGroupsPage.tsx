@@ -1,6 +1,7 @@
 import { Stack, StackPage, StackSwitch, Toolbar } from "@comet/admin";
 import { ContentScopeIndicator, useContentScope } from "@comet/cms-admin";
 import { type DocumentNode } from "graphql";
+import { type ReactNode } from "react";
 import { useIntl } from "react-intl";
 
 import { useBrevoConfig } from "../common/BrevoConfigProvider";
@@ -9,7 +10,7 @@ import { type EditTargetGroupFinalFormValues, TargetGroupForm } from "./TargetGr
 import { type AdditionalContactAttributesType, TargetGroupsGrid } from "./TargetGroupsGrid";
 
 interface CreateContactsPageOptions {
-    additionalFormFields?: React.ReactNode;
+    additionalFormFields?: ReactNode;
     exportTargetGroupOptions?: {
         additionalAttributesFragment: { name: string; fragment: DocumentNode };
         exportFields: { renderValue: (row: AdditionalContactAttributesType) => string; headerName: string }[];

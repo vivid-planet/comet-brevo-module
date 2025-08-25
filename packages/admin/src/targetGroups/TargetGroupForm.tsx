@@ -17,14 +17,13 @@ import {
     useStackApi,
 } from "@comet/admin";
 import { ArrowLeft } from "@comet/admin-icons";
-import { ContentScopeIndicator, type ContentScopeInterface, queryUpdatedAt, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
+import { type ContentScope, ContentScopeIndicator, queryUpdatedAt, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
 import { IconButton } from "@mui/material";
 import { type FormApi } from "final-form";
 import { FormattedMessage } from "react-intl";
 
 export { namedOperations as targetGroupFormNamedOperations } from "./TargetGroupForm.gql.generated";
-
-import { useMemo } from "react";
+import { type ReactElement, type ReactNode, useMemo } from "react";
 
 import { AddContactsGridSelect } from "./addContacts/AddContactsGridSelect";
 import { AllAssignedContactsGrid } from "./allAssignedContacts/AllAssignedContactsGrid";
@@ -43,13 +42,13 @@ export interface EditTargetGroupFinalFormValues {
 
 interface FormProps {
     id: string;
-    scope: ContentScopeInterface;
-    additionalFormFields?: React.ReactNode;
+    scope: ContentScope;
+    additionalFormFields?: ReactNode;
     nodeFragment?: { name: string; fragment: DocumentNode };
     input2State?: (values?: EditTargetGroupFinalFormValues) => EditTargetGroupFinalFormValues;
 }
 
-export function TargetGroupForm({ id, scope, additionalFormFields, input2State, nodeFragment }: FormProps): React.ReactElement {
+export function TargetGroupForm({ id, scope, additionalFormFields, input2State, nodeFragment }: FormProps): ReactElement {
     const stackApi = useStackApi();
     const client = useApolloClient();
     const mode = "edit";

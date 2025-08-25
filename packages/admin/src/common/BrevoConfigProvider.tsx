@@ -1,10 +1,10 @@
-import { type ContentScopeInterface, useContentScope } from "@comet/cms-admin";
-import { createContext, useContext } from "react";
+import { type ContentScope, useContentScope } from "@comet/cms-admin";
+import { createContext, type PropsWithChildren, useContext } from "react";
 
 export interface BrevoConfig {
     apiUrl: string;
     scopeParts: string[];
-    resolvePreviewUrlForScope: (scope: ContentScopeInterface) => string;
+    resolvePreviewUrlForScope: (scope: ContentScope) => string;
     allowAddingContactsWithoutDoi?: boolean;
 }
 
@@ -14,7 +14,7 @@ interface BrevoConfigProviderProps {
     value: BrevoConfig;
 }
 
-export const BrevoConfigProvider = ({ children, value }: React.PropsWithChildren<BrevoConfigProviderProps>) => {
+export const BrevoConfigProvider = ({ children, value }: PropsWithChildren<BrevoConfigProviderProps>) => {
     return <BrevoConfigContext.Provider value={value}>{children}</BrevoConfigContext.Provider>;
 };
 
