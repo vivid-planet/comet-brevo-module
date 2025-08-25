@@ -160,7 +160,7 @@ importers:
     devDependencies:
       '@comet/cli':
         specifier: ^7.21.1
-        version: 7.25.1(ts-node@10.9.2)
+        version: 7.25.7(ts-node@10.9.2)
       '@comet/eslint-config':
         specifier: 8.0.0
         version: 8.0.0(eslint@9.18.0)(next@14.2.25)(prettier@3.6.2)(typescript@5.9.2)
@@ -570,7 +570,7 @@ importers:
         version: 7.26.0
       '@comet/cli':
         specifier: ^7.21.1
-        version: 7.25.1(ts-node@10.9.2)
+        version: 7.25.7(ts-node@10.9.2)
       '@comet/eslint-config':
         specifier: 8.0.0
         version: 8.0.0(eslint@9.18.0)(next@14.2.25)(prettier@3.6.2)(typescript@5.9.2)
@@ -712,7 +712,7 @@ importers:
         version: 7.26.0
       '@comet/cli':
         specifier: ^7.21.1
-        version: 7.25.1(ts-node@10.9.2)
+        version: 7.25.7(ts-node@10.9.2)
       '@comet/eslint-config':
         specifier: 8.0.0
         version: 8.0.0(eslint@9.18.0)(next@14.2.25)(prettier@3.6.2)(typescript@5.9.2)
@@ -1071,7 +1071,7 @@ importers:
     devDependencies:
       '@comet/cli':
         specifier: ^7.21.1
-        version: 7.25.1(ts-node@10.9.2)
+        version: 7.25.7(ts-node@10.9.2)
       '@comet/eslint-config':
         specifier: 8.0.0
         version: 8.0.0(eslint@9.18.0)(next@14.2.25)(prettier@2.8.8)(typescript@5.9.2)
@@ -5954,8 +5954,8 @@ packages:
       - history
     dev: false
 
-  /@comet/cli@7.25.1(ts-node@10.9.2):
-    resolution: {integrity: sha512-/VypsiSlCZFqyP24fVyiLgesBgiKZrSy08EOO3mRwpytwvbgjH6SGELT28UiNIGwANbirTLrdJxPrk/E0+zXeg==}
+  /@comet/cli@7.25.7(ts-node@10.9.2):
+    resolution: {integrity: sha512-oyZiUAeYoFf5egbyaeWs+CvYNzZBbnlneLyeKA1tZfwJFvr4thTyx7wNREi/jqEl6HOMHEdyFKFVeuNPtpW+IA==}
     hasBin: true
     peerDependencies:
       ts-node: ^10.9.1
@@ -6466,7 +6466,7 @@ packages:
       rimraf: 3.0.2
       scroll-into-view-if-needed: 2.2.31
       server-only: 0.0.1
-      usehooks-ts: 3.1.0(react@18.3.1)
+      usehooks-ts: 3.1.1(react@18.3.1)
 
   /@comet/site-react@7.25.7(@types/react@18.3.12)(react-dom@18.3.1)(react@18.3.1):
     resolution: {integrity: sha512-c22kAyOki+cSUdXBxzRs/K6145VwzoWNgvhoyNP8I/OLvSCOBA/y7TXC4pHxZEY+0/FUWmNKwxuP08VVtsCXFQ==}
@@ -6485,7 +6485,7 @@ packages:
       rimraf: 3.0.2
       scroll-into-view-if-needed: 2.2.31
       server-only: 0.0.1
-      usehooks-ts: 3.1.0(react@18.3.1)
+      usehooks-ts: 3.1.1(react@18.3.1)
 
   /@cspotcode/source-map-support@0.8.1:
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
@@ -9093,16 +9093,6 @@ packages:
       '@types/react': 17.0.88
     dev: false
 
-  /@mui/types@7.2.24(@types/react@18.3.23):
-    resolution: {integrity: sha512-3c8tRt/CbWZ+pEg7QpSwbdxOk36EfmhbKf6AGZsD1EcLDLTSZoxxJ86FVtcjxvjuhdyBiWKSTGZFaXCnidO2kw==}
-    peerDependencies:
-      '@types/react': ^17.0.0 || ^18.0.0 || ^19.0.0
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
-    dependencies:
-      '@types/react': 18.3.23
-
   /@mui/types@7.4.5(@types/react@18.3.23):
     resolution: {integrity: sha512-ZPwlAOE3e8C0piCKbaabwrqZbW4QvWz0uapVPWya7fYj6PeDkl5sSJmomT7wjOcZGPB48G/a6Ubidqreptxz4g==}
     peerDependencies:
@@ -9133,25 +9123,6 @@ packages:
       react: 17.0.2
       react-is: 19.1.1
     dev: false
-
-  /@mui/utils@5.17.1(@types/react@18.3.23)(react@18.3.1):
-    resolution: {integrity: sha512-jEZ8FTqInt2WzxDV8bhImWBqeQRD99c/id/fq83H0ER9tFl+sfZlaAoCdznGvbSQQ9ividMxqSV2c7cC1vBcQg==}
-    engines: {node: '>=12.0.0'}
-    peerDependencies:
-      '@types/react': ^17.0.0 || ^18.0.0 || ^19.0.0
-      react: ^17.0.0 || ^18.0.0 || ^19.0.0
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
-    dependencies:
-      '@babel/runtime': 7.28.2
-      '@mui/types': 7.2.24(@types/react@18.3.23)
-      '@types/prop-types': 15.7.15
-      '@types/react': 18.3.23
-      clsx: 2.1.1
-      prop-types: 15.8.1
-      react: 18.3.1
-      react-is: 19.1.1
 
   /@mui/utils@7.3.1(@types/react@18.3.23)(react@18.3.1):
     resolution: {integrity: sha512-/31y4wZqVWa0jzMnzo6JPjxwP6xXy4P3+iLbosFg/mJQowL1KIou0LC+lquWW60FKVbKz5ZUWBg2H3jausa0pw==}
@@ -9193,7 +9164,7 @@ packages:
       '@emotion/styled': 11.11.0(@emotion/react@11.11.3)(@types/react@18.3.23)(react@18.3.1)
       '@mui/material': 7.3.1(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@types/react@18.3.23)(react-dom@18.3.1)(react@18.3.1)
       '@mui/system': 7.3.1(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@types/react@18.3.23)(react@18.3.1)
-      '@mui/utils': 5.17.1(@types/react@18.3.23)(react@18.3.1)
+      '@mui/utils': 7.3.1(@types/react@18.3.23)(react@18.3.1)
       '@mui/x-data-grid': 7.29.9(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@mui/material@7.3.1)(@mui/system@7.3.1)(@types/react@18.3.23)(react-dom@18.3.1)(react@18.3.1)
       '@mui/x-internals': 7.29.0(@types/react@18.3.23)(react@18.3.1)
       '@mui/x-license': 7.29.1(@types/react@18.3.23)(react@18.3.1)
@@ -9249,7 +9220,7 @@ packages:
       '@emotion/styled': 11.11.0(@emotion/react@11.11.3)(@types/react@18.3.23)(react@18.3.1)
       '@mui/material': 7.3.1(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@types/react@18.3.23)(react-dom@18.3.1)(react@18.3.1)
       '@mui/system': 7.3.1(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@types/react@18.3.23)(react@18.3.1)
-      '@mui/utils': 5.17.1(@types/react@18.3.23)(react@18.3.1)
+      '@mui/utils': 7.3.1(@types/react@18.3.23)(react@18.3.1)
       '@mui/x-internals': 7.29.0(@types/react@18.3.23)(react@18.3.1)
       clsx: 2.1.1
       prop-types: 15.8.1
@@ -9302,7 +9273,7 @@ packages:
       '@emotion/styled': 11.11.0(@emotion/react@11.11.3)(@types/react@18.3.23)(react@18.3.1)
       '@mui/material': 7.3.1(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@types/react@18.3.23)(react-dom@18.3.1)(react@18.3.1)
       '@mui/system': 7.3.1(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@types/react@18.3.23)(react@18.3.1)
-      '@mui/utils': 5.17.1(@types/react@18.3.23)(react@18.3.1)
+      '@mui/utils': 7.3.1(@types/react@18.3.23)(react@18.3.1)
       '@mui/x-internals': 7.29.0(@types/react@18.3.23)(react@18.3.1)
       '@types/react-transition-group': 4.4.12(@types/react@18.3.23)
       clsx: 2.1.1
@@ -9321,7 +9292,7 @@ packages:
       react: ^17.0.0 || ^18.0.0 || ^19.0.0
     dependencies:
       '@babel/runtime': 7.28.2
-      '@mui/utils': 5.17.1(@types/react@18.3.23)(react@18.3.1)
+      '@mui/utils': 7.3.1(@types/react@18.3.23)(react@18.3.1)
       react: 18.3.1
     transitivePeerDependencies:
       - '@types/react'
@@ -9333,7 +9304,7 @@ packages:
       react: ^17.0.0 || ^18.0.0 || ^19.0.0
     dependencies:
       '@babel/runtime': 7.28.2
-      '@mui/utils': 5.17.1(@types/react@18.3.23)(react@18.3.1)
+      '@mui/utils': 7.3.1(@types/react@18.3.23)(react@18.3.1)
       '@mui/x-internals': 7.29.0(@types/react@18.3.23)(react@18.3.1)
       react: 18.3.1
     transitivePeerDependencies:
@@ -12065,7 +12036,7 @@ packages:
     resolution: {integrity: sha512-kpqnYK4wcdm5UaWI3fLcELopqLrHgLqNsdpHauzlQktfkHL3npOSwtj1Uz9oKBAzs7lFtVkV8j83voAz2D8fhw==}
     dependencies:
       '@types/history': 4.7.11
-      '@types/react': 17.0.88
+      '@types/react': 18.3.23
       '@types/react-router': 5.1.20
     dev: true
 
@@ -12073,7 +12044,7 @@ packages:
     resolution: {integrity: sha512-jGjmu/ZqS7FjSH6owMcD5qpq19+1RS9DeVRqfl1FeBMxTDQAGwlMWOcs52NDoXaNKyG3d1cYQFMs9rCrb88o9Q==}
     dependencies:
       '@types/history': 4.7.11
-      '@types/react': 17.0.88
+      '@types/react': 18.3.23
     dev: true
 
   /@types/react-transition-group@4.4.12(@types/react@17.0.88):
@@ -24267,11 +24238,11 @@ packages:
     dependencies:
       react: 18.3.1
 
-  /usehooks-ts@3.1.0(react@18.3.1):
-    resolution: {integrity: sha512-bBIa7yUyPhE1BCc0GmR96VU/15l/9gP1Ch5mYdLcFBaFGQsdmXkvjV0TtOqW1yUd6VjIwDunm+flSciCQXujiw==}
+  /usehooks-ts@3.1.1(react@18.3.1):
+    resolution: {integrity: sha512-I4diPp9Cq6ieSUH2wu+fDAVQO43xwtulo+fKEidHUwZPnYImbtkTjzIJYcDcJqxgmX31GVqNFURodvcgHcW0pA==}
     engines: {node: '>=16.15.0'}
     peerDependencies:
-      react: ^16.8.0  || ^17 || ^18
+      react: ^16.8.0  || ^17 || ^18 || ^19 || ^19.0.0-rc
     dependencies:
       lodash.debounce: 4.0.8
       react: 18.3.1
