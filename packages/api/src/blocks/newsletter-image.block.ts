@@ -2,13 +2,13 @@ import {
     BlockData,
     BlockDataInterface,
     BlockInput,
+    blockInputToData,
     ChildBlock,
     ChildBlockInput,
     createBlock,
     ExtractBlockInput,
-    inputToData,
-} from "@comet/blocks-api";
-import { PixelImageBlock } from "@comet/cms-api";
+    PixelImageBlock,
+} from "@comet/cms-api";
 
 export class NewsletterImageBlockData extends BlockData {
     @ChildBlock(PixelImageBlock)
@@ -19,7 +19,7 @@ export class NewsletterImageBlockInput extends BlockInput {
     image: ExtractBlockInput<typeof PixelImageBlock>;
 
     transformToBlockData(): NewsletterImageBlockData {
-        return inputToData(NewsletterImageBlockData, this);
+        return blockInputToData(NewsletterImageBlockData, this);
     }
 }
 export const NewsletterImageBlock = createBlock(NewsletterImageBlockData, NewsletterImageBlockInput, {

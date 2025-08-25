@@ -1,5 +1,5 @@
 import { DocumentInterface } from "@comet/cms-api";
-import { Embedded, Entity, OptionalProps, PrimaryKey, Property } from "@mikro-orm/core";
+import { Embedded, Entity, OptionalProps, PrimaryKey, Property } from "@mikro-orm/postgresql";
 import { Type } from "@nestjs/common";
 import { Field, ID, Int, ObjectType } from "@nestjs/graphql";
 import { v4 } from "uuid";
@@ -21,7 +21,7 @@ export interface BrevoConfigInterface {
 }
 
 export class BrevoConfigEntityFactory {
-    static create({ Scope }: { Scope: EmailCampaignScopeInterface }): Type<BrevoConfigInterface> {
+    static create({ Scope }: { Scope: Type<EmailCampaignScopeInterface> }): Type<BrevoConfigInterface> {
         @Entity()
         @ObjectType({
             implements: () => [DocumentInterface],

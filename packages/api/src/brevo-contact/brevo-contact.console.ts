@@ -1,25 +1,24 @@
-import { CreateRequestContext, MikroORM } from "@mikro-orm/core";
-import { Injectable } from "@nestjs/common";
-import { Command, Console } from "nestjs-console";
+import { CreateRequestContext, MikroORM } from "@mikro-orm/postgresql";
+import { Command, CommandRunner } from "nest-commander";
 
 import { BrevoApiContactsService } from "../brevo-api/brevo-api-contact.service";
 import { TargetGroupsService } from "../target-group/target-groups.service";
 
-@Injectable()
-@Console()
-export class DeleteUnsubscribedBrevoContactsConsole {
+@Command({
+    name: "delete-unsubscribed-brevo-contacts",
+    description: "deletes unsubscribed contacts",
+})
+export class DeleteUnsubscribedBrevoContactsConsole extends CommandRunner {
     constructor(
         private readonly brevoApiContactsService: BrevoApiContactsService,
         private readonly targetGroupsService: TargetGroupsService,
         private readonly orm: MikroORM,
-    ) {}
+    ) {
+        super();
+    }
 
-    @Command({
-        command: "delete-unsubscribed-brevo-contacts",
-        description: "deletes unsubscribed contacts",
-    })
     @CreateRequestContext()
-    async execute(): Promise<void> {
+    async run(): Promise<void> {
         const offset = 0;
         const limit = 50;
         const where = { isMainList: true };

@@ -2,8 +2,8 @@ import { BlobStorageBackendService, CurrentUser, FileUpload, GetCurrentUser, Req
 import { createHashedPath } from "@comet/cms-api/lib/blob-storage/utils/create-hashed-path.util";
 import { FileUploadsConfig } from "@comet/cms-api/lib/file-uploads/file-uploads.config";
 import { FILE_UPLOADS_CONFIG } from "@comet/cms-api/lib/file-uploads/file-uploads.constants";
-import { EntityManager, EntityRepository } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
+import { EntityManager, EntityRepository } from "@mikro-orm/postgresql";
 import { Inject, Type } from "@nestjs/common";
 import { ModuleRef } from "@nestjs/core";
 import { Args, ArgsType, Mutation, Resolver } from "@nestjs/graphql";

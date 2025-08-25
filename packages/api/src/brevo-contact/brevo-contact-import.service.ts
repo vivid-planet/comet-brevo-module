@@ -1,6 +1,6 @@
 import * as csv from "@fast-csv/parse";
-import { EntityRepository } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
+import { EntityRepository } from "@mikro-orm/postgresql";
 import { Inject, Injectable } from "@nestjs/common";
 import { Field, Int, ObjectType } from "@nestjs/graphql";
 import { IsEmail, IsNotEmpty, validateSync } from "class-validator";

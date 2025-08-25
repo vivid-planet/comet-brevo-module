@@ -1,6 +1,6 @@
 import { AffectedEntity, RequiredPermission, validateNotModified } from "@comet/cms-api";
-import { EntityManager, EntityRepository, wrap } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
+import { EntityManager, EntityRepository, wrap } from "@mikro-orm/postgresql";
 import { Type } from "@nestjs/common";
 import { Args, ID, Mutation, Query, Resolver } from "@nestjs/graphql";
 
