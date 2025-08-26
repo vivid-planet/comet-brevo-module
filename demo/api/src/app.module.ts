@@ -28,8 +28,8 @@ import { FileUploadDummyModule } from "@src/workaround-remove-in-future/file-upl
 import { Request } from "express";
 
 import { AccessControlService } from "./auth/access-control.service";
+import { AppPermission } from "./auth/app-permission.enum";
 import { AuthModule } from "./auth/auth.module";
-
 import { BlacklistedContacts } from "./blacklisted-contacts/entity/blacklisted-contacts.entity";
 import { BrevoContactSubscribeModule } from "./brevo-contact/brevo-contact-subscribe.module";
 import { BrevoContactAttributes, BrevoContactFilterAttributes } from "./brevo-contact/dto/brevo-contact-attributes";
@@ -45,7 +45,6 @@ import { EmailCampaign } from "./email-campaign/entities/email-campaign.entity";
 import { MenusModule } from "./menus/menus.module";
 import { StatusModule } from "./status/status.module";
 import { TargetGroup } from "./target-group/entity/target-group.entity";
-import { AppPermission } from "./auth/app-permission.enum";
 
 @Module({})
 export class AppModule {
@@ -104,7 +103,7 @@ export class AppModule {
                     }),
                     inject: [AccessControlService],
                     imports: [authModule],
-                    AppPermission
+                    AppPermission,
                 }),
                 BlocksModule,
                 KubernetesModule.register({

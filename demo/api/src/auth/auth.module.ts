@@ -16,7 +16,6 @@ import { AccessControlService } from "./access-control.service";
 import { staticUsers } from "./static-users";
 import { UserService } from "./user.service";
 
-
 export const SYSTEM_USER_NAME = "system-user";
 
 @Module({})
