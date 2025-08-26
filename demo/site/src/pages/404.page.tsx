@@ -1,5 +1,7 @@
+import { type ReactNode } from "react";
+
 interface NotFound404Props {
-    children: React.ReactNode;
+    children: ReactNode;
 }
 export default function NotFound404({ children }: NotFound404Props): JSX.Element {
     return (

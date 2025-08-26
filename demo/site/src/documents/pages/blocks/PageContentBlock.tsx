@@ -6,6 +6,7 @@ import { LinkListBlock } from "@src/common/blocks/LinkListBlock";
 import { RichTextBlock } from "@src/common/blocks/RichTextBlock";
 import { SpaceBlock } from "@src/common/blocks/SpaceBlock";
 import { TextImageBlock } from "@src/common/blocks/TextImageBlock";
+import { type FC } from "react";
 
 const supportedBlocks: SupportedBlocks = {
     space: (props) => <SpaceBlock data={props} />,
@@ -18,6 +19,6 @@ const supportedBlocks: SupportedBlocks = {
     links: (props) => <LinkListBlock data={props} />,
 };
 
-export const PageContentBlock: React.FC<PropsWithData<PageContentBlockData>> = ({ data }) => {
+export const PageContentBlock: FC<PropsWithData<PageContentBlockData>> = ({ data }) => {
     return <BlocksBlock data={data} supportedBlocks={supportedBlocks} />;
 };

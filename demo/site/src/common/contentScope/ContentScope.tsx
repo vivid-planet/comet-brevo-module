@@ -1,10 +1,10 @@
-import { createContext, useContext } from "react";
+import { createContext, type PropsWithChildren, useContext } from "react";
 
 type ContentScope = { domain: string; language: string };
 
 const ContentScopeContext = createContext<ContentScope | undefined>(undefined);
 
-function ContentScopeProvider({ scope, children }: React.PropsWithChildren<{ scope: ContentScope }>) {
+function ContentScopeProvider({ scope, children }: PropsWithChildren<{ scope: ContentScope }>) {
     return <ContentScopeContext.Provider value={scope}>{children}</ContentScopeContext.Provider>;
 }
 
