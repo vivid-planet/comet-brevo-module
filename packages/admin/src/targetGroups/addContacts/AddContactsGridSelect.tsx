@@ -2,6 +2,7 @@ import { useMutation, useQuery } from "@apollo/client";
 import {
     Button,
     CancelButton,
+    CrudMoreActionsMenu,
     DataGridToolbar,
     Dialog,
     Field,
@@ -25,7 +26,6 @@ import { MemoryRouter } from "react-router";
 
 import { useContactImportFromCsv } from "../../common/contactImport/useContactImportFromCsv";
 import { type GQLEmailCampaignContentScopeInput } from "../../graphql.generated";
-import { CrudMoreActionsMenu } from "../../temp/CrudMoreActionsMenu";
 import { targetGroupFormNamedOperations } from "../TargetGroupForm";
 import {
     addBrevoContactsToTargetGroupMutation,
@@ -46,17 +46,14 @@ import {
     namedOperations,
 } from "./AddContactsGridSelect.gql.generated";
 
-const AssignedContactsGridToolbar = ({
-    onOpenDialog,
-    scope,
-    targetGroupId,
-    sendDoubleOptIn,
-}: {
+type AddContactsGridSelectToolbarProps = {
     onOpenDialog: () => void;
     scope: GQLEmailCampaignContentScopeInput;
     targetGroupId: string;
     sendDoubleOptIn: boolean;
-}) => {
+};
+
+const AssignedContactsGridToolbar = ({ onOpenDialog, scope, targetGroupId, sendDoubleOptIn }: AddContactsGridSelectToolbarProps) => {
     const intl = useIntl();
 
     const [moreActionsMenuItem, component] = useContactImportFromCsv({
@@ -79,7 +76,7 @@ const AssignedContactsGridToolbar = ({
                     })}
                 />
                 <ToolbarFillSpace />
-                <CrudMoreActionsMenu overallItems={[moreActionsMenuItem]} />
+                <CrudMoreActionsMenu overallActions={[moreActionsMenuItem]} />
                 <Button startIcon={<Add />} variant="primary" onClick={onOpenDialog}>
                     <FormattedMessage id="cometBrevoModule.targetGroup.assignedContacts.addContact" defaultMessage="Add contacts" />
                 </Button>
@@ -269,7 +266,7 @@ export function AddContactsGridSelect({ id, scope, assignedContactsTargetGroupBr
                         onOpenDialog: () => setIsDialogOpen(true),
                         scope,
                         targetGroupId: id,
-                    },
+                    } as AddContactsGridSelectToolbarProps,
                 }}
             />
             <FinalForm<FormProps> mode="edit" onSubmit={submit}>
