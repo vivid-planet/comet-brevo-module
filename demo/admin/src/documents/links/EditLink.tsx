@@ -4,6 +4,7 @@ import { ArrowLeft } from "@comet/admin-icons";
 import { BlockAdminComponentRoot, ContentScopeIndicator, createUsePage, PageName } from "@comet/cms-admin";
 import { IconButton } from "@mui/material";
 import { LinkBlock } from "@src/common/blocks/LinkBlock";
+import { type FC } from "react";
 import { useIntl } from "react-intl";
 
 import {
@@ -54,7 +55,7 @@ interface Props {
     id: string;
 }
 
-export const EditLink: React.FC<Props> = ({ id }) => {
+export const EditLink: FC<Props> = ({ id }) => {
     const intl = useIntl();
     const stackApi = useStackApi();
 

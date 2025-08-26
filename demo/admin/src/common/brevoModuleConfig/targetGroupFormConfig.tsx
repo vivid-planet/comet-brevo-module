@@ -3,9 +3,10 @@ import { Field, FinalFormSelect } from "@comet/admin";
 import { type EditTargetGroupFinalFormValues } from "@comet/brevo-admin";
 import { MenuItem } from "@mui/material";
 import { type GQLBrevoContactBranch, type GQLBrevoContactSalutation } from "@src/graphql.generated";
+import { type ReactNode } from "react";
 import { FormattedMessage } from "react-intl";
 
-const salutationOptions: Array<{ label: React.ReactNode; value: GQLBrevoContactSalutation }> = [
+const salutationOptions: Array<{ label: ReactNode; value: GQLBrevoContactSalutation }> = [
     {
         label: <FormattedMessage id="targetGroup.filters.salutation.male" defaultMessage="Male" />,
         value: "MALE",
@@ -16,7 +17,7 @@ const salutationOptions: Array<{ label: React.ReactNode; value: GQLBrevoContactS
     },
 ];
 
-const branchOptions: Array<{ label: React.ReactNode; value: GQLBrevoContactBranch }> = [
+const branchOptions: Array<{ label: ReactNode; value: GQLBrevoContactBranch }> = [
     {
         label: <FormattedMessage id="brevoContact.filters.branch.products" defaultMessage="Products" />,
         value: "PRODUCTS",

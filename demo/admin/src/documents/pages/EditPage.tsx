@@ -14,8 +14,9 @@ import {
     useContentScope,
     useSiteConfig,
 } from "@comet/cms-admin";
-import {  IconButton, Stack } from "@mui/material";
+import { IconButton, Stack } from "@mui/material";
 import { type GQLPageTreeNodeCategory } from "@src/graphql.generated";
+import { type FC } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useRouteMatch } from "react-router";
 
@@ -71,7 +72,7 @@ const usePage = createUsePage({
     `,
 });
 
-export const EditPage: React.FC<Props> = ({ id, category }) => {
+export const EditPage: FC<Props> = ({ id, category }) => {
     const intl = useIntl();
     const { pageState, rootBlocksApi, hasChanges, loading, dialogs, pageSaveButton, handleSavePage } = usePage({
         pageId: id,
