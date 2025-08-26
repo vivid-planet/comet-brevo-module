@@ -32,6 +32,8 @@ enum Permission {
   fileUploads
   dependencies
   warnings
+  brevoNewsletterConfig
+  brevoNewsletter
 }
 
 """

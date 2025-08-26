@@ -4,7 +4,7 @@ import "material-design-icons/iconfont/material-icons.css";
 import { ApolloProvider } from "@apollo/client";
 import { ErrorDialogHandler, MasterLayout, MuiThemeProvider, RouterBrowserRouter, SnackbarProvider } from "@comet/admin";
 import { BrevoConfigProvider } from "@comet/brevo-admin";
-import { type AllCategories, CometConfigProvider, ContentScope, ContentScopeProvider, CurrentUserProvider, SitePreview } from "@comet/cms-admin";
+import { type AllCategories, CometConfigProvider, type ContentScope, ContentScopeProvider, CurrentUserProvider, SitePreview } from "@comet/cms-admin";
 import { css, Global } from "@emotion/react";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
@@ -16,8 +16,6 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { FormattedMessage, IntlProvider } from "react-intl";
 import { Route, Switch } from "react-router";
-import type { ContentScope as BaseContentScope } from "@src/site-configs";
-
 
 import { createApolloClient } from "./common/apollo/createApolloClient";
 import { MasterHeader } from "./common/MasterHeader";
@@ -25,6 +23,7 @@ import { AppMasterMenu } from "./common/MasterMenu";
 import { createConfig } from "./config";
 import { Link } from "./documents/links/Link";
 import { Page } from "./documents/pages/Page";
+import { type GQLPermission } from "./graphql.generated";
 
 const GlobalStyle = () => (
     <Global
@@ -51,8 +50,10 @@ const pageTreeDocumentTypes = {
 };
 
 declare module "@comet/cms-admin" {
-    // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-    interface ContentScope extends BaseContentScope {}}
+    export interface PermissionOverrides {
+        permission: GQLPermission;
+    }
+}
 
 export function App() {
     return (

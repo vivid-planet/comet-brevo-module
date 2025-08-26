@@ -45,6 +45,7 @@ import { EmailCampaign } from "./email-campaign/entities/email-campaign.entity";
 import { MenusModule } from "./menus/menus.module";
 import { StatusModule } from "./status/status.module";
 import { TargetGroup } from "./target-group/entity/target-group.entity";
+import { AppPermission } from "./auth/app-permission.enum";
 
 @Module({})
 export class AppModule {
@@ -103,6 +104,7 @@ export class AppModule {
                     }),
                     inject: [AccessControlService],
                     imports: [authModule],
+                    AppPermission
                 }),
                 BlocksModule,
                 KubernetesModule.register({
