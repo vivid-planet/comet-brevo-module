@@ -3,11 +3,12 @@ import { Mjml, MjmlAttributes, MjmlBody, MjmlDivider, MjmlHead, MjmlSection, Mjm
 import { commonImageBlockStyles } from "@src/common/blocks/CommonImageBlock";
 import { css } from "@src/util/stylesHelper";
 import { theme } from "@src/util/theme";
+import { type FC, type PropsWithChildren } from "react";
 import { renderToString } from "react-dom/server";
 
 import { indentedSectionGroupStyles } from "./IndentedSectionGroup";
 
-type Props = React.PropsWithChildren<{
+type Props = PropsWithChildren<{
     title?: string;
 }>;
 
@@ -30,7 +31,7 @@ const outlookFontFixStyleString = renderToString(
     `}</style>,
 );
 
-export const Root: React.FC<Props> = ({ children, title }) => {
+export const Root: FC<Props> = ({ children, title }) => {
     return (
         <Mjml>
             <MjmlHead>

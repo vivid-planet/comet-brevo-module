@@ -2,7 +2,7 @@ import { renderToMjml } from "@luma-team/mjml-react";
 import { type EmailCampaignContentBlockData } from "@src/blocks.generated";
 import { ContentBlock } from "@src/blocks/ContentBlock";
 import { replaceMailHtmlPlaceholders } from "@src/util/replaceMailHtmlPlaceholders";
-import { useEffect, useState } from "react";
+import { type FC, useEffect, useState } from "react";
 import { type IntlConfig, IntlProvider } from "react-intl";
 
 import { Root } from "./Root";
@@ -29,7 +29,7 @@ export const generateMjmlMailContent = (blockData: EmailCampaignContentBlockData
     );
 };
 
-export const RenderedMail: React.FC<Props> = ({ mjmlContent }) => {
+export const RenderedMail: FC<Props> = ({ mjmlContent }) => {
     const [mailHtml, setMailHtml] = useState<string>("");
 
     useEffect(() => {

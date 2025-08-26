@@ -1,11 +1,11 @@
-import eslintConfigNextJs from "@comet/eslint-config/nextjs.js";
+import cometConfig from "@comet/eslint-config/react.js";
 
 /** @type {import('eslint')} */
 const config = [
     {
         ignores: ["**/**/*.generated.ts", "dist/**", "lang/**", "lang-compiled/**", "lang-extracted/**", ".next/**", "public/**"],
     },
-    ...eslintConfigNextJs,
+    ...cometConfig,
 ];
 
 export default config;

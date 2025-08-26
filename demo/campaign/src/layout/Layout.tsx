@@ -1,11 +1,12 @@
 import "@comet/site-nextjs/css";
 
 import { gql, type GraphQLClient } from "graphql-request";
+import { type PropsWithChildren } from "react";
 
 import { Header, headerFragment } from "./header/Header";
 import { type GQLLayoutQuery, type GQLLayoutQueryVariables } from "./Layout.generated";
 
-function Layout({ children, header }: React.PropsWithChildren<GQLLayoutQuery>): JSX.Element {
+function Layout({ children, header }: PropsWithChildren<GQLLayoutQuery>): JSX.Element {
     return (
         <>
             <Header header={header} />
