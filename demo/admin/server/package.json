@@ -1,6 +1,6 @@
 {
     "name": "server",
-    "version": "8.0.0",
+    "version": "1.0.1",
     "private": true,
     "scripts": {
         "preserve": "envsub --syntax dollar-basic ../build/index.html ../build/index.html",
