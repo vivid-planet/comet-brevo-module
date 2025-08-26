@@ -120,27 +120,11 @@ export const TestEmailCampaignForm = ({ id, isSendable = false, isCampaignCreate
                                     />
                                     <SaveButton
                                         disabled={!values.testEmails || !isSendable || !id || isCampaignCreated}
-                                        saveIcon={<Newsletter />}
-                                        onClick={handleSubmit}
-                                        saving={submitting}
-                                        errorItem={
-                                            <FormattedMessage
-                                                id="cometBrevoModule.emailCampaigns.testEmailCampaign.errorText"
-                                                defaultMessage="There was an error sending the email campaign to the test addresses."
-                                            />
-                                        }
-                                        successItem={
-                                            <FormattedMessage
-                                                id="cometBrevoModule.emailCampaigns.testEmailCampaign.successText"
-                                                defaultMessage="Test email campaign was sent successfully."
-                                            />
-                                        }
-                                        savingItem={
-                                            <FormattedMessage
-                                                id="cometBrevoModule.emailCampaigns.testEmailCampaign.sendingText"
-                                                defaultMessage="Sending..."
-                                            />
-                                        }
+                                        startIcon={<Newsletter />}
+                                        loading={submitting}
+                                        onClick={() => {
+                                            handleSubmit();
+                                        }}
                                     >
                                         <FormattedMessage
                                             id="cometBrevoModule.emailCampaigns.testEmailCampaign.sendText"
