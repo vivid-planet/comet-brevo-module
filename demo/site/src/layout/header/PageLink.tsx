@@ -2,6 +2,7 @@ import { LinkBlock } from "@src/common/blocks/LinkBlock";
 import { gql } from "graphql-request";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { type ReactElement } from "react";
 
 import { type GQLPageLinkFragment } from "./PageLink.generated";
 
@@ -20,7 +21,7 @@ const pageLinkFragment = gql`
 
 interface Props {
     page: GQLPageLinkFragment;
-    children: ((active: boolean) => React.ReactElement) | React.ReactElement;
+    children: ((active: boolean) => ReactElement) | ReactElement;
 }
 
 function PageLink({ page, children }: Props): JSX.Element | null {

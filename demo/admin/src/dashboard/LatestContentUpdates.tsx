@@ -9,11 +9,14 @@ export const LatestContentUpdates = () => {
     const contentScope = useContentScope();
     const { data, loading, error } = useQuery<GQLLatestContentUpdatesQuery, GQLLatestContentUpdatesQueryVariables>(LATEST_CONTENT_UPDATES_QUERY, {
         variables: {
-            scope: contentScope.scope,
+            scope: {
+                domain: contentScope.scope.domain,
+                language: contentScope.scope.language,
+            },
         },
     });
 
-     if (error) {
+    if (error) {
         throw error;
     }
 

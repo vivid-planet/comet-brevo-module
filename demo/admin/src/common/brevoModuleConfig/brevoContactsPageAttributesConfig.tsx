@@ -4,6 +4,7 @@ import { MenuItem } from "@mui/material";
 import { type GQLBrevoContactBranch, type GQLBrevoContactSalutation } from "@src/graphql.generated";
 import { type DocumentNode } from "graphql";
 import gql from "graphql-tag";
+import { type ReactNode } from "react";
 import { FormattedMessage, type IntlShape } from "react-intl";
 
 import { type GQLBrevoContactAttributesFragmentFragment } from "./brevoContactsPageAttributesConfig.generated";
@@ -19,7 +20,7 @@ const attributesFragment = gql`
     }
 `;
 
-const salutationOptions: Array<{ label: React.ReactNode; value: GQLBrevoContactSalutation }> = [
+const salutationOptions: Array<{ label: ReactNode; value: GQLBrevoContactSalutation }> = [
     {
         label: <FormattedMessage id="brevoContact.filters.salutation.male" defaultMessage="Male" />,
         value: "MALE",
@@ -30,7 +31,7 @@ const salutationOptions: Array<{ label: React.ReactNode; value: GQLBrevoContactS
     },
 ];
 
-const branchOptions: Array<{ label: React.ReactNode; value: GQLBrevoContactBranch }> = [
+const branchOptions: Array<{ label: ReactNode; value: GQLBrevoContactBranch }> = [
     {
         label: <FormattedMessage id="brevoContact.filters.branch.products" defaultMessage="Products" />,
         value: "PRODUCTS",
@@ -60,7 +61,7 @@ export const additionalFormConfig = {
 
 export interface BrevoContactConfig {
     additionalGridFields: GridColDef<GQLBrevoContactAttributesFragmentFragment>[];
-    additionalFormFields: React.ReactNode;
+    additionalFormFields: ReactNode;
     additionalAttributesFragment: {
         fragment: DocumentNode;
         name: string;

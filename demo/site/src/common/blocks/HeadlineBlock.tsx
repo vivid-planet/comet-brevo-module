@@ -1,10 +1,11 @@
 import { type PropsWithData, withPreview } from "@comet/site-nextjs";
 import { type HeadlineBlockData } from "@src/blocks.generated";
+import { type ElementType } from "react";
 import { type Renderers } from "redraft";
 
 import { RichTextBlock } from "./RichTextBlock";
 
-const headlineTags: { [key: string]: React.ElementType } = {
+const headlineTags: { [key: string]: ElementType } = {
     "header-one": "h1",
     "header-two": "h2",
     "header-three": "h3",

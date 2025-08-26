@@ -1,7 +1,7 @@
-import { getBlocksMeta } from "@comet/blocks-api";
 import { promises as fs } from "fs";
 
 import { NewsletterImageBlock } from "./src";
+import { getBlocksMeta } from "@comet/cms-api";
 
 async function generateBlockMeta(): Promise<void> {
     console.info("Generating block-meta.json...");

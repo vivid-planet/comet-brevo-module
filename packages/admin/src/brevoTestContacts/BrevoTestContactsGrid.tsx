@@ -23,7 +23,6 @@ import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import { type ReactElement } from "react";
 import { FormattedMessage, type IntlShape, useIntl } from "react-intl";
 
-import { type GQLEmailCampaignContentScopeInput } from "../graphql.generated";
 import {
     type GQLBrevoContactsListFragment,
     type GQLBrevoTestContactsGridQuery,
@@ -49,15 +48,12 @@ const deleteBrevoTestContactMutation = gql`
     }
 `;
 
-function BrevoTestContactsGridToolbar({
-    intl,
-    scope,
-    totalCount,
-}: {
+type BrevoTestContactsGridToolbarProps = {
     intl: IntlShape;
-    scope: GQLEmailCampaignContentScopeInput;
     totalCount: number;
-}) {
+};
+
+function BrevoTestContactsGridToolbar({ intl, totalCount }: BrevoTestContactsGridToolbarProps) {
     const disableButton = totalCount >= 100;
     const tooltipMessage = intl.formatMessage({
         id: "cometBrevoModule.brevoTestContact.contactLimitReached",
@@ -211,7 +207,7 @@ export function BrevoTestContactsGrid({
                         intl,
                         scope,
                         totalCount,
-                    },
+                    } as BrevoTestContactsGridToolbarProps,
                 }}
             />
         </MainContent>

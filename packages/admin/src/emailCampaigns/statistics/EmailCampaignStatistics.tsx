@@ -38,7 +38,7 @@ export const EmailCampaignStatistics = ({ id }: Props): ReactElement => {
             </Toolbar>
             <MainContent>
                 <Grid container spacing={4}>
-                    <Grid item xs={12} md={6}>
+                    <Grid size={{ xs: 12, md: 6 }}>
                         <PercentageCard
                             title={
                                 <FormattedMessage id="cometBrevoModule.emailCampaignStatistics.overallDelivery" defaultMessage="Overall delivery" />
@@ -47,7 +47,7 @@ export const EmailCampaignStatistics = ({ id }: Props): ReactElement => {
                             targetNumber={campaignStatistics?.brevoEmailCampaignStatistics?.sent}
                         />
                     </Grid>
-                    <Grid item xs={12} md={6}>
+                    <Grid size={{ xs: 12, md: 6 }}>
                         <PercentageCard
                             title={
                                 <FormattedMessage
@@ -64,7 +64,7 @@ export const EmailCampaignStatistics = ({ id }: Props): ReactElement => {
                             targetNumber={campaignStatistics?.brevoEmailCampaignStatistics?.sent}
                         />
                     </Grid>
-                    <Grid item xs={12} sm={6} lg={3}>
+                    <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
                         <PercentageCard
                             title={<FormattedMessage id="cometBrevoModule.emailCampaignStatistics.uniqueViews" defaultMessage="Unique views" />}
                             variant="circle"
@@ -72,7 +72,7 @@ export const EmailCampaignStatistics = ({ id }: Props): ReactElement => {
                             targetNumber={campaignStatistics?.brevoEmailCampaignStatistics?.sent}
                         />
                     </Grid>
-                    <Grid item xs={12} sm={6} lg={3}>
+                    <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
                         <PercentageCard
                             title={<FormattedMessage id="cometBrevoModule.emailCampaignStatistics.overallClicked" defaultMessage="Overall clicked" />}
                             variant="circle"
@@ -80,7 +80,7 @@ export const EmailCampaignStatistics = ({ id }: Props): ReactElement => {
                             targetNumber={campaignStatistics?.brevoEmailCampaignStatistics?.sent}
                         />
                     </Grid>
-                    <Grid item xs={12} sm={6} lg={3}>
+                    <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
                         <PercentageCard
                             title={<FormattedMessage id="cometBrevoModule.emailCampaignStatistics.overallBounce" defaultMessage="Overall bounce" />}
                             currentNumber={
@@ -93,7 +93,7 @@ export const EmailCampaignStatistics = ({ id }: Props): ReactElement => {
                             variant="circle"
                         />
                     </Grid>
-                    <Grid item xs={12} sm={6} lg={3}>
+                    <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
                         <PercentageCard
                             title={
                                 <FormattedMessage id="cometBrevoModule.emailCampaignStatistics.unsubscriptions" defaultMessage="Unsubscriptions" />

@@ -14,7 +14,7 @@
         "fixtures:prod": "npm run console:prod fixtures --",
         "lint": "npm run api-generator && run-p lint:eslint lint:tsc",
         "lint:ci": "npm run lint",
-        "lint:eslint": "eslint --ext .ts,.tsx,.js,.jsx,.json,.md --max-warnings 0 src/ package.json",
+        "lint:eslint": "eslint --max-warnings 0 src/ **/*.json --no-warn-ignored",
         "lint:prettier": "npx prettier --check './**/*.{js,json,md,yml,yaml}'",
         "lint:tsc": "tsc --project ./tsconfig.lint.json",
         "mikro-orm": "dotenv -e .env.secrets -e .env.local -e .env -e .env.site-configs -- mikro-orm",

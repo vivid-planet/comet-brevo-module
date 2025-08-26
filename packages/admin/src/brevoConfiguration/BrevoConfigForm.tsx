@@ -20,7 +20,7 @@ import {
 import { Info } from "@comet/admin-icons";
 import { type ContentScope, ContentScopeIndicator, resolveHasSaveConflict, useFormSaveConflict } from "@comet/cms-admin";
 import { type FormApi } from "final-form";
-import { type ReactNode, useMemo } from "react";
+import { type ReactElement, type ReactNode, useMemo } from "react";
 import { FormattedMessage } from "react-intl";
 
 import {

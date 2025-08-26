@@ -1,6 +1,7 @@
 import { type PropsWithData } from "@comet/site-nextjs";
 import { type RichTextBlockData } from "@src/blocks.generated";
 import { type RawDraftContentState } from "draft-js";
+import { type ReactElement } from "react";
 import redraft, { type Renderers, type TextBlockRenderFn } from "redraft";
 
 import { Typography, type TypographyProps } from "./Typography";
@@ -34,7 +35,7 @@ interface Props extends PropsWithData<RichTextBlockData> {
     typographyProps?: TypographyProps;
 }
 
-export const RichText = ({ data: { draftContent }, typographyProps }: Props): React.ReactElement => {
+export const RichText = ({ data: { draftContent }, typographyProps }: Props): ReactElement => {
     const rendered = redraft(draftContent, getRenderers(typographyProps));
     return <>{rendered}</>;
 };

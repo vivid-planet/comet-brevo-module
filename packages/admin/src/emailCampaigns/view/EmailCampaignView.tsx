@@ -6,8 +6,8 @@ import {
     BlockPreview,
     ContentScopeIndicator,
     IFrameBridgeProvider,
+    useBlockContext,
     useBlockPreview,
-    useCmsBlockContext,
     useContentScope,
 } from "@comet/cms-admin";
 import { IconButton } from "@mui/material";
@@ -26,7 +26,7 @@ interface EmailCampaignViewProps {
 export function EmailCampaignView({ id, EmailCampaignContentBlock }: EmailCampaignViewProps) {
     const stackApi = useStackApi();
     const previewApi = useBlockPreview();
-    const blockContext = useCmsBlockContext();
+    const blockContext = useBlockContext();
     const match = useRouteMatch();
     const { scope } = useContentScope();
     const { previewUrl } = useBrevoConfig();

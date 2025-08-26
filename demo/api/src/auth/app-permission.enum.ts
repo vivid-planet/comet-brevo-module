@@ -1,4 +1,4 @@
-export enum BrevoPermission {
+export enum AppPermission {
     brevoNewsletterConfig = "brevoNewsletterConfig",
     brevoNewsletter = "brevoNewsletter",
 }

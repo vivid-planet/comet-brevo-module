@@ -1,14 +1,15 @@
 import { MjmlText } from "@luma-team/mjml-react";
 import { theme } from "@src/util/theme";
+import { type ComponentProps, type ReactNode } from "react";
 
 type Variant = "body" | "headline";
 
-type MjmlTextProps = React.ComponentProps<typeof MjmlText>;
+type MjmlTextProps = ComponentProps<typeof MjmlText>;
 
 export interface TypographyProps extends MjmlTextProps {
     variant?: Variant;
     disableBottomSpacing?: boolean;
-    children?: React.ReactNode;
+    children?: ReactNode;
 }
 
 type VariantStyle = MjmlTextProps & {

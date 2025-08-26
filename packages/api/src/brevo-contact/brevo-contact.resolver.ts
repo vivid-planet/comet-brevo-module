@@ -45,7 +45,7 @@ export function createBrevoContactResolver({
     class BrevoContactsArgs extends BrevoContactsArgsFactory.create({ Scope }) {}
 
     @Resolver(() => BrevoContact)
-    @RequiredPermission(["brevo-newsletter"], { skipScopeCheck: true })
+    @RequiredPermission(["brevoNewsletter"], { skipScopeCheck: true })
     class BrevoContactResolver {
         constructor(
             @Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig,
@@ -204,7 +204,7 @@ export function createBrevoContactResolver({
         }
 
         @Mutation(() => SubscribeResponse)
-        @RequiredPermission(["brevo-newsletter"], { skipScopeCheck: true })
+        @RequiredPermission(["brevoNewsletter"], { skipScopeCheck: true })
         async createBrevoContact(
             @Args("scope", { type: () => Scope }, new DynamicDtoValidationPipe(Scope)) scope: typeof Scope,
             @Args("input", { type: () => BrevoContactInput })
@@ -230,7 +230,7 @@ export function createBrevoContactResolver({
         }
 
         @Mutation(() => SubscribeResponse)
-        @RequiredPermission(["brevo-newsletter"], { skipScopeCheck: true })
+        @RequiredPermission(["brevoNewsletter"], { skipScopeCheck: true })
         async createBrevoTestContact(
             @Args("scope", { type: () => Scope }, new DynamicDtoValidationPipe(Scope)) scope: typeof Scope,
             @Args("input", { type: () => BrevoTestContactInput })

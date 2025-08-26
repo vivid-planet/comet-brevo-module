@@ -20,7 +20,7 @@ export function createConfig(processEnv: NodeJS.ProcessEnv) {
         corsAllowedOrigin: new RegExp(envVars.CORS_ALLOWED_ORIGIN),
         auth: {
             useAuthProxy: envVars.USE_AUTHPROXY,
-            basicAuthPassword: envVars.BASIC_AUTH_PASSWORD,
+            systemUserPassword: envVars.BASIC_AUTH_PASSWORD,
             idpJwksUri: envVars.IDP_JWKS_URI,
             idpEndSessionEndpoint: envVars.IDP_END_SESSION_ENDPOINT,
             postLogoutRedirectUri: envVars.POST_LOGOUT_REDIRECT_URI,

@@ -1,6 +1,7 @@
 import { type DocumentNode, gql, useApolloClient, useQuery } from "@apollo/client";
 import {
     Button,
+    CrudMoreActionsMenu,
     DataGridToolbar,
     type GridColDef,
     MainContent,
@@ -22,7 +23,6 @@ import { FormattedMessage, type IntlShape, useIntl } from "react-intl";
 
 import { useContactImportFromCsv } from "../common/contactImport/useContactImportFromCsv";
 import { type GQLEmailCampaignContentScopeInput } from "../graphql.generated";
-import { CrudMoreActionsMenu } from "../temp/CrudMoreActionsMenu";
 import {
     type GQLBrevoContactsGridQuery,
     type GQLBrevoContactsGridQueryVariables,
@@ -59,7 +59,12 @@ const updateBrevoContactMutation = gql`
     }
 `;
 
-function BrevoContactsGridToolbar({ intl, scope }: { intl: IntlShape; scope: GQLEmailCampaignContentScopeInput }) {
+type BrevoContactsGridToolbarProps = {
+    intl: IntlShape;
+    scope: GQLEmailCampaignContentScopeInput;
+};
+
+function BrevoContactsGridToolbar({ intl, scope }: BrevoContactsGridToolbarProps) {
     const [moreActionsMenuItem, contactImportComponent] = useContactImportFromCsv({
         scope,
         sendDoubleOptIn: true,
@@ -74,7 +79,7 @@ function BrevoContactsGridToolbar({ intl, scope }: { intl: IntlShape; scope: GQL
                     placeholder={intl.formatMessage({ id: "cometBrevoModule.brevoContact.searchEmail", defaultMessage: "Search email address" })}
                 />
                 <ToolbarFillSpace />
-                <CrudMoreActionsMenu overallItems={[moreActionsMenuItem]} />
+                <CrudMoreActionsMenu overallActions={[moreActionsMenuItem]} />
                 <Button startIcon={<Add />} component={StackLink} pageName="add" payload="add" variant="primary">
                     <FormattedMessage id="cometBrevoModule.brevoContact.newContact" defaultMessage="New contact" />
                 </Button>
@@ -224,7 +229,7 @@ export function BrevoContactsGrid({
                     toolbar: {
                         intl,
                         scope,
-                    },
+                    } as BrevoContactsGridToolbarProps,
                 }}
             />
         </MainContent>

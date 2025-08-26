@@ -2,15 +2,14 @@ import { useApolloClient } from "@apollo/client";
 import { type RefetchQueriesInclude } from "@apollo/client/core/types";
 import { Alert, Button, CheckboxField, Dialog, FinalForm, Loading, messages, useErrorDialog } from "@comet/admin";
 import { Upload } from "@comet/admin-icons";
-import { Box, DialogActions, DialogContent, DialogTitle } from "@mui/material";
+import { Box, DialogActions, DialogContent, DialogTitle, type MenuItem } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import saveAs from "file-saver";
-import { type ReactNode, type RefObject, useMemo, useRef, useState } from "react";
+import { type ComponentProps, type ReactNode, type RefObject, useMemo, useRef, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { FormattedMessage, useIntl } from "react-intl";
 
 import { type GQLCsvImportInformation, type GQLEmailCampaignContentScopeInput } from "../../graphql.generated";
-import { type CrudMoreActionsItem } from "../../temp/CrudMoreActionsMenu";
 import { useBrevoConfig } from "../BrevoConfigProvider";
 import { startBrevoContactImportMutation } from "./useContactImportFromCsv.gql";
 import { type GQLStartBrevoContactImportMutation, type GQLStartBrevoContactImportMutationVariables } from "./useContactImportFromCsv.gql.generated";
@@ -26,13 +25,19 @@ type ContactImportFromCsvForm = {
     sendDoubleOptIn: boolean;
 };
 
-export const useContactImportFromCsv = ({ scope, targetGroupId, refetchQueries }: UseContactImportProps): [CrudMoreActionsItem, ReactNode] => {
+interface ActionItem extends ComponentProps<typeof MenuItem> {
+    type: "action";
+    label: ReactNode;
+    startAdornment?: ReactNode;
+}
+
+export const useContactImportFromCsv = ({ scope, targetGroupId, refetchQueries }: UseContactImportProps): [ActionItem, ReactNode] => {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [open, setOpen] = useState(false);
     const [sendDoubleOptIn, setSendDoubleOptIn] = useState(true);
     const { allowAddingContactsWithoutDoi } = useBrevoConfig();
 
-    const moreActionsMenuItem: CrudMoreActionsItem = useMemo(
+    const moreActionsMenuItem: ActionItem = useMemo(
         () => ({
             type: "action",
             label: (
@@ -132,11 +137,11 @@ export const useContactImportFromCsv = ({ scope, targetGroupId, refetchQueries }
     ];
 };
 
-interface ComponentProps extends UseContactImportProps {
+interface UseContactComponentProps extends UseContactImportProps {
     fileInputRef: RefObject<HTMLInputElement>;
 }
 
-const ContactImportComponent = ({ scope, targetGroupId, fileInputRef, sendDoubleOptIn, refetchQueries }: ComponentProps) => {
+const ContactImportComponent = ({ scope, targetGroupId, fileInputRef, sendDoubleOptIn, refetchQueries }: UseContactComponentProps) => {
     const apolloClient = useApolloClient();
     const [importingCsv, setImportingCsv] = useState(false);
     const [importInformation, setImportInformation] = useState<GQLCsvImportInformation | null>(null);

@@ -28,8 +28,8 @@ import { FileUploadDummyModule } from "@src/workaround-remove-in-future/file-upl
 import { Request } from "express";
 
 import { AccessControlService } from "./auth/access-control.service";
+import { AppPermission } from "./auth/app-permission.enum";
 import { AuthModule } from "./auth/auth.module";
-import { AuthLocalModule } from "./auth/auth-local.module";
 import { BlacklistedContacts } from "./blacklisted-contacts/entity/blacklisted-contacts.entity";
 import { BrevoContactSubscribeModule } from "./brevo-contact/brevo-contact-subscribe.module";
 import { BrevoContactAttributes, BrevoContactFilterAttributes } from "./brevo-contact/dto/brevo-contact-attributes";
@@ -49,7 +49,7 @@ import { TargetGroup } from "./target-group/entity/target-group.entity";
 @Module({})
 export class AppModule {
     static forRoot(config: Config): DynamicModule {
-        const authModule = config.auth.useAuthProxy ? AuthModule.forRoot(config) : AuthLocalModule.forRoot(config);
+        const authModule = AuthModule.forRoot(config);
 
         return {
             module: AppModule,
@@ -103,6 +103,7 @@ export class AppModule {
                     }),
                     inject: [AccessControlService],
                     imports: [authModule],
+                    AppPermission,
                 }),
                 BlocksModule,
                 KubernetesModule.register({

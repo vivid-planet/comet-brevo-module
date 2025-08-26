@@ -26,8 +26,8 @@ import {
     parallelAsyncEvery,
     queryUpdatedAt,
     resolveHasSaveConflict,
+    useBlockContext,
     useBlockPreview,
-    useCmsBlockContext,
     useEditState,
     useFormSaveConflict,
     useSaveState,
@@ -77,7 +77,7 @@ export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope }: Form
     const mode = id ? "edit" : "add";
     const previewApi = useBlockPreview();
     const formApiRef = useFormApiRef<EmailCampaignState>();
-    const blockContext = useCmsBlockContext();
+    const blockContext = useBlockContext();
     const match = useRouteMatch();
 
     const FinalFormEmailCampaignContentBlock = useMemo(() => createFinalFormBlock(EmailCampaignContentBlock), [EmailCampaignContentBlock]);

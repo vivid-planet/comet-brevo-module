@@ -108,18 +108,11 @@ export const SendManagerFields = ({ isCampaignCreated, scope, id, isSendable }: 
                     />
 
                     <SaveButton
-                        variant="contained"
+                        variant="primary"
                         disabled={!isSendable || isCampaignCreated}
-                        saveIcon={<Newsletter />}
-                        saving={sendEmailCampaignNowLoading}
+                        startIcon={<Newsletter />}
+                        loading={sendEmailCampaignNowLoading}
                         hasErrors={!!sendEmailCampaignNowError}
-                        savingItem={<FormattedMessage id="cometBrevoModule.emailCampaigns.sendNow.sendingText" defaultMessage="Sending..." />}
-                        errorItem={
-                            <FormattedMessage
-                                id="cometBrevoModule.emailCampaigns.sendNow.errorText"
-                                defaultMessage="There was an error sending the email campaign."
-                            />
-                        }
                         onClick={() => {
                             setIsSendEmailCampaignNowDialogOpen(true);
                         }}

@@ -32,7 +32,7 @@ export function createTargetGroupsResolver({
     class TargetGroupsArgs extends TargetGroupArgsFactory.create({ Scope }) {}
 
     @Resolver(() => BrevoTargetGroup)
-    @RequiredPermission(["brevo-newsletter"])
+    @RequiredPermission(["brevoNewsletter"])
     class TargetGroupResolver {
         constructor(
             private readonly targetGroupsService: TargetGroupsService,

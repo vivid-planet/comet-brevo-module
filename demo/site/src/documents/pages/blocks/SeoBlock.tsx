@@ -1,12 +1,13 @@
 import { generateImageUrl, type PropsWithData } from "@comet/site-nextjs";
 import { type SeoBlockData } from "@src/blocks.generated";
 import Head from "next/head";
+import { type FunctionComponent } from "react";
 
 interface SeoBlockProps extends PropsWithData<SeoBlockData> {
     title: string;
     canonicalUrl: string;
 }
-export const SeoBlock: React.FunctionComponent<SeoBlockProps> = ({
+export const SeoBlock: FunctionComponent<SeoBlockProps> = ({
     data: { htmlTitle, metaDescription, openGraphTitle, openGraphDescription, openGraphImage, noIndex },
     title,
     canonicalUrl,

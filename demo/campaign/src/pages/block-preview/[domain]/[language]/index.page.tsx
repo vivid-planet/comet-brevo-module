@@ -3,12 +3,13 @@ import { generateMjmlMailContent, type IntlProviderValues, RenderedMail } from "
 import { defaultLanguage } from "@src/config";
 import { getMessages } from "@src/lang";
 import { type GetServerSidePropsContext } from "next";
+import { type FC } from "react";
 
 interface Props {
     intlProviderValues: IntlProviderValues;
 }
 
-const PreviewPage: React.FC<Props> = ({ intlProviderValues }) => {
+const PreviewPage: FC<Props> = ({ intlProviderValues }) => {
     const { block } = useIFrameBridge();
 
     if (!block?.content) {
@@ -20,7 +21,7 @@ const PreviewPage: React.FC<Props> = ({ intlProviderValues }) => {
     return <RenderedMail mjmlContent={mjmlContent} />;
 };
 
-const MailPreviewPage: React.FC<Props> = (props) => (
+const MailPreviewPage: FC<Props> = (props) => (
     <IFrameBridgeProvider>
         <BlockPreviewProvider>
             <PreviewPage {...props} />
