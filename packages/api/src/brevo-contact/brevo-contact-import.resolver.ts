@@ -28,7 +28,7 @@ export function createBrevoContactImportResolver({
     class BrevoContactImportArgs extends BrevoContactImportArgsFactory.create({ Scope }) {}
 
     @Resolver(() => BrevoContact)
-    @RequiredPermission(["brevo-newsletter"], { skipScopeCheck: true })
+    @RequiredPermission(["brevoNewsletter"], { skipScopeCheck: true })
     class BrevoContactImportResolver {
         private fileUploadsConfig: FileUploadsConfig;
 

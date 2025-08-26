@@ -22,7 +22,7 @@ export function createBrevoConfigResolver({
     BrevoConfig: Type<BrevoConfigInterface>;
 }): Type<unknown> {
     @Resolver(() => BrevoConfig)
-    @RequiredPermission(["brevo-newsletter-config"])
+    @RequiredPermission("brevoNewsletterConfig")
     class BrevoConfigResolver {
         constructor(
             private readonly entityManager: EntityManager,
@@ -69,7 +69,7 @@ export function createBrevoConfigResolver({
             return false;
         }
 
-        @RequiredPermission(["brevo-newsletter-config"], { skipScopeCheck: true })
+        @RequiredPermission("brevoNewsletterConfig", { skipScopeCheck: true })
         @Query(() => [BrevoApiSender], { nullable: true })
         async brevoSenders(
             @Args("scope", { type: () => Scope }, new DynamicDtoValidationPipe(Scope))
@@ -79,7 +79,7 @@ export function createBrevoConfigResolver({
             return senders;
         }
 
-        @RequiredPermission(["brevo-newsletter-config"], { skipScopeCheck: true })
+        @RequiredPermission("brevoNewsletterConfig", { skipScopeCheck: true })
         @Query(() => [BrevoApiEmailTemplate], { nullable: true })
         async brevoDoubleOptInTemplates(
             @Args("scope", { type: () => Scope }, new DynamicDtoValidationPipe(Scope))
@@ -91,7 +91,7 @@ export function createBrevoConfigResolver({
         }
 
         @Query(() => Boolean)
-        @RequiredPermission(["brevo-newsletter"])
+        @RequiredPermission("brevoNewsletter")
         async isBrevoConfigDefined(
             @Args("scope", { type: () => Scope }, new DynamicDtoValidationPipe(Scope))
             scope: typeof Scope,
