@@ -1,5 +1,11 @@
 # @comet/brevo-api
 
+## 3.1.5
+
+### Patch Changes
+
+-   f32e59c: Fix block transformation logic. This resolves issues with invisible blocks not being displayed and ensures proper resolution of image URLs.
+
 ## 3.1.4
 
 ### Patch Changes

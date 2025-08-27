@@ -1,5 +1,7 @@
 # @comet/brevo-admin
 
+## 3.1.5
+
 ## 3.1.4
 
 ### Patch Changes
