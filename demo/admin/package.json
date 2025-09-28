@@ -23,7 +23,7 @@
         "start": "npm run intl:compile && run-p gql:types generate-block-types && dotenv -c secrets -- cross-env BABEL_ENV=development webpack serve --config ./webpack.config.ts --mode development"
     },
     "dependencies": {
-        "@apollo/client": "^3.12.2",
+        "@apollo/client": "^3.14.0",
         "@babel/core": "^7.26.0",
         "@comet/admin": "^7.21.1",
         "@comet/admin-icons": "^7.21.1",
