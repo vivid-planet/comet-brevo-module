@@ -16,7 +16,8 @@ fi
 # use correct npm and install dependencies
 nvm install
 nvm use
-npm i -g pnpm@8
+corepack enable
+
 pnpm install
 
 # create admin symlinks
