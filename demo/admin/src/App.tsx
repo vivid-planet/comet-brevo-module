@@ -64,7 +64,6 @@ export function App() {
                 categories: categories,
                 documentTypes: pageTreeDocumentTypes,
             }}
-            redirects={{ scopeParts: ["domain"] }}
             siteConfigs={{
                 configs: config.siteConfigs,
                 resolveSiteConfigForScope: (configs, scope: ContentScope) => {
