@@ -1,16 +1,16 @@
 version: "3.5"
 services:
   postgres:
-    image: bitnami/postgresql:12
+    image: postgres:16
     tty: true
     volumes:
-      - postgres:/bitnami/postgresql
+      - postgres:/var/lib/postgresql/data
     ports:
       - "127.0.0.1:${POSTGRESQL_PORT}:5432"
     environment:
-      POSTGRESQL_USER: postgres
-      POSTGRESQL_PASSWORD: ${POSTGRESQL_PWD_DECODED}
-      POSTGRESQL_DATABASE: ${POSTGRESQL_DB}
+      POSTGRES_USER: ${POSTGRESQL_USER}
+      POSTGRES_PASSWORD: ${POSTGRESQL_PWD_DECODED}
+      POSTGRES_DB: ${POSTGRESQL_DB}
     networks:
       - postgres
 
