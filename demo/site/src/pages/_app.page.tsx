@@ -58,7 +58,6 @@ export default function CustomApp({ Component, pageProps, scope, messages }: Cus
             </Head>
             {process.env.NEXT_PUBLIC_GTM_ID && (
                 <>
-                    {/* eslint-disable-next-line @calm/react-intl/missing-formatted-message */}
                     <script>window.dataLayer = window.dataLayer || [];</script>
                     <Script
                         id="gtm-script"

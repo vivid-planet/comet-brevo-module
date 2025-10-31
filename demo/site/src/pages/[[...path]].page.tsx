@@ -25,7 +25,6 @@ export default function Page(props: InferGetStaticPropsType<typeof getStaticProp
     if (!pageTypes[props.documentType]) {
         return (
             <NotFound404>
-                {/* eslint-disable-next-line @calm/react-intl/missing-formatted-message */}
                 <div>
                     unknown documentType: <em>{props.documentType}</em>
                 </div>
