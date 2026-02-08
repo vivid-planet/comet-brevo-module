@@ -28,8 +28,8 @@
         "@comet/cms-site": "^7.21.1",
         "@comet/eslint-config": "^7.21.1",
         "@luma-team/mjml-react": "^0.2.1",
-        "@types/react": "^18.3.12",
-        "@types/react-dom": "^18.3.1",
+        "@types/react": "^18.3.28",
+        "@types/react-dom": "^18.3.7",
         "chokidar-cli": "^2.1.0",
         "eslint": "^8.0.0",
         "mjml": "^4.15.3",
@@ -46,8 +46,8 @@
         "@luma-team/mjml-react": "^0.2.1",
         "mjml": "^4.7.0",
         "next": "^14.2.18",
-        "react": "^18.0.0",
-        "react-dom": "^18.0.0",
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1",
         "styled-components": "^6.1.18"
     },
     "publishConfig": {
