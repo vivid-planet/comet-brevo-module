@@ -27,6 +27,6 @@ export class IsFutureDateConstraint implements ValidatorConstraintInterface {
     }
 
     defaultMessage(): string {
-        return "Date must be in the future";
+        return "Date must not be in the past";
     }
 }
