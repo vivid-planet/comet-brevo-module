@@ -2,8 +2,9 @@
 "@comet/brevo-api": patch
 ---
 
-Fix race condition in email campaign updates for past-scheduled campaigns
+Fix email campaigns getting stuck in broken state when scheduled in the past
 
-- Use `@MinDate(() => new Date())` to evaluate date at validation time instead of server startup
-- Check actual Brevo campaign status before blocking updates to past-scheduled campaigns
-- Sync local state with Brevo's actual state when campaign is scheduled in the past
+- Replace `@MinDate(new Date())` with `@MinDate(() => new Date())` to evaluate validation at runtime instead of class definition time
+- Check actual campaign status from Brevo before blocking updates to past-scheduled campaigns
+- Only block updates if campaign has actually been sent (not just scheduled in the past)
+- Automatically sync local campaign state with Brevo's actual state
