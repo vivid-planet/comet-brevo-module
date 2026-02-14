@@ -6,4 +6,5 @@ export { SubscribeResponse } from "./brevo-contact/dto/subscribe-response.enum";
 export { IsValidRedirectURL } from "./brevo-contact/validator/redirect-url.validator";
 export { createBrevoEmailImportLogEntity } from "./brevo-email-import-log/entity/brevo-email-import-log.entity.factory";
 export { BrevoModule } from "./brevo-module";
+export { IsFutureDate } from "./email-campaign/validator/is-future-date.validator";
 export { migrationsList } from "./mikro-orm/migrations/migrations";
