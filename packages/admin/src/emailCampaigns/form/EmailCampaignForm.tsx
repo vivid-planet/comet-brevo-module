@@ -220,7 +220,9 @@ export function EmailCampaignForm({ id, EmailCampaignContentBlock, scope }: Form
     };
 
     const isScheduledDateInPast = state.scheduledAt != undefined && isBefore(new Date(state.scheduledAt), new Date());
-    const isCampaignCreated = state.sendingState === "SENT" || mode === "add" || state.targetGroups.length === 0 || isScheduledDateInPast;
+    const isCampaignCreated =
+        state.sendingState === "SENT" ||
+        (state.sendingState !== "FAILED" && (mode === "add" || state.targetGroups.length === 0 || isScheduledDateInPast));
 
     return (
         <>

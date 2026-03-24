@@ -1,7 +1,7 @@
 import { AffectedEntity, extractGraphqlFields, PaginatedResponseFactory, RequiredPermission, validateNotModified } from "@comet/cms-api";
 import { EntityManager, EntityRepository, FindOptions, wrap } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
-import { Type } from "@nestjs/common";
+import { Logger, Type } from "@nestjs/common";
 import { Args, ArgsType, ID, Info, Mutation, ObjectType, Parent, Query, ResolveField, Resolver } from "@nestjs/graphql";
 import { GraphQLResolveInfo } from "graphql";
 import { TargetGroupInterface } from "src/target-group/entity/target-group-entity.factory";
@@ -40,6 +40,8 @@ export function createEmailCampaignsResolver({
     @Resolver(() => EmailCampaign)
     @RequiredPermission(["brevo-newsletter"])
     class EmailCampaignsResolver {
+        private readonly logger = new Logger(EmailCampaignsResolver.name);
+
         constructor(
             private readonly campaignsService: EmailCampaignsService,
             private readonly brevoApiCampaignsService: BrevoApiCampaignsService,
@@ -125,6 +127,10 @@ export function createEmailCampaignsResolver({
                 validateNotModified(campaign, lastUpdatedAt);
             }
 
+            if (campaign.sendingState === SendingState.FAILED) {
+                wrap(campaign).assign({ brevoId: null, sendingState: SendingState.DRAFT });
+            }
+
             wrap(campaign).assign({
                 ...input,
                 content: input.content ? input.content.transformToBlockData() : undefined,
@@ -178,22 +184,40 @@ export function createEmailCampaignsResolver({
         async sendEmailCampaignNow(@Args("id", { type: () => ID }) id: string): Promise<boolean> {
             const campaign = await this.repository.findOneOrFail(id);
 
-            const campaignSent = await this.campaignsService.sendEmailCampaignNow(campaign);
-
-            if (campaignSent) {
-                const campaign = await this.repository.findOneOrFail(id);
-
-                wrap(campaign).assign({
-                    scheduledAt: new Date(),
-                    sendingState: SendingState.SCHEDULED,
-                });
-
-                await this.entityManager.flush();
-
-                return true;
+            if (campaign.sendingState === SendingState.FAILED) {
+                wrap(campaign).assign({ brevoId: null });
             }
 
-            return false;
+            wrap(campaign).assign({ scheduledAt: new Date(), sendingState: SendingState.SCHEDULED });
+            await this.entityManager.flush();
+
+            // Fire-and-forget: the actual sending can take a long time for large campaigns.
+            // The service forks its own EntityManager so it can outlive the request.
+            const markAsFailed = async (error?: unknown) => {
+                if (error) {
+                    this.logger.error(`Failed to send email campaign ${id}`, error);
+                }
+                try {
+                    const em = this.entityManager.fork();
+                    const failedCampaign = await em.findOneOrFail(EmailCampaign, id);
+                    wrap(failedCampaign).assign({ sendingState: SendingState.FAILED });
+                    await em.flush();
+                } catch (updateError) {
+                    this.logger.error(`Failed to update sending state to FAILED for campaign ${id}`, updateError);
+                }
+            };
+
+            this.campaignsService
+                .sendEmailCampaignNow(id)
+                .then(async (result) => {
+                    if (!result) {
+                        this.logger.error(`Email campaign ${id} was not sent (no eligible target groups)`);
+                        await markAsFailed();
+                    }
+                })
+                .catch(markAsFailed);
+
+            return true;
         }
 
         @Mutation(() => Boolean)
@@ -225,7 +249,7 @@ export function createEmailCampaignsResolver({
 
         @ResolveField(() => SendingState)
         async sendingState(@Parent() campaign: EmailCampaignInterface): Promise<SendingState> {
-            if (campaign.sendingState === SendingState.SCHEDULED && campaign.scheduledAt && campaign.scheduledAt < new Date()) {
+            if (campaign.sendingState === SendingState.SCHEDULED && campaign.scheduledAt && campaign.scheduledAt < new Date() && campaign.brevoId) {
                 const brevoCampaign = await this.brevoApiCampaignsService.loadBrevoCampaignById(campaign);
 
                 const state = this.brevoApiCampaignsService.getSendingInformationFromBrevoCampaign(brevoCampaign);

@@ -3,7 +3,7 @@ import { UpdateCampaignStatus } from "@getbrevo/brevo";
 import { EntityManager, EntityRepository, ObjectQuery, wrap } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { HttpService } from "@nestjs/axios";
-import { Inject, Injectable } from "@nestjs/common";
+import { Inject, Injectable, Logger } from "@nestjs/common";
 import { BrevoConfigInterface } from "src/brevo-config/entities/brevo-config-entity.factory";
 import { EmailCampaignScopeInterface } from "src/types";
 
@@ -18,6 +18,8 @@ import { SendingState } from "./sending-state.enum";
 
 @Injectable()
 export class EmailCampaignsService {
+    private readonly logger = new Logger(EmailCampaignsService.name);
+
     constructor(
         @Inject(BREVO_MODULE_CONFIG) private readonly config: BrevoModuleConfig,
         @InjectRepository("EmailCampaign") private readonly repository: EntityRepository<EmailCampaignInterface>,
@@ -44,14 +46,24 @@ export class EmailCampaignsService {
         return andFilters.length > 0 ? { $and: andFilters } : {};
     }
 
-    async saveEmailCampaignInBrevo(campaign: EmailCampaignInterface, scheduledAt?: Date): Promise<EmailCampaignInterface> {
+    // When called from a fire-and-forget context (e.g. sendEmailCampaignNow), pass a forked EntityManager
+    // so the operation can outlive the original request lifecycle.
+    async saveEmailCampaignInBrevo(
+        campaign: EmailCampaignInterface,
+        scheduledAt?: Date,
+        entityManager?: EntityManager,
+    ): Promise<EmailCampaignInterface> {
         const content = await this.blockTransformerService.transformToPlain(campaign.content, {
             includeInvisibleContent: false,
             previewDamUrls: false,
             relativeDamUrls: true,
         });
 
-        const brevoConfig = await this.brevoConfigRepository.findOneOrFail({ scope: campaign.scope });
+        const brevoConfig = entityManager
+            ? ((await entityManager.findOneOrFail(this.brevoConfigRepository.getEntityName(), {
+                  scope: campaign.scope,
+              })) as BrevoConfigInterface)
+            : await this.brevoConfigRepository.findOneOrFail({ scope: campaign.scope });
 
         const { data: htmlContent, status } = await this.httpService.axiosRef.post(
             this.config.emailCampaigns.frontend.url,
@@ -81,7 +93,7 @@ export class EmailCampaignsService {
 
             wrap(campaign).assign({ brevoId });
 
-            await this.entityManager.flush();
+            await (entityManager ?? this.entityManager).flush();
         } else {
             await this.brevoApiCampaignService.updateBrevoCampaign({
                 id: brevoId,
@@ -126,8 +138,12 @@ export class EmailCampaignsService {
         return campaigns;
     }
 
-    public async sendEmailCampaignNow(campaign: EmailCampaignInterface): Promise<boolean> {
-        const brevoCampaign = await this.saveEmailCampaignInBrevo(campaign);
+    public async sendEmailCampaignNow(campaignId: string): Promise<boolean> {
+        // Fork the EntityManager so this method can run detached from the request lifecycle
+        const entityManager = this.entityManager.fork();
+        const campaign = (await entityManager.findOneOrFail(this.repository.getEntityName(), campaignId)) as EmailCampaignInterface;
+
+        const brevoCampaign = await this.saveEmailCampaignInBrevo(campaign, undefined, entityManager);
 
         const targetGroups = await brevoCampaign.targetGroups.loadItems();
 
