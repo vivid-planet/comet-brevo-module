@@ -3,7 +3,9 @@ import { IsNullable, IsUndefinable, RootBlockInputScalar } from "@comet/cms-api"
 import { Type } from "@nestjs/common";
 import { Field, ID, InputType, PartialType } from "@nestjs/graphql";
 import { Transform } from "class-transformer";
-import { IsDate, IsNotEmpty, IsString, IsUUID, MinDate, ValidateNested } from "class-validator";
+import { IsDate, IsNotEmpty, IsString, IsUUID, ValidateNested } from "class-validator";
+
+import { IsFutureDate } from "../validator/is-future-date.validator";
 
 export interface EmailCampaignInputInterface {
     title: string;
@@ -34,7 +36,7 @@ export class EmailCampaignInputFactory {
             @IsUndefinable() // When sending undefined, the previous scheduledAt value will be kept
             @IsNullable() // When sending null, the scheduledAt value will be removed
             @IsDate()
-            @MinDate(new Date())
+            @IsFutureDate()
             @Field(() => Date, { nullable: true })
             scheduledAt?: Date | null;
 
