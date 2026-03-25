@@ -1,5 +1,7 @@
 # @comet/brevo-mail-rendering
 
+## 3.2.0
+
 ## 3.1.5
 
 ## 3.1.4
