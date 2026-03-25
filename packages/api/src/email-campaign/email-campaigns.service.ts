@@ -121,7 +121,7 @@ export class EmailCampaignsService {
                 const sendingState = this.brevoApiCampaignService.getSendingInformationFromBrevoCampaign(brevoCampaign);
 
                 const campaign = campaigns.find((campaign) => campaign.brevoId === brevoCampaign.id);
-                if (campaign) {
+                if (campaign && sendingState) {
                     wrap(campaign).assign({ sendingState });
                 }
             }

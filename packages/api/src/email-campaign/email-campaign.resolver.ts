@@ -253,8 +253,10 @@ export function createEmailCampaignsResolver({
 
                 const state = this.brevoApiCampaignsService.getSendingInformationFromBrevoCampaign(brevoCampaign);
 
-                wrap(campaign).assign({ sendingState: state });
-                await this.entityManager.flush();
+                if (state) {
+                    wrap(campaign).assign({ sendingState: state });
+                    await this.entityManager.flush();
+                }
             }
 
             return campaign.sendingState;

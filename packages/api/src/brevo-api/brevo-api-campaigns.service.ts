@@ -37,7 +37,7 @@ export class BrevoApiCampaignsService {
         }
     }
 
-    public getSendingInformationFromBrevoCampaign(campaign: BrevoApiCampaign): SendingState {
+    public getSendingInformationFromBrevoCampaign(campaign: BrevoApiCampaign): SendingState | undefined {
         try {
             if (campaign.status === Brevo.GetEmailCampaignsCampaignsInner.StatusEnum.Sent) {
                 return SendingState.SENT;
@@ -48,7 +48,7 @@ export class BrevoApiCampaignsService {
                 return SendingState.SCHEDULED;
             }
 
-            return SendingState.DRAFT;
+            return undefined;
         } catch (error) {
             handleBrevoError(error);
         }
