@@ -104,11 +104,11 @@ export function createEmailCampaignsResolver({
                 sendingState: input.scheduledAt ? SendingState.SCHEDULED : SendingState.DRAFT,
             });
 
-            if (input.scheduledAt) {
-                await this.campaignsService.saveEmailCampaignInBrevo(campaign, input.scheduledAt);
-            }
-
             await this.entityManager.flush();
+
+            if (input.scheduledAt) {
+                await this.campaignsService.saveEmailCampaignInBrevo(campaign.id, input.scheduledAt);
+            }
 
             return campaign;
         }
@@ -157,7 +157,7 @@ export function createEmailCampaignsResolver({
 
             if (!hasScheduleRemoved && input.scheduledAt) {
                 wrap(campaign).assign({ sendingState: SendingState.SCHEDULED });
-                await this.campaignsService.saveEmailCampaignInBrevo(campaign, input.scheduledAt);
+                await this.campaignsService.saveEmailCampaignInBrevo(campaign.id, input.scheduledAt);
             }
 
             await this.entityManager.flush();
@@ -226,8 +226,7 @@ export function createEmailCampaignsResolver({
             @Args("id", { type: () => ID }) id: string,
             @Args("data", { type: () => SendTestEmailCampaignArgs }) data: SendTestEmailCampaignArgs,
         ): Promise<boolean> {
-            const campaign = await this.repository.findOneOrFail(id);
-            const brevoCampaign = await this.campaignsService.saveEmailCampaignInBrevo(campaign);
+            const brevoCampaign = await this.campaignsService.saveEmailCampaignInBrevo(id);
 
             const containedEcgRtrListEmails = await this.ecgRtrListService.getContainedEcgRtrListEmails(data.emails);
             const emailsNotInEcgRtrList = data.emails.filter((email) => !containedEcgRtrListEmails.includes(email));
