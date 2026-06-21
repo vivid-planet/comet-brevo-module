@@ -33,7 +33,7 @@
         "fs-extra": "^9.1.0",
         "graphql": "^15.9.0",
         "graphql-request": "^3.7.0",
-        "graphql-tag": "^2.12.6",
+        "graphql-tag": "^2.12.7",
         "mjml": "^4.15.3",
         "mjml-browser": "^4.15.3",
         "next": "^14.2.18",
