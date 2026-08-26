@@ -75,7 +75,7 @@
         "ts-jest": "^29.0.5",
         "ts-node": "^10.9.2",
         "typescript": "^4.9.5",
-        "uuid": "^8.3.2"
+        "uuid": "^11.0.0"
     },
     "peerDependencies": {
         "@comet/blocks-api": "^7.0.0",
