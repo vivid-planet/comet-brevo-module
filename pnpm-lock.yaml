@@ -916,8 +916,8 @@ importers:
   packages/api:
     dependencies:
       '@fast-csv/parse':
-        specifier: ^5.0.2
-        version: 5.0.2
+        specifier: ^5.0.7
+        version: 5.0.7
       '@getbrevo/brevo':
         specifier: ^2.2.0
         version: 2.2.0
@@ -4605,14 +4605,11 @@ packages:
       lodash.isundefined: 3.0.1
       lodash.uniq: 4.5.0
 
-  /@fast-csv/parse@5.0.2:
-    resolution: {integrity: sha512-gMu1Btmm99TP+wc0tZnlH30E/F1Gw1Tah3oMDBHNPe9W8S68ixVHjt89Wg5lh7d9RuQMtwN+sGl5kxR891+fzw==}
+  /@fast-csv/parse@5.0.7:
+    resolution: {integrity: sha512-MeuDeQj0DVmIGWky8STaKtvj232Gpq8kjrOGplHJ99Os7OO5CetVfXvUGqX/3GHYFOUsz6FK8isWtDY2XTFNWw==}
     dependencies:
       lodash.escaperegexp: 4.1.2
       lodash.groupby: 4.6.0
-      lodash.isfunction: 3.0.9
-      lodash.isnil: 4.0.0
-      lodash.isundefined: 3.0.1
       lodash.uniq: 4.5.0
     dev: false
 
