@@ -28,7 +28,7 @@
         "test:watch": "jest --watch"
     },
     "dependencies": {
-        "@fast-csv/parse": "^5.0.2",
+        "@fast-csv/parse": "^5.0.7",
         "@getbrevo/brevo": "^2.2.0",
         "@nestjs/axios": "^1.0.1",
         "@nestjs/cache-manager": "^2.3.0",
