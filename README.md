@@ -4,7 +4,6 @@
 > **⚠️ This repository is archived and no longer maintained.**
 >
 > **The packages have been moved to the main [Dextinity](https://github.com/vivid-planet/dextinity) repository (formerly COMET).**
-> Please do not open issues or pull requests here. All further development happens in Dextinity.
 >
 > | Package          | New location                                                                                                                        |
 > | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
