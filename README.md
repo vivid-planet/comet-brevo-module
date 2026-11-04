@@ -1,9 +1,9 @@
 # comet-brevo-module
 
 > [!CAUTION]
-> **⚠️ This repository is archived and no longer maintained.**
+> **This repository is archived and no longer maintained.**
 >
-> **The packages have been moved to the main [Dextinity](https://github.com/vivid-planet/dextinity) repository (formerly COMET).**
+> The packages have been moved to the main [Dextinity](https://github.com/vivid-planet/dextinity) repository (formerly COMET).
 >
 > | Package          | New location                                                                                                                        |
 > | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
