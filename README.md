@@ -1,10 +1,17 @@
 # comet-brevo-module
 
-> **Note:** This repository is no longer active. The packages have been moved to the main COMET repository:
+> [!CAUTION]
+> **This repository is no longer maintained.**
 >
-> - **brevo-admin**: https://github.com/vivid-planet/comet/tree/main/packages/api/brevo-admin
-> - **brevo-api**: https://github.com/vivid-planet/comet/tree/main/packages/api/brevo-api
-> - **mail-rendering**: https://github.com/vivid-planet/comet/tree/main/packages/mail-react
+> The packages have been moved to the main [Dextinity](https://github.com/vivid-planet/dextinity) repository (formerly COMET).
+>
+> | Package          | New location                                                                                                                        |
+> | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+> | `brevo-admin`    | [vivid-planet/dextinity/packages/admin/brevo-admin](https://github.com/vivid-planet/dextinity/tree/main/packages/admin/brevo-admin) |
+> | `brevo-api`      | [vivid-planet/dextinity/packages/api/brevo-api](https://github.com/vivid-planet/dextinity/tree/main/packages/api/brevo-api)         |
+> | `mail-rendering` | [vivid-planet/dextinity/packages/mail-react](https://github.com/vivid-planet/dextinity/tree/main/packages/mail-react)               |
+
+---
 
 ## Getting started
 
